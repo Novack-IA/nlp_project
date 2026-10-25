@@ -1,0 +1,122 @@
+[job 587] spark14-9931 aarch64 inicio=2026-10-04T00:06:02-03:00 PHASE0_DATA=data/phase0_dry
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   3%|▎         | 8/310 [00:00<00:06, 43.70it/s]Loading weights:  19%|█▉        | 59/310 [00:00<00:01, 247.59it/s]Loading weights:  39%|███▊      | 120/310 [00:00<00:00, 383.80it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 705.59it/s]
+[00:07:59] embed 128/4088
+[00:08:30] subbucket 1/27
+[00:08:30] subbucket 2/27
+[00:08:30] subbucket 3/27
+[00:08:32] subbucket 4/27
+[00:08:43] subbucket 5/27
+[00:08:43] subbucket 6/27
+[00:08:43] subbucket 7/27
+[00:08:43] subbucket 8/27
+[00:08:53] subbucket 9/27
+[00:08:55] subbucket 10/27
+[00:08:56] subbucket 11/27
+[00:08:56] subbucket 12/27
+[00:09:14] subbucket 13/27
+[00:09:14] subbucket 14/27
+[00:09:14] subbucket 15/27
+[00:09:14] subbucket 16/27
+[00:09:17] subbucket 17/27
+[00:09:17] subbucket 18/27
+[00:09:19] subbucket 19/27
+[00:09:26] subbucket 20/27
+[00:09:29] subbucket 21/27
+[00:09:29] subbucket 22/27
+[00:09:31] subbucket 23/27
+[00:09:41] subbucket 24/27
+[00:09:41] subbucket 25/27
+[00:09:41] subbucket 26/27
+[00:09:41] subbucket 27/27
+[00:09:41] P1 ok {'after_filter': 4988, 'after_dedup': 4088, 'after_exclusion': 4047, 'eligible_per_domain': {'bias': 663, 'cyber': 1520, 'violence': 1058, 'privacy': 806}, 'bias_subbucket_pool': {'lgbt': 33, 'race': 146, 'other': 484, None: 0}, 'sampled_per_domain': {'bias': 20, 'cyber': 20, 'violence': 20, 'privacy': 20}, 'sampled_bias_subbuckets': {'lgbt': 4, 'race': 4, 'other': 12}, 'deficit': {}}
+[vllm gemma-4-31B-it] W1004 00:09:44.749000 318990 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-31B-it] W1004 00:09:44.750000 318990 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-31B-it] W1004 00:09:44.750000 318990 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-31B-it] (APIServer pid=318990) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-31B-it] W1004 00:10:02.081000 319424 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-31B-it] W1004 00:10:02.082000 319424 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-31B-it] W1004 00:10:02.082000 319424 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-31B-it] (EngineCore pid=319424) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Loading safetensors checkpoint shards:  50% Completed | 1/2 [07:54<07:54, 474.15s/it]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Loading safetensors checkpoint shards: 100% Completed | 2/2 [10:29<00:00, 286.63s/it]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Loading safetensors checkpoint shards: 100% Completed | 2/2 [10:29<00:00, 314.76s/it]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) 
+[vllm gemma-4-31B-it] (EngineCore pid=319424) [rank0]:W1004 00:21:31.810000 319424 torch/_inductor/utils.py:1797] Not enough SMs to use max_autotune_gemm mode
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:02<01:43,  2.06s/it]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:02<00:55,  1.13s/it]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:02<00:38,  1.23it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:03<00:31,  1.51it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:03<00:26,  1.73it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:04<00:23,  1.91it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:04<00:21,  2.05it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:05<00:20,  2.14it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:05<00:18,  2.22it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:05<00:17,  2.30it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:06<00:16,  2.36it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:06<00:16,  2.41it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:07<00:15,  2.45it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:07<00:14,  2.48it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:07<00:14,  2.52it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:08<00:13,  2.55it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:08<00:13,  2.59it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:10<00:23,  1.38it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:10<00:19,  1.62it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:10<00:16,  1.85it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:11<00:14,  2.07it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:11<00:12,  2.27it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:11<00:11,  2.43it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:12<00:10,  2.56it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:12<00:09,  2.65it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:12<00:09,  2.74it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:13<00:08,  2.78it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:13<00:08,  2.85it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:13<00:07,  2.92it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:14<00:07,  2.94it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:14<00:06,  2.99it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:14<00:06,  3.03it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:15<00:05,  3.06it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:15<00:05,  3.09it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:15<00:05,  3.13it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:16<00:04,  3.16it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:16<00:04,  3.15it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:16<00:04,  3.18it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:17<00:03,  3.21it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:17<00:03,  3.24it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:17<00:03,  3.22it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:17<00:02,  3.27it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:18<00:02,  3.32it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:18<00:02,  3.37it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:18<00:01,  3.41it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:19<00:01,  3.44it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:19<00:01,  3.42it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:21<00:02,  1.28it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:21<00:01,  1.59it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:21<00:00,  1.91it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:23<00:00,  1.10it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:23<00:00,  2.15it/s]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  2.81it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  2.83it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  2.83it/s]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) 2026-10-04 00:22:23,990 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+[vllm gemma-4-31B-it] (EngineCore pid=319424) 2026-10-04 00:22:24,102 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+[vllm gemma-4-31B-it] (EngineCore pid=319424) 2026-10-04 00:22:24,126 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 0 configs to /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/bd846fbd9fff45dcb01f537056ec89bbc39b4aaf774c70fd67df9a2a654a0aae/autotune_configs.json (0 new, 0 from previous config)
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:24,  2.02it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:23,  2.09it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:01<00:22,  2.16it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:01<00:21,  2.21it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:02<00:20,  2.24it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:02<00:19,  2.28it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:03<00:18,  2.32it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:03<00:18,  2.35it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:03<00:17,  2.38it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:04<00:17,  2.41it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:04<00:16,  2.44it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:05<00:15,  2.46it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:05<00:15,  2.49it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:05<00:14,  2.51it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:06<00:14,  2.54it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:06<00:13,  2.57it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:07<00:13,  2.60it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:07<00:12,  2.63it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:07<00:11,  2.67it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:08<00:11,  2.70it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:08<00:10,  2.75it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:08<00:10,  2.79it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:09<00:09,  2.83it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:09<00:09,  2.87it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:09<00:08,  2.89it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:10<00:08,  2.92it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:10<00:08,  2.95it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:10<00:07,  2.97it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:11<00:07,  3.02it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:11<00:06,  3.06it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:11<00:06,  3.08it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:12<00:06,  3.11it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:12<00:05,  3.13it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:12<00:05,  3.16it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:13<00:05,  3.18it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:13<00:04,  3.21it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:13<00:04,  3.23it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:13<00:04,  3.24it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:14<00:03,  3.26it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:14<00:03,  3.28it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:14<00:03,  3.31it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:15<00:02,  3.34it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:15<00:02,  3.39it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:15<00:02,  3.42it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:16<00:01,  3.46it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:16<00:01,  3.49it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:16<00:01,  3.52it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:16<00:00,  3.56it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:17<00:00,  3.58it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:17<00:00,  3.61it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:17<00:00,  3.64it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:17<00:00,  2.89it/s]
+[vllm gemma-4-31B-it] (EngineCore pid=319424) Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   3%|▎         | 1/35 [00:00<00:12,  2.79it/s]Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:11,  2.83it/s]Capturing CUDA graphs (FULL):   9%|▊         | 3/35 [00:01<00:11,  2.86it/s]Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:01<00:10,  2.87it/s]Capturing CUDA graphs (FULL):  14%|█▍        | 5/35 [00:01<00:10,  2.92it/s]Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:02<00:09,  2.95it/s]Capturing CUDA graphs (FULL):  20%|██        | 7/35 [00:02<00:09,  2.98it/s]Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:02<00:08,  3.00it/s]Capturing CUDA graphs (FULL):  26%|██▌       | 9/35 [00:03<00:08,  3.03it/s]Capturing CUDA graphs (FULL):  29%|██▊       | 10/35 [00:03<00:08,  3.05it/s]Capturing CUDA graphs (FULL):  31%|███▏      | 11/35 [00:03<00:07,  3.07it/s]Capturing CUDA graphs (FULL):  34%|███▍      | 12/35 [00:04<00:07,  3.08it/s]Capturing CUDA graphs (FULL):  37%|███▋      | 13/35 [00:04<00:07,  3.12it/s]Capturing CUDA graphs (FULL):  40%|████      | 14/35 [00:04<00:06,  3.15it/s]Capturing CUDA graphs (FULL):  43%|████▎     | 15/35 [00:04<00:06,  3.18it/s]Capturing CUDA graphs (FULL):  46%|████▌     | 16/35 [00:05<00:05,  3.20it/s]Capturing CUDA graphs (FULL):  49%|████▊     | 17/35 [00:05<00:05,  3.22it/s]Capturing CUDA graphs (FULL):  51%|█████▏    | 18/35 [00:05<00:05,  3.25it/s]Capturing CUDA graphs (FULL):  54%|█████▍    | 19/35 [00:06<00:04,  3.26it/s]Capturing CUDA graphs (FULL):  57%|█████▋    | 20/35 [00:06<00:04,  3.28it/s]Capturing CUDA graphs (FULL):  60%|██████    | 21/35 [00:06<00:04,  3.31it/s]Capturing CUDA graphs (FULL):  63%|██████▎   | 22/35 [00:07<00:03,  3.32it/s]Capturing CUDA graphs (FULL):  66%|██████▌   | 23/35 [00:07<00:03,  3.34it/s]Capturing CUDA graphs (FULL):  69%|██████▊   | 24/35 [00:07<00:03,  3.37it/s]Capturing CUDA graphs (FULL):  71%|███████▏  | 25/35 [00:07<00:02,  3.39it/s]Capturing CUDA graphs (FULL):  74%|███████▍  | 26/35 [00:08<00:02,  3.43it/s]Capturing CUDA graphs (FULL):  77%|███████▋  | 27/35 [00:08<00:02,  3.46it/s]Capturing CUDA graphs (FULL):  80%|████████  | 28/35 [00:08<00:02,  3.48it/s]Capturing CUDA graphs (FULL):  83%|████████▎ | 29/35 [00:09<00:01,  3.52it/s]Capturing CUDA graphs (FULL):  86%|████████▌ | 30/35 [00:09<00:01,  3.55it/s]Capturing CUDA graphs (FULL):  89%|████████▊ | 31/35 [00:09<00:01,  3.59it/s]Capturing CUDA graphs (FULL):  91%|█████████▏| 32/35 [00:09<00:00,  3.62it/s]Capturing CUDA graphs (FULL):  94%|█████████▍| 33/35 [00:10<00:00,  3.65it/s]Capturing CUDA graphs (FULL):  97%|█████████▋| 34/35 [00:10<00:00,  3.67it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:10<00:00,  3.71it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:10<00:00,  3.28it/s]
+[vllm gemma-4-31B-it] (APIServer pid=318990) INFO:     Started server process [318990]
+[vllm gemma-4-31B-it] (APIServer pid=318990) INFO:     Waiting for application startup.
+[vllm gemma-4-31B-it] (APIServer pid=318990) INFO:     Application startup complete.
+[00:24:56] gatilho 4/80
+[00:24:56] gatilho 8/80
+[00:24:56] gatilho 12/80
+[00:24:56] gatilho 16/80
+[00:24:56] gatilho 20/80
+[00:24:56] gatilho 24/80
+[00:24:56] gatilho 28/80
+[00:24:56] gatilho 32/80
+[00:24:56] gatilho 36/80
+[00:24:56] gatilho 40/80
+[00:24:56] gatilho 44/80
+[00:24:56] gatilho 48/80
+[00:24:56] gatilho 52/80
+[00:24:56] gatilho 56/80
+[00:24:56] gatilho 60/80
+[00:24:56] gatilho 64/80
+[00:24:56] gatilho 68/80
+[00:24:56] gatilho 72/80
+[00:24:56] gatilho 76/80
+[00:24:56] gatilho 80/80
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   2%|▏         | 5/310 [00:00<00:06, 45.12it/s]Loading weights:  35%|███▍      | 108/310 [00:00<00:00, 593.73it/s]Loading weights:  55%|█████▍    | 170/310 [00:00<00:00, 604.79it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 850.58it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p2_border.py", line 193, in <module>
+    main()
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p2_border.py", line 101, in main
+    emb_model = Embedder(cfg["models"]["embedder"])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/embed.py", line 18, in __init__
+    self.model = AutoModel.from_pretrained(model_id, torch_dtype=torch.bfloat16).cuda().eval()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/modeling_utils.py", line 3707, in cuda
+    return super().cuda(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1098, in cuda
+    return self._apply(lambda t: t.cuda(device))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 933, in _apply
+    module._apply(fn)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 966, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1098, in <lambda>
+    return self._apply(lambda t: t.cuda(device))
+                                 ^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+The CUDA driver logged these messages, which may provide useful details:
+Returning 2 (CUDA_ERROR_OUT_OF_MEMORY) from cuDevicePrimaryCtxRetain
+
+
+/var/spool/slurmd/job00587/slurm_script: line 1: 318990 Killed                  $RUN vllm serve "$1" --host 127.0.0.1 --port "$2" --gpu-memory-utilization "$3" --max-model-len "$4" --dtype bfloat16 > >(sed -u "s/^/$tag /") 2> >(sed -u "s/^/$tag /" 1>&2)

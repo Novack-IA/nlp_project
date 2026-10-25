@@ -1,0 +1,14 @@
+[job 603] spark14-9931 aarch64 inicio=2026-10-04T03:23:37-03:00 PHASE0_DATA=data/phase0_dry
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+[03:25:15] S4: /beegfs/home/user_gustavonovack/nlp/data/phase0_dry/s4_inspecao.md (20 pares)

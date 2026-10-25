@@ -1,0 +1,54 @@
+[job 561] spark14-9931 aarch64 inicio=2026-10-03T17:05:06-03:00 cwd=/beegfs/home/user_gustavonovack/nlp
+[INFO] Querying registry for permission grant
+[INFO] Authenticating with user: <anonymous>
+[INFO] Authentication succeeded
+[INFO] Fetching image manifest list
+[INFO] Fetching image manifest
+[INFO] Downloading 43 missing layers...
+[INFO] Extracting image layers...
+[INFO] Converting whiteouts...
+[INFO] Creating squashfs filesystem...
+Parallel mksquashfs: Using 20 processors
+Creating 4.0 filesystem on /beegfs/home/user_gustavonovack/images/vllm-26.09-py3.sqsh, block size 131072.
+
+Exportable Squashfs 4.0 filesystem, lzo compressed, data block size 131072
+	uncompressed data, compressed metadata, compressed fragments,
+	compressed xattrs, compressed ids
+	duplicates are removed
+Filesystem size 20645676.25 Kbytes (20161.79 Mbytes)
+	84.03% of uncompressed filesystem size (24569534.46 Kbytes)
+Inode table size 2827394 bytes (2761.13 Kbytes)
+	29.48% of uncompressed inode table size (9590758 bytes)
+Directory table size 3446916 bytes (3366.13 Kbytes)
+	19.27% of uncompressed directory table size (17883540 bytes)
+Number of duplicate files found 88063
+Number of inodes 256926
+Number of files 238294
+Number of fragments 38687
+Number of symbolic links 1940
+Number of device nodes 0
+Number of fifo nodes 0
+Number of socket nodes 0
+Number of directories 16692
+Number of hard-links 6
+Number of ids (unique uids + gids) 1
+Number of uids 1
+	root (0)
+Number of gids 1
+	root (0)
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+W1003 17:14:13.821000 259518 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1003 17:14:13.826000 259518 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1003 17:14:13.831000 259518 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[claude-code:unrecognized_model] {"model":"claude-sonnet-5-5","query_source":"sdk"}

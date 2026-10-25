@@ -1,0 +1,17 @@
+arquivo: /beegfs/home/user_gustavonovack/.cache/huggingface/hub/blobs/99/995e4fbffbb9eebd186cd702cedbc2a63c1b268037b50c69254320ecaffadc70 (23G)
+inicio:                 MemAvailable=116.9 GiB Cached=33.7 GiB
+após leitura O_DIRECT:  MemAvailable=116.9 GiB Cached=15.7 GiB
+após leitura normal:    MemAvailable=116.9 GiB Cached=23.1 GiB
+20 s depois:            MemAvailable=116.9 GiB Cached=23.1 GiB
+Buffers:          842908 kB
+Cached:         24259828 kB
+Active(file):   10772992 kB
+Inactive(file): 14321744 kB
+Unevictable:       23308 kB
+Mlocked:           23308 kB
+Shmem:              3364 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+após cópia p/ NVMe:     MemAvailable=116.7 GiB Cached=45.4 GiB
+após ler do NVMe:       MemAvailable=116.7 GiB Cached=45.4 GiB
+/dev/nvme0n1p2  3.7T  708G  2.8T  20% /

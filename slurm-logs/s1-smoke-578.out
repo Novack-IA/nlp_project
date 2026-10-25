@@ -1,0 +1,196 @@
+== vllm serve google/gemma-4-12B-it (porta 8000, util 0.45, len 4096) 2026-10-03T20:23:37-03:00; memória livre: 116.7 GiB
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] ==========
+[vllm gemma-4-12B-it] == vLLM ==
+[vllm gemma-4-12B-it] ==========
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] NVIDIA Release 26.09 (build 452757715)
+[vllm gemma-4-12B-it] vLLM Version 0.29.0+5013de39
+[vllm gemma-4-12B-it] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm gemma-4-12B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm gemma-4-12B-it] and the Product-Specific Terms for NVIDIA AI Products
+[vllm gemma-4-12B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm gemma-4-12B-it]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm gemma-4-12B-it]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347] 
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-12B-it
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:347] 
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:48 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-12B-it', 'host': '127.0.0.1', 'model': 'google/gemma-4-12B-it', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.45}
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:49 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [google/gemma-4-12B-it] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7]
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:23:49 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:23:49 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:49 [model.py:684] Resolved architecture: Gemma4UnifiedForConditionalGeneration
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:23:49 [model.py:2021] Using max model len 4096
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:24:01 [arg_utils.py:2929] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7.
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:24:01 [scheduler.py:277] Chunked prefill is enabled with max_num_batched_tokens=2496.
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:24:01 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:24:01 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:24:01 [cuda.py:327] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:20 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:24 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_54f29f9733284494a681b86ebc2d2d45 backend=nccl
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:24 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:24 [gpu_worker.py:429] Using V2 Model Runner
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:24 [model_runner.py:382] Loading model from scratch...
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:24 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:25 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:25 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:26 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 22.28 GiB. Available RAM: 87.09 GiB.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:24:26 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:38 [default_loader.py:430] Loading weights took 252.36 seconds
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:38 [model_runner.py:404] Model loading took 22.83 GiB memory and 254.306815 seconds
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:38 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:38 [utils.py:306] Using LBNHC KV cache layout.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:55 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:56 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=6 num_submods=49
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:56 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/3f8e52caa94edf173200f2973d8fb5840c638e9f7393dfcc54da7b7667f42249/rank_0_0/model
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:56 [monitor.py:53] torch.compile took 0.94 s in total
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:28:56 [monitor.py:81] Initial profiling/warmup run took 0.03 s
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:06 [model_runner.py:960] Graph capturing finished in 9 secs, took 0.43 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:07 [gpu_worker.py:625] Available KV cache memory: 29.61 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:07 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.4500 is equivalent to --gpu-memory-utilization=0.4459 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.4541. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:07 [kv_cache_utils.py:2032] GPU KV cache size: 92,061 tokens, Maximum concurrency for 4,096 tokens per request: 22.48x
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:08 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:08 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:09 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/2169e4ad00b03f44774df7e11306028df3e8ca1d08ea4e650d26a3c069c2be2d/autotune_configs.json
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:09 [kernel_warmup.py:272] Running FlashInfer autotune with 2496 tokens.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:21 [model_runner.py:960] Graph capturing finished in 12 secs, took 0.40 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:21 [gpu_worker.py:797] CUDA graph pool memory: 0.4 GiB (actual), 0.5 GiB (estimated), difference: 0.1 GiB (24.8%).
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:21 [gpu_worker.py:860] Free memory on device (113.3/121.69 GiB) on startup. Desired GPU memory utilization is (0.45, 54.76 GiB). Actual usage is 24.35 GiB for consumed memory (weights + non-torch), 0.8 GiB for peak activation, and 0.4 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=31209741722` (29.07 GiB) to fit into requested memory, or `--kv-cache-memory=94064374784` (87.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 29.61 GiB.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:24 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:24 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:24 [core.py:361] init engine (profile, create kv cache, warmup model) took 45.62 s (compilation: 0.94 s)
+[vllm gemma-4-12B-it] (EngineCore pid=283256) INFO 10-03 20:29:24 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:24 [entry.py:135] Supported tasks: ['generate']
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [hf.py:547] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:29:26 [base.py:278] Multi-modal warmup failed
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:29:26 [base.py:290] Readonly multi-modal warmup failed
+[vllm gemma-4-12B-it] (APIServer pid=282809) WARNING 10-03 20:29:26 [model.py:1759] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 64, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:61] Available routes are:
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /openapi.json, Methods: GET, HEAD
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /docs, Methods: GET, HEAD
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /redoc, Methods: GET, HEAD
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /load, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /version, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /health, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /ping, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /ping, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:26 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45352 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-03T20:29:28-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45362 - "GET /health HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (EngineCore pid=283256) WARNING 10-03 20:29:30 [jit_monitor.py:141] Triton kernel JIT compilation during inference: kernel_unified_attention. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:36 [loggers.py:310] Engine 000: Avg prompt throughput: 1.9 tokens/s, Avg generation throughput: 3.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:46 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:29:56 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:30:06 [loggers.py:310] Engine 000: Avg prompt throughput: 4.0 tokens/s, Avg generation throughput: 7.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:30:16 [loggers.py:310] Engine 000: Avg prompt throughput: 4.5 tokens/s, Avg generation throughput: 7.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:30:26 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:30:36 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO 10-03 20:30:46 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%, Prefix cache hit rate: 0.0%
+[vllm gemma-4-12B-it] (APIServer pid=282809) INFO:     127.0.0.1:45378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+   servidores parados; memória livre: 117.7 GiB
+== vllm serve google/gemma-4-31B-it (porta 8000, util 0.54, len 4096) 2026-10-03T20:30:53-03:00; memória livre: 117.7 GiB
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] ==========
+[vllm gemma-4-31B-it] == vLLM ==
+[vllm gemma-4-31B-it] ==========
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] NVIDIA Release 26.09 (build 452757715)
+[vllm gemma-4-31B-it] vLLM Version 0.29.0+5013de39
+[vllm gemma-4-31B-it] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm gemma-4-31B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm gemma-4-31B-it] and the Product-Specific Terms for NVIDIA AI Products
+[vllm gemma-4-31B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm gemma-4-31B-it]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm gemma-4-31B-it]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm gemma-4-31B-it] 
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347] 
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-31B-it
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:347] 
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-31B-it', 'host': '127.0.0.1', 'model': 'google/gemma-4-31B-it', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.54}
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [google/gemma-4-31B-it] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475]
+[vllm gemma-4-31B-it] (APIServer pid=284234) WARNING 10-03 20:31:04 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm gemma-4-31B-it] (APIServer pid=284234) WARNING 10-03 20:31:04 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [model.py:684] Resolved architecture: Gemma4ForConditionalGeneration
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:04 [model.py:2021] Using max model len 4096
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:08 [arg_utils.py:2929] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475.
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:08 [scheduler.py:277] Chunked prefill is enabled with max_num_batched_tokens=2496.
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:08 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+[vllm gemma-4-31B-it] (APIServer pid=284234) INFO 10-03 20:31:09 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-31B-it] (APIServer pid=284234) WARNING 10-03 20:31:09 [cuda.py:327] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:21 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:24 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_2fecd60eac2d4bd9a060826c725433f7 backend=nccl
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:24 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:24 [gpu_worker.py:429] Using V2 Model Runner
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:25 [model_runner.py:382] Loading model from scratch...
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:25 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:25 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:26 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:28 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 58.25 GiB. Available RAM: 49.94 GiB.
+[vllm gemma-4-31B-it] (EngineCore pid=284660) INFO 10-03 20:31:28 [weight_utils.py:893] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre) and the checkpoint size (58.25 GiB) exceeds 90% of available RAM (49.94 GiB).

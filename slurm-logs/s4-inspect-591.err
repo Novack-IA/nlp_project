@@ -1,0 +1,22 @@
+[job 591] spark14-9931 aarch64 inicio=2026-10-04T01:14:47-03:00 PHASE0_DATA=data/phase0_dry
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/s4_inspect.py", line 88, in <module>
+    main()
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/s4_inspect.py", line 67, in main
+    src = next(n for n in ("groups_p6.jsonl", "groups_p5.jsonl", "groups_p4.jsonl") if (d / n).exists())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

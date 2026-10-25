@@ -1,0 +1,1160 @@
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+........................                                                 [100%]
+24 passed in 12.01s
+== fase A: sujeito + guards 2026-10-04T02:51:43-03:00
+== vllm serve google/gemma-4-12B-it (porta 8000, util 0.40, len 4096) 2026-10-04T02:51:43-03:00
+   memória antes: MemFree 7.6 GiB, MemAvailable 116.6 GiB
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] ==========
+[vllm gemma-4-12B-it] == vLLM ==
+[vllm gemma-4-12B-it] ==========
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] NVIDIA Release 26.09 (build 452757715)
+[vllm gemma-4-12B-it] vLLM Version 0.29.0+5013de39
+[vllm gemma-4-12B-it] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm gemma-4-12B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm gemma-4-12B-it] and the Product-Specific Terms for NVIDIA AI Products
+[vllm gemma-4-12B-it] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm gemma-4-12B-it]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm gemma-4-12B-it]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm gemma-4-12B-it] 
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347] 
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-12B-it
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:347] 
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-12B-it', 'host': '127.0.0.1', 'model': 'google/gemma-4-12B-it', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.4}
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [google/gemma-4-12B-it] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7]
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:51:58 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:51:58 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [model.py:684] Resolved architecture: Gemma4UnifiedForConditionalGeneration
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:51:58 [model.py:2021] Using max model len 4096
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:52:12 [arg_utils.py:2929] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7.
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:52:12 [scheduler.py:277] Chunked prefill is enabled with max_num_batched_tokens=2496.
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:52:12 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:52:12 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:52:12 [cuda.py:327] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:31 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:35 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_60980a8105b449998fc2871249a38876 backend=nccl
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:35 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:35 [gpu_worker.py:429] Using V2 Model Runner
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:36 [model_runner.py:382] Loading model from scratch...
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:36 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:36 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:37 [cuda.py:432] Using AttentionBackendEnum.TRITON_ATTN backend.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:39 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 22.28 GiB. Available RAM: 87.94 GiB.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:52:39 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:56:48 [default_loader.py:430] Loading weights took 249.13 seconds
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:01 [model_runner.py:404] Model loading took 22.83 GiB memory and 265.321984 seconds
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:01 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:01 [utils.py:306] Using LBNHC KV cache layout.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:20 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:23 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=6 num_submods=49
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:23 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/3f8e52caa94edf173200f2973d8fb5840c638e9f7393dfcc54da7b7667f42249/rank_0_0/model
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:23 [monitor.py:53] torch.compile took 1.45 s in total
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:23 [monitor.py:81] Initial profiling/warmup run took 0.04 s
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:35 [model_runner.py:960] Graph capturing finished in 10 secs, took 0.64 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:36 [gpu_worker.py:625] Available KV cache memory: 25.49 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:36 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.4000 is equivalent to --gpu-memory-utilization=0.3942 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.4058. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:36 [kv_cache_utils.py:2032] GPU KV cache size: 79,244 tokens, Maximum concurrency for 4,096 tokens per request: 19.35x
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:39 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:39 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:40 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/2169e4ad00b03f44774df7e11306028df3e8ca1d08ea4e650d26a3c069c2be2d/autotune_configs.json
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:57:50 [kernel_warmup.py:272] Running FlashInfer autotune with 2496 tokens.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:03 [model_runner.py:960] Graph capturing finished in 12 secs, took 0.39 GiB
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:03 [gpu_worker.py:797] CUDA graph pool memory: 0.39 GiB (actual), 0.71 GiB (estimated), difference: 0.31 GiB (79.3%).
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:03 [gpu_worker.py:860] Free memory on device (113.25/121.69 GiB) on startup. Desired GPU memory utilization is (0.4, 48.68 GiB). Actual usage is 22.18 GiB for consumed memory (weights + non-torch), 1.01 GiB for peak activation, and 0.39 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=26785734861` (24.95 GiB) to fit into requested memory, or `--kv-cache-memory=96126600192` (89.52 GiB) to fully utilize gpu memory. Current kv cache memory in use is 25.49 GiB.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:07 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:07 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:07 [core.py:361] init engine (profile, create kv cache, warmup model) took 65.91 s (compilation: 1.45 s)
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 02:58:07 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:13 [entry.py:135] Supported tasks: ['generate']
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [hf.py:547] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:58:34 [base.py:278] Multi-modal warmup failed
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:58:34 [base.py:290] Readonly multi-modal warmup failed
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 02:58:34 [model.py:1759] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 64, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:61] Available routes are:
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /load, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /version, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /health, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /ping, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /ping, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 02:58:34 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:42852 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T02:58:44-03:00; memória depois: MemFree 23.1 GiB, MemAvailable 62.2 GiB
+== vllm serve Qwen/Qwen3Guard-Gen-8B (porta 8001, util 0.20, len 4096) 2026-10-04T02:58:45-03:00
+   memória antes: MemFree 23.1 GiB, MemAvailable 62.2 GiB
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] ==========
+[vllm Qwen3Guard-Gen-8B] == vLLM ==
+[vllm Qwen3Guard-Gen-8B] ==========
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] NVIDIA Release 26.09 (build 452757715)
+[vllm Qwen3Guard-Gen-8B] vLLM Version 0.29.0+5013de39
+[vllm Qwen3Guard-Gen-8B] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm Qwen3Guard-Gen-8B] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm Qwen3Guard-Gen-8B] and the Product-Specific Terms for NVIDIA AI Products
+[vllm Qwen3Guard-Gen-8B] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm Qwen3Guard-Gen-8B]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm Qwen3Guard-Gen-8B]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm Qwen3Guard-Gen-8B] 
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347] 
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347]   █▄█▀ █     █     █     █  model   Qwen/Qwen3Guard-Gen-8B
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:347] 
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [api_utils.py:286] non-default args: {'model_tag': 'Qwen/Qwen3Guard-Gen-8B', 'host': '127.0.0.1', 'port': 8001, 'model': 'Qwen/Qwen3Guard-Gen-8B', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.2}
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:00 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [Qwen/Qwen3Guard-Gen-8B] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B/snapshots/4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb]
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) WARNING 10-04 02:59:00 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) WARNING 10-04 02:59:00 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:01 [model.py:684] Resolved architecture: Qwen3ForCausalLM
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:01 [model.py:2021] Using max model len 4096
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 02:59:01 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:11 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B/snapshots/4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B/snapshots/4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B/snapshots/4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:14 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_f6749c02c90b4cb3bdbcb7ff1a68f47f backend=nccl
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:14 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:14 [gpu_worker.py:429] Using V2 Model Runner
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:15 [model_runner.py:382] Loading model from scratch...
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:15 [cuda.py:492] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:15 [flash_attn.py:897] Using FlashAttention version 2
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:16 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 15.26 GiB. Available RAM: 44.42 GiB.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 02:59:16 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:55 [default_loader.py:430] Loading weights took 159.45 seconds
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:56 [model_runner.py:404] Model loading took 15.27 GiB memory and 161.277572 seconds
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:56 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:56 [utils.py:306] Using LBNHC KV cache layout.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:59 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=37
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:59 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/25672df9cbeacc867df5ad852627a82165e405f9d68e6e697ee70bacc4f1e111/rank_0_0/model
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:59 [monitor.py:53] torch.compile took 0.57 s in total
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:01:59 [monitor.py:81] Initial profiling/warmup run took 0.14 s
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:07 [model_runner.py:960] Graph capturing finished in 7 secs, took 0.08 GiB
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:08 [gpu_worker.py:625] Available KV cache memory: 7.59 GiB
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:08 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.2000 is equivalent to --gpu-memory-utilization=0.1988 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.2012. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:08 [kv_cache_utils.py:2032] GPU KV cache size: 55,264 tokens, Maximum concurrency for 4,096 tokens per request: 13.49x
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:09 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:09 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:10 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/a760f8e4f24089c854baa200bf410d4b9eb8d19a9bb1710810d909ad7b258747/autotune_configs.json
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:10 [kernel_warmup.py:272] Running FlashInfer autotune with 2048 tokens.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:20 [model_runner.py:960] Graph capturing finished in 10 secs, took 0.45 GiB
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:20 [gpu_worker.py:797] CUDA graph pool memory: 0.45 GiB (actual), 0.14 GiB (estimated), difference: 0.31 GiB (68.2%).
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:20 [gpu_worker.py:860] Free memory on device (59.83/121.69 GiB) on startup. Desired GPU memory utilization is (0.2, 24.34 GiB). Actual usage is 16.42 GiB for consumed memory (weights + non-torch), 0.33 GiB for peak activation, and 0.45 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=7508697191` (6.99 GiB) to fit into requested memory, or `--kv-cache-memory=45622565376` (42.49 GiB) to fully utilize gpu memory. Current kv cache memory in use is 7.59 GiB.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:23 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:23 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:23 [core.py:361] init engine (profile, create kv cache, warmup model) took 27.29 s (compilation: 0.57 s)
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=117920) INFO 10-04 03:02:24 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:24 [entry.py:135] Supported tasks: ['generate']
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [hf.py:547] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [entry.py:139] Starting vLLM server on http://127.0.0.1:8001
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:61] Available routes are:
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /load, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /version, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /health, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /ping, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /ping, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:02:25 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:54750 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T03:02:29-03:00; memória depois: MemFree 16.2 GiB, MemAvailable 34.5 GiB
+== vllm serve allenai/wildguard (porta 8002, util 0.20, len 4096) 2026-10-04T03:02:29-03:00
+   memória antes: MemFree 16.1 GiB, MemAvailable 34.5 GiB
+[vllm wildguard] 
+[vllm wildguard] ==========
+[vllm wildguard] == vLLM ==
+[vllm wildguard] ==========
+[vllm wildguard] 
+[vllm wildguard] NVIDIA Release 26.09 (build 452757715)
+[vllm wildguard] vLLM Version 0.29.0+5013de39
+[vllm wildguard] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm wildguard] 
+[vllm wildguard] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm wildguard] 
+[vllm wildguard] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm wildguard] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm wildguard] and the Product-Specific Terms for NVIDIA AI Products
+[vllm wildguard] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm wildguard] 
+[vllm wildguard] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm wildguard]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm wildguard]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm wildguard] 
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347] 
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347]   █▄█▀ █     █     █     █  model   allenai/wildguard
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:347] 
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [api_utils.py:286] non-default args: {'model_tag': 'allenai/wildguard', 'host': '127.0.0.1', 'port': 8002, 'model': 'allenai/wildguard', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.2}
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [allenai/wildguard] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard/snapshots/cbba4823f3e8020e5a74a5e29bf85072def6f2ff]
+[vllm wildguard] (APIServer pid=120456) WARNING 10-04 03:02:44 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm wildguard] (APIServer pid=120456) WARNING 10-04 03:02:44 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [model.py:684] Resolved architecture: MistralForCausalLM
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [model.py:2021] Using max model len 4096
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:02:44 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:53 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard/snapshots/cbba4823f3e8020e5a74a5e29bf85072def6f2ff', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard/snapshots/cbba4823f3e8020e5a74a5e29bf85072def6f2ff', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard/snapshots/cbba4823f3e8020e5a74a5e29bf85072def6f2ff, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:56 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_17727dc2b1be445bb64e432225e0bfb2 backend=nccl
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:56 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:56 [gpu_worker.py:429] Using V2 Model Runner
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:57 [model_runner.py:382] Loading model from scratch...
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:57 [cuda.py:492] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:57 [flash_attn.py:897] Using FlashAttention version 2
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:58 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 13.50 GiB. Available RAM: 18.02 GiB.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:02:58 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:21 [default_loader.py:430] Loading weights took 142.50 seconds
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:21 [model_runner.py:404] Model loading took 13.51 GiB memory and 144.401644 seconds
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:21 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:21 [utils.py:306] Using LBNHC KV cache layout.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:24 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=33
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:24 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/b9da1a4fa3e0f3a4e7beb821c56a408eef24d02bb5ddd3b210c64fc0020d058a/rank_0_0/model
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:24 [monitor.py:53] torch.compile took 0.56 s in total
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:25 [monitor.py:81] Initial profiling/warmup run took 0.67 s
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:33 [model_runner.py:960] Graph capturing finished in 7 secs, took 0.68 GiB
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:33 [gpu_worker.py:625] Available KV cache memory: 11.45 GiB
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:33 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.2000 is equivalent to --gpu-memory-utilization=0.1939 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.2061. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:33 [kv_cache_utils.py:2032] GPU KV cache size: 93,427 tokens, Maximum concurrency for 4,096 tokens per request: 22.81x
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:36 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:36 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:38 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/c2fd3f845f78b617b1acb42195cb64f5bb402ba2c921f521adf01146677631f9/autotune_configs.json
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:38 [kernel_warmup.py:272] Running FlashInfer autotune with 2048 tokens.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:48 [model_runner.py:960] Graph capturing finished in 10 secs, took 0.26 GiB
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:48 [gpu_worker.py:797] CUDA graph pool memory: 0.26 GiB (actual), 0.75 GiB (estimated), difference: 0.48 GiB (183.1%).
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:48 [gpu_worker.py:860] Free memory on device (32.37/121.69 GiB) on startup. Desired GPU memory utilization is (0.2, 24.34 GiB). Actual usage is 11.93 GiB for consumed memory (weights + non-torch), 0.96 GiB for peak activation, and 0.26 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=11853217895` (11.04 GiB) to fit into requested memory, or `--kv-cache-memory=20480514560` (19.07 GiB) to fully utilize gpu memory. Current kv cache memory in use is 11.45 GiB.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:52 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:52 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:52 [core.py:361] init engine (profile, create kv cache, warmup model) took 31.20 s (compilation: 0.56 s)
+[vllm wildguard] (EngineCore pid=120867) INFO 10-04 03:05:53 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:53 [entry.py:135] Supported tasks: ['generate']
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [hf.py:547] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [entry.py:139] Starting vLLM server on http://127.0.0.1:8002
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:61] Available routes are:
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /load, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /version, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /health, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /ping, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /ping, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:05:54 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:58918 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T03:06:07-03:00; memória depois: MemFree 6.7 GiB, MemAvailable 8.2 GiB
+== P3 2026-10-04T03:06:07-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+WARNING: CUDA Minor Version Compatibility mode ENABLED.
+  Using driver version 580.159.03 which has support for CUDA 13.0.  This container
+  was built with CUDA 13.4 and will be run in Minor Version Compatibility mode.
+  CUDA Forward Compatibility is preferred over Minor Version Compatibility for use
+  with this container but was unavailable:
+  [[Out of memory (CUDA_ERROR_OUT_OF_MEMORY) cuDevicePrimaryCtxRetain()=2]]
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:36600 - "GET /health HTTP/1.1" 200 OK
+== P4 2026-10-04T03:06:20-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+WARNING: CUDA Minor Version Compatibility mode ENABLED.
+  Using driver version 580.159.03 which has support for CUDA 13.0.  This container
+  was built with CUDA 13.4 and will be run in Minor Version Compatibility mode.
+  CUDA Forward Compatibility is preferred over Minor Version Compatibility for use
+  with this container but was unavailable:
+  [[Out of memory (CUDA_ERROR_OUT_OF_MEMORY) cuDevicePrimaryCtxRetain()=2]]
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:53430 - "GET /health HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40500 - "GET /health HTTP/1.1" 200 OK
+== P5 2026-10-04T03:06:46-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+WARNING: CUDA Minor Version Compatibility mode ENABLED.
+  Using driver version 580.159.03 which has support for CUDA 13.0.  This container
+  was built with CUDA 13.4 and will be run in Minor Version Compatibility mode.
+  CUDA Forward Compatibility is preferred over Minor Version Compatibility for use
+  with this container but was unavailable:
+  [[Out of memory (CUDA_ERROR_OUT_OF_MEMORY) cuDevicePrimaryCtxRetain()=2]]
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:34684 - "GET /health HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:39074 - "GET /health HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:45836 - "GET /health HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (EngineCore pid=114997) WARNING 10-04 03:06:51 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:06:54 [loggers.py:310] Engine 000: Avg prompt throughput: 23.2 tokens/s, Avg generation throughput: 13.2 tokens/s, Running: 4 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.5%, Prefix cache hit rate: 45.3%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:34720 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:34708 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:34698 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36040 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36050 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42764 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:34700 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36054 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42774 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:04 [loggers.py:310] Engine 000: Avg prompt throughput: 53.1 tokens/s, Avg generation throughput: 7.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 31.1%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:04 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 5.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 45.3%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42764 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36040 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:05 [loggers.py:310] Engine 000: Avg prompt throughput: 85.8 tokens/s, Avg generation throughput: 3.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.9%, Prefix cache hit rate: 41.7%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42764 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (EngineCore pid=114997) WARNING 10-04 03:07:10 [jit_monitor.py:141] Triton kernel JIT compilation during inference: kernel_unified_attention. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:14 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 31.1%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:14 [loggers.py:310] Engine 000: Avg prompt throughput: 16.8 tokens/s, Avg generation throughput: 10.4 tokens/s, Running: 4 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.5%, Prefix cache hit rate: 52.8%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:52756 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:15 [loggers.py:310] Engine 000: Avg prompt throughput: 21.5 tokens/s, Avg generation throughput: 1.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 41.7%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36866 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:52784 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:52772 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:50464 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:52762 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36866 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:50600 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:50610 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:50464 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:50480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:24 [loggers.py:310] Engine 000: Avg prompt throughput: 20.3 tokens/s, Avg generation throughput: 8.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 51.6%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:50492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:24 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 6.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 52.8%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:25 [loggers.py:310] Engine 000: Avg prompt throughput: 60.5 tokens/s, Avg generation throughput: 5.2 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 54.2%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40798 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:34 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 51.6%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:34 [loggers.py:310] Engine 000: Avg prompt throughput: 15.4 tokens/s, Avg generation throughput: 10.9 tokens/s, Running: 3 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.4%, Prefix cache hit rate: 56.0%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:35 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 54.2%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40816 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:34084 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40814 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42550 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:42204 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:34084 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42550 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:44 [loggers.py:310] Engine 000: Avg prompt throughput: 28.7 tokens/s, Avg generation throughput: 6.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 50.1%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:44 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 5.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 56.0%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40832 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:45 [loggers.py:310] Engine 000: Avg prompt throughput: 56.8 tokens/s, Avg generation throughput: 3.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 55.1%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:34084 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:42550 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40832 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:07:54 [loggers.py:310] Engine 000: Avg prompt throughput: 16.7 tokens/s, Avg generation throughput: 2.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 50.9%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:07:54 [loggers.py:310] Engine 000: Avg prompt throughput: 9.8 tokens/s, Avg generation throughput: 7.1 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 57.9%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:07:55 [loggers.py:310] Engine 000: Avg prompt throughput: 21.6 tokens/s, Avg generation throughput: 1.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 55.0%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36284 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:37082 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36284 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41358 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:04 [loggers.py:310] Engine 000: Avg prompt throughput: 4.1 tokens/s, Avg generation throughput: 3.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 52.8%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:04 [loggers.py:310] Engine 000: Avg prompt throughput: 8.9 tokens/s, Avg generation throughput: 10.2 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%, Prefix cache hit rate: 58.0%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:37082 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:05 [loggers.py:310] Engine 000: Avg prompt throughput: 28.3 tokens/s, Avg generation throughput: 2.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 56.8%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40832 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36284 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:37082 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:14 [loggers.py:310] Engine 000: Avg prompt throughput: 14.4 tokens/s, Avg generation throughput: 3.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%, Prefix cache hit rate: 54.1%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:14 [loggers.py:310] Engine 000: Avg prompt throughput: 11.5 tokens/s, Avg generation throughput: 7.8 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%, Prefix cache hit rate: 57.4%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36284 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:15 [loggers.py:310] Engine 000: Avg prompt throughput: 34.2 tokens/s, Avg generation throughput: 1.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%, Prefix cache hit rate: 57.6%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:37082 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:36284 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:24 [loggers.py:310] Engine 000: Avg prompt throughput: 12.8 tokens/s, Avg generation throughput: 2.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 53.0%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:24 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 8.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%, Prefix cache hit rate: 57.4%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:34420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:25 [loggers.py:310] Engine 000: Avg prompt throughput: 21.9 tokens/s, Avg generation throughput: 2.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 57.4%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:44806 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:34 [loggers.py:310] Engine 000: Avg prompt throughput: 4.7 tokens/s, Avg generation throughput: 2.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 54.1%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:34326 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:34 [loggers.py:310] Engine 000: Avg prompt throughput: 3.3 tokens/s, Avg generation throughput: 9.8 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.4%, Prefix cache hit rate: 60.2%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:35 [loggers.py:310] Engine 000: Avg prompt throughput: 13.9 tokens/s, Avg generation throughput: 1.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 58.0%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:41354 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:43280 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:44 [loggers.py:310] Engine 000: Avg prompt throughput: 3.2 tokens/s, Avg generation throughput: 2.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 55.9%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:55518 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:44 [loggers.py:310] Engine 000: Avg prompt throughput: 0.1 tokens/s, Avg generation throughput: 9.9 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.4%, Prefix cache hit rate: 60.2%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:45 [loggers.py:310] Engine 000: Avg prompt throughput: 13.9 tokens/s, Avg generation throughput: 1.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 58.7%
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:08:54 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 55.9%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:08:54 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.5%, Prefix cache hit rate: 60.2%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:08:55 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 58.7%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:40832 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:60594 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:59658 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:09:04 [loggers.py:310] Engine 000: Avg prompt throughput: 40.9 tokens/s, Avg generation throughput: 2.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 51.1%
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:04 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 60.2%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:09:05 [loggers.py:310] Engine 000: Avg prompt throughput: 46.1 tokens/s, Avg generation throughput: 1.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 56.9%
+== P6 ref gemma-4-12B-it 2026-10-04T03:09:09-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO:     127.0.0.1:38586 - "GET /health HTTP/1.1" 200 OK
+== fase B: referências (guards continuam no ar) 2026-10-04T03:09:11-03:00
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 03:09:11 [core.py:1350] [shutdown] EngineCore: trigger received signal=SIGTERM
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 03:09:11 [core.py:1501] [shutdown] EngineCore: start mode=abort timeout=0s
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 03:09:11 [core.py:1532] [shutdown] EngineCore: request processing complete; starting resource teardown
+[vllm gemma-4-12B-it] (EngineCore pid=114997) INFO 10-04 03:09:11 [core.py:1363] [shutdown] EngineCore: exiting busy loop
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [launcher.py:124] [shutdown] API server: shutdown triggered
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [launcher.py:140] [shutdown] API server: stopping engine client mode=abort timeout=0s
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [core_client.py:689] [shutdown] MPClient: start timeout=0s
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [core_client.py:691] [shutdown] MPClient: stopping engine manager
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [utils.py:620] [shutdown] Process manager: send sigterm to process EngineCore
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 03:09:11 [utils.py:640] [shutdown] Process manager: force killing remaining processes count=1
+[vllm gemma-4-12B-it] (APIServer pid=114553) WARNING 10-04 03:09:11 [utils.py:645] [shutdown] Process manager: force killing remaining process EngineCore pid 114997
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [core_client.py:693] [shutdown] MPClient: engine manager stopped
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [core_client.py:694] [shutdown] MPClient: cleaning up background resources
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [core_client.py:696] [shutdown] MPClient: complete
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [launcher.py:149] [shutdown] API server: engine client stopped
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [launcher.py:152] [shutdown] API server: signalling HTTP server shutdown
+[vllm gemma-4-12B-it] (APIServer pid=114553) INFO 10-04 03:09:11 [launcher.py:173] [shutdown] API server: shutting down FastAPI HTTP server
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:09:14 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 51.1%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:09:15 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 56.9%
+   porta 8000 parada; memória: MemFree 59.0 GiB, MemAvailable 60.6 GiB
+== vllm serve meta-llama/Llama-3.1-8B-Instruct (porta 8000, util 0.38, len 4096) 2026-10-04T03:09:23-03:00
+   memória antes: MemFree 59.0 GiB, MemAvailable 60.6 GiB
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] ==========
+[vllm Llama-3.1-8B-Instruct] == vLLM ==
+[vllm Llama-3.1-8B-Instruct] ==========
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] NVIDIA Release 26.09 (build 452757715)
+[vllm Llama-3.1-8B-Instruct] vLLM Version 0.29.0+5013de39
+[vllm Llama-3.1-8B-Instruct] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm Llama-3.1-8B-Instruct] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm Llama-3.1-8B-Instruct] and the Product-Specific Terms for NVIDIA AI Products
+[vllm Llama-3.1-8B-Instruct] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm Llama-3.1-8B-Instruct]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm Llama-3.1-8B-Instruct]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm Llama-3.1-8B-Instruct] 
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347] 
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347]   █▄█▀ █     █     █     █  model   meta-llama/Llama-3.1-8B-Instruct
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:347] 
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [api_utils.py:286] non-default args: {'model_tag': 'meta-llama/Llama-3.1-8B-Instruct', 'host': '127.0.0.1', 'model': 'meta-llama/Llama-3.1-8B-Instruct', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.38}
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [meta-llama/Llama-3.1-8B-Instruct] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659]
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) WARNING 10-04 03:09:37 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) WARNING 10-04 03:09:37 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [model.py:684] Resolved architecture: LlamaForCausalLM
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [model.py:2021] Using max model len 4096
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:09:37 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:48 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:50 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_e9b5f57360cc4eccb706d2371a2d2f1d backend=nccl
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:50 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:50 [gpu_worker.py:429] Using V2 Model Runner
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:51 [model_runner.py:382] Loading model from scratch...
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:51 [cuda.py:492] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:51 [flash_attn.py:897] Using FlashAttention version 2
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:52 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 14.96 GiB. Available RAM: 42.76 GiB.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:09:52 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:21 [default_loader.py:430] Loading weights took 148.64 seconds
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:21 [model_runner.py:404] Model loading took 15.0 GiB memory and 150.311972 seconds
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:21 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:21 [utils.py:306] Using LBNHC KV cache layout.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:24 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=33
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:24 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/0be6244b7a3b7fa9bcd29be6ca5e4011a0a7657177db10b56418f2aafc76a002/rank_0_0/model
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:24 [monitor.py:53] torch.compile took 0.56 s in total
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:24 [monitor.py:81] Initial profiling/warmup run took 0.67 s
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:32 [model_runner.py:960] Graph capturing finished in 6 secs, took 0.63 GiB
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:32 [gpu_worker.py:625] Available KV cache memory: 29.57 GiB
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:32 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.3800 is equivalent to --gpu-memory-utilization=0.3743 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.3857. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:32 [kv_cache_utils.py:2032] GPU KV cache size: 242,224 tokens, Maximum concurrency for 4,096 tokens per request: 59.14x
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:36 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:36 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:37 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/af351b8dc0a851e51159703c9f96f92cf4818e655fe7d85d30f927211520c473/autotune_configs.json
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:37 [kernel_warmup.py:272] Running FlashInfer autotune with 2048 tokens.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:46 [model_runner.py:960] Graph capturing finished in 9 secs, took 0.39 GiB
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:46 [gpu_worker.py:797] CUDA graph pool memory: 0.39 GiB (actual), 0.69 GiB (estimated), difference: 0.3 GiB (75.0%).
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:46 [gpu_worker.py:860] Free memory on device (58.18/121.69 GiB) on startup. Desired GPU memory utilization is (0.38, 46.24 GiB). Actual usage is 15.77 GiB for consumed memory (weights + non-torch), 0.9 GiB for peak activation, and 0.39 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=31169247990` (29.03 GiB) to fit into requested memory, or `--kv-cache-memory=43984501248` (40.96 GiB) to fully utilize gpu memory. Current kv cache memory in use is 29.57 GiB.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:50 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:50 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:50 [core.py:361] init engine (profile, create kv cache, warmup model) took 28.62 s (compilation: 0.56 s)
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:12:51 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:51 [entry.py:135] Supported tasks: ['generate']
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [hf.py:547] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) WARNING 10-04 03:12:52 [model.py:1759] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_p': 0.9}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:61] Available routes are:
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /openapi.json, Methods: GET, HEAD
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /docs, Methods: GET, HEAD
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /redoc, Methods: GET, HEAD
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /load, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /version, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /health, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /ping, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /ping, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:12:52 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:35090 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T03:12:57-03:00; memória depois: MemFree 7.6 GiB, MemAvailable 12.5 GiB
+== P6 ref meta-llama/Llama-3.1-8B-Instruct 2026-10-04T03:12:57-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33680 - "GET /health HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) WARNING 10-04 03:12:59 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33756 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:03 [loggers.py:310] Engine 000: Avg prompt throughput: 41.4 tokens/s, Avg generation throughput: 39.1 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.4%, Prefix cache hit rate: 31.7%
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:13 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 131.4 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.9%, Prefix cache hit rate: 31.7%
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:23 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 130.5 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%, Prefix cache hit rate: 31.7%
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33734 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:33 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 127.1 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.8%, Prefix cache hit rate: 31.7%
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33688 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33696 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33704 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33718 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33750 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33772 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33720 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO:     127.0.0.1:33786 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:13:35 [core.py:1350] [shutdown] EngineCore: trigger received signal=SIGTERM
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [launcher.py:124] [shutdown] API server: shutdown triggered
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [launcher.py:140] [shutdown] API server: stopping engine client mode=abort timeout=0s
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:13:35 [core.py:1501] [shutdown] EngineCore: start mode=abort timeout=0s
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:13:35 [core.py:1532] [shutdown] EngineCore: request processing complete; starting resource teardown
+[vllm Llama-3.1-8B-Instruct] (EngineCore pid=126968) INFO 10-04 03:13:35 [core.py:1363] [shutdown] EngineCore: exiting busy loop
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [core_client.py:689] [shutdown] MPClient: start timeout=0s
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [core_client.py:691] [shutdown] MPClient: stopping engine manager
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [utils.py:620] [shutdown] Process manager: send sigterm to process EngineCore
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) WARNING 10-04 03:13:35 [utils.py:640] [shutdown] Process manager: force killing remaining processes count=1
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) WARNING 10-04 03:13:35 [utils.py:645] [shutdown] Process manager: force killing remaining process EngineCore pid 126968
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [core_client.py:693] [shutdown] MPClient: engine manager stopped
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [core_client.py:694] [shutdown] MPClient: cleaning up background resources
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [core_client.py:696] [shutdown] MPClient: complete
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819] AsyncLLM output_handler failed.
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819] Traceback (most recent call last):
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 765, in output_handler
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819]     outputs = await engine_core.get_output_async()
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 1105, in get_output_async
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819]     raise self._format_exception(outputs) from None
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) ERROR 10-04 03:13:35 [async_llm.py:819] vllm.v1.engine.exceptions.EngineDeadError: EngineCore encountered an issue. See stack trace (above) for the root cause.
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [launcher.py:149] [shutdown] API server: engine client stopped
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [launcher.py:152] [shutdown] API server: signalling HTTP server shutdown
+[vllm Llama-3.1-8B-Instruct] (APIServer pid=126559) INFO 10-04 03:13:35 [launcher.py:173] [shutdown] API server: shutting down FastAPI HTTP server
+   porta 8000 parada; memória: MemFree 57.6 GiB, MemAvailable 62.7 GiB
+== vllm serve Qwen/Qwen3-8B (porta 8000, util 0.38, len 4096) 2026-10-04T03:13:45-03:00
+   memória antes: MemFree 57.9 GiB, MemAvailable 62.6 GiB
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] ==========
+[vllm Qwen3-8B] == vLLM ==
+[vllm Qwen3-8B] ==========
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] NVIDIA Release 26.09 (build 452757715)
+[vllm Qwen3-8B] vLLM Version 0.29.0+5013de39
+[vllm Qwen3-8B] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm Qwen3-8B] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm Qwen3-8B] and the Product-Specific Terms for NVIDIA AI Products
+[vllm Qwen3-8B] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm Qwen3-8B]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm Qwen3-8B]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm Qwen3-8B] 
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347] 
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347]   █▄█▀ █     █     █     █  model   Qwen/Qwen3-8B
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:347] 
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [api_utils.py:286] non-default args: {'model_tag': 'Qwen/Qwen3-8B', 'host': '127.0.0.1', 'model': 'Qwen/Qwen3-8B', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.38}
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [Qwen/Qwen3-8B] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218]
+[vllm Qwen3-8B] (APIServer pid=129677) WARNING 10-04 03:13:58 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm Qwen3-8B] (APIServer pid=129677) WARNING 10-04 03:13:58 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [model.py:684] Resolved architecture: Qwen3ForCausalLM
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [model.py:2021] Using max model len 4096
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:13:58 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:09 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:11 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_51c46bb475b14636aad9b34debcac153 backend=nccl
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:11 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:11 [gpu_worker.py:429] Using V2 Model Runner
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:12 [model_runner.py:382] Loading model from scratch...
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:12 [cuda.py:492] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:12 [flash_attn.py:897] Using FlashAttention version 2
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:13 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 15.26 GiB. Available RAM: 44.56 GiB.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:14:13 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:40 [default_loader.py:430] Loading weights took 146.99 seconds
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:40 [model_runner.py:404] Model loading took 15.27 GiB memory and 148.727036 seconds
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:40 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:40 [utils.py:306] Using LBNHC KV cache layout.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:42 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=37
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:42 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/6a9bd35e9c5d2c60355c336dfac6fa458dc9ae951b23f07f9c52a218c19ab6ae/rank_0_0/model
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:42 [monitor.py:53] torch.compile took 0.57 s in total
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:43 [monitor.py:81] Initial profiling/warmup run took 0.14 s
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:51 [model_runner.py:960] Graph capturing finished in 7 secs, took 0.59 GiB
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:51 [gpu_worker.py:625] Available KV cache memory: 29.09 GiB
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:51 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.3800 is equivalent to --gpu-memory-utilization=0.3746 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.3854. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:51 [kv_cache_utils.py:2032] GPU KV cache size: 211,808 tokens, Maximum concurrency for 4,096 tokens per request: 51.71x
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:55 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:55 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:56 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/3d42f30fc53a3486ef09e4268fdcada990fc8ebf4d4e213f437875f244e99c55/autotune_configs.json
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:16:56 [kernel_warmup.py:272] Running FlashInfer autotune with 2048 tokens.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:06 [model_runner.py:960] Graph capturing finished in 9 secs, took 0.16 GiB
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:06 [gpu_worker.py:797] CUDA graph pool memory: 0.16 GiB (actual), 0.65 GiB (estimated), difference: 0.49 GiB (304.2%).
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:06 [gpu_worker.py:860] Free memory on device (60.34/121.69 GiB) on startup. Desired GPU memory utilization is (0.38, 46.24 GiB). Actual usage is 16.31 GiB for consumed memory (weights + non-torch), 0.84 GiB for peak activation, and 0.16 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=30902098678` (28.78 GiB) to fit into requested memory, or `--kv-cache-memory=46035958272` (42.87 GiB) to fully utilize gpu memory. Current kv cache memory in use is 29.09 GiB.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:09 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:09 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:09 [core.py:361] init engine (profile, create kv cache, warmup model) took 28.94 s (compilation: 0.57 s)
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:17:10 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:10 [entry.py:135] Supported tasks: ['generate']
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:10 [hf.py:547] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+[vllm Qwen3-8B] (APIServer pid=129677) WARNING 10-04 03:17:10 [model.py:1759] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:61] Available routes are:
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /openapi.json, Methods: GET, HEAD
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /docs, Methods: GET, HEAD
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /redoc, Methods: GET, HEAD
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /load, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /version, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /health, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /ping, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /ping, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:11 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43454 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T03:17:19-03:00; memória depois: MemFree 11.7 GiB, MemAvailable 14.1 GiB
+== P6 ref Qwen/Qwen3-8B 2026-10-04T03:17:19-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43460 - "GET /health HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (EngineCore pid=130086) WARNING 10-04 03:17:22 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm Qwen3-8B] (EngineCore pid=130086) WARNING 10-04 03:17:23 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _topk_topp_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43546 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:31 [loggers.py:310] Engine 000: Avg prompt throughput: 48.4 tokens/s, Avg generation throughput: 111.2 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 0.0%
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:41 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 129.6 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.3%, Prefix cache hit rate: 0.0%
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:17:51 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 123.3 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.9%, Prefix cache hit rate: 0.0%
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43472 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43486 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43502 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43512 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43514 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43530 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43540 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO:     127.0.0.1:43562 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:01 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 104.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [launcher.py:124] [shutdown] API server: shutdown triggered
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:18:09 [core.py:1350] [shutdown] EngineCore: trigger received signal=SIGTERM
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [launcher.py:140] [shutdown] API server: stopping engine client mode=abort timeout=0s
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:18:09 [core.py:1501] [shutdown] EngineCore: start mode=abort timeout=0s
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:18:09 [core.py:1532] [shutdown] EngineCore: request processing complete; starting resource teardown
+[vllm Qwen3-8B] (EngineCore pid=130086) INFO 10-04 03:18:09 [core.py:1363] [shutdown] EngineCore: exiting busy loop
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [core_client.py:689] [shutdown] MPClient: start timeout=0s
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [core_client.py:691] [shutdown] MPClient: stopping engine manager
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [utils.py:620] [shutdown] Process manager: send sigterm to process EngineCore
+[vllm Qwen3-8B] (APIServer pid=129677) WARNING 10-04 03:18:09 [utils.py:640] [shutdown] Process manager: force killing remaining processes count=1
+[vllm Qwen3-8B] (APIServer pid=129677) WARNING 10-04 03:18:09 [utils.py:645] [shutdown] Process manager: force killing remaining process EngineCore pid 130086
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [core_client.py:693] [shutdown] MPClient: engine manager stopped
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [core_client.py:694] [shutdown] MPClient: cleaning up background resources
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [core_client.py:696] [shutdown] MPClient: complete
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [launcher.py:149] [shutdown] API server: engine client stopped
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [launcher.py:152] [shutdown] API server: signalling HTTP server shutdown
+[vllm Qwen3-8B] (APIServer pid=129677) INFO 10-04 03:18:09 [launcher.py:173] [shutdown] API server: shutting down FastAPI HTTP server
+   porta 8000 parada; memória: MemFree 61.4 GiB, MemAvailable 64.0 GiB
+== vllm serve mistralai/Mistral-7B-Instruct-v0.3 (porta 8000, util 0.38, len 4096) 2026-10-04T03:18:19-03:00
+   memória antes: MemFree 61.7 GiB, MemAvailable 63.9 GiB
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] ==========
+[vllm Mistral-7B-Instruct-v0.3] == vLLM ==
+[vllm Mistral-7B-Instruct-v0.3] ==========
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] NVIDIA Release 26.09 (build 452757715)
+[vllm Mistral-7B-Instruct-v0.3] vLLM Version 0.29.0+5013de39
+[vllm Mistral-7B-Instruct-v0.3] Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+[vllm Mistral-7B-Instruct-v0.3] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+[vllm Mistral-7B-Instruct-v0.3] and the Product-Specific Terms for NVIDIA AI Products
+[vllm Mistral-7B-Instruct-v0.3] (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] NOTE: CUDA Forward Compatibility mode ENABLED.
+[vllm Mistral-7B-Instruct-v0.3]   Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+[vllm Mistral-7B-Instruct-v0.3]   See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+[vllm Mistral-7B-Instruct-v0.3] 
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347] 
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347]        █     █     █▄   ▄█
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.29.0+5013de39.dev
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347]   █▄█▀ █     █     █     █  model   mistralai/Mistral-7B-Instruct-v0.3
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:347] 
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [api_utils.py:286] non-default args: {'model_tag': 'mistralai/Mistral-7B-Instruct-v0.3', 'host': '127.0.0.1', 'model': 'mistralai/Mistral-7B-Instruct-v0.3', 'dtype': 'bfloat16', 'max_model_len': 4096, 'gpu_memory_utilization': 0.38}
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [arg_utils.py:866] HF_HUB_OFFLINE is True, replace model_id [mistralai/Mistral-7B-Instruct-v0.3] to model_path [/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71]
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) WARNING 10-04 03:18:32 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_VERSION
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) WARNING 10-04 03:18:32 [envs.py:2277] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [model.py:684] Resolved architecture: MistralForCausalLM
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [model.py:2021] Using max model len 4096
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:18:32 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:41 [core.py:123] Initializing a V1 LLM engine (v0.29.0+5013de39.dev) with config: model='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71', speculative_config=None, tokenizer='/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_compute_ple_ngram_ids', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:43 [parallel_state.py:1775] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_854fdb61a9cd47b2a7c11818c2c44b41 backend=nccl
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:43 [parallel_state.py:2119] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:43 [gpu_worker.py:429] Using V2 Model Runner
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:44 [model_runner.py:382] Loading model from scratch...
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:44 [cuda.py:492] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:44 [flash_attn.py:897] Using FlashAttention version 2
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:45 [weight_utils.py:863] Filesystem type for checkpoints: BEEGFS. Checkpoint size: 13.50 GiB. Available RAM: 47.96 GiB.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:18:45 [weight_utils.py:886] Auto-prefetch is disabled because the filesystem (BEEGFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:56 [default_loader.py:430] Loading weights took 131.09 seconds
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:56 [model_runner.py:404] Model loading took 13.51 GiB memory and 132.666459 seconds
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:56 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:56 [utils.py:306] Using LBNHC KV cache layout.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:58 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=33
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:58 [decorators.py:313] Directly load AOT compilation from path /beegfs/home/user_gustavonovack/.cache/vllm/torch_compile_cache/torch_aot_compile/192dd8cc89b45f348fa75f79f3aa280bd1fa90808bb7f6fcd5e5c6106b204d05/rank_0_0/model
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:58 [monitor.py:53] torch.compile took 0.46 s in total
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:20:59 [monitor.py:81] Initial profiling/warmup run took 0.16 s
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:07 [model_runner.py:960] Graph capturing finished in 6 secs, took 0.61 GiB
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:07 [gpu_worker.py:625] Available KV cache memory: 31.14 GiB
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:07 [gpu_worker.py:640] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.3800 is equivalent to --gpu-memory-utilization=0.3745 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.3855. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:07 [kv_cache_utils.py:2032] GPU KV cache size: 255,104 tokens, Maximum concurrency for 4,096 tokens per request: 62.28x
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:12 [kernel_warmup.py:124] JIT kernel warmup starting.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:12 [kernel_warmup.py:134] JIT kernel warmup finished in 0.00s.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:13 [kernel_warmup.py:315] Using FlashInfer autotune cache file: /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/c444c8b55beb00690baa0b137e45ea606555042ecc2783d9af2ea174fbffd984/autotune_configs.json
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:13 [kernel_warmup.py:272] Running FlashInfer autotune with 2048 tokens.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:22 [model_runner.py:960] Graph capturing finished in 9 secs, took 0.41 GiB
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:22 [gpu_worker.py:797] CUDA graph pool memory: 0.41 GiB (actual), 0.67 GiB (estimated), difference: 0.26 GiB (62.5%).
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:22 [gpu_worker.py:860] Free memory on device (61.85/121.69 GiB) on startup. Desired GPU memory utilization is (0.38, 46.24 GiB). Actual usage is 14.22 GiB for consumed memory (weights + non-torch), 0.88 GiB for peak activation, and 0.41 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=32836455158` (30.58 GiB) to fit into requested memory, or `--kv-cache-memory=49598687744` (46.19 GiB) to fully utilize gpu memory. Current kv cache memory in use is 31.14 GiB.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:26 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:27 [torch_utils.py:277] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:27 [core.py:361] init engine (profile, create kv cache, warmup model) took 30.32 s (compilation: 0.46 s)
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:21:27 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:27 [entry.py:135] Supported tasks: ['generate']
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [hf.py:547] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:61] Available routes are:
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /openapi.json, Methods: GET, HEAD
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /docs, Methods: GET, HEAD
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /redoc, Methods: GET, HEAD
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /load, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /version, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /health, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /metrics, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /tokenize, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /detokenize, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/models, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /ping, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /ping, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /invocations, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/responses, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/completions, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/messages, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /generative_scoring, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/messages/render, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:28 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46080 - "GET /health HTTP/1.1" 200 OK
+   pronto 2026-10-04T03:21:33-03:00; memória depois: MemFree 9.7 GiB, MemAvailable 16.0 GiB
+== P6 ref mistralai/Mistral-7B-Instruct-v0.3 2026-10-04T03:21:33-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+WARNING: CUDA Minor Version Compatibility mode ENABLED.
+  Using driver version 580.159.03 which has support for CUDA 13.0.  This container
+  was built with CUDA 13.4 and will be run in Minor Version Compatibility mode.
+  CUDA Forward Compatibility is preferred over Minor Version Compatibility for use
+  with this container but was unavailable:
+  [[Out of memory (CUDA_ERROR_OUT_OF_MEMORY) cuDevicePrimaryCtxRetain()=2]]
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46086 - "GET /health HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) WARNING 10-04 03:21:35 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:38 [loggers.py:310] Engine 000: Avg prompt throughput: 38.0 tokens/s, Avg generation throughput: 41.5 tokens/s, Running: 10 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.4%, Prefix cache hit rate: 0.0%
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46206 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:48 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 142.3 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.9%, Prefix cache hit rate: 0.0%
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:21:58 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 135.9 tokens/s, Running: 9 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.4%, Prefix cache hit rate: 0.0%
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46104 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:08 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 131.4 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.7%, Prefix cache hit rate: 0.0%
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46100 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46112 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46128 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46144 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46186 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46190 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46170 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO:     127.0.0.1:46160 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:18 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 7.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:22:19 [core.py:1350] [shutdown] EngineCore: trigger received signal=SIGTERM
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [launcher.py:124] [shutdown] API server: shutdown triggered
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [launcher.py:140] [shutdown] API server: stopping engine client mode=abort timeout=0s
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:22:19 [core.py:1501] [shutdown] EngineCore: start mode=abort timeout=0s
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:22:19 [core.py:1532] [shutdown] EngineCore: request processing complete; starting resource teardown
+[vllm Mistral-7B-Instruct-v0.3] (EngineCore pid=133202) INFO 10-04 03:22:19 [core.py:1363] [shutdown] EngineCore: exiting busy loop
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [core_client.py:689] [shutdown] MPClient: start timeout=0s
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [core_client.py:691] [shutdown] MPClient: stopping engine manager
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [utils.py:620] [shutdown] Process manager: send sigterm to process EngineCore
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) WARNING 10-04 03:22:19 [utils.py:640] [shutdown] Process manager: force killing remaining processes count=1
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) WARNING 10-04 03:22:19 [utils.py:645] [shutdown] Process manager: force killing remaining process EngineCore pid 133202
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [core_client.py:693] [shutdown] MPClient: engine manager stopped
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [core_client.py:694] [shutdown] MPClient: cleaning up background resources
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [core_client.py:696] [shutdown] MPClient: complete
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [launcher.py:149] [shutdown] API server: engine client stopped
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [launcher.py:152] [shutdown] API server: signalling HTTP server shutdown
+[vllm Mistral-7B-Instruct-v0.3] (APIServer pid=132796) INFO 10-04 03:22:19 [launcher.py:173] [shutdown] API server: shutting down FastAPI HTTP server
+   porta 8000 parada; memória: MemFree 59.1 GiB, MemAvailable 65.4 GiB
+== P6 rótulos 2026-10-04T03:22:29-03:00
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41514 - "GET /health HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40830 - "GET /health HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:22:34 [loggers.py:310] Engine 000: Avg prompt throughput: 262.1 tokens/s, Avg generation throughput: 5.7 tokens/s, Running: 4 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.0%, Prefix cache hit rate: 34.2%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41520 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41526 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41534 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41548 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40834 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40836 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40842 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40844 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41520 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41534 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41526 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41548 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40834 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40836 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40842 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40844 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41520 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41526 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41534 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:41548 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40834 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40836 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40842 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:40844 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:22:44 [loggers.py:310] Engine 000: Avg prompt throughput: 454.4 tokens/s, Avg generation throughput: 18.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 27.3%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:22:45 [loggers.py:310] Engine 000: Avg prompt throughput: 752.2 tokens/s, Avg generation throughput: 15.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 43.2%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52430 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:36892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52444 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:22:54 [loggers.py:310] Engine 000: Avg prompt throughput: 260.9 tokens/s, Avg generation throughput: 6.5 tokens/s, Running: 3 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.2%, Prefix cache hit rate: 24.0%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52430 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:22:55 [loggers.py:310] Engine 000: Avg prompt throughput: 135.9 tokens/s, Avg generation throughput: 2.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.7%, Prefix cache hit rate: 41.9%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52446 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:36892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52460 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53328 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:36892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52430 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52444 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52446 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52460 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:36892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53328 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:23:04 [loggers.py:310] Engine 000: Avg prompt throughput: 360.0 tokens/s, Avg generation throughput: 12.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 22.8%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53350 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:23:05 [loggers.py:310] Engine 000: Avg prompt throughput: 443.4 tokens/s, Avg generation throughput: 9.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 39.6%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52430 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52444 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:52446 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:36892 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53328 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:53344 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:23:14 [loggers.py:310] Engine 000: Avg prompt throughput: 183.5 tokens/s, Avg generation throughput: 6.4 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%, Prefix cache hit rate: 22.4%
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51622 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51626 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:23:15 [loggers.py:310] Engine 000: Avg prompt throughput: 169.2 tokens/s, Avg generation throughput: 3.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 39.2%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39956 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51622 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51626 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39956 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51622 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO:     127.0.0.1:51626 - "POST /v1/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39956 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO:     127.0.0.1:39960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[vllm wildguard] (APIServer pid=120456) INFO 10-04 03:23:24 [loggers.py:310] Engine 000: Avg prompt throughput: 139.2 tokens/s, Avg generation throughput: 10.9 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 22.7%
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:23:25 [loggers.py:310] Engine 000: Avg prompt throughput: 249.0 tokens/s, Avg generation throughput: 7.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 39.4%
+fim=2026-10-04T03:23:30-03:00
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=117510) INFO 10-04 03:23:30 [launcher.py:124] [shutdown] API server: shutdown triggered

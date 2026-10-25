@@ -1,0 +1,25 @@
+[job 605] spark14-9931 aarch64 inicio=2026-10-04T04:17:50-03:00 PHASE0_DATA=data/phase0
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+[vllm gemma-4-12B-it] W1004 04:19:45.419000 389455 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-12B-it] W1004 04:19:45.419000 389455 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-12B-it] W1004 04:19:45.419000 389455 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-12B-it] (APIServer pid=389455) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-12B-it] W1004 04:20:19.356000 389903 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-12B-it] W1004 04:20:19.357000 389903 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-12B-it] W1004 04:20:19.357000 389903 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-12B-it] (EngineCore pid=389903) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-12B-it] (EngineCore pid=389903) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+slurmstepd-spark14-9931: error: *** JOB 605 ON spark14-9931 CANCELLED AT 2026-10-04T04:21:47 ***
+Terminated
+/var/spool/slurmd/job00605/slurm_script: line 1: 389455 Killed                  setsid $RUN vllm serve "$1" --host 127.0.0.1 --port "$2" --gpu-memory-utilization "$3" --max-model-len "$4" --dtype bfloat16 > >(sed -u "s/^/$tag /") 2> >(sed -u "s/^/$tag /" 1>&2)

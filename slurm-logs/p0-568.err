@@ -1,0 +1,52 @@
+[job 568] spark14-9931 aarch64 inicio=2026-10-03T17:53:25-03:00
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+Generating train split:   0%|          | 0/73907 [00:00<?, ? examples/s]Generating train split:   5%|▌         | 3707/73907 [00:10<03:23, 344.94 examples/s]Generating train split:  15%|█▌        | 11104/73907 [00:10<00:48, 1305.36 examples/s]Generating train split:  25%|██▌       | 18522/73907 [00:11<00:21, 2612.09 examples/s]Generating train split:  35%|███▌      | 25958/73907 [00:11<00:10, 4375.72 examples/s]Generating train split:  47%|████▋     | 34764/73907 [00:11<00:05, 6977.23 examples/s]Generating train split:  57%|█████▋    | 42156/73907 [00:11<00:03, 9715.64 examples/s]Generating train split:  67%|██████▋   | 49567/73907 [00:11<00:01, 13223.13 examples/s]Generating train split:  77%|███████▋  | 56640/73907 [00:11<00:01, 16807.19 examples/s]Generating train split:  87%|████████▋ | 64071/73907 [00:12<00:00, 20879.76 examples/s]Generating train split:  97%|█████████▋| 71471/73907 [00:12<00:00, 24915.53 examples/s]Generating train split: 100%|██████████| 73907/73907 [00:12<00:00, 6021.59 examples/s] 
+Generating test split:   0%|          | 0/8211 [00:00<?, ? examples/s]Generating test split:  72%|███████▏  | 5884/8211 [00:00<00:00, 35639.76 examples/s]Generating test split: 100%|██████████| 8211/8211 [00:00<00:00, 33489.96 examples/s]
+[17:55:22] raw/pku_saferlhf.jsonl: 73907 linhas
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 40000 examples [00:00, 288437.31 examples/s]Generating train split: 80359 examples [00:00, 370857.03 examples/s]
+[17:55:28] raw/orbench_80k.jsonl: 80359 linhas
+Generating gpt4 split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating gpt4 split: 100%|██████████| 450/450 [00:00<00:00, 4979.06 examples/s]
+Generating llama2new split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating llama2new split: 100%|██████████| 450/450 [00:00<00:00, 19747.19 examples/s]
+Generating llama2orig split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating llama2orig split: 100%|██████████| 450/450 [00:00<00:00, 14935.56 examples/s]
+Generating mistralguard split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating mistralguard split: 100%|██████████| 450/450 [00:00<00:00, 17410.81 examples/s]
+Generating mistralinstruct split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating mistralinstruct split: 100%|██████████| 450/450 [00:00<00:00, 23289.90 examples/s]
+Generating prompts split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating prompts split: 100%|██████████| 450/450 [00:00<00:00, 22432.10 examples/s]
+[17:55:35] raw/xstest_v2_gpt4.jsonl: 450 linhas
+[17:55:36] raw/xstest_v2_llama2new.jsonl: 450 linhas
+[17:55:37] raw/xstest_v2_llama2orig.jsonl: 450 linhas
+[17:55:38] raw/xstest_v2_mistralguard.jsonl: 450 linhas
+[17:55:40] raw/xstest_v2_mistralinstruct.jsonl: 450 linhas
+Generating test split:   0%|          | 0/450 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 450/450 [00:00<00:00, 15680.42 examples/s]
+[17:55:42] raw/xstest.jsonl: 450 linhas
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1319 examples [00:00, 26953.24 examples/s]
+[17:55:45] raw/orbench_hard1k.jsonl: 1319 linhas
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 655 examples [00:00, 19426.04 examples/s]
+[17:55:47] raw/orbench_toxic.jsonl: 655 linhas
+Generating train split:   0%|          | 0/14624 [00:00<?, ? examples/s]Generating train split:  14%|█▍        | 2042/14624 [00:00<00:00, 18943.70 examples/s]Generating train split:  42%|████▏     | 6077/14624 [00:00<00:00, 21911.79 examples/s]Generating train split:  70%|███████   | 10251/14624 [00:00<00:00, 24680.55 examples/s]Generating train split:  97%|█████████▋| 14189/14624 [00:00<00:00, 25272.33 examples/s]Generating train split: 100%|██████████| 14624/14624 [00:00<00:00, 23584.18 examples/s]
+Generating test split:   0%|          | 0/1187 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 1187/1187 [00:00<00:00, 35041.59 examples/s]
+[17:55:54] raw/falsereject_test.jsonl: 1187 linhas
+Generating train split:   0%|          | 0/200 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 200/200 [00:00<00:00, 8538.02 examples/s]
+[17:55:57] raw/harmbench_standard.jsonl: 200 linhas
+Generating train split:   0%|          | 0/100 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 100/100 [00:00<00:00, 4731.73 examples/s]
+[17:55:59] raw/harmbench_contextual.jsonl: 100 linhas
+Generating train split:   0%|          | 0/100 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 100/100 [00:00<00:00, 4346.70 examples/s]
+[17:56:01] raw/harmbench_copyright.jsonl: 100 linhas
+Generating train split:   0%|          | 0/313 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 313/313 [00:00<00:00, 16834.66 examples/s]
+[17:56:03] raw/strongreject.jsonl: 313 linhas
+Generating train split:   0%|          | 0/939 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 939/939 [00:00<00:00, 19984.23 examples/s]
+[17:56:06] raw/donotanswer.jsonl: 939 linhas
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  35%|███▍      | 108/310 [00:00<00:00, 1044.34it/s]Loading weights:  81%|████████  | 251/310 [00:00<00:00, 1266.27it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1238.96it/s]
+[17:56:34] embed 128/5255
+[17:56:46] P0 ok {'sources': {'xstest': 450, 'orbench_hard1k': 1319, 'orbench_toxic': 655, 'falsereject_test': 1187, 'harmbench_standard': 200, 'harmbench_contextual': 100, 'harmbench_copyright': 100, 'strongreject': 313, 'donotanswer': 939}, 'exclusion_total': 5263, 'exclusion_unique': 5255, 'emb_shape': [5255, 1024]}

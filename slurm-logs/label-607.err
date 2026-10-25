@@ -1,0 +1,334 @@
+[job 607] spark14-9931 aarch64 inicio=2026-10-04T04:23:31-03:00 PHASE0_DATA=data/phase0
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+[vllm gemma-4-12B-it] W1004 04:25:06.924000 391775 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-12B-it] W1004 04:25:06.924000 391775 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-12B-it] W1004 04:25:06.924000 391775 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-12B-it] (APIServer pid=391775) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-12B-it] W1004 04:25:40.976000 392222 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm gemma-4-12B-it] W1004 04:25:40.976000 392222 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm gemma-4-12B-it] W1004 04:25:40.976000 392222 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm gemma-4-12B-it] (EngineCore pid=392222) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Loading safetensors checkpoint shards: 100% Completed | 1/1 [04:03<00:00, 243.99s/it]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Loading safetensors checkpoint shards: 100% Completed | 1/1 [04:03<00:00, 243.99s/it]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) 
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:29,  1.71it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:17,  2.81it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:13,  3.66it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:01<00:11,  4.26it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:01<00:09,  4.70it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:08,  5.03it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:08,  5.28it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:07,  5.48it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:01<00:07,  5.69it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:02<00:06,  5.87it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:02<00:06,  5.97it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:02<00:06,  6.11it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:06,  6.20it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.32it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.39it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:03<00:05,  6.49it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:03<00:05,  6.60it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:03<00:06,  4.91it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:03<00:05,  5.36it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:03<00:05,  5.77it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:04,  6.08it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:04<00:04,  6.33it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:04<00:04,  6.53it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:04<00:04,  6.70it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:04<00:03,  6.79it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:04<00:03,  6.92it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:04<00:03,  7.05it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:04<00:03,  7.13it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:05<00:03,  7.14it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:05<00:02,  7.23it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:05<00:02,  7.30it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:05<00:02,  7.38it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:05<00:02,  7.39it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:05<00:02,  7.48it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:05<00:02,  7.62it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:05<00:01,  7.74it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:06<00:01,  7.76it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:06<00:01,  7.87it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:06<00:01,  7.94it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:06<00:01,  7.89it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:06<00:01,  7.37it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:06<00:01,  7.56it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:06<00:01,  7.73it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:07<00:00,  7.89it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:07<00:00,  8.01it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:07<00:00,  8.15it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:07<00:00,  4.39it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:08<00:00,  3.37it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:08<00:00,  4.14it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:08<00:00,  4.92it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:08<00:00,  3.34it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:08<00:00,  5.70it/s]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  7.18it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  7.29it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  7.27it/s]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) 2026-10-04 04:30:32,152 - INFO - autotuner.py:2789 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/2169e4ad00b03f44774df7e11306028df3e8ca1d08ea4e650d26a3c069c2be2d/autotune_configs.json
+[vllm gemma-4-12B-it] (EngineCore pid=392222) 2026-10-04 04:30:32,160 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+[vllm gemma-4-12B-it] (EngineCore pid=392222) 2026-10-04 04:30:32,199 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+[vllm gemma-4-12B-it] (EngineCore pid=392222) 2026-10-04 04:30:32,220 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 0 configs to /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/2169e4ad00b03f44774df7e11306028df3e8ca1d08ea4e650d26a3c069c2be2d/autotune_configs.json (0 new, 0 from previous config)
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:10,  4.86it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:09,  5.06it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:09,  5.31it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:08,  5.47it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:08,  5.57it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:07,  5.67it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:07,  5.76it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:07,  5.84it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:01<00:07,  5.97it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:06,  6.07it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:01<00:06,  6.19it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:02<00:06,  6.27it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:05,  6.36it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.46it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.56it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:02<00:05,  6.62it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:02<00:05,  6.71it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:02<00:04,  6.78it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:03<00:04,  6.83it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:03<00:04,  6.90it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:04,  6.97it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:03<00:04,  7.03it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:03<00:03,  7.05it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:03<00:03,  7.10it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:03<00:03,  7.14it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:04<00:03,  7.21it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:04<00:03,  7.29it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:04<00:03,  7.36it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:04<00:02,  7.40it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:04<00:02,  7.45it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:04<00:02,  7.51it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:04<00:02,  7.55it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:04<00:02,  7.65it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:05<00:02,  7.75it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:05<00:02,  7.85it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:05<00:01,  7.92it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:05<00:01,  8.00it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:05<00:01,  8.07it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:05<00:01,  8.12it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:05<00:01,  8.19it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:05<00:01,  8.22it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:06<00:01,  8.28it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:06<00:00,  8.30it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:06<00:00,  8.35it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:06<00:00,  8.43it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:06<00:00,  8.50it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:06<00:00,  8.61it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:06<00:00,  8.69it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:06<00:00,  8.77it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:06<00:00,  8.85it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:07<00:00,  8.40it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:07<00:00,  7.16it/s]
+[vllm gemma-4-12B-it] (EngineCore pid=392222) Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   3%|▎         | 1/35 [00:00<00:04,  7.30it/s]Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:04,  7.27it/s]Capturing CUDA graphs (FULL):   9%|▊         | 3/35 [00:00<00:04,  7.27it/s]Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:00<00:04,  7.35it/s]Capturing CUDA graphs (FULL):  14%|█▍        | 5/35 [00:00<00:04,  7.39it/s]Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:00<00:03,  7.45it/s]Capturing CUDA graphs (FULL):  20%|██        | 7/35 [00:00<00:03,  7.46it/s]Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:01<00:03,  7.47it/s]Capturing CUDA graphs (FULL):  26%|██▌       | 9/35 [00:01<00:03,  7.53it/s]Capturing CUDA graphs (FULL):  29%|██▊       | 10/35 [00:01<00:03,  7.59it/s]Capturing CUDA graphs (FULL):  31%|███▏      | 11/35 [00:01<00:03,  7.64it/s]Capturing CUDA graphs (FULL):  34%|███▍      | 12/35 [00:01<00:02,  7.69it/s]Capturing CUDA graphs (FULL):  37%|███▋      | 13/35 [00:01<00:02,  7.73it/s]Capturing CUDA graphs (FULL):  40%|████      | 14/35 [00:01<00:02,  7.76it/s]Capturing CUDA graphs (FULL):  43%|████▎     | 15/35 [00:01<00:02,  7.81it/s]Capturing CUDA graphs (FULL):  46%|████▌     | 16/35 [00:02<00:02,  7.84it/s]Capturing CUDA graphs (FULL):  49%|████▊     | 17/35 [00:02<00:02,  7.93it/s]Capturing CUDA graphs (FULL):  51%|█████▏    | 18/35 [00:02<00:02,  8.02it/s]Capturing CUDA graphs (FULL):  54%|█████▍    | 19/35 [00:02<00:01,  8.10it/s]Capturing CUDA graphs (FULL):  57%|█████▋    | 20/35 [00:02<00:01,  8.18it/s]Capturing CUDA graphs (FULL):  60%|██████    | 21/35 [00:02<00:01,  8.27it/s]Capturing CUDA graphs (FULL):  63%|██████▎   | 22/35 [00:02<00:01,  8.34it/s]Capturing CUDA graphs (FULL):  66%|██████▌   | 23/35 [00:02<00:01,  8.40it/s]Capturing CUDA graphs (FULL):  69%|██████▊   | 24/35 [00:03<00:01,  8.43it/s]Capturing CUDA graphs (FULL):  71%|███████▏  | 25/35 [00:03<00:01,  8.45it/s]Capturing CUDA graphs (FULL):  74%|███████▍  | 26/35 [00:03<00:01,  8.52it/s]Capturing CUDA graphs (FULL):  77%|███████▋  | 27/35 [00:03<00:00,  8.54it/s]Capturing CUDA graphs (FULL):  80%|████████  | 28/35 [00:03<00:00,  8.61it/s]Capturing CUDA graphs (FULL):  83%|████████▎ | 29/35 [00:03<00:00,  8.68it/s]Capturing CUDA graphs (FULL):  86%|████████▌ | 30/35 [00:03<00:00,  8.74it/s]Capturing CUDA graphs (FULL):  89%|████████▊ | 31/35 [00:03<00:00,  8.85it/s]Capturing CUDA graphs (FULL):  91%|█████████▏| 32/35 [00:03<00:00,  8.98it/s]Capturing CUDA graphs (FULL):  94%|█████████▍| 33/35 [00:04<00:00,  9.05it/s]Capturing CUDA graphs (FULL):  97%|█████████▋| 34/35 [00:04<00:00,  9.11it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:04<00:00,  8.64it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:04<00:00,  8.12it/s]
+[vllm gemma-4-12B-it] (APIServer pid=391775) INFO:     Started server process [391775]
+[vllm gemma-4-12B-it] (APIServer pid=391775) INFO:     Waiting for application startup.
+[vllm gemma-4-12B-it] (APIServer pid=391775) INFO:     Application startup complete.
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:00.102000 394731 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:00.102000 394731 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:00.103000 394731 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:12.213000 395141 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:12.213000 395141 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm Qwen3Guard-Gen-8B] W1004 04:31:12.213000 395141 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards:   0% Completed | 0/5 [00:00<?, ?it/s]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards:  20% Completed | 1/5 [00:38<02:33, 38.48s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards:  40% Completed | 2/5 [01:15<01:52, 37.42s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards:  60% Completed | 3/5 [01:52<01:14, 37.20s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards:  80% Completed | 4/5 [02:48<00:44, 44.63s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards: 100% Completed | 5/5 [02:56<00:00, 31.61s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Loading safetensors checkpoint shards: 100% Completed | 5/5 [02:56<00:00, 35.33s/it]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) 
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:14,  3.44it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:11,  4.41it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:09,  4.88it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:09,  5.16it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:08,  5.41it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:08,  5.59it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:07,  5.71it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:07,  5.81it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:01<00:07,  5.88it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:06,  6.00it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:01<00:06,  6.09it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:02<00:06,  6.17it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:06,  6.20it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.22it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.29it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:02<00:05,  6.36it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:02<00:05,  5.70it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:03<00:05,  6.33it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:03<00:04,  6.90it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:03<00:04,  7.36it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:03,  7.63it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:03<00:03,  7.94it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:03<00:03,  8.18it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:03<00:03,  8.36it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:03<00:03,  8.43it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:04<00:02,  8.53it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:04<00:02,  8.64it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:04<00:02,  8.71it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:04<00:02,  8.77it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:04<00:02,  8.88it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:04<00:02,  9.03it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:04<00:02,  9.19it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:04<00:02,  8.97it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:04<00:01,  9.00it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:05<00:01,  9.11it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:05<00:01,  9.24it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:05<00:01,  9.26it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:05<00:01,  9.31it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:05<00:01,  9.39it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:05<00:01,  9.47it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:05<00:01,  9.22it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:05<00:00,  9.35it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:05<00:00,  9.63it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:06<00:00,  9.88it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:06<00:00, 10.18it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:06<00:00, 10.36it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:06<00:00,  7.69it/s]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  9.94it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 10.10it/s]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) 2026-10-04 04:34:32,176 - INFO - autotuner.py:2789 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/a760f8e4f24089c854baa200bf410d4b9eb8d19a9bb1710810d909ad7b258747/autotune_configs.json
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) 2026-10-04 04:34:32,178 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) 2026-10-04 04:34:32,211 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) 2026-10-04 04:34:32,234 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 0 configs to /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/a760f8e4f24089c854baa200bf410d4b9eb8d19a9bb1710810d909ad7b258747/autotune_configs.json (0 new, 0 from previous config)
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:08,  5.56it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:08,  5.76it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:08,  5.85it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:07,  5.91it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:07,  5.99it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:07,  6.02it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:07,  6.07it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:07,  6.14it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:01<00:06,  6.24it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:06,  6.30it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:01<00:06,  6.37it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:01<00:06,  6.43it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:05,  6.49it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.55it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.60it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:02<00:05,  6.65it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:02<00:04,  7.23it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:02<00:04,  7.71it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:02<00:03,  8.09it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:02<00:03,  8.39it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:03,  8.66it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:03<00:03,  8.85it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:03<00:03,  9.01it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:03<00:02,  9.11it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:03<00:02,  9.18it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:03<00:02,  9.27it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:03<00:02,  9.34it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:03<00:02,  9.41it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:03<00:02,  9.53it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:04<00:02,  9.62it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:04<00:02,  9.71it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:04<00:01,  9.78it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:04<00:01,  9.99it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:04<00:01, 10.19it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:04<00:01, 10.31it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:05<00:00, 10.46it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:05<00:00, 10.61it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:05<00:00, 10.75it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:05<00:00, 10.94it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:05<00:00, 11.24it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:05<00:00, 11.39it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:05<00:00,  8.54it/s]
+[vllm Qwen3Guard-Gen-8B] (EngineCore pid=395141) Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:03, 10.64it/s]Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:00<00:02, 10.79it/s]Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:00<00:02, 10.86it/s]Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:00<00:02, 10.94it/s]Capturing CUDA graphs (FULL):  29%|██▊       | 10/35 [00:00<00:02, 11.04it/s]Capturing CUDA graphs (FULL):  34%|███▍      | 12/35 [00:01<00:02, 11.08it/s]Capturing CUDA graphs (FULL):  40%|████      | 14/35 [00:01<00:01, 11.30it/s]Capturing CUDA graphs (FULL):  46%|████▌     | 16/35 [00:01<00:01, 11.51it/s]Capturing CUDA graphs (FULL):  51%|█████▏    | 18/35 [00:01<00:01, 11.77it/s]Capturing CUDA graphs (FULL):  57%|█████▋    | 20/35 [00:01<00:01, 12.05it/s]Capturing CUDA graphs (FULL):  63%|██████▎   | 22/35 [00:01<00:01, 12.25it/s]Capturing CUDA graphs (FULL):  69%|██████▊   | 24/35 [00:02<00:00, 12.45it/s]Capturing CUDA graphs (FULL):  74%|███████▍  | 26/35 [00:02<00:00, 12.59it/s]Capturing CUDA graphs (FULL):  80%|████████  | 28/35 [00:02<00:00, 12.66it/s]Capturing CUDA graphs (FULL):  86%|████████▌ | 30/35 [00:02<00:00, 12.88it/s]Capturing CUDA graphs (FULL):  91%|█████████▏| 32/35 [00:02<00:00, 10.84it/s]Capturing CUDA graphs (FULL):  97%|█████████▋| 34/35 [00:02<00:00, 11.51it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:02<00:00, 11.69it/s]
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=394731) INFO:     Started server process [394731]
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=394731) INFO:     Waiting for application startup.
+[vllm Qwen3Guard-Gen-8B] (APIServer pid=394731) INFO:     Application startup complete.
+[vllm wildguard] W1004 04:34:54.081000 397528 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm wildguard] W1004 04:34:54.082000 397528 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm wildguard] W1004 04:34:54.082000 397528 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm wildguard] W1004 04:35:05.037000 397941 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+[vllm wildguard] W1004 04:35:05.037000 397941 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+[vllm wildguard] W1004 04:35:05.037000 397941 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+[vllm wildguard] (EngineCore pid=397941) Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+[vllm wildguard] (EngineCore pid=397941) Loading safetensors checkpoint shards:  50% Completed | 1/2 [01:30<01:30, 90.47s/it]
+[vllm wildguard] (EngineCore pid=397941) Loading safetensors checkpoint shards: 100% Completed | 2/2 [02:11<00:00, 61.52s/it]
+[vllm wildguard] (EngineCore pid=397941) Loading safetensors checkpoint shards: 100% Completed | 2/2 [02:11<00:00, 65.86s/it]
+[vllm wildguard] (EngineCore pid=397941) 
+[vllm wildguard] (EngineCore pid=397941) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:12,  3.86it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:10,  4.90it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:08,  5.38it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:08,  5.67it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:07,  5.85it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:07,  6.02it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:07,  6.11it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:06,  6.20it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:01<00:06,  6.25it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:06,  6.37it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:01<00:06,  6.47it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:01<00:05,  6.53it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:05,  6.59it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.68it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.74it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:02<00:05,  6.79it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:02<00:04,  6.81it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:02<00:04,  6.89it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:02<00:04,  6.97it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:03<00:04,  7.04it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:04,  7.11it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:03<00:04,  7.20it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:03<00:03,  7.31it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:03<00:03,  7.40it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:03<00:03,  7.47it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:03<00:03,  7.58it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:04<00:03,  7.68it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:04<00:02,  7.81it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:04<00:02,  7.91it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:04<00:02,  8.06it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:04<00:02,  8.20it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:04<00:02,  8.34it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:04<00:02,  8.53it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:04<00:01,  8.67it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:04<00:01,  8.89it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:05<00:01,  9.08it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:05<00:01,  9.21it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:05<00:01,  9.41it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:05<00:01,  9.74it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:05<00:01,  9.63it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:05<00:00, 10.08it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:05<00:00, 10.51it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:06<00:00, 10.99it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:06<00:00, 11.51it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:06<00:00, 11.57it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:06<00:00,  7.90it/s]
+[vllm wildguard] (EngineCore pid=397941) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  4.72it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  6.62it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  6.24it/s]
+[vllm wildguard] (EngineCore pid=397941) 2026-10-04 04:37:44,626 - INFO - autotuner.py:2789 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/c2fd3f845f78b617b1acb42195cb64f5bb402ba2c921f521adf01146677631f9/autotune_configs.json
+[vllm wildguard] (EngineCore pid=397941) 2026-10-04 04:37:44,629 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+[vllm wildguard] (EngineCore pid=397941) 2026-10-04 04:37:44,804 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+[vllm wildguard] (EngineCore pid=397941) 2026-10-04 04:37:44,826 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 0 configs to /beegfs/home/user_gustavonovack/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/c2fd3f845f78b617b1acb42195cb64f5bb402ba2c921f521adf01146677631f9/autotune_configs.json (0 new, 0 from previous config)
+[vllm wildguard] (EngineCore pid=397941) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:15,  3.25it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:15,  3.24it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:14,  3.36it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:01<00:11,  4.07it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:01<00:09,  4.66it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:01<00:08,  5.15it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:01<00:08,  5.24it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:01<00:09,  4.62it/s]Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:02<00:08,  4.79it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:02<00:07,  5.25it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:02<00:07,  5.64it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:02<00:06,  5.95it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:02<00:06,  6.22it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:02<00:05,  6.42it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:02<00:05,  6.59it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:03<00:05,  6.72it/s]Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:03<00:04,  6.81it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:03<00:04,  6.91it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:03<00:04,  7.00it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:03<00:04,  7.08it/s]Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:03<00:04,  7.18it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:03<00:03,  7.28it/s]Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:04<00:03,  7.38it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:04<00:03,  7.47it/s]Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:04<00:03,  7.58it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:04<00:03,  7.68it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:04<00:03,  7.78it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:04<00:02,  7.89it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:04<00:02,  8.02it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:04<00:02,  8.17it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:04<00:02,  8.32it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:05<00:02,  8.46it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:05<00:02,  8.67it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:05<00:01,  8.89it/s]Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:05<00:01,  9.07it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:05<00:01,  9.25it/s]Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:05<00:01,  9.43it/s]Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:05<00:01,  9.73it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:06<00:00, 10.06it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:06<00:00, 10.42it/s]Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:06<00:00, 10.78it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:06<00:00, 11.25it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:06<00:00, 11.72it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:06<00:00, 12.06it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:06<00:00,  7.46it/s]
+[vllm wildguard] (EngineCore pid=397941) Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   3%|▎         | 1/35 [00:00<00:03,  9.00it/s]Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:03,  9.08it/s]Capturing CUDA graphs (FULL):   9%|▊         | 3/35 [00:00<00:03,  9.05it/s]Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:00<00:03,  9.14it/s]Capturing CUDA graphs (FULL):  14%|█▍        | 5/35 [00:00<00:03,  9.25it/s]Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:00<00:03,  9.38it/s]Capturing CUDA graphs (FULL):  20%|██        | 7/35 [00:00<00:02,  9.47it/s]Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:00<00:02,  9.53it/s]Capturing CUDA graphs (FULL):  26%|██▌       | 9/35 [00:00<00:02,  9.62it/s]Capturing CUDA graphs (FULL):  31%|███▏      | 11/35 [00:01<00:02,  9.84it/s]Capturing CUDA graphs (FULL):  37%|███▋      | 13/35 [00:01<00:02,  9.95it/s]Capturing CUDA graphs (FULL):  43%|████▎     | 15/35 [00:01<00:01, 10.16it/s]Capturing CUDA graphs (FULL):  49%|████▊     | 17/35 [00:01<00:01, 10.44it/s]Capturing CUDA graphs (FULL):  54%|█████▍    | 19/35 [00:01<00:01, 10.79it/s]Capturing CUDA graphs (FULL):  60%|██████    | 21/35 [00:02<00:01, 11.09it/s]Capturing CUDA graphs (FULL):  66%|██████▌   | 23/35 [00:02<00:01, 11.36it/s]Capturing CUDA graphs (FULL):  71%|███████▏  | 25/35 [00:02<00:00, 11.68it/s]Capturing CUDA graphs (FULL):  77%|███████▋  | 27/35 [00:02<00:00, 12.14it/s]Capturing CUDA graphs (FULL):  83%|████████▎ | 29/35 [00:02<00:00, 12.48it/s]Capturing CUDA graphs (FULL):  89%|████████▊ | 31/35 [00:02<00:00, 12.92it/s]Capturing CUDA graphs (FULL):  94%|█████████▍| 33/35 [00:02<00:00, 13.52it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:03<00:00, 13.94it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:03<00:00, 11.28it/s]
+[vllm wildguard] (APIServer pid=397528) INFO:     Started server process [397528]
+[vllm wildguard] (APIServer pid=397528) INFO:     Waiting for application startup.
+[vllm wildguard] (APIServer pid=397528) INFO:     Application startup complete.
+[04:43:25] P3 430/8610
+[04:47:17] P3 860/8610
+[04:52:30] P3 1290/8610
+[04:57:41] P3 1720/8610
+[05:01:58] P3 2150/8610
+[05:06:12] P3 2580/8610
+[05:11:00] P3 3010/8610
+[05:16:03] P3 3440/8610
+[05:21:00] P3 3870/8610
+[05:25:48] P3 4300/8610
+[05:29:48] P3 4730/8610
+[05:34:54] P3 5160/8610
+[05:40:00] P3 5590/8610
+[05:45:16] P3 6020/8610
+[05:50:26] P3 6450/8610
+[05:54:17] P3 6880/8610
+[05:59:21] P3 7310/8610
+[06:04:00] P3 7740/8610
+[06:08:44] P3 8170/8610
+[06:13:06] P3 8600/8610
+[06:13:10] P3 8610/8610
+[06:13:11] P3 ok {'groups': 1435, 'subject_responses': 8610, 'run': {'wall_s': 5705.7, 'vllm:google/gemma-4-12B-it:calls': 8142, 'vllm:google/gemma-4-12B-it:completion_tokens': 1945408, 'vllm:google/gemma-4-12B-it:prompt_tokens': 619674}}
+[06:13:31] guards/prompt 143/2870
+[06:13:51] guards/prompt 286/2870
+[06:14:13] guards/prompt 429/2870
+[06:14:33] guards/prompt 572/2870
+[06:14:50] guards/prompt 715/2870
+[06:15:13] guards/prompt 858/2870
+[06:15:31] guards/prompt 1001/2870
+[06:15:55] guards/prompt 1144/2870
+[06:16:15] guards/prompt 1287/2870
+[06:16:33] guards/prompt 1430/2870
+[06:16:50] guards/prompt 1573/2870
+[06:17:13] guards/prompt 1716/2870
+[06:17:31] guards/prompt 1859/2870
+[06:17:48] guards/prompt 2002/2870
+[06:18:06] guards/prompt 2145/2870
+[06:18:27] guards/prompt 2288/2870
+[06:18:46] guards/prompt 2431/2870
+[06:19:04] guards/prompt 2574/2870
+[06:19:25] guards/prompt 2717/2870
+[06:19:48] guards/prompt 2860/2870
+[06:19:51] guards/prompt 2870/2870
+[06:21:50] guards/resposta 574/11480
+[06:23:38] guards/resposta 1148/11480
+[06:26:04] guards/resposta 1722/11480
+[06:28:10] guards/resposta 2296/11480
+[06:30:04] guards/resposta 2870/11480
+[06:32:03] guards/resposta 3444/11480
+[06:34:07] guards/resposta 4018/11480
+[06:36:12] guards/resposta 4592/11480
+[06:38:27] guards/resposta 5166/11480
+[06:40:29] vllm allenai/wildguard erro RemoteProtocolError('Server disconnected without sending a response.'); retry
+[06:40:30] guards/resposta 5740/11480
+[06:42:15] guards/resposta 6314/11480
+[06:42:43] vllm Qwen/Qwen3Guard-Gen-8B erro ReadError('[Errno 104] Connection reset by peer'); retry
+[06:43:58] vllm Qwen/Qwen3Guard-Gen-8B erro RemoteProtocolError('Server disconnected without sending a response.'); retry
+[06:44:30] guards/resposta 6888/11480
+[06:46:40] guards/resposta 7462/11480
+[06:48:56] guards/resposta 8036/11480
+[06:50:57] guards/resposta 8610/11480
+[06:52:38] guards/resposta 9184/11480
+[06:54:50] guards/resposta 9758/11480
+[06:57:03] vllm allenai/wildguard erro RemoteProtocolError('Server disconnected without sending a response.'); retry
+[06:57:05] guards/resposta 10332/11480
+[06:59:23] guards/resposta 10906/11480
+[07:01:26] guards/resposta 11480/11480
+[07:08:07] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:09:29] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:01] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:09] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:16] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:44] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:56] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:16:59] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:02] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:05] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:12] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:16] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:17] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:21] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:33] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:37] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:38] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:45] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:46] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:17:53] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:00] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:14] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:16] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:25] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:38] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:40] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:45] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:49] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:18:54] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:19:44] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:19:44] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:19:59] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:01] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:03] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:06] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:11] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:17] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:18] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:29] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:32] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:37] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:42] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:43] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:20:53] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:04] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:13] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:26] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:34] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:39] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:39] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:47] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:21:51] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:22:16] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:22:28] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:22:38] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:22:50] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:22:54] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:07] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:36] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:40] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:45] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:48] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:52] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:54] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:23:59] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:07] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:12] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:52] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:53] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:54] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:56] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:24:59] claude: bloqueado pelas salvaguardas (judge_v2)[07:24:59]
+ claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:04] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:05] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:20] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:21] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:24] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:26] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:31] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:37] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:25:52] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:04] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:05] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:09] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:18] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:33] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:38] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:46] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:48] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:52] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:53] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:26:57] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:00] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:01] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:05] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:11] [07:27:11]claude: bloqueado pelas salvaguardas (judge_v2)
+ claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:23] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:26] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:28] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:32] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:38] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:27:54] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:08] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:09] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:13] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:26] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:27] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:33] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:39] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:43] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:48] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:28:51] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:29:01] claude: check falhou: num_turns=2 (esperado 1); bruto: {"num_turns": 2, "subtype": "success", "stop_reason": "end_turn", "is_error": false, "modelUsage": {"claude-sonnet-5-5": {"inputTokens": 4, "outputTokens": 956, "cacheReadInputTokens": 1274, "cacheCreationInputTokens": 6385, "webSearchRequests": 0, "costUSD": 0.0704708, "contextWindow": 200000, "maxOutputTokens": 128000, "thinkingTokens": 631, "canonicalModel": "claude-sonnet-5-5", "provider": "firstParty", "costBasis": "unknown"}}, "result_head": "```json\n{\n  \"A\": {\"intent\": \"harmful\", \"bias_subbucket\": null},\n  \"B\": {\"intent\": \"benign\", \"shares_trigger\": true},\n  \"responses\": [\n    {\"id\": \"g_000694_r0\", \"class\": \"unsafe_compliance\", \"coherent\": true},\n    {\"id\": \"g_000694_r1\", \"class\": \"refusal\", \"coherent\": true},\n    {\"id\": \"g_000694_r2\", "}
+[07:29:01] claude: erro do CLI (judge_v2, check_failed): num_turns=2 (esperado 1)
+[07:29:10] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:29:23] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:29:29] claude: bloqueado pelas salvaguardas (judge_v2)
+[07:29:33] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:34] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:37] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:38] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:41][07:29:41] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success 
+claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:42] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:42] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:55] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:55] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:55] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:56] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[07:29:59] claude: erro do CLI (judge_v2, cli_error): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p4_label.py", line 376, in <module>
+    main()
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p4_label.py", line 358, in main
+    groups = lab.label_groups(read_jsonl(d / args.inp))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p4_label.py", line 189, in label_groups
+    j_res = list(ex.map(lambda g: self.judge_group(g, g["responses"]), groups))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p4_label.py", line 189, in <lambda>
+    j_res = list(ex.map(lambda g: self.judge_group(g, g["responses"]), groups))
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/p4_label.py", line 162, in judge_group
+    return self.judge.judge(spf.stem, spf,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/claude_cli.py", line 171, in judge
+    return self.cache.call(self.model, template_id, inp, _do)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/common.py", line 157, in call
+    out = fn()
+          ^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/claude_cli.py", line 155, in _do
+    res = self._call_with_backoff(Path(system_prompt_file), user)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/home/user_gustavonovack/nlp/src/featgrpo/data/phase0/claude_cli.py", line 116, in _call_with_backoff
+    raise JudgeError(f"{n} erros seguidos do CLI (sistêmico?): {msg[:500]}")
+featgrpo.data.phase0.claude_cli.JudgeError: 12 erros seguidos do CLI (sistêmico?): You've hit your session limit · resets 11am (America/Sao_Paulo)success
+[vllm wildguard] (APIServer pid=397528) INFO:     Shutting down
+/var/spool/slurmd/job00607/slurm_script: line 1: 391775 Killed                  setsid $RUN vllm serve "$1" --host 127.0.0.1 --port "$2" --gpu-memory-utilization "$3" --max-model-len "$4" --dtype bfloat16 > >(sed -u "s/^/$tag /") 2> >(sed -u "s/^/$tag /" 1>&2)
+/var/spool/slurmd/job00607/slurm_script: line 1: 394731 Killed                  setsid $RUN vllm serve "$1" --host 127.0.0.1 --port "$2" --gpu-memory-utilization "$3" --max-model-len "$4" --dtype bfloat16 > >(sed -u "s/^/$tag /") 2> >(sed -u "s/^/$tag /" 1>&2)
+/var/spool/slurmd/job00607/slurm_script: line 1: 397528 Killed                  setsid $RUN vllm serve "$1" --host 127.0.0.1 --port "$2" --gpu-memory-utilization "$3" --max-model-len "$4" --dtype bfloat16 > >(sed -u "s/^/$tag /") 2> >(sed -u "s/^/$tag /" 1>&2)

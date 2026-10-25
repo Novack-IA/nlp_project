@@ -1,0 +1,16 @@
+[job 567] spark14-9931 aarch64 inicio=2026-10-03T17:50:09-03:00
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+W1003 17:53:01.672000 264908 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1003 17:53:01.677000 264908 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1003 17:53:01.681000 264908 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead

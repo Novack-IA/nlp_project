@@ -1,0 +1,37 @@
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+OK google/gemma-4-12B-it /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it/snapshots/707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7
+OK google/gemma-4-31B-it /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it/snapshots/842da3794eaa0b77d5f08bae87a17459d91ff475
+OK Qwen/Qwen3Guard-Gen-8B /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B/snapshots/4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb
+OK allenai/wildguard /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard/snapshots/cbba4823f3e8020e5a74a5e29bf85072def6f2ff
+OK Qwen/Qwen3-Embedding-0.6B /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-Embedding-0.6B/snapshots/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3
+OK meta-llama/Llama-3.1-8B-Instruct /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659
+OK Qwen/Qwen3-8B /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218
+OK mistralai/Mistral-7B-Instruct-v0.3 /beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71
+fim=2026-10-03T19:24:04-03:00
+4.4M	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-8B
+1.2G	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3-Embedding-0.6B
+4.4M	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--Qwen--Qwen3Guard-Gen-8B
+247K	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--allenai--wildguard
+38K	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-12B-it
+159K	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--google--gemma-4-31B-it
+8.8M	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--meta-llama--Llama-3.1-8B-Instruct
+2.7M	/beegfs/home/user_gustavonovack/.cache/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.3

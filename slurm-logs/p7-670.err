@@ -1,0 +1,17 @@
+[job 670] spark14-9931 aarch64 inicio=2026-10-08T14:14:51-03:00 PHASE0_DATA=data/phase0
+[INFO] Extracting squashfs filesystem...
+Parallel unsquashfs: Using 20 processors
+240240 inodes (344558 blocks) to write
+
+
+created 238294 files
+created 16692 directories
+created 1940 symlinks
+created 0 devices
+created 0 fifos
+created 0 sockets
+created 6 hardlinks
+[14:16:33] audit/annotator_A.csv (Caio): 829 linhas
+[14:16:33] audit/annotator_B.csv (Davi): 845 linhas
+[14:16:33] audit/annotator_C.csv (Frederico): 784 linhas
+[14:16:34] audit/annotator_D.csv (Gustavo): 846 linhas

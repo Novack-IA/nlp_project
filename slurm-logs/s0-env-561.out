@@ -1,0 +1,44 @@
+== host
+aarch64
+name, driver_version, memory.total [MiB]
+NVIDIA GB10, 580.159.03, [N/A]
+4.2.1
+== pyxis?
+1
+== import 26.09-py3
+-rw-r--r-- 1 user_gustavonovack user_gustavonovack 20G Oct  3 17:13 /beegfs/home/user_gustavonovack/images/vllm-26.09-py3.sqsh
+== container
+
+==========
+== vLLM ==
+==========
+
+NVIDIA Release 26.09 (build 452757715)
+vLLM Version 0.29.0+5013de39
+Container image Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+and the Product-Specific Terms for NVIDIA AI Products
+(found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 13.4 driver version 615.71.09 with kernel driver version 580.159.03.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
+torch 2.14.0a0+b2c75dd062.nv26.09 cuda True NVIDIA GB10 cap (12, 1)
+vllm 0.29.0+5013de39.dev transformers 5.16.1
+== HF no nó
+200 llama gated
+== claude CLI
+2.1.282 (Claude Code)
+"claude-haiku-4-5"
+"claude-haiku-4-5-20251001"
+"claude-sonnet-5-5"
+"is_error":false
+"num_turns":1
+"result":"OK"
+"subtype":"success"
+S0 OK

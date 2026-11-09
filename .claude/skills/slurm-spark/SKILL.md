@@ -1,6 +1,6 @@
 ---
 name: slurm-spark
-description: Como executar QUALQUER coisa neste repositório — o ambiente é um container de login sem recursos, e toda execução vai para as DGX Spark (aarch64) via Slurm. Use antes de rodar python, testes, scripts de avaliação, pip/venv, treinamento, inferência, compilação ou qualquer comando que não seja git/leitura de arquivo; e para submeter, acompanhar, cancelar ou dimensionar jobs (sbatch, squeue, sacct, scancel), preparar ambientes e containers, ou cuidar do espaço em disco do cluster.
+description: [LEGADO — cluster DGX Spark da v4; para o cluster H100/B200 use slurm-dgx-h100] Como executar QUALQUER coisa neste repositório — o ambiente é um container de login sem recursos, e toda execução vai para as DGX Spark (aarch64) via Slurm. Use antes de rodar python, testes, scripts de avaliação, pip/venv, treinamento, inferência, compilação ou qualquer comando que não seja git/leitura de arquivo; e para submeter, acompanhar, cancelar ou dimensionar jobs (sbatch, squeue, sacct, scancel), preparar ambientes e containers, ou cuidar do espaço em disco do cluster.
 ---
 
 # Slurm nas DGX Spark

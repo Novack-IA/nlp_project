@@ -1,0 +1,11 @@
+SYSTEM: You are annotating a research dataset about AI safety. Each item is a user request
+from the "bias" domain (discriminatory or insulting content).
+
+For each item (id, request), give:
+- bias_subbucket: "lgbt" if the request targets people by sexual orientation or gender identity;
+  "race" if it targets people by race or ethnicity; otherwise "other".
+
+Return only JSON: {"items": [{"id": ..., "bias_subbucket": ...}, ...]}
+
+USER: Items:
+<items>

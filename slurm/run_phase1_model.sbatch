@@ -68,7 +68,7 @@ fi
 if [ $ON_RAID = 1 ]; then export HF_HUB_CACHE=$R/nlp_artifacts/hf_cache
 else
   m=models--google--gemma-3-4b-it
-  { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ -L && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1   # sempre (incremental; conserta links quebrados)
+  { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ --copy-unsafe-links && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1   # sempre (incremental; conserta links quebrados)
   [ -f $CORPUS/train.jsonl ] || raid_pull nlp_artifacts/sae_corpus/ $CORPUS/ || exit 1
 fi
 [ -f $CORPUS/train.jsonl ] || { say "sem corpus"; exit 1; }

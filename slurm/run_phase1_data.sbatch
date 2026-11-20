@@ -69,7 +69,7 @@ CRUN $DV/bin/python -m pytest -q $REPO/tests/test_phase1.py || { say "testes da 
 
 if [ $ON_RAID = 0 ]; then   # pesos vêm do /raid do h1003 (rede interna), não da internet
   for m in $EMB $JUDGE $QG $WG; do d=models--${m//\//--}
-    { raid_pull nlp_artifacts/hf_cache/$d $HFC/ -L && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
+    { raid_pull nlp_artifacts/hf_cache/$d $HFC/ --copy-unsafe-links && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
   done
 fi
 ( CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $EMB $JUDGE $QG $WG ) > $LOGD/download.log 2>&1 &

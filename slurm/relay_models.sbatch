@@ -2,7 +2,7 @@
 # Repasse de pesos já baixados (cache HF do /tmp da b200n1, da Fase 0) para o /raid do h1003
 # (nlp_artifacts/hf_cache) pela rede interna,
 # quando a internet do cluster está lenta. Só CPU. -L: o huggingface_hub 2.x guarda os pesos em hf/blobs/
-# (depósito compartilhado) e as pastas models--* só têm links; -L copia os arquivos de verdade.
+# (depósito compartilhado) e as pastas models--* só têm links; --copy-unsafe-links copia os arquivos de verdade.
 #   TARGET_HOST=dgx-H100-02 MODELS="..." sbatch -p b200n1 slurm/relay_models.sbatch
 # Também: baixa os MODELS_NET (internet) e os empurra para o /raid do h1003; copia o venv do driver do
 # TARGET_HOST para o /tmp do h1003 (mesmo caminho, funciona dentro da imagem).
@@ -30,7 +30,7 @@ pids=()
 for m in $MODELS; do
   d=models--${m//\//--}; mk=.ok_${m//\//--}
   if [ ! -f $SRC/$mk ] || [ ! -d $SRC/$d ]; then say "AUSENTE na origem: $m"; continue; fi
-  ( raid_push $SRC/$d nlp_artifacts/hf_cache/ -L && raid_push $SRC/$mk nlp_artifacts/hf_cache/ \
+  ( raid_push $SRC/$d nlp_artifacts/hf_cache/ --copy-unsafe-links && raid_push $SRC/$mk nlp_artifacts/hf_cache/ \
       && say "ok $m → raid" || say "FALHOU $m" ) &
   pids+=($!)
 done

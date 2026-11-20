@@ -1,17 +1,16 @@
 #!/bin/bash
 # Fase 1, frente A — modelo (3×H100). Na dgx-H100-03 usa o /raid; em outro nó, /tmp/$USER/nlp (staging da
 # Fase 0) e empurra os SAEs para o /raid no fim.   sbatch -p h100n2 slurm/run_phase1_model.sbatch
-#   GPU0: vLLM do Gemma-3-4B-IT (comportamento natural) + SAE da camada 29
-#   GPU1: SAE da camada 22 (principal)      GPU2: SAE da camada 17
+#   1 GPU: vLLM do Gemma-3-4B-IT (comportamento) + SAEs das camadas 22 e 17 juntos; a 29 depois do comportamento
 # Comportamento: pares e externos já; células quando o job de dados escrever CELLS_DONE.
 # Retomável (checkpoints do SAE; arquivos de comportamento pulam se existem).
 #SBATCH --job-name=p1-model
-#SBATCH --partition=h100n2
+#SBATCH --partition=h100n3
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:3
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=32
-#SBATCH --mem=320G
+#SBATCH --mem=200G
 #SBATCH --time=30:00:00
 #SBATCH --chdir=/home/user_gustavonovack/nlp_project
 #SBATCH -o /home/user_gustavonovack/nlp_project/slurm-logs/%x-%j.out
@@ -35,7 +34,7 @@ source $REPO/slurm/lib/raid.sh
 D1=data/phase1; D=$REPO/$D1; mkdir -p $D
 LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; mkdir -p $LOGD
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"
-[ ${#GPU[@]} -ge 3 ] || { say "precisa de 3 GPUs"; exit 1; }
+
 P_SUBJ=$((21000 + (SLURM_JOB_ID % 2000) * 10))
 U() { echo "http://127.0.0.1:$1"; }
 SUBJ=google/gemma-3-4b-it
@@ -53,7 +52,7 @@ export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets
        PHASE1_DATA=$D1
 CRUN() { apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" "$@"; }
 VPY=/w/out/judge_serve_venv/bin/python
-DV=$ST/driver_venv
+DV=/tmp/$USER/nlp/driver_venv   # mesmo caminho em todos os nós (copiado da h1002 para a h1003)
 REQ_MD5=$(md5sum $REPO/requirements-phase0.txt | cut -c1-12)
 if [ ! -f $DV/.req_$REQ_MD5 ]; then
   say "criando venv do driver"; rm -rf $DV
@@ -61,10 +60,15 @@ if [ ! -f $DV/.req_$REQ_MD5 ]; then
   CRUN env -u PIP_CONSTRAINT $DV/bin/pip install -q -r $REPO/requirements-phase0.txt && touch $DV/.req_$REQ_MD5 || exit 1
 fi
 
-# pesos do 4B + corpus (em paralelo)
-CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $SUBJ > $LOGD/download.log 2>&1 || { say "download falhou"; exit 1; }
-( CRUN $DV/bin/python -m featgrpo.interp.prep_corpus --out $CORPUS ) > $LOGD/corpus.log 2>&1 &
-CORP=$!
+# pesos do 4B e corpus: já no /raid (job dl-raid); fora da h1003, puxa pela rede interna
+if [ $ON_RAID = 1 ]; then export HF_HUB_CACHE=$R/nlp_artifacts/hf_cache
+else
+  m=models--google--gemma-3-4b-it
+  [ -f $ST/hf/.ok_google--gemma-3-4b-it ] || { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1
+  [ -f $CORPUS/train.jsonl ] || raid_pull nlp_artifacts/sae_corpus/ $CORPUS/ || exit 1
+fi
+[ -f $CORPUS/train.jsonl ] || { say "sem corpus"; exit 1; }
+CORP=
 
 # GPU0: vLLM do 4B (fração menor, para dividir com o SAE L29)
 CUDA_VISIBLE_DEVICES=${GPU[0]} HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" \
@@ -89,13 +93,12 @@ behavior() {
 behavior > $LOGD/behavior.log 2>&1 &
 BEH=$!
 
-wait $CORP || { say "corpus falhou (ver $LOGD/corpus.log)"; tail -20 $LOGD/corpus.log >&2; exit 1; }
 say "corpus: $(cat $CORPUS/report.json | tr -d '\n ')"
 
-train() {  # gpu-idx camada
+train() {  # gpu-idx camada  (todos na mesma GPU: buffer menor)
   local gi=$1 L=$2 out=$SAE/gemma-3-4b-it_L${2}_btk16k
   mkdir -p $out
-  [ -f $out/DONE ] || CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae train --layer $L --out $out --corpus $CORPUS \
+  [ -f $out/DONE ] || CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae train --layer $L --out $out --corpus $CORPUS --buffer 400000 \
       > $LOGD/sae_L$L.log 2>&1 || { say "SAE L$L falhou"; tail -30 $LOGD/sae_L$L.log >&2; return 1; }
   CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae eval --layer $L --out $out --corpus $CORPUS \
       --ref-gemmascope resid_post/layer_${L}_width_16k_l0_medium,resid_post/layer_${L}_width_16k_l0_small \
@@ -103,9 +106,10 @@ train() {  # gpu-idx camada
   [ $ON_RAID = 0 ] && raid_push $out nlp_artifacts/sae_proprio/ && say "SAE L$L → raid"
   say "SAE L$L pronto"
 }
-train 1 22 & T22=$!
-train 2 17 & T17=$!
-train 0 29 & T29=$!
+train 0 22 & T22=$!
+train 0 17 & T17=$!
 wait $BEH; say "comportamento rc=$?"
+kill -TERM -- -$(cat $ST/run/pg_subj) 2>/dev/null; rm -f $ST/run/pg_subj; say "vLLM do 4B parado"
+train 0 29 & T29=$!
 wait $T22 $T17 $T29
 say "fim do job de modelo"

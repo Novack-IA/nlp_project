@@ -3,7 +3,7 @@
 # (nlp_artifacts/hf_cache); em outro nó, staging em /tmp/$USER/nlp como na Fase 0.
 #   sbatch -p h100n3 slurm/run_phase1_data.sbatch
 #   GPU0+1: juiz Llama-3.3-70B FP8 (TP=2) + Qwen3Guard (GPU0) + WildGuard (GPU1) + embedder (GPU1)
-#   GPU2  : gerador gemma-4-31B
+#   gerador dos moldes = o próprio juiz (Llama-3.3-70B); a internet lenta inviabilizou o gemma-4-31B
 # Passos (retomáveis; cache de chamadas compartilhado com a Fase 0):
 #   t1 tipologia ∥ externos (embedder)  →  t2 rodada seca (50)  →  gate rendimento ≥ 40%  →  t2 completo
 #   → controles  →  rotulagem do comportamento do 4B (arquivos gerados pelo job de modelo, via NFS)
@@ -11,7 +11,7 @@
 #SBATCH --partition=h100n3
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:3
+#SBATCH --gres=gpu:2
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=256G
 #SBATCH --time=30:00:00
@@ -33,12 +33,12 @@ if [ "$(hostname -s)" = dgx-H100-03 ]; then
   IMG=$R/images/pytorch-2.8.0-cu128-devel.sif; WB=$R/feat-grpo; XB="-B $R"; ON_RAID=1
 else ON_RAID=0; fi
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"
-[ ${#GPU[@]} -ge 3 ] || { say "precisa de 3 GPUs"; exit 1; }
+[ ${#GPU[@]} -ge 2 ] || { say "precisa de 2 GPUs"; exit 1; }
 BASE=$((20000 + (SLURM_JOB_ID % 2000) * 10))
 P_JUDGE=$BASE; P_QG=$((BASE+1)); P_WG=$((BASE+2)); P_EMB=$((BASE+3)); P_GEN=$((BASE+4))
 U() { echo "http://127.0.0.1:$1"; }
 JUDGE=RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic; QG=Qwen/Qwen3Guard-Gen-8B; WG=allenai/wildguard
-EMB=Qwen/Qwen3-Embedding-0.6B; GEN=google/gemma-4-31B-it
+EMB=Qwen/Qwen3-Embedding-0.6B; GEN=$JUDGE   # gerador = juiz (internet lenta: sem gemma-4-31B)
 
 trap 'say "saindo; derrubando servidores"; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
 
@@ -55,7 +55,7 @@ export HF_HUB_CACHE=$HFC HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets X
        PYTHONUNBUFFERED=1 PYTHONPATH=$REPO/src OMP_NUM_THREADS=4 \
        VLLM_CACHE_ROOT=$ST/cache/vllm TRITON_CACHE_DIR=$ST/cache/triton \
        PHASE0_CONFIG=configs/data/phase0_v5b.yaml PHASE0_CACHE=data/phase0_cache PHASE0_RAW=data/phase0_raw \
-       PHASE0_DATA=data/phase0_v5b PHASE1_DATA=$D1
+       PHASE0_DATA=data/phase0_v5b PHASE1_DATA=$D1 PHASE1_GEN_MODEL=$JUDGE
 CRUN() { apptainer exec --nv -B $WB:/w $XB -B /home/$USER "$IMG" "$@"; }
 DV=$ST/driver_venv
 REQ_MD5=$(md5sum $REPO/requirements-phase0.txt | cut -c1-12)
@@ -67,7 +67,12 @@ fi
 PY() { CRUN $DV/bin/python -m "featgrpo.data.phase1.$1" "${@:2}"; }
 CRUN $DV/bin/python -m pytest -q $REPO/tests/test_phase1.py || { say "testes da fase 1 falharam"; exit 1; }
 
-( CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $EMB $JUDGE $QG $WG $GEN ) > $LOGD/download.log 2>&1 &
+if [ $ON_RAID = 0 ]; then   # pesos vêm do /raid do h1003 (rede interna), não da internet
+  for m in $EMB $JUDGE $QG $WG; do d=models--${m//\//--}
+    [ -f $HFC/.ok_${m//\//--} ] || { raid_pull nlp_artifacts/hf_cache/$d $HFC/ && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
+  done
+fi
+( CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $EMB $JUDGE $QG $WG ) > $LOGD/download.log 2>&1 &
 DL_PID=$!
 wait_model() { local mk=$HF_HUB_CACHE/.ok_${1//\//--}
   until [ -f $mk ]; do kill -0 $DL_PID 2>/dev/null || [ -f $mk ] || { say "download de $1 falhou"; return 1; }; sleep 15; done; }
@@ -88,8 +93,6 @@ serve() {  # nome modelo porta idx-gpus util max_len [args...]
 step() { say "== $*"; local t0=$SECONDS; "$@"; local rc=$?; say "== fim $2 rc=$rc ($((SECONDS - t0))s)"; return $rc; }
 
 # servidores (juiz primeiro; gerador em paralelo na GPU2)
-serve gen $GEN $P_GEN 2 0.92 2048 --max-num-seqs 128 > $LOGD/up_gen.log 2>&1 &
-GEN_UP=$!
 serve judge $JUDGE $P_JUDGE 0,1 0.62 16384 --tensor-parallel-size 2 --kv-cache-dtype fp8 --max-num-seqs 64 || exit 1
 serve qg $QG $P_QG 0 0.28 8192 || exit 1
 serve wg $WG $P_WG 1 0.25 8192 || exit 1
@@ -100,8 +103,7 @@ D=$REPO/$D1; O=$REPO/datasets/phase1
 ( [ -f $O/external/xstest.jsonl ] || step PY t3_controls_external external --embed-url $(U $P_EMB) ) > $LOGD/external.log 2>&1 &
 EXT=$!
 [ -f $O/trigger_types.jsonl ] || step PY t1_types --judge-url $(U $P_JUDGE) || exit 1
-wait $GEN_UP || { say "gerador não subiu"; cat $LOGD/up_gen.log >&2; exit 1; }
-CELLS=(--gen-url $(U $P_GEN) "${LBL[@]}")
+CELLS=(--gen-url $(U $P_JUDGE) "${LBL[@]}")
 step PY t2_cells "${CELLS[@]}" --tag dry --n 50 || exit 1
 Y=$(CRUN $DV/bin/python -c "import json;print(json.load(open('$D/cells_dry_report.json'))['yield'])")
 say "rendimento da rodada seca: $Y"

@@ -19,7 +19,7 @@ PROMPTS1 = Path(__file__).resolve().parent / "prompts"
 OUT = REPO / "datasets" / "phase1"
 ACTIVE_GUARDS = ["wildguard", "qwen3guard"]
 JUDGE_MODEL = "RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic"
-GEN_MODEL = "google/gemma-4-31B-it"
+GEN_MODEL = os.environ.get("PHASE1_GEN_MODEL", "RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic")
 SUBJECT4B = "google/gemma-3-4b-it"
 PAIRS = REPO / "datasets" / "phase0" / "v5b" / "pairs_prompt_level.jsonl"
 

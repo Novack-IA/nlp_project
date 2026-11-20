@@ -87,6 +87,8 @@ Além disso, o C2 pede AUROC acima de 0,85. Um TF-IDF simples pode passar disso,
 
 **O que propomos.** Reportar o teste em duas partes, gatilho visto e gatilho inédito; a conclusão principal usa o inédito. Não precisa refazer os splits.
 
+**Atualização (baseline rodado).** Nos pares originais, o recorte **não mudou** o TF-IDF (0,996 visto × 0,994 inédito). Faz sentido: o gatilho está nos dois lados do par, então decorá-lo não ajuda a separar. O ponto continua valendo para as features e para o 2×2, onde o gatilho varia entre as células, mas pesa menos do que este texto sugeria.
+
 ---
 
 ## Problemas médios

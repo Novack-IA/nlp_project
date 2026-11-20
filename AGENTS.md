@@ -4,9 +4,11 @@ Leia este arquivo inteiro antes de mexer no repositório. Ele vale para os quatr
 
 ## 1. O projeto em 30 segundos
 
-**Pergunta de pesquisa:**
+**Pergunta de pesquisa (versão operacional, 2026-11-20):**
 
-> **As representações internas de um LLM separam o que é nocivo de como o pedido soa, sem retreinar o modelo?**
+> **É possível identificar, nas features de um SAE, um sinal de intenção nociva que se distingue do sinal de forma lexical do pedido, usando pares mínimos nocivo↔benigno?**
+
+**As tarefas de cada um estão em [`docs/tarefas/`](docs/tarefas/).** Comece por `00-visao-geral.md`: ele define as classes de feature (S_intent, S_lex), os critérios C1–C5 e a regra do veredito (`results/VEREDITO.md`). Depois leia o arquivo da sua frente.
 
 Modelos alinhados recusam pedidos benignos que *soam* perigosos ("how do I **kill** a Python process?"). Esse é o *over-refusal*. A hipótese é que, internamente, o modelo representa duas coisas distintas:
 - **nocividade real**: a intenção do pedido;
@@ -101,12 +103,12 @@ notebooks/                exploração; nada essencial deve existir só aqui
 
 ## 6. Quem faz o quê
 
-| Frente | Dono | Máquina | Escopo |
-|---|---|---|---|
-| A. Dados, comportamento, SAE próprio | Gustavo | cluster h1003 (H100/B200) | respostas do 4B e rotulagem com o juiz de 70B, células do 2×2, conjuntos externos, mineração adversarial, treino do SAE próprio |
-| B. Ativações e intervenção | Caio | RTX 4090 | `interp/extract.py` (cache no formato da seção 4), qualidade do Gemma Scope 2 nos nossos dados, `interp/intervene.py` (ablação e steering) |
-| C. Features do SAE | Frederico | RTX 4090 | efeito pareado d_j por feature com FDR, classificação (nocividade, superfície, recusa), autointerp, comparação Gemma Scope 2 × SAE próprio |
-| D. Análise densa, baseline, escrita | Davi | CPU (sem cluster por ora) | baseline lexical (TF-IDF + LR), especificação do 2×2, probes por camada e generalização cruzada sobre o cache denso, H4 correlacional, coordenação do paper |
+| Frente | Dono | Máquina | Escopo | Tarefas |
+|---|---|---|---|---|
+| A. Dados 2×2, controles, comportamento, SAE próprio | Gustavo | cluster h1003 (H100/B200) | células do 2×2 (caminho crítico), controles `trig_only`, XSTest/OR-Bench-Hard, comportamento do 4B, SAE próprio | [`gustavo-frente-a.md`](docs/tarefas/gustavo-frente-a.md) |
+| B. Ativações, latentes, intervenção | Caio | RTX 4090 | `interp/extract.py` (cache da seção 4), qualidade dos SAEs, `interp/intervene.py`, C5 | [`caio-frente-b.md`](docs/tarefas/caio-frente-b.md) |
+| C. Estatística por feature | Frederico | RTX 4090 | d_I, d_L e d_X por feature, classes S_intent/S_lex (C1), controles e autointerp (C3), robustez entre SAEs (C4a) | [`frederico-frente-c.md`](docs/tarefas/frederico-frente-c.md) |
+| D. Baselines, probes, dissociação, veredito | Davi | CPU (sem cluster por ora) | TF-IDF, auditoria do 2×2, probes densos, dissociação dupla (C2), confusões (C4b/c), `VEREDITO.md` | [`davi-frente-d.md`](docs/tarefas/davi-frente-d.md) |
 
 **Se você é o agente de um integrante,** trabalhe só na frente dele. Se uma tarefa exigir algo de outra frente (por exemplo, a D precisa de ativações novas), escreva o pedido em `results/<frente>/PEDIDOS.md` ou avise o integrante. Não implemente a parte do outro.
 
@@ -142,4 +144,5 @@ pip install "transformers>=4.50" accelerate safetensors sae-lens scikit-learn pa
 - **resid_post:** o fluxo residual depois de um bloco do transformer.
 - **SAE:** autoencoder esparso que decompõe a ativação em "features" interpretáveis. O d_j de uma feature j num contraste é a média da diferença pareada dividida pelo desvio-padrão dessa diferença.
 - **Direção de recusa (Arditi et al., 2024):** a diferença de médias das ativações entre pedidos nocivos e benignos; removê-la desliga a recusa.
-- **2×2:** nocividade (nocivo/benigno) × superfície (com/sem gatilho). As células sem gatilho são geradas pela frente A a partir da especificação da frente D.
+- **2×2:** intenção (nocivo/benigno) × forma lexical (com/sem gatilho). A frente A gera as 4 células com o mesmo gerador, e a frente D audita uma amostra.
+- **S_intent / S_lex:** features com efeito de intenção alto e lexical baixo, e vice-versa. Definição exata em `docs/tarefas/00-visao-geral.md`.

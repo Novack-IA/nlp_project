@@ -2,6 +2,10 @@
 
 > Decisão de 2026-11-20, por recomendação dos orientadores: **o controller sai do escopo**. O trabalho passa a ser só de interpretabilidade, com o modelo congelado.
 
+> **Atualização (2026-11-20):** a pergunta foi refinada para a versão operacional abaixo. As tarefas detalhadas de cada integrante, os critérios C1–C5 e a regra do veredito estão em [`docs/tarefas/`](tarefas/00-visao-geral.md). Em caso de conflito, **vale `docs/tarefas/`**.
+>
+> **É possível identificar, nas features de um SAE, um sinal de intenção nociva que se distingue do sinal de forma lexical do pedido, usando pares mínimos nocivo↔benigno?**
+
 ## Pergunta de pesquisa
 
 **As representações internas de um LLM separam o que é nocivo de como o pedido soa, sem retreinar o modelo?**

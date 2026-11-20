@@ -5,7 +5,7 @@
 # Comportamento: pares e externos já; células quando o job de dados escrever CELLS_DONE.
 # Retomável (checkpoints do SAE; arquivos de comportamento pulam se existem).
 #SBATCH --job-name=p1-model
-#SBATCH --partition=h100n3
+#SBATCH --partition=h100n2,b200n1
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:1
@@ -29,8 +29,12 @@ else
   ON_RAID=0; ST=/tmp/$USER/nlp; IMG=$ST/pytorch-2.8.0-cu128-devel.sif; WBIND=$ST/w; XB=""
   SAE=$ST/artifacts/sae_proprio; CORPUS=$ST/artifacts/sae_corpus
 fi
-mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $ST/run $SAE $CORPUS
+mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $ST/run $ST/w/out $SAE $CORPUS
 source $REPO/slurm/lib/raid.sh
+if [ $ON_RAID = 0 ]; then   # imagem e venv do vLLM do /raid do h1003 (o /tmp dos nós é limpo)
+  [ -f $IMG ] || raid_pull images/pytorch-2.8.0-cu128-devel.sif $ST/ --size-only || exit 1
+  [ -x $ST/w/out/judge_serve_venv/bin/python ] || raid_pull feat-grpo/out/judge_serve_venv $ST/w/out/ || exit 1
+fi
 D1=data/phase1; D=$REPO/$D1; mkdir -p $D
 LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; mkdir -p $LOGD
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"

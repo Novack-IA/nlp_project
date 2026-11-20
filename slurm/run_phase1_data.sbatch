@@ -8,7 +8,7 @@
 #   t1 tipologia ∥ externos (embedder)  →  t2 rodada seca (50)  →  gate rendimento ≥ 40%  →  t2 completo
 #   → controles  →  rotulagem do comportamento do 4B (arquivos gerados pelo job de modelo, via NFS)
 #SBATCH --job-name=p1-data
-#SBATCH --partition=h100n3
+#SBATCH --partition=h100n2,b200n1
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:2

@@ -8,7 +8,7 @@ Leia este arquivo inteiro antes de mexer no repositório. Ele vale para os quatr
 
 > **É possível identificar, nas features de um SAE, um sinal de intenção nociva que se distingue do sinal de forma lexical do pedido, usando pares mínimos nocivo↔benigno?**
 
-**As tarefas de cada um estão em [`docs/tarefas/`](docs/tarefas/).** Comece por `00-visao-geral.md`: ele define as classes de feature (S_intent, S_lex), os critérios C1–C5 e a regra do veredito (`results/VEREDITO.md`). Depois leia o arquivo da sua frente.
+**As tarefas de cada um estão em [`docs/tarefas/`](docs/tarefas/). Para começar agora, veja [`docs/tarefas/URGENTE.md`](docs/tarefas/URGENTE.md).** Para ler o dataset, use sempre `featgrpo.interp.data`. Comece por `00-visao-geral.md`: ele define as classes de feature (S_intent, S_lex), os critérios C1–C5 e a regra do veredito (`results/VEREDITO.md`). Depois leia o arquivo da sua frente.
 
 Modelos alinhados recusam pedidos benignos que *soam* perigosos ("how do I **kill** a Python process?"). Esse é o *over-refusal*. A hipótese é que, internamente, o modelo representa duas coisas distintas:
 - **nocividade real**: a intenção do pedido;

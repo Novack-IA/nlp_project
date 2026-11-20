@@ -116,3 +116,4 @@ D  Davi (CPU) ─ D1–D3: baseline TF-IDF + auditoria de 2×2 (amostra de A)
 - [`caio-frente-b.md`](caio-frente-b.md): ativações, latentes, qualidade dos SAEs, intervenção
 - [`frederico-frente-c.md`](frederico-frente-c.md): estatística por feature, classes, autointerp
 - [`davi-frente-d.md`](davi-frente-d.md): baselines, probes, classificadores, veredito
+- [`URGENTE.md`](URGENTE.md): o que cada um faz já (D0–D2), em paralelo

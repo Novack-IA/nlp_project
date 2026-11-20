@@ -1,8 +1,8 @@
 # Proposta: um 2×2 feito de uma frase-molde
 
-> **Status:** em discussão. Nada aqui vale até o grupo aprovar este PR.
+> **Status:** **decidido em 2026-11-20** (PR #1 mergeado; respostas abaixo). As regras oficiais estão em `docs/tarefas/`. Este arquivo explica o porquê.
 > **Autor:** Davi · **Data:** 2026-11-20
-> **Leitura:** ~10 minutos. Se só tiver 2 minutos, leia "Em resumo" e "O que precisamos decidir".
+> **Leitura:** ~10 minutos. Se só tiver 2 minutos, leia "Em resumo" e "Decisões".
 
 ## Em resumo
 
@@ -12,15 +12,15 @@ A proposta muda **uma coisa central**: as quatro versões do 2×2 deixam de ser 
 
 Isso resolve 12 dos 13 problemas descritos em [`criticas.md`](criticas.md). O que muda para cada um está em [`tarefas-novas.md`](tarefas-novas.md).
 
-## O que precisamos decidir
+## Decisões
 
-Antes de o Frederico commitar o pré-registro:
+| Pergunta | Resposta | Detalhe |
+|---|---|---|
+| 1. Adotamos a frase-molde? | **Sim**, com plano B | A rodada seca de 50 grupos (D1) decide: ≥ 40% de sobrevivência → molde; < 40% → plano B (troca só do trecho do gatilho, mesmo formato de arquivo). |
+| 2. Aprovamos as 5 regras de análise? | **Sim**, com um ajuste na regra 1 | O baseline mostrou que, **nos pares originais**, o recorte visto × inédito não muda nada (TF-IDF 0,996 × 0,994), porque o gatilho está nos dois lados. A regra vale para **as features e o 2×2**; nos pares originais, o recorte só é reportado. |
+| 3. Validação automática no lugar da auditoria humana? | **Sim** | Validador (estrutura, gatilho, diff, tamanho) + juízes (intenção). Checagem humana de 20 grupos opcional. Registrado em `results/DESVIOS.md`. |
 
-1. **Adotamos a frase-molde?** Se o rendimento for baixo, temos um plano B (abaixo).
-2. **Aprovamos as 5 mudanças nas regras de análise?**
-3. **Aceitamos trocar a auditoria humana por checagens automáticas?** Fica opcional uma checagem humana pequena depois.
-
-Se a resposta for sim, quem aprovar o PR confirma no grupo. Os arquivos oficiais (`00-visao-geral.md`, `AGENTS.md` e os arquivos de cada frente) são atualizados num PR seguinte, pequeno, só com as mudanças aprovadas.
+O PR #2 aplicou as decisões em `00-visao-geral.md`, `URGENTE.md`, `AGENTS.md` e nos arquivos de cada frente. Cada um tem um quadro **"O que mudou"** no topo.
 
 ---
 

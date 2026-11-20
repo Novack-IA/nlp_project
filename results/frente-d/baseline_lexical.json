@@ -1,0 +1,645 @@
+{
+  "descricao": "Baselines de texto (frente D, D-P1). Ver docstring de src/featgrpo/interp/baselines.py.",
+  "leitura": "Nos pares originais, estes números medem sobretudo a diferença de estilo entre as fontes (PKU × gerador): são diagnóstico, não evidência para o veredito. A régua de C2/C4 é o resultado nas células do 2×2.",
+  "gerado_em": "2026-11-20T21:53:16+00:00",
+  "commit": "98eda3e42311f6bf34efe75420d67233886832ca",
+  "args": {
+    "n_boot": 1000,
+    "seed": 0,
+    "C_grid": [
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "cv": "GroupKFold(5) por gatilho normalizado, só train"
+  },
+  "versoes": {
+    "python": "3.12.10",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.5"
+  },
+  "dados": {
+    "pares": 2428,
+    "itens_por_split": {
+      "train": 3420,
+      "test": 694,
+      "val": 742
+    },
+    "gatilhos_unicos_train": 1199,
+    "pares_test_gatilho_visto": 133,
+    "pares_test_gatilho_inedito": 214
+  },
+  "hiperparametros": {
+    "tfidf": {
+      "C": 100.0,
+      "cv_auroc": {
+        "0.1": 0.9694,
+        "1.0": 0.986,
+        "10.0": 0.991,
+        "100.0": 0.9915
+      }
+    },
+    "style": {
+      "C": 10.0,
+      "cv_auroc": {
+        "0.1": 0.8829,
+        "1.0": 0.8836,
+        "10.0": 0.8837,
+        "100.0": 0.8837
+      }
+    }
+  },
+  "resultados": {
+    "pairs": {
+      "val": {
+        "all": {
+          "tfidf": {
+            "n_items": 742,
+            "n_groups": 371,
+            "auroc": 0.995,
+            "accuracy": 0.9582,
+            "paired_accuracy": 0.9973,
+            "ci95": {
+              "auroc": [
+                0.9915,
+                0.9977
+              ],
+              "accuracy": [
+                0.9434,
+                0.9717
+              ],
+              "paired_accuracy": [
+                0.9919,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 742,
+            "n_groups": 371,
+            "auroc": 0.892,
+            "accuracy": 0.8194,
+            "paired_accuracy": 0.9111,
+            "ci95": {
+              "auroc": [
+                0.87,
+                0.9129
+              ],
+              "accuracy": [
+                0.7938,
+                0.8437
+              ],
+              "paired_accuracy": [
+                0.8814,
+                0.9407
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 742,
+            "n_groups": 371,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "trigger_seen": {
+          "tfidf": {
+            "n_items": 272,
+            "n_groups": 136,
+            "auroc": 0.9969,
+            "accuracy": 0.9596,
+            "paired_accuracy": 1.0,
+            "ci95": {
+              "auroc": [
+                0.993,
+                0.9994
+              ],
+              "accuracy": [
+                0.9375,
+                0.9816
+              ],
+              "paired_accuracy": [
+                1.0,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 272,
+            "n_groups": 136,
+            "auroc": 0.8689,
+            "accuracy": 0.8309,
+            "paired_accuracy": 0.8529,
+            "ci95": {
+              "auroc": [
+                0.8295,
+                0.9051
+              ],
+              "accuracy": [
+                0.7904,
+                0.8676
+              ],
+              "paired_accuracy": [
+                0.7941,
+                0.9118
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 272,
+            "n_groups": 136,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "trigger_unseen": {
+          "tfidf": {
+            "n_items": 470,
+            "n_groups": 235,
+            "auroc": 0.9944,
+            "accuracy": 0.9574,
+            "paired_accuracy": 0.9957,
+            "ci95": {
+              "auroc": [
+                0.9899,
+                0.998
+              ],
+              "accuracy": [
+                0.9383,
+                0.9766
+              ],
+              "paired_accuracy": [
+                0.9872,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 470,
+            "n_groups": 235,
+            "auroc": 0.9037,
+            "accuracy": 0.8128,
+            "paired_accuracy": 0.9447,
+            "ci95": {
+              "auroc": [
+                0.8779,
+                0.9267
+              ],
+              "accuracy": [
+                0.7787,
+                0.8447
+              ],
+              "paired_accuracy": [
+                0.9149,
+                0.9702
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 470,
+            "n_groups": 235,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "by_domain": {
+          "bias": {
+            "tfidf": {
+              "n_items": 166,
+              "n_groups": 83,
+              "auroc": 0.9909,
+              "accuracy": 0.9337,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9808,
+                  0.998
+                ],
+                "accuracy": [
+                  0.8976,
+                  0.9699
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "cyber": {
+            "tfidf": {
+              "n_items": 188,
+              "n_groups": 94,
+              "auroc": 0.9978,
+              "accuracy": 0.9681,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9945,
+                  0.9999
+                ],
+                "accuracy": [
+                  0.9415,
+                  0.9894
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "privacy": {
+            "tfidf": {
+              "n_items": 182,
+              "n_groups": 91,
+              "auroc": 0.9948,
+              "accuracy": 0.967,
+              "paired_accuracy": 0.989,
+              "ci95": {
+                "auroc": [
+                  0.9862,
+                  0.9998
+                ],
+                "accuracy": [
+                  0.9396,
+                  0.989
+                ],
+                "paired_accuracy": [
+                  0.967,
+                  1.0
+                ]
+              }
+            }
+          },
+          "violence": {
+            "tfidf": {
+              "n_items": 206,
+              "n_groups": 103,
+              "auroc": 0.9951,
+              "accuracy": 0.9612,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9885,
+                  0.9994
+                ],
+                "accuracy": [
+                  0.932,
+                  0.9854
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          }
+        }
+      },
+      "test": {
+        "all": {
+          "tfidf": {
+            "n_items": 694,
+            "n_groups": 347,
+            "auroc": 0.9947,
+            "accuracy": 0.9654,
+            "paired_accuracy": 0.9971,
+            "ci95": {
+              "auroc": [
+                0.991,
+                0.9976
+              ],
+              "accuracy": [
+                0.951,
+                0.9769
+              ],
+              "paired_accuracy": [
+                0.9914,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 694,
+            "n_groups": 347,
+            "auroc": 0.8813,
+            "accuracy": 0.7939,
+            "paired_accuracy": 0.8847,
+            "ci95": {
+              "auroc": [
+                0.8599,
+                0.9029
+              ],
+              "accuracy": [
+                0.7651,
+                0.8213
+              ],
+              "paired_accuracy": [
+                0.8501,
+                0.9164
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 694,
+            "n_groups": 347,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "trigger_seen": {
+          "tfidf": {
+            "n_items": 266,
+            "n_groups": 133,
+            "auroc": 0.9958,
+            "accuracy": 0.9737,
+            "paired_accuracy": 1.0,
+            "ci95": {
+              "auroc": [
+                0.9901,
+                0.9995
+              ],
+              "accuracy": [
+                0.9549,
+                0.9887
+              ],
+              "paired_accuracy": [
+                1.0,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 266,
+            "n_groups": 133,
+            "auroc": 0.8765,
+            "accuracy": 0.7895,
+            "paired_accuracy": 0.8647,
+            "ci95": {
+              "auroc": [
+                0.8374,
+                0.9144
+              ],
+              "accuracy": [
+                0.7406,
+                0.8383
+              ],
+              "paired_accuracy": [
+                0.8045,
+                0.9173
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 266,
+            "n_groups": 133,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "trigger_unseen": {
+          "tfidf": {
+            "n_items": 428,
+            "n_groups": 214,
+            "auroc": 0.9938,
+            "accuracy": 0.9603,
+            "paired_accuracy": 0.9953,
+            "ci95": {
+              "auroc": [
+                0.9894,
+                0.9975
+              ],
+              "accuracy": [
+                0.9416,
+                0.9766
+              ],
+              "paired_accuracy": [
+                0.986,
+                1.0
+              ]
+            }
+          },
+          "style": {
+            "n_items": 428,
+            "n_groups": 214,
+            "auroc": 0.8863,
+            "accuracy": 0.7967,
+            "paired_accuracy": 0.8972,
+            "ci95": {
+              "auroc": [
+                0.8595,
+                0.9103
+              ],
+              "accuracy": [
+                0.7617,
+                0.8294
+              ],
+              "paired_accuracy": [
+                0.8551,
+                0.9346
+              ]
+            }
+          },
+          "trigger_only": {
+            "n_items": 428,
+            "n_groups": 214,
+            "auroc": 0.5,
+            "accuracy": 0.5,
+            "paired_accuracy": 0.5,
+            "ci95": {
+              "auroc": [
+                0.5,
+                0.5
+              ],
+              "accuracy": [
+                0.5,
+                0.5
+              ],
+              "paired_accuracy": [
+                0.5,
+                0.5
+              ]
+            }
+          }
+        },
+        "by_domain": {
+          "bias": {
+            "tfidf": {
+              "n_items": 168,
+              "n_groups": 84,
+              "auroc": 0.9894,
+              "accuracy": 0.9464,
+              "paired_accuracy": 0.9881,
+              "ci95": {
+                "auroc": [
+                  0.9776,
+                  0.9986
+                ],
+                "accuracy": [
+                  0.9107,
+                  0.9762
+                ],
+                "paired_accuracy": [
+                  0.9643,
+                  1.0
+                ]
+              }
+            }
+          },
+          "cyber": {
+            "tfidf": {
+              "n_items": 170,
+              "n_groups": 85,
+              "auroc": 0.9949,
+              "accuracy": 0.9529,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9885,
+                  0.9992
+                ],
+                "accuracy": [
+                  0.9176,
+                  0.9824
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "privacy": {
+            "tfidf": {
+              "n_items": 178,
+              "n_groups": 89,
+              "auroc": 0.9994,
+              "accuracy": 0.9944,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9975,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9831,
+                  1.0
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "violence": {
+            "tfidf": {
+              "n_items": 178,
+              "n_groups": 89,
+              "auroc": 0.9967,
+              "accuracy": 0.9663,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9917,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9382,
+                  0.9888
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "trigger_presence_rate": {
+      "q_harm": 1.0,
+      "q_border": 0.9988
+    },
+    "cells_2x2": "pendente: datasets/phase1/cells_2x2.jsonl ainda não existe (entrega da frente A)",
+    "xstest": "pendente: datasets/phase1/external/xstest.jsonl ainda não existe (entrega da frente A)"
+  }
+}

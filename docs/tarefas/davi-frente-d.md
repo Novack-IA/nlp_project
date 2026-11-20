@@ -8,33 +8,45 @@ Tudo aqui roda em CPU: os caches da frente B são pequenos. Um vetor denso é 2.
 
 Se você recuperar o acesso à h1003, avise o time: o SAE próprio (A5) pode passar para você.
 
+> **O que mudou em 2026-11-20 (PR #1):**
+> - O baseline ganhou o classificador só de estilo e o recorte gatilho visto × inédito (D1, **feito**).
+> - A auditoria humana virou o **validador automático** (D2).
+> - O C2 passa a ser **relativo ao TF-IDF** (D4).
+> - O veredito ganha uma seção pronta para o caso PARCIAL (D7).
+
 ---
 
-## D1. Baseline lexical (D1–D3, só texto, sem dependências)
+## D1. Baseline lexical (feito em 2026-11-20; 2×2 e XSTest quando A entregar)
 
-**Código:** `src/featgrpo/interp/baselines.py`.
+**Código:** `src/featgrpo/interp/baselines.py`. **Resultado:** `results/frente-d/baseline_lexical.json`, com a leitura em `results/frente-d/README.md`.
 
 1. **TF-IDF + regressão logística** (n-gramas de palavra 1–2 e de caractere 3–5) para nocivo × benigno:
    - treino nos 2.428 pares originais (`train`), avaliação em `val` e `test`;
-   - CV agrupada por `group_id` para hiperparâmetros.
-2. **Generalização lexical:** o mesmo classificador aplicado às células do 2×2 quando A1 sair (`harm_trig`, `harm_notrig`, `ben_trig`, `ben_notrig`) e ao XSTest. Espera-se que o TF-IDF caia bastante nas células sem gatilho. Essa queda é a régua de C4.
-3. **"Só gatilho":** um classificador que vê **apenas** a presença do gatilho. Deve dar AUROC ≈ 0,5 nos pares, porque os dois lados têm o gatilho. Isso documenta o desenho.
-4. **Saída:** `results/frente-d/baseline_lexical.json` com AUROC e acurácia por conjunto e célula, com IC por bootstrap sobre grupos.
+   - CV agrupada **por gatilho normalizado** para hiperparâmetros;
+   - `test` em gatilho visto × inédito e por domínio.
+2. **Só estilo:** atributos que não olham o conteúdo (tamanho, pontuação, forma da pergunta). Mede a confusão de fonte PKU × gerador. Deu AUROC 0,88 no `test`.
+3. **Generalização lexical:** o mesmo classificador aplicado às células do 2×2 quando A1 sair e ao XSTest. Espera-se que o TF-IDF caia bastante nas células sem gatilho. **Essa queda é a régua do C2(b).** O script já calcula `cells_2x2.queda_auroc_tfidf` quando o arquivo existir.
+4. **"Só gatilho":** vê **apenas** a presença do gatilho. Deu AUROC 0,5 nos pares, como o desenho prevê.
 
-## D2. Auditoria humana do 2×2 (D4, quando A1 exportar a amostra)
+## D2. Validador automático do 2×2 (D1, substitui a auditoria humana)
 
-Rotule `results/frente-a/amostra_2x2.csv` (60 grupos × 4 células). Para cada célula:
-- (a) a intenção está certa (nocivo/benigno)?
-- (b) o gatilho está presente ou ausente como deveria?
-- (c) a intenção é a mesma do original?
+**Código:** `src/featgrpo/data/phase1/validate_template.py`, usado pela frente A na geração.
 
-Devolva com as concordâncias por célula. Abaixo de 85% numa célula, o Gustavo revisa o prompt. Isso é a garantia de que o 2×2 mede o que diz medir.
+- `render_cells(template, slots)`: monta as 4 células e devolve as posições das lacunas (`spans`).
+- `validate_group(group)`: confere, para cada grupo,
+  - (a) estrutura: o molde tem `{FORMA}` e `{INTENCAO}` uma vez cada, e cada `text` é o molde preenchido;
+  - (b) gatilho: `*_trig` contém o gatilho e `*_notrig` não (literal e radical Porter); o termo neutro não contém o gatilho;
+  - (c) diff: entre células da mesma linha só muda a forma, e entre células da mesma coluna só muda a intenção;
+  - (d) tamanho: as células diferem ≤ 20% em palavras;
+  - (e) `spans` batem com o texto.
+- A intenção certa e a mesma intenção ficam com os juízes da frente A.
+- *(Opcional, D-P6)* checagem humana de 20 grupos do 2×2 final, registrada em `results/frente-d/checagem_humana.md`.
 
 ## D3. Âncora densa: probes no residual (D3–D7)
 
 **Código:** `src/featgrpo/interp/probes.py`. Use o cache denso de B: `pairs` no D2, `cells2x2` no D5.
 
-1. Por camada (as 4) e posição (`post`, `post_last`, `mean`, `trig`), treine uma regressão logística L2 para **intenção** e outra para **gatilho presente** no 2×2.
+1. Por camada (as 4) e posição (`post`, `post_last`, `mean`, `slot_forma`, `slot_intencao`; `trig` nos pares originais), treine uma regressão logística L2 para **intenção** e outra para **gatilho presente** no 2×2. O `test` sai em gatilho visto × inédito.
 2. **Generalização cruzada** (o ponto principal):
 
    | Treina em | Testa em | Mede |
@@ -56,27 +68,29 @@ Devolva com as concordâncias por célula. Abaixo de 85% numa célula, o Gustavo
 **Código:** `src/featgrpo/interp/classifiers.py`. Use as listas S_intent e S_lex da frente C e os latentes de B.
 
 1. **Classificadores restritos** (regressão logística L1 ou média simples das features padronizadas; reporte os dois) usando **apenas** as features de S_intent ou **apenas** as de S_lex. Escolha camada e posição pela melhor de C em `train`+`val`.
-2. **Matriz 2×2 de AUROC no `test`** (o resultado de C2):
+2. **Matriz 2×2 de AUROC no `test`, gatilho inédito** (o resultado de C2):
 
    | | Tarefa: intenção | Tarefa: gatilho presente |
    |---|---|---|
-   | **S_intent** | alta (≥ 0,85 com gatilho; ≥ 0,80 sem) | baixa (≤ 0,65) |
-   | **S_lex** | baixa (≤ 0,65) | alta (≥ 0,85) |
+   | **S_intent** | alta (≥ 0,85 com gatilho; ≥ 0,80 sem): C2(a) | baixa (≤ 0,65): consistência |
+   | **S_lex** | baixa (≤ 0,65): consistência | alta (≥ 0,85): consistência |
 
-   Inclua dois controles na mesma tabela:
+   Inclua três controles na mesma tabela:
    - um conjunto **aleatório** de features com o mesmo tamanho (média de 20 sorteios);
-   - o **probe denso** de D3 como teto.
-3. **Generalização:** S_intent treinado no 2×2 e aplicado ao XSTest.
-4. **Saída:** `results/frente-d/c2_c4.json` e o heatmap da matriz.
+   - o **probe denso** de D3 como teto;
+   - o **TF-IDF** de D1 como régua.
+3. **C2(b), o critério principal, relativo:** treine em `harm_trig` × `ben_trig` e teste em `harm_notrig` × `ben_notrig`. Compare a queda de AUROC de S_intent com a do TF-IDF no mesmo protocolo. **Atende** se razão = queda(S_intent)/queda(TF-IDF) ≤ 0,5 **e** o limite superior do IC 95% da razão (bootstrap sobre grupos) < 1, ou seja, S_intent cai menos que o TF-IDF com confiança. Implementado em `classifiers.relative_drop`. Se o TF-IDF não cair (queda ≤ 0,02), o critério fica **indefinido** e isso vai para o veredito: o 2×2 não removeu o sinal lexical.
+4. **Generalização:** S_intent treinado no 2×2 e aplicado ao XSTest.
+5. **Por domínio e por tipo de gatilho** (análise secundária).
+6. **Saída:** `results/frente-d/c2_c4.json` e o heatmap da matriz.
 
 ## D5. Confusões (C4b/c, D9)
 
-Refaça D4.2 e a métrica de C1 (com o código da frente C) em três recortes:
-- **(b)** só grupos cujo Q⁰ original é *retrieved* do OR-Bench (`q_border_method`), não gerado;
-- **(c)** grupos pareados por tamanho: diferença de tokens entre células ≤ 20%;
-- **(d)** C4, parte final: a queda de AUROC de S_intent entre `*_trig` e `*_notrig` comparada com a queda do TF-IDF (D1.2). S_intent deve cair menos.
+Refaça D4.2, D4.3 e a métrica de C1 (com o código da frente C) em dois recortes:
+- **(b)** só grupos cujo Q⁰ original é *retrieved* do OR-Bench (`orig.q_border_method`), não gerado;
+- **(c)** grupos em que as células diferem ≤ 20% em tokens.
 
-Sem esses recortes, um revisor dirá que achamos "features de estilo do PKU". A reescrita no estilo comum (A1) e esses recortes respondem a isso.
+Sem esses recortes, um revisor dirá que achamos "features de estilo do PKU". A frase-molde (A1) e esses recortes respondem a isso.
 
 ## D6. Avaliação cega das fichas (C3, D9–D10)
 
@@ -90,7 +104,8 @@ Rotule `results/frente-c/fichas_cegas.csv` junto com o Frederico, sem ver a clas
    - o veredito (SIM, PARCIAL ou NÃO, regra em `00-visao-geral.md`);
    - um parágrafo de interpretação;
    - limitações;
-   - os desvios do pré-registro.
+   - os desvios do pré-registro;
+   - uma seção pronta para o caso **PARCIAL**: qual critério falhou, em qual recorte, e o que a âncora densa diz (limitação do SAE ou do modelo).
 
    Os quatro revisam antes do merge.
 2. **Esqueleto do paper** em `docs/paper/` (Markdown ou LaTeX):
@@ -106,10 +121,10 @@ Rotule `results/frente-c/fichas_cegas.csv` junto com o Frederico, sem ver a clas
 
 | Entrega | Pronto quando |
 |---|---|
-| `baseline_lexical.json` | Pares + 2×2 + XSTest, com IC |
-| Auditoria do 2×2 | Concordância por célula devolvida ao Gustavo |
+| `baseline_lexical.json` | Pares (**feito**) + 2×2 + XSTest, com IC |
+| `validate_template.py` + testes | Usado pela frente A na rodada seca (D1) |
 | `probes.json` + figura | 4 camadas × posições, generalização cruzada |
-| `c2_c4.json` + heatmap | Matriz 2×2 no `test` com controles aleatório e denso; recortes b, c, d |
+| `c2_c4.json` + heatmap | Matriz 2×2 no `test` (gatilho inédito) com controles aleatório, denso e TF-IDF; C2(b) relativo; recortes b e c |
 | `VEREDITO.md` | Revisado pelos quatro |
 
 **Branch:** `frente-d-densa`.

@@ -9,15 +9,26 @@ Defina os limiares em `train` + `val` e só então rode o `test`, uma vez.
 
 Recursos: RTX 4090 para codificar com os SAEs e rodar o autointerp com um LLM local. A estatística roda em CPU.
 
+> **O que mudou em 2026-11-20 (PR #1):**
+> - O pré-registro inclui as **5 regras de análise** de `00-visao-geral.md`.
+> - S_intent e S_lex usam **teste de equivalência** (IC 95% dentro de ±0,2).
+> - A replicação no `test` vale no recorte **gatilho inédito**.
+> - No 2×2, a posição `trig` vira `slot_forma`, e entra `slot_intencao`.
+> - O modo provisório fica registrado como diagnóstico.
+
 ---
 
-## C0. Pré-registro (D1)
+## C0. Pré-registro (D0, com adendo no D1)
 
 Antes de ver qualquer dado, commite `results/frente-c/preregistro.md` com:
-- limiares das classes (copiados de `00-visao-geral.md`);
-- teste estatístico (Wilcoxon pareado + Benjamini–Hochberg, q < 0,01);
-- quais camadas, posições e SAEs entram;
-- o critério de replicação no `test`.
+- limiares das classes (copiados de `00-visao-geral.md`, já com o teste de equivalência);
+- teste estatístico (Wilcoxon pareado + Benjamini–Hochberg, q < 0,01) e o IC de d por bootstrap sobre grupos (1.000 sorteios);
+- quais camadas, posições (`post`, `post_last`, `mean`, `slot_forma`, `slot_intencao`) e SAEs entram;
+- o critério de replicação no `test`, no recorte **gatilho inédito**;
+- as **5 regras de análise** de `00-visao-geral.md`, copiadas;
+- as análises secundárias: por domínio e por tipo de gatilho.
+
+**Adendo no D1:** depois da rodada seca da frente A, acrescente a descrição exata dos dados: molde ou plano B, nº de grupos e tipos de gatilho incluídos. A rodada seca só olha texto, nenhuma ativação, então o adendo não compromete o pré-registro.
 
 Mudanças posteriores vão em `results/DESVIOS.md` com data e motivo. Isso protege o resultado contra "procurar até achar".
 
@@ -27,28 +38,29 @@ Enquanto o 2×2 não sai, use os 2.428 pares (`split` = `train`/`val`):
 - **intenção provisória:** d de a(Q⁺) − a(Q⁰), pareado por grupo, por feature × camada × posição;
 - liste as features com o maior \|d\| e as **compartilhadas**: alta ativação nos dois lados do par na posição `trig`, as candidatas a lexicais.
 
-Isso serve para depurar o código e ter uma primeira ideia, **não para o veredito**. Escreva `results/frente-c/provisorio.md` com o top-20 de cada lado e os rótulos do Neuronpedia (`gemma-3-4b-it/{L}-gemmascope-2-res-16k/{índice}`).
+Isso serve para depurar o código e ter uma primeira ideia, **não para o veredito**. Escreva `results/frente-c/provisorio.md` com o top-20 de cada lado e os rótulos do Neuronpedia (`gemma-3-4b-it/{L}-gemmascope-2-res-16k/{índice}`). Abra o arquivo com um aviso: nos pares originais, só o estilo do texto já separa nocivo de benigno com AUROC 0,88 (`results/frente-d/baseline_lexical.json`), então features "de intenção" aqui podem ser features de estilo.
 
 ## C2. Estatística no 2×2 (D6–D8)
 
 **Código:** `src/featgrpo/interp/feature_stats.py`.
 
-1. Para cada grupo completo do 2×2, cada feature j, camada L e posição p (`post`, `mean`, `trig`):
+1. Para cada grupo completo do 2×2, cada feature j, camada L e posição p (`post`, `post_last`, `mean`, `slot_forma`, `slot_intencao`):
    - calcule I_g, L_g e X_g (fórmulas em `00-visao-geral.md`);
-   - calcule d_I, d_L e d_X;
-   - calcule p-valores de Wilcoxon e q por BH sobre **todas** as features × camadas × posições do SAE em uso.
-2. Classifique em `S_intent`, `S_lex`, `S_mixed` e irrelevante, com os limiares pré-registrados.
+   - calcule d_I, d_L e d_X, com IC 95% por bootstrap sobre grupos;
+   - calcule p-valores de Wilcoxon (método de Pratt para os zeros) e q por BH sobre **todas** as features × camadas × posições do SAE em uso.
+2. Classifique em `S_intent`, `S_lex`, `S_mixed` e irrelevante, com os limiares pré-registrados (com o teste de equivalência).
    - **Atenção a features raras:** exija que a feature ative (> 0) em pelo menos 5% dos itens de alguma célula. Senão, d fica instável.
-3. **Replicação no `test`:** para cada feature de S_intent e S_lex escolhida em `train`+`val`, recalcule d_I e d_L no `test`. Reporte a fração com mesmo sinal e \|d\| ≥ 0,3.
+3. **Replicação no `test`:** para cada feature de S_intent e S_lex escolhida em `train`+`val`, recalcule d_I e d_L no `test`, separado em `gatilho_visto` e `gatilho_inedito`. Reporte a fração com mesmo sinal e \|d\| ≥ 0,3. **O C1 usa o inédito.**
+   - Repita por domínio e por tipo de gatilho (`trigger_type`), como análise secundária.
 4. **Saídas:**
-   - `results/frente-c/feature_classes_L{L}_{p}_{sae}.csv`, com colunas `feature, d_I, d_L, d_X, q_I, q_L, classe, d_I_test, d_L_test, freq_ativacao`;
+   - `results/frente-c/feature_classes_L{L}_{p}_{sae}.csv`, com colunas `feature, d_I, d_L, d_X, d_I_ci_lo, d_I_ci_hi, d_L_ci_lo, d_L_ci_hi, q_I, q_L, classe, d_I_test_inedito, d_L_test_inedito, d_I_test_visto, d_L_test_visto, freq_ativacao`;
    - `results/frente-c/c1_c3.json`, com o resumo por camada (tamanhos das classes, replicação) e a melhor camada × posição para S_intent;
    - as listas finais para B e D: `results/frente-c/listas/S_intent_L{L}_{p}_{sae}.json` e idem para `S_lex`.
 5. **Figura:** um scatter d_I × d_L de todas as features, por camada, com as classes coloridas. É **a figura central do paper**: dois "braços" separados (intenção no eixo x, lexical no eixo y) são a resposta visual.
 
 ## C3. As features de intenção não são lexicais (D8–D10)
 
-1. **Controle `trig_only`:** para cada feature de S_intent, calcule o d de a(`trig_only`) − a(`neutral_only`). Critério: \|d\| < 0,2 para a maioria. Para S_lex, esperamos o contrário, o que confirma que o controle funciona.
+1. **Controle `trig_only`:** para cada feature de S_intent, calcule o d de a(`trig_only`) − a(`neutral_only`). Critério: IC 95% de d dentro de ±0,2 para a maioria. Os controles usam as mesmas peças da lacuna de forma do 2×2, então também pegam o termo que substituiu o gatilho. Para S_lex, esperamos o contrário, o que confirma que o controle funciona.
 2. **Exemplos de maior ativação** para o top-20 de S_intent e de S_lex:
    - os 20 trechos com maior ativação num corpus de referência (~2M tokens de chat genérico + pedidos de segurança, **sem** o nosso dataset), com a posição destacada;
    - os 10 itens do nosso 2×2 com maior ativação, com a célula.

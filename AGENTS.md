@@ -63,7 +63,7 @@ Contrastes de respostas:
   - Chat template: o Gemma 3 **não tem papel `system`**. Um system prompt vai no início do turno do usuário.
   - bf16 ocupa ~9 GB e cabe numa 4090 junto com SAEs.
 - **SAEs prontos:** Gemma Scope 2, `google/gemma-scope-2-4b-it`.
-  - Release no SAELens: `gemma-scope-2-4b-it-resid_post`, com `sae_id` do tipo `layer_{L}_width_{16k|65k|262k|1m}_l0_{small|medium|large}`.
+  - Release no SAELens: `gemma-scope-2-4b-it-resid_post`, com `sae_id` do tipo `layer_{L}_width_{16k|65k|262k|1m}_l0_{small|medium|big}`.
   - Neuronpedia: `gemma-3-4b-it/{L}-gemmascope-2-res-16k`.
   - **Verifique a lista real de camadas e larguras** antes de fixar. As 4 profundidades com todas as larguras ficam em 25/50/65/85% das camadas; segundo o anúncio, as larguras 16k e 262k existem em todas.
 - **Convenção de camada:** `resid_post` da camada L = saída do bloco L = `hidden_states[L+1]` no `output_hidden_states` do HF (`hidden_states[0]` são os embeddings). Errar isso desloca tudo em uma camada.

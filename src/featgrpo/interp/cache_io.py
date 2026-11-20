@@ -46,7 +46,28 @@ def load_dense(root: Path, conjunto: str, layer: int, pos: str) -> np.ndarray:
 
 
 def load_latents(root: Path, conjunto: str, layer: int, pos: str, sae: str) -> sp.csr_matrix:
-    return sp.load_npz(latents_path(root, conjunto, layer, pos, sae)).tocsr()
+    """Latentes esparsos. Aceita dois formatos de `.npz`:
+
+    1. `scipy.sparse.save_npz` (tem a chave `format`);
+    2. CSR "à mão", como em `caio-frente-b.md` B2: `indices`, `values` (ou `data`), `indptr` e
+       `shape` (ou `d_sae`, o nº de features do SAE). Sem `shape`/`d_sae` não dá para saber
+       quantas features existem, e o carregamento falha com uma mensagem clara.
+    """
+    path = latents_path(root, conjunto, layer, pos, sae)
+    with np.load(path, allow_pickle=False) as z:
+        keys = set(z.files)
+        if "format" in keys:
+            pass
+        else:
+            data = z["values"] if "values" in keys else z["data"]
+            if "shape" in keys:
+                shape = tuple(int(s) for s in z["shape"])
+            elif "d_sae" in keys:
+                shape = (len(z["indptr"]) - 1, int(z["d_sae"]))
+            else:
+                raise ValueError(f"{path}: CSR sem 'shape' nem 'd_sae'; inclua um dos dois (ver PEDIDOS da frente B)")
+            return sp.csr_matrix((data, z["indices"], z["indptr"]), shape=shape)
+    return sp.load_npz(path).tocsr()
 
 
 def available(root: Path, conjunto: str) -> list[tuple[int, str]]:

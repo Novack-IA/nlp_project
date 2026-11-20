@@ -47,10 +47,12 @@
 | # | Tarefa | Prazo | Destrava |
 |---|---|---|---|
 | D-U1 | **(feito)** Baseline TF-IDF + só estilo + só gatilho, com o `test` em visto × inédito e por domínio → `results/frente-d/baseline_lexical.json`. TF-IDF 0,995; estilo 0,88; gatilho 0,50 | ~~D1~~ ✔ | C4 (régua) |
-| D-U2 | **(mudou)** **Validador automático** `src/featgrpo/data/phase1/validate_template.py` (`render_cells` + `validate_group`), com testes. Substitui a auditoria humana | **D1, antes da rodada seca** | A-U2 |
-| D-U3 | **(mudou)** `src/featgrpo/interp/probes.py` e `classifiers.py`, com o **C2 relativo ao TF-IDF** e o `test` em visto × inédito, testados em **vetores aleatórios** com o formato da seção 4 do `AGENTS.md`, para rodar no D2 quando o cache chegar | D2 | D3, D4 |
-| D-U4 | **(mudou)** Esqueleto de `results/VEREDITO.md` com a tabela C1–C5 nova (valor, limiar, atende, fonte), seção pronta para PARCIAL, e de `docs/paper/` | D2 | D7 |
-| D-U5 | **(novo)** Registrar no `results/DESVIOS.md` as mudanças do PR #1 (todas decididas antes de ver qualquer dado) | D0 | — |
+| D-U2 | **(feito)** **Validador automático** `src/featgrpo/data/phase1/validate_template.py` (`render_cells` + `validate_group` + CLI com relatório), com testes. Substitui a auditoria humana | ~~D1~~ ✔ | A-U2 |
+| D-U3 | **(feito)** `src/featgrpo/interp/probes.py`, `classifiers.py` e `cache_io.py`, com o **C2 relativo ao TF-IDF** e o `test` em visto × inédito, testados com cache sintético (sinais plantados). Rodam assim que o cache de B e as listas de C existirem | ~~D2~~ ✔ | D3, D4 |
+| D-U4 | **(feito)** Esqueleto de `results/VEREDITO.md` (tabela C1–C5 com fonte de cada número, âncora densa, seção PARCIAL) e de `docs/paper/` (seções com dono, figuras planejadas) | ~~D2~~ ✔ | D7 |
+| D-U5 | **(feito)** Mudanças do PR #1 registradas no `results/DESVIOS.md` | ~~D0~~ ✔ | — |
+
+**Próximo passo da frente D:** esperar o cache `pairs` (B-U3, D2) para rodar `probes.py` no modo diagnóstico, e o `cells_2x2.jsonl` (A-U5) para o baseline no 2×2. Até lá: rascunhar a introdução e os trabalhos relacionados do paper.
 
 ## Pontos de sincronização
 

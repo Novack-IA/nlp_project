@@ -12,9 +12,10 @@ O que calcula (sempre no `test`, com o recorte `gatilho_inedito` como principal)
   probe denso (teto): AUROC de intenção com gatilho, intenção sem gatilho e presença do gatilho.
   Dois classificadores: L1 (`l1`) e média das features padronizadas (`media`). O `l1` decide.
 - **C2(a), mínimo:** S_intent ≥ 0,85 com gatilho e ≥ 0,80 sem.
-- **C2(b), principal:** treina em `*_trig`, testa em `*_notrig`. Razão = queda(S_intent) / queda(TF-IDF).
-  **Atende** se razão ≤ 0,5 **e** o limite superior do IC 95% < 1 (S_intent cai menos que o TF-IDF
-  com confiança). **Indefinido** se o TF-IDF cair ≤ 0,02 (o 2×2 não tirou o sinal lexical).
+- **C2(b), principal, relativo ao TF-IDF onde ele sofre** (emenda 3 da frente A): três generalizações,
+  (1) gatilho inédito, (2) leave-one-domain-out e (3) XSTest. Em cada uma, razão = queda(S_intent) /
+  queda(TF-IDF); **atende** se razão ≤ 0,5 e o limite superior do IC 95% < 1; **indefinido** se o
+  TF-IDF cair ≤ 0,02. O C2(b) atende se **≥ 2 das 3** atendem.
 - **C2(c), consistência:** S_intent no gatilho ≤ 0,65; S_lex no gatilho ≥ 0,85. Não decide nada.
 - **Recortes C4:** (b) Q⁰ original *retrieved*; (c) células com diferença ≤ 20% em tokens.
 
@@ -141,32 +142,60 @@ def _primary(m: dict, key: str):
 
 # ---------------------------------------------------------------- C2(b): relativo ao TF-IDF
 
-def relative_drop(score_trig, score_notrig, tf_trig, tf_notrig, y_trig, y_notrig, g_trig, g_notrig,
-                  n_boot: int = 1000, seed: int = SEED) -> dict:
-    """Razão queda(features)/queda(TF-IDF), com IC 95% por bootstrap sobre grupos (os mesmos nas duas células)."""
-    def drops(idx_t, idx_n):
-        a_t, a_n = roc_auc_score(y_trig[idx_t], score_trig[idx_t]), roc_auc_score(y_notrig[idx_n], score_notrig[idx_n])
-        b_t, b_n = roc_auc_score(y_trig[idx_t], tf_trig[idx_t]), roc_auc_score(y_notrig[idx_n], tf_notrig[idx_n])
-        return a_t - a_n, b_t - b_n
+#
+# Régua nova (emenda 3 do parecer da frente A, adotada em 2026-11-20): no molde, as palavras da
+# intenção não mudam entre "com" e "sem gatilho", então o TF-IDF quase não cai ali. A comparação é
+# feita onde o TF-IDF sofre, em três generalizações. Em cada uma:
+#     queda = AUROC(dentro da distribuição) − AUROC(fora)       (tarefa: intenção, as 4 células)
+#     razão = queda(S_intent) / queda(TF-IDF)
+#     atende  se razão ≤ 0,5 e limite superior do IC 95% < 1;  indefinido se queda(TF-IDF) ≤ 0,02
+# O C2(b) atende se **pelo menos 2 das 3** generalizações atendem (indefinido e pendente não contam).
 
-    all_t, all_n = np.arange(len(y_trig)), np.arange(len(y_notrig))
-    d_feat, d_tf = drops(all_t, all_n)
-    out = {"queda_features": round(d_feat, 4), "queda_tfidf": round(d_tf, 4)}
+GENERALIZACOES = ("gatilho_inedito", "leave_one_domain_out", "xstest")
+MIN_ATENDE = 2
+
+
+def relative_drop_folds(folds: list[dict], n_boot: int = 1000, seed: int = SEED) -> dict:
+    """Razão das quedas (features/TF-IDF), média sobre as dobras, com IC 95% por bootstrap sobre grupos.
+
+    Cada dobra: `feat_in`, `feat_out`, `tf_in`, `tf_out` (notas), `y_in`, `y_out`, `g_in`, `g_out`.
+    No bootstrap, os grupos de dentro e de fora de cada dobra são sorteados com reposição.
+    """
+    def drops(idx):
+        df, dt = [], []
+        for f, (ii, io) in zip(folds, idx):
+            df.append(roc_auc_score(f["y_in"][ii], f["feat_in"][ii]) - roc_auc_score(f["y_out"][io], f["feat_out"][io]))
+            dt.append(roc_auc_score(f["y_in"][ii], f["tf_in"][ii]) - roc_auc_score(f["y_out"][io], f["tf_out"][io]))
+        return float(np.mean(df)), float(np.mean(dt))
+
+    full = [(np.arange(len(f["y_in"])), np.arange(len(f["y_out"]))) for f in folds]
+    d_feat, d_tf = drops(full)
+    out = {"n_dobras": len(folds), "queda_features": round(d_feat, 4), "queda_tfidf": round(d_tf, 4)}
     if d_tf <= TFIDF_MIN_DROP:
         out.update(razao=None, ic95=None, atende=None,
-                   status="indefinido: o TF-IDF não caiu sem o gatilho (o 2×2 não removeu o sinal lexical)")
+                   status="indefinido: o TF-IDF não caiu nesta generalização")
         return out
+
     rng = np.random.default_rng(seed)
-    uniq = np.array(sorted(set(g_trig) & set(g_notrig)))
-    by_t = {g: np.flatnonzero(g_trig == g) for g in uniq}
-    by_n = {g: np.flatnonzero(g_notrig == g) for g in uniq}
+
+    def by_group(g):
+        uniq = np.array(sorted(set(g)))
+        return uniq, {k: np.flatnonzero(g == k) for k in uniq}
+
+    index = [(by_group(f["g_in"]), by_group(f["g_out"])) for f in folds]
     ratios = []
     for _ in range(n_boot):
-        pick = rng.choice(uniq, size=len(uniq), replace=True)
-        it, in_ = np.concatenate([by_t[g] for g in pick]), np.concatenate([by_n[g] for g in pick])
-        if len(set(y_trig[it])) < 2 or len(set(y_notrig[in_])) < 2:
+        idx, ok = [], True
+        for f, ((ui, mi), (uo, mo)) in zip(folds, index):
+            ii = np.concatenate([mi[g] for g in rng.choice(ui, size=len(ui))])
+            io = np.concatenate([mo[g] for g in rng.choice(uo, size=len(uo))])
+            if len(set(f["y_in"][ii])) < 2 or len(set(f["y_out"][io])) < 2:
+                ok = False
+                break
+            idx.append((ii, io))
+        if not ok:
             continue
-        a, b = drops(it, in_)
+        a, b = drops(idx)
         if b > 1e-6:
             ratios.append(a / b)
     ratio = d_feat / d_tf
@@ -177,33 +206,84 @@ def relative_drop(score_trig, score_notrig, tf_trig, tf_notrig, y_trig, y_notrig
     return out
 
 
-def c2b(X, rows, texts: dict | None, n_boot, groups=None) -> dict:
-    """Treina intenção em *_trig (train), testa em *_trig e *_notrig (test, gatilho inédito)."""
-    train_trigs = {r["trig_norm"] for r in rows if r["split"] == "train"}
-    tr = _mask(rows, "train", TRIG, groups)
-    ytr = np.array([is_harm(r) for r, k in zip(rows, tr) if k])
-    gtr = np.array([r["trig_norm"] for r in rows])[tr]
-    sel = {}
-    for name, cells in (("trig", TRIG), ("notrig", NOTRIG)):
-        te = _mask(rows, "test", cells, groups) & ~cache_io.seen_mask(rows, train_trigs)
-        sel[name] = te
-    clf = L1().fit(X[tr], ytr, gtr)
-    s = {k: clf.score(X[m]) for k, m in sel.items()}
-    y = {k: np.array([is_harm(r) for r, kk in zip(rows, m) if kk]) for k, m in sel.items()}
-    g = {k: np.array([r["group_id"] for r, kk in zip(rows, m) if kk]) for k, m in sel.items()}
+def _fold(Z, texts_of, rows, tr, ins, outs, out_Z=None, out_rows=None, out_texts=None) -> dict | None:
+    """Treina S_intent (L1) e TF-IDF em `tr`; nota dentro (`ins`) e fora (`outs`, ou um conjunto externo)."""
+    ytr = np.array([is_harm(rows[i]) for i in tr])
+    if len(tr) == 0 or len(set(ytr)) < 2:
+        return None
+    gtr = np.array([rows[i]["trig_norm"] for i in tr])
+    clf = L1().fit(Z[tr], ytr, gtr)
+    tf = make_tfidf(C=10.0).fit([texts_of(rows[i]) for i in tr], ytr)
+    y_in = np.array([is_harm(rows[i]) for i in ins])
+    if out_Z is None:
+        out_Z, out_rows, out_texts = Z[outs], [rows[i] for i in outs], [texts_of(rows[i]) for i in outs]
+        y_out = np.array([is_harm(r) for r in out_rows])
+    else:
+        y_out = np.array([int(r.get("label") in ("harmful", 1)) for r in out_rows])
+    if len(set(y_in)) < 2 or len(set(y_out)) < 2:
+        return None
+    return {"feat_in": clf.score(Z[ins]), "feat_out": clf.score(out_Z),
+            "tf_in": tf.predict_proba([texts_of(rows[i]) for i in ins])[:, 1], "tf_out": tf.predict_proba(out_texts)[:, 1],
+            "y_in": y_in, "y_out": y_out,
+            "g_in": np.array([rows[i]["group_id"] for i in ins]), "g_out": np.array([r["group_id"] for r in out_rows])}
+
+
+def c2b(Z, rows, texts: dict | None, n_boot, groups=None, xstest: tuple | None = None) -> dict:
+    """C2(b) nas três generalizações. `Z` já restrito às features de S_intent.
+
+    `xstest` = (Z_xstest, linhas do índice do xstest com `label`, textos na mesma ordem), quando existir.
+    """
     if texts is None:
-        return {"status": "pendente: textos do 2×2 (datasets/phase1/cells_2x2.jsonl) para o TF-IDF"}
-    key = lambda r: (r["group_id"], r["cell"])  # noqa: E731
-    tf = make_tfidf(C=10.0).fit([texts[key(r)] for r, k in zip(rows, tr) if k], ytr)
-    t = {k: tf.predict_proba([texts[key(r)] for r, kk in zip(rows, m) if kk])[:, 1] for k, m in sel.items()}
-    return relative_drop(s["trig"], s["notrig"], t["trig"], t["notrig"], y["trig"], y["notrig"],
-                         g["trig"], g["notrig"], n_boot=n_boot)
+        return {"status": "pendente: textos do 2×2 (datasets/phase1/cells_2x2.jsonl) para o TF-IDF", "atende": None}
+    texts_of = lambda r: texts[(r["group_id"], r["cell"])]  # noqa: E731
+    ok_g = (lambda r: True) if groups is None else (lambda r: r["group_id"] in groups)
+    idx = lambda f: np.flatnonzero([f(r) and ok_g(r) for r in rows])  # noqa: E731
+    train_trigs = {r["trig_norm"] for r in rows if r["split"] == "train"}
+    res = {}
+
+    # 1. gatilho inédito: dentro = test com gatilho visto; fora = test com gatilho inédito
+    f = _fold(Z, texts_of, rows, idx(lambda r: r["split"] == "train"),
+              idx(lambda r: r["split"] == "test" and r["trig_norm"] in train_trigs),
+              idx(lambda r: r["split"] == "test" and r["trig_norm"] not in train_trigs))
+    res["gatilho_inedito"] = relative_drop_folds([f], n_boot) if f else {"status": "sem dados", "atende": None}
+
+    # 2. leave-one-domain-out: treina em 3 domínios; dentro = test dos 3; fora = test do 4º
+    folds = []
+    for d in sorted({r["domain"] for r in rows}):
+        f = _fold(Z, texts_of, rows, idx(lambda r: r["split"] == "train" and r["domain"] != d),
+                  idx(lambda r: r["split"] == "test" and r["domain"] != d),
+                  idx(lambda r: r["split"] == "test" and r["domain"] == d))
+        if f:
+            folds.append(f)
+    res["leave_one_domain_out"] = relative_drop_folds(folds, n_boot) if len(folds) >= 2 else \
+        {"status": "sem dados: precisa de pelo menos 2 domínios", "atende": None}
+
+    # 3. XSTest: treina no 2×2; dentro = test do 2×2; fora = XSTest
+    if xstest is None:
+        res["xstest"] = {"status": "pendente: cache e textos do XSTest", "atende": None}
+    else:
+        Zx, xs_rows, xs_texts = xstest
+        f = _fold(Z, texts_of, rows, idx(lambda r: r["split"] == "train"), idx(lambda r: r["split"] == "test"),
+                  None, out_Z=Zx, out_rows=xs_rows, out_texts=xs_texts)
+        res["xstest"] = relative_drop_folds([f], n_boot) if f else {"status": "sem dados", "atende": None}
+
+    n_ok = sum(1 for k in GENERALIZACOES if res[k].get("atende") is True)
+    n_def = sum(1 for k in GENERALIZACOES if res[k].get("atende") is not None)
+    res["n_atende"] = n_ok
+    res["n_definidas"] = n_def
+    res["atende"] = n_ok >= MIN_ATENDE
+    res["regra"] = "atende se ≥ 2 das 3 generalizações atendem (razão ≤ 0,5 e IC sup. < 1); indefinido/pendente não contam"
+    return res
 
 
 # ---------------------------------------------------------------- C2 completo
 
-def c2(Z, Xdense, rows, s_intent, s_lex, texts=None, n_boot=500, groups=None, n_random=N_RANDOM) -> dict:
-    """Matriz C2 + controles + C2(a/b/c). `Z` = latentes densificados [N, n_features]."""
+def c2(Z, Xdense, rows, s_intent, s_lex, texts=None, n_boot=500, groups=None, n_random=N_RANDOM,
+       xstest: tuple | None = None) -> dict:
+    """Matriz C2 + controles + C2(a/b/c). `Z` = latentes densificados [N, n_features].
+
+    `xstest` = (Z_xstest com todas as features, linhas com `label` e `group_id`, textos), opcional.
+    """
     tr = _mask(rows, "train", groups=groups)
     freq = (Z[tr] > 0).mean(0)
     pool = np.flatnonzero(freq >= MIN_FREQ)
@@ -230,7 +310,8 @@ def c2(Z, Xdense, rows, s_intent, s_lex, texts=None, n_boot=500, groups=None, n_
     a_com, a_sem = _primary(si, "intencao_com_gatilho"), _primary(si, "intencao_sem_gatilho")
     out["C2a"] = {"auroc_com_gatilho": a_com, "auroc_sem_gatilho": a_sem,
                   "atende": bool(a_com is not None and a_sem is not None and a_com >= 0.85 and a_sem >= 0.80)}
-    out["C2b"] = c2b(Z[:, s_intent], rows, texts, n_boot, groups) if len(s_intent) else None
+    xs = (xstest[0][:, s_intent], xstest[1], xstest[2]) if xstest is not None and len(s_intent) else None
+    out["C2b"] = c2b(Z[:, s_intent], rows, texts, n_boot, groups, xs) if len(s_intent) else None
     g_int, g_lex = _primary(si, "gatilho_todas"), _primary(sl, "gatilho_todas")
     out["C2c_consistencia"] = {"S_intent_gatilho": g_int, "S_lex_gatilho": g_lex,
                                "ok": bool(g_int is not None and g_lex is not None and g_int <= 0.65 and g_lex >= 0.85),
@@ -275,6 +356,22 @@ def load_cells_texts() -> tuple[dict, dict] | tuple[None, None]:
     return texts, meta
 
 
+def load_xstest(root: Path, layer: int, pos: str, sae: str) -> tuple | None:
+    """(latentes, linhas com label, textos) do XSTest, juntando o cache da frente B com o arquivo da frente A."""
+    from featgrpo.interp.baselines import load_xstest_items
+
+    items = load_xstest_items()
+    if items is None or not (Path(root) / "index" / "xstest.jsonl").exists() \
+            or not cache_io.latents_path(root, "xstest", layer, pos, sae).exists():
+        return None
+    by_id = {it["group_id"]: it for it in items}
+    rows = cache_io.load_index(root, "xstest")
+    keep = np.array([r["group_id"] in by_id for r in rows])
+    rows = [{**r, "label": by_id[r["group_id"]]["label"]} for r, k in zip(rows, keep) if k]
+    Zx = cache_io.load_latents(root, "xstest", layer, pos, sae)[keep].toarray().astype(np.float32)
+    return Zx, rows, [by_id[r["group_id"]]["text"] for r in rows]
+
+
 def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int = 500) -> dict:
     rows = cache_io.load_index(root, "cells2x2")
     keep = np.array([r["cell"] is not None for r in rows])
@@ -286,8 +383,9 @@ def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int
     s_int = load_list(lists_dir / f"S_intent_{tag}.json")
     s_lex = load_list(lists_dir / f"S_lex_{tag}.json")
     texts, meta = load_cells_texts()
+    xstest = load_xstest(root, layer, pos, sae)
 
-    res = {"principal": c2(Z, Xd, rows, s_int, s_lex, texts, n_boot)}
+    res = {"principal": c2(Z, Xd, rows, s_int, s_lex, texts, n_boot, xstest=xstest)}
     for name, groups in subsets(rows, meta).items():
         res[name] = {"n_grupos": len(groups)}
         if len({r["group_id"] for r in rows if r["split"] == "test" and r["group_id"] in groups}) >= 20:

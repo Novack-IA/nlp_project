@@ -48,7 +48,7 @@ trap 'say "saindo"; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -TERM -- -$(ca
 set -a; source $REPO/.env; set +a
 unset SSL_CERT_FILE REQUESTS_CA_BUNDLE CURL_CA_BUNDLE
 export APPTAINERENV_TRITON_LIBCUDA_PATH=/.singularity.d/libs
-export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
+export HF_HUB_DISABLE_SHARED_BLOBS=1 HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
        TMPDIR=$ST/tmp VLLM_WORKER_MULTIPROC_METHOD=spawn TOKENIZERS_PARALLELISM=false HF_XET_HIGH_PERFORMANCE=1 \
        PYTHONUNBUFFERED=1 PYTHONPATH=$REPO/src OMP_NUM_THREADS=8 \
        VLLM_CACHE_ROOT=$ST/cache/vllm TRITON_CACHE_DIR=$ST/cache/triton \
@@ -68,7 +68,7 @@ fi
 if [ $ON_RAID = 1 ]; then export HF_HUB_CACHE=$R/nlp_artifacts/hf_cache
 else
   m=models--google--gemma-3-4b-it
-  [ -f $ST/hf/.ok_google--gemma-3-4b-it ] || { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1
+  { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ -L && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1   # sempre (incremental; conserta links quebrados)
   [ -f $CORPUS/train.jsonl ] || raid_pull nlp_artifacts/sae_corpus/ $CORPUS/ || exit 1
 fi
 [ -f $CORPUS/train.jsonl ] || { say "sem corpus"; exit 1; }

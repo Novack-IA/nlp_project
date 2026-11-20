@@ -22,7 +22,7 @@ DV=/tmp/$USER/nlp/driver_venv
 MODELS=${MODELS:-"google/gemma-3-4b-it Qwen/Qwen3Guard-Gen-8B allenai/wildguard RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic"}
 set -a; source $REPO/.env; set +a
 unset SSL_CERT_FILE REQUESTS_CA_BUNDLE CURL_CA_BUNDLE
-export HF_HUB_CACHE=$HFC HF_HOME=$R/nlp_stage1/hf_home HF_DATASETS_CACHE=$R/nlp_stage1/hf_datasets \
+export HF_HUB_DISABLE_SHARED_BLOBS=1 HF_HUB_CACHE=$HFC HF_HOME=$R/nlp_stage1/hf_home HF_DATASETS_CACHE=$R/nlp_stage1/hf_datasets \
        TMPDIR=$R/nlp_stage1/tmp HF_XET_HIGH_PERFORMANCE=1 PYTHONPATH=$REPO/src PYTHONUNBUFFERED=1
 CRUN() { apptainer exec -B $R -B /home/$USER "$IMG" "$@"; }
 mon() { while true; do say "raid hf_cache: $(du -sh $HFC 2>/dev/null | cut -f1)"; sleep 120; done; }

@@ -50,7 +50,7 @@ set -a; source $REPO/.env; set +a
 unset SSL_CERT_FILE REQUESTS_CA_BUNDLE CURL_CA_BUNDLE
 export APPTAINERENV_TRITON_LIBCUDA_PATH=/.singularity.d/libs
 HFC=$ST/hf; [ $ON_RAID = 1 ] && HFC=$R/nlp_artifacts/hf_cache
-export HF_HUB_CACHE=$HFC HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
+export HF_HUB_DISABLE_SHARED_BLOBS=1 HF_HUB_CACHE=$HFC HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
        TMPDIR=$ST/tmp VLLM_WORKER_MULTIPROC_METHOD=spawn TOKENIZERS_PARALLELISM=false HF_XET_HIGH_PERFORMANCE=1 \
        PYTHONUNBUFFERED=1 PYTHONPATH=$REPO/src OMP_NUM_THREADS=4 \
        VLLM_CACHE_ROOT=$ST/cache/vllm TRITON_CACHE_DIR=$ST/cache/triton \
@@ -69,7 +69,7 @@ CRUN $DV/bin/python -m pytest -q $REPO/tests/test_phase1.py || { say "testes da 
 
 if [ $ON_RAID = 0 ]; then   # pesos vêm do /raid do h1003 (rede interna), não da internet
   for m in $EMB $JUDGE $QG $WG; do d=models--${m//\//--}
-    [ -f $HFC/.ok_${m//\//--} ] || { raid_pull nlp_artifacts/hf_cache/$d $HFC/ && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
+    { raid_pull nlp_artifacts/hf_cache/$d $HFC/ -L && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
   done
 fi
 ( CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $EMB $JUDGE $QG $WG ) > $LOGD/download.log 2>&1 &

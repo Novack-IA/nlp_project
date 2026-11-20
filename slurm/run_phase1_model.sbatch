@@ -1,11 +1,12 @@
 #!/bin/bash
-# Fase 1, frente A — modelo (3×H100 na h100n3 = dgx-H100-03, que tem o /raid local).
+# Fase 1, frente A — modelo (3×H100). Na dgx-H100-03 usa o /raid; em outro nó, /tmp/$USER/nlp (staging da
+# Fase 0) e empurra os SAEs para o /raid no fim.   sbatch -p h100n2 slurm/run_phase1_model.sbatch
 #   GPU0: vLLM do Gemma-3-4B-IT (comportamento natural) + SAE da camada 29
 #   GPU1: SAE da camada 22 (principal)      GPU2: SAE da camada 17
 # Comportamento: pares e externos já; células quando o job de dados escrever CELLS_DONE.
 # Retomável (checkpoints do SAE; arquivos de comportamento pulam se existem).
 #SBATCH --job-name=p1-model
-#SBATCH --partition=h100n3
+#SBATCH --partition=h100n2
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:3
@@ -22,10 +23,15 @@ say "job $SLURM_JOB_ID em $(hostname), GPUs=$CUDA_VISIBLE_DEVICES"
 
 REPO=/home/user_gustavonovack/nlp_project
 R=/raid/user_gustavonovack
-ST=$R/nlp_stage1; mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $ST/run
-IMG=$R/images/pytorch-2.8.0-cu128-devel.sif
-WBIND=$R/feat-grpo                                   # contém out/judge_serve_venv
-SAE=$R/nlp_artifacts/sae_proprio; CORPUS=$R/nlp_artifacts/sae_corpus; mkdir -p $SAE $CORPUS
+if [ "$(hostname -s)" = dgx-H100-03 ]; then
+  ON_RAID=1; ST=$R/nlp_stage1; IMG=$R/images/pytorch-2.8.0-cu128-devel.sif; WBIND=$R/feat-grpo; XB="-B $R"
+  SAE=$R/nlp_artifacts/sae_proprio; CORPUS=$R/nlp_artifacts/sae_corpus
+else
+  ON_RAID=0; ST=/tmp/$USER/nlp; IMG=$ST/pytorch-2.8.0-cu128-devel.sif; WBIND=$ST/w; XB=""
+  SAE=$ST/artifacts/sae_proprio; CORPUS=$ST/artifacts/sae_corpus
+fi
+mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $ST/run $SAE $CORPUS
+source $REPO/slurm/lib/raid.sh
 D1=data/phase1; D=$REPO/$D1; mkdir -p $D
 LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; mkdir -p $LOGD
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"
@@ -45,7 +51,7 @@ export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets
        VLLM_CACHE_ROOT=$ST/cache/vllm TRITON_CACHE_DIR=$ST/cache/triton \
        PHASE0_CONFIG=configs/data/phase0_v5b.yaml PHASE0_CACHE=data/phase0_cache PHASE0_RAW=data/phase0_raw \
        PHASE1_DATA=$D1
-CRUN() { apptainer exec --nv -B $WBIND:/w -B /home/$USER -B $R "$IMG" "$@"; }
+CRUN() { apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" "$@"; }
 VPY=/w/out/judge_serve_venv/bin/python
 DV=$ST/driver_venv
 REQ_MD5=$(md5sum $REPO/requirements-phase0.txt | cut -c1-12)
@@ -61,7 +67,7 @@ CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $SUBJ > $LOGD/downlo
 CORP=$!
 
 # GPU0: vLLM do 4B (fração menor, para dividir com o SAE L29)
-CUDA_VISIBLE_DEVICES=${GPU[0]} HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WBIND:/w -B /home/$USER -B $R "$IMG" \
+CUDA_VISIBLE_DEVICES=${GPU[0]} HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" \
   /w/out/judge_serve_venv/bin/vllm serve $SUBJ --host 127.0.0.1 --port $P_SUBJ --gpu-memory-utilization 0.40 \
   --max-model-len 4096 --max-num-seqs 128 --limit-mm-per-prompt '{"image": 0}' > $LOGD/vllm_subj.log 2>&1 &
 echo $! > $ST/run/pg_subj
@@ -94,6 +100,7 @@ train() {  # gpu-idx camada
   CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae eval --layer $L --out $out --corpus $CORPUS \
       --ref-gemmascope resid_post/layer_${L}_width_16k_l0_medium,resid_post/layer_${L}_width_16k_l0_small \
       > $LOGD/sae_eval_L$L.log 2>&1 || say "eval L$L falhou"
+  [ $ON_RAID = 0 ] && raid_push $out nlp_artifacts/sae_proprio/ && say "SAE L$L → raid"
   say "SAE L$L pronto"
 }
 train 1 22 & T22=$!

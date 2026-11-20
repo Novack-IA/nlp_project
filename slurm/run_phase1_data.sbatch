@@ -1,12 +1,14 @@
 #!/bin/bash
-# Fase 1, frente A — dados (3×H100 na h100n2; staging em /tmp/$USER/nlp, igual à Fase 0).
+# Fase 1, frente A — dados (3×H100). Na h100n3 (dgx-H100-03) usa imagem, venv do vLLM e pesos do /raid
+# (nlp_artifacts/hf_cache); em outro nó, staging em /tmp/$USER/nlp como na Fase 0.
+#   sbatch -p h100n3 slurm/run_phase1_data.sbatch
 #   GPU0+1: juiz Llama-3.3-70B FP8 (TP=2) + Qwen3Guard (GPU0) + WildGuard (GPU1) + embedder (GPU1)
 #   GPU2  : gerador gemma-4-31B
 # Passos (retomáveis; cache de chamadas compartilhado com a Fase 0):
 #   t1 tipologia ∥ externos (embedder)  →  t2 rodada seca (50)  →  gate rendimento ≥ 40%  →  t2 completo
 #   → controles  →  rotulagem do comportamento do 4B (arquivos gerados pelo job de modelo, via NFS)
 #SBATCH --job-name=p1-data
-#SBATCH --partition=h100n2
+#SBATCH --partition=h100n3
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:3
@@ -25,7 +27,11 @@ REPO=/home/user_gustavonovack/nlp_project
 ST=/tmp/$USER/nlp
 D1=data/phase1
 LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; mkdir -p $LOGD $ST/w/out $ST/hf $ST/home $ST/cache $ST/tmp $ST/run $REPO/$D1
-IMG=$ST/pytorch-2.8.0-cu128-devel.sif
+IMG=$ST/pytorch-2.8.0-cu128-devel.sif; WB=$ST/w; XB=""
+R=/raid/user_gustavonovack
+if [ "$(hostname -s)" = dgx-H100-03 ]; then
+  IMG=$R/images/pytorch-2.8.0-cu128-devel.sif; WB=$R/feat-grpo; XB="-B $R"; ON_RAID=1
+else ON_RAID=0; fi
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"
 [ ${#GPU[@]} -ge 3 ] || { say "precisa de 3 GPUs"; exit 1; }
 BASE=$((20000 + (SLURM_JOB_ID % 2000) * 10))
@@ -37,19 +43,20 @@ EMB=Qwen/Qwen3-Embedding-0.6B; GEN=google/gemma-4-31B-it
 trap 'say "saindo; derrubando servidores"; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
 
 source $REPO/slurm/lib/raid.sh
-if [ ! -f $IMG ]; then say "puxando imagem do raid"; raid_pull images/pytorch-2.8.0-cu128-devel.sif $ST/ --size-only || exit 1; fi
-if [ ! -x $ST/w/out/judge_serve_venv/bin/python ]; then say "puxando venv do vLLM"; raid_pull feat-grpo/out/judge_serve_venv $ST/w/out/ || exit 1; fi
+if [ $ON_RAID = 0 ] && [ ! -f $IMG ]; then say "puxando imagem do raid"; raid_pull images/pytorch-2.8.0-cu128-devel.sif $ST/ --size-only || exit 1; fi
+if [ $ON_RAID = 0 ] && [ ! -x $ST/w/out/judge_serve_venv/bin/python ]; then say "puxando venv do vLLM"; raid_pull feat-grpo/out/judge_serve_venv $ST/w/out/ || exit 1; fi
 
 set -a; source $REPO/.env; set +a
 unset SSL_CERT_FILE REQUESTS_CA_BUNDLE CURL_CA_BUNDLE
 export APPTAINERENV_TRITON_LIBCUDA_PATH=/.singularity.d/libs
-export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
+HFC=$ST/hf; [ $ON_RAID = 1 ] && HFC=$R/nlp_artifacts/hf_cache
+export HF_HUB_CACHE=$HFC HF_HOME=$ST/hf_home HF_DATASETS_CACHE=$ST/hf_datasets XDG_CACHE_HOME=$ST/cache \
        TMPDIR=$ST/tmp VLLM_WORKER_MULTIPROC_METHOD=spawn TOKENIZERS_PARALLELISM=false HF_XET_HIGH_PERFORMANCE=1 \
        PYTHONUNBUFFERED=1 PYTHONPATH=$REPO/src OMP_NUM_THREADS=4 \
        VLLM_CACHE_ROOT=$ST/cache/vllm TRITON_CACHE_DIR=$ST/cache/triton \
        PHASE0_CONFIG=configs/data/phase0_v5b.yaml PHASE0_CACHE=data/phase0_cache PHASE0_RAW=data/phase0_raw \
        PHASE0_DATA=data/phase0_v5b PHASE1_DATA=$D1
-CRUN() { apptainer exec --nv -B $ST/w:/w -B /home/$USER "$IMG" "$@"; }
+CRUN() { apptainer exec --nv -B $WB:/w $XB -B /home/$USER "$IMG" "$@"; }
 DV=$ST/driver_venv
 REQ_MD5=$(md5sum $REPO/requirements-phase0.txt | cut -c1-12)
 if [ ! -f $DV/.req_$REQ_MD5 ]; then
@@ -69,7 +76,7 @@ serve() {  # nome modelo porta idx-gpus util max_len [args...]
   local devs="" i; for i in ${gi//,/ }; do devs+="${devs:+,}${GPU[$i]}"; done
   wait_model "$model" || return 1
   say "serve $name ($model) gpus=$devs util=$util"
-  CUDA_VISIBLE_DEVICES=$devs HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $ST/w:/w -B /home/$USER "$IMG" \
+  CUDA_VISIBLE_DEVICES=$devs HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WB:/w $XB -B /home/$USER "$IMG" \
     /w/out/judge_serve_venv/bin/vllm serve "$model" --host 127.0.0.1 --port $port \
     --gpu-memory-utilization $util --max-model-len $len "$@" > $LOGD/vllm_$name.log 2>&1 &
   local pid=$!; echo $pid > $ST/run/pg_$name

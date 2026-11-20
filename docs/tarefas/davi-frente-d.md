@@ -79,7 +79,7 @@ Se você recuperar o acesso à h1003, avise o time: o SAE próprio (A5) pode pas
    - um conjunto **aleatório** de features com o mesmo tamanho (média de 20 sorteios);
    - o **probe denso** de D3 como teto;
    - o **TF-IDF** de D1 como régua.
-3. **C2(b), o critério principal, relativo:** treine em `harm_trig` × `ben_trig` e teste em `harm_notrig` × `ben_notrig`. Compare a queda de AUROC de S_intent com a do TF-IDF no mesmo protocolo. **Atende** se queda(S_intent) ≤ 0,5 × queda(TF-IDF), com IC 95% por bootstrap sobre grupos da razão das quedas. Se o TF-IDF não cair (queda ≤ 0,02), o critério fica **indefinido** e isso vai para o veredito: o 2×2 não removeu o sinal lexical.
+3. **C2(b), o critério principal, relativo:** treine em `harm_trig` × `ben_trig` e teste em `harm_notrig` × `ben_notrig`. Compare a queda de AUROC de S_intent com a do TF-IDF no mesmo protocolo. **Atende** se razão = queda(S_intent)/queda(TF-IDF) ≤ 0,5 **e** o limite superior do IC 95% da razão (bootstrap sobre grupos) < 1, ou seja, S_intent cai menos que o TF-IDF com confiança. Implementado em `classifiers.relative_drop`. Se o TF-IDF não cair (queda ≤ 0,02), o critério fica **indefinido** e isso vai para o veredito: o 2×2 não removeu o sinal lexical.
 4. **Generalização:** S_intent treinado no 2×2 e aplicado ao XSTest.
 5. **Por domínio e por tipo de gatilho** (análise secundária).
 6. **Saída:** `results/frente-d/c2_c4.json` e o heatmap da matriz.

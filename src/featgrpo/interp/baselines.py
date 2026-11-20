@@ -36,7 +36,6 @@ from pathlib import Path
 
 import numpy as np
 import sklearn
-from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score
@@ -44,33 +43,14 @@ from sklearn.model_selection import GroupKFold
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from featgrpo.data.phase1.validate_template import CELLS, normalize_trigger, trigger_present
 from featgrpo.interp.data import PHASE1, REPO, load_pairs, prompt_items
 
 SEED = 0
 C_GRID = (0.1, 1.0, 10.0, 100.0)
-CELLS = ("harm_trig", "harm_notrig", "ben_trig", "ben_notrig")
 
-_STEM = PorterStemmer()
-_TOKEN = re.compile(r"[a-z0-9']+")
-
-
-# ---------------------------------------------------------------- gatilhos
-
-def _stems(text: str) -> list[str]:
-    return [_STEM.stem(t) for t in _TOKEN.findall(text.lower())]
-
-
-def normalize_trigger(trigger: str) -> str:
-    """Forma canônica do gatilho (minúsculas + radical Porter), para agrupar e comparar."""
-    return " ".join(_stems(trigger))
-
-
-def trigger_present(text: str, trigger: str) -> bool:
-    """Gatilho no texto: literal (sem caixa) ou, se falhar, todos os radicais presentes."""
-    if trigger.lower().strip() in text.lower():
-        return True
-    trig = set(_stems(trigger))
-    return bool(trig) and trig <= set(_stems(text))
+__all__ = ["CELLS", "normalize_trigger", "trigger_present", "make_tfidf", "metrics", "bootstrap_ci",
+           "paired_accuracy", "report"]
 
 
 # ---------------------------------------------------------------- atributos de estilo

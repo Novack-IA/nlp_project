@@ -3,7 +3,13 @@
 | Arquivo | O que é | Gerado por |
 |---|---|---|
 | `baseline_lexical.json` | Baselines de texto (TF-IDF, só estilo, só gatilho) nos pares originais. As seções do 2×2 e do XSTest ficam "pendente" até a frente A entregar. | `PYTHONPATH=src python -m featgrpo.interp.baselines` |
+| `probes.json` + `probes_auroc_por_camada.png` | *(quando o cache da frente B existir)* Probes densos: intenção, generalização cruzada com ↔ sem gatilho, gatilho independente da intenção, cossenos entre direções. | `PYTHONPATH=src python -m featgrpo.interp.probes` |
+| `c2_c4.json` | *(quando existirem latentes e listas da frente C)* Matriz C2, C2(a/b/c), controles aleatório e denso, recortes C4b/c. | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer L --pos P --sae 16k` |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente D. | — |
+
+O validador do 2×2, usado pela frente A, é `PYTHONPATH=src python -m featgrpo.data.phase1.validate_template datasets/phase1/cells_2x2.jsonl --report results/frente-a/validacao_2x2.json`.
+
+Todos os scripts foram testados com dados sintéticos, com sinais plantados de intenção e de gatilho: `tests/test_validate_template.py`, `tests/test_probes_classifiers.py` e `tests/test_baselines.py` (23 testes).
 
 ## `baseline_lexical.json` em uma leitura
 

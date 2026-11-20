@@ -201,7 +201,9 @@ def train(a):
     last_fire = torch.zeros(a.width, device=dev, dtype=torch.long) + st["tokens"]
     corpus = Path(a.corpus) / "train.jsonl"
     gen = batches_from_corpus(tok, corpus, a.ctx, a.seqs, start_line=st["line"])
-    buf = torch.empty(0, d, device=dev)
+    cap_n = a.buffer + a.seqs * a.ctx                 # buffer pré-alocado (evita picos de memória do cat)
+    store = torch.empty(cap_n, d, device=dev, dtype=torch.bfloat16)
+    n_buf = 0
     t0, tok0 = time.time(), st["tokens"]
     next_ck = st["tokens"] + a.ckpt_every
     k_aux, dead_after = 512, 5_000_000
@@ -214,26 +216,33 @@ def train(a):
 
     exhausted = False
     while st["tokens"] < a.tokens and not exhausted:
-        # enche o buffer
-        while buf.shape[0] < a.buffer:
+        while n_buf < a.buffer:
             try:
                 (ids, m), line = next(gen)
             except StopIteration:
                 exhausted = True
                 break
             x = acts(model, cap, ids, m, dev)
-            buf = torch.cat([buf, x])
+            k = min(x.shape[0], cap_n - n_buf)
+            store[n_buf:n_buf + k] = x[:k].to(torch.bfloat16)
+            n_buf += k
+            del x
             if line is not None:
                 st["line"] = line
         if st["scale"] is None:
-            st["scale"] = float(math.sqrt(d / buf.pow(2).sum(1).mean().item()))
+            smp = store[:min(n_buf, 100_000)].float()
+            st["scale"] = float(math.sqrt(d / smp.pow(2).sum(1).mean().item()))
             with torch.no_grad():
-                sae.b_dec.data = (buf[:200_000] * st["scale"]).median(0).values
+                sae.b_dec.data = (smp * st["scale"]).median(0).values
+            del smp
             log(f"escala de normalização: {st['scale']:.5f}")
-        buf = buf[torch.randperm(buf.shape[0], device=dev)]
+        perm = torch.randperm(n_buf, device=dev)
+        store[:n_buf] = store[:n_buf][perm]
+        del perm
+        buf = store[:n_buf]
         use = buf.shape[0] if exhausted else buf.shape[0] // 2
         for i in range(0, use - a.batch + 1, a.batch):
-            x = buf[i:i + a.batch] * st["scale"]
+            x = buf[i:i + a.batch].float() * st["scale"]
             f, p, v = sae.encode_topk(x)
             xh = sae.decode(f)
             e = x - xh
@@ -276,7 +285,10 @@ def train(a):
                 next_ck += a.ckpt_every
             if st["tokens"] >= a.tokens:
                 break
-        buf = buf[use:]
+        rest = n_buf - use
+        if rest > 0:
+            store[:rest] = store[use:n_buf].clone()
+        n_buf = rest
     torch.save({"sae": sae.state_dict(), "opt": opt.state_dict(), "st": st}, ck)
     save_saelens(sae, st["scale"], a.layer, out / "sae", {"ctx": a.ctx, "tokens": st["tokens"], "width": a.width,
                                                           "lr": a.lr, "batch": a.batch, "corpus": str(a.corpus)})

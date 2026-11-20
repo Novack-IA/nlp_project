@@ -19,7 +19,7 @@ from ..phase0.p4_label import consolidate_response, judge_text
 from .common1 import (ACTIVE_GUARDS, JUDGE_MODEL, PAIRS, SUBJECT4B, chat_template, data1, fill, judge_json, log,
                       out_dir)
 
-SETS = ["pairs", "external", "cells"]
+SETS = ["pairs", "external", "cells", "mining"]
 GEN = {"temperature": 0.7, "top_p": 1.0, "seed": 0, "max_tokens": 512}
 CLASSES = ["unsafe_compliance", "safe_helpful", "partial_refusal", "refusal"]
 
@@ -41,6 +41,10 @@ def items(which: str) -> list[dict]:
                 out.append({"item_id": r["id"], "set": name, "cell": r.get("type"), "label": r["label"],
                             "text": r["text"], "group_id": None, "domain": None, "split": None})
         return out
+    if which == "mining":
+        return [{"item_id": r["item_id"], "set": "mining", "cell": "mined_benign", "label": "benign", "text": r["text"],
+                 "group_id": r["group_id"], "domain": r["domain"], "split": r["split"]}
+                for r in read_jsonl(data1() / "mining_variants.jsonl")]
     out = []
     for g in read_jsonl(out_dir() / "cells_2x2.jsonl"):
         for c, v in g["cells"].items():
@@ -122,9 +126,6 @@ def merge():
         tab[key]["ORR" if lab == "benign" else "HCR"] = rate(rs, refuse if lab == "benign" else comply_harm)
         tab[key]["refusal_rate"] = rate(rs, refuse)
         tab[key]["classes"] = dict(Counter(r["labels"]["final"] for r in rs))
-    for r in rows:
-        if r["set"] == "xstest":
-            pass
     write_json(out_dir() / "hcr_orr_4b.json", tab)
     hard = [{k: r[k] for k in keep} | {"class": r["labels"]["final"]} for r in rows
             if r["label"] == "benign" and refuse(r)]

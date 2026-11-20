@@ -23,10 +23,10 @@ _(a escrever: Davi.)_ Roteiro:
 
 _(a escrever: Davi.)_ Três blocos. Reaproveitar o relatório da Fase 0 (§3, §5.5, §13).
 
-- **SAEs e interpretabilidade.** Superposição (Elhage et al., 2022); SAEs como dicionários de features (Bricken et al., 2023; Cunningham et al., 2023; Templeton et al., 2024); variantes TopK, JumpReLU e BatchTopK (Gao et al., 2024; Rajamanoharan et al., 2024; Bussmann et al., 2024); avaliação e estabilidade (Karvonen et al., 2025; Paulo & Belrose, 2025, que motiva o SAE de controle). Gemma Scope (Lieberum et al., 2024) e Gemma Scope 2 **(a confirmar)**.
+- **SAEs e interpretabilidade.** Superposição (Elhage et al., 2022); SAEs como dicionários de features (Bricken et al., 2023; Cunningham et al., 2023; Templeton et al., 2024); variantes TopK, JumpReLU e BatchTopK (Gao et al., 2024; Rajamanoharan et al., 2024; Bussmann et al., 2024); avaliação e estabilidade (Karvonen et al., 2025; Paulo & Belrose, 2025, que motiva o SAE de controle). Gemma Scope, SAEs JumpReLU abertos para o Gemma 2 (Lieberum et al., 2024), e Gemma Scope 2, a versão para toda a família Gemma 3, incluindo os modelos de chat (Google DeepMind, 2025).
 - **Recusa como direção.** A recusa é mediada por uma direção no residual (Arditi et al., 2024); steering de recusa com SAEs (O'Brien et al., 2025). Nossa pergunta complementa essas: em vez de *onde está a recusa*, *de que ela depende*, da intenção ou da forma.
 - **Over-refusal e datasets.** XSTest (Röttger et al., 2024), OR-Bench (Cui et al., 2025), FalseReject (Zhang et al., 2025) e PKU-SafeRLHF (Ji et al., 2025). Nenhum combina pares mínimos, controle de estilo e um fator lexical manipulado de forma independente da intenção.
-- **Autointerp.** Descrição de features por LLM e pontuação de detecção **(a confirmar referências)**.
+- **Autointerp.** Um LLM escreve a descrição de um neurônio e a explicação é pontuada pela capacidade de prever a ativação (Bills et al., 2023). Paulo et al. (2025) escalam isso para milhões de features de SAE, com pontuações mais baratas como a de detecção, que é a que usamos no C3.
 
 ## 3. Dados
 
@@ -94,20 +94,23 @@ O dataset contém pedidos e respostas nocivas, todos do PKU-SafeRLHF. Não geram
 
 ## Referências
 
-_Do relatório da Fase 0 (§13), mais as marcadas_ **(a confirmar)**.
+_Do relatório da Fase 0 (§13), mais as quatro novas (Bills, Google DeepMind, Lieberum, Paulo et al. 2025), conferidas na fonte em 2026-11-20._
 
 - Arditi et al. (2024). *Refusal in Language Models Is Mediated by a Single Direction.*
+- Bills, S., Cammarata, N., Mossing, D., Tillman, H., Gao, L., Goh, G., Sutskever, I., Leike, J., Wu, J. & Saunders, W. (2023). *Language Models Can Explain Neurons in Language Models.* OpenAI. https://openai.com/index/language-models-can-explain-neurons-in-language-models/
 - Bricken et al. (2023). *Towards Monosemanticity.* Transformer Circuits.
 - Bussmann et al. (2024). *BatchTopK Sparse Autoencoders.*
 - Cui et al. (2025). *OR-Bench.*
 - Cunningham et al. (2023). *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* arXiv:2309.08600.
 - Elhage et al. (2022). *Toy Models of Superposition.* arXiv:2209.10652.
 - Gao et al. (2024). *Scaling and Evaluating Sparse Autoencoders.*
+- Google DeepMind (2025, 19 dez.). *Gemma Scope 2: Helping the AI Safety Community Deepen Understanding of Complex Language Model Behavior.* https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/ · pesos e documentação: https://ai.google.dev/gemma/docs/gemma_scope
 - Han et al. (2024). *WildGuard.*
 - Ji et al. (2025). *PKU-SafeRLHF.* ACL.
 - Karvonen et al. (2025). *SAEBench.*
-- Lieberum et al. (2024). *Gemma Scope.* **(a confirmar)**
+- Lieberum, T. et al. (2024). *Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2.* BlackboxNLP 2024, p. 278–300. arXiv:2408.05147.
 - O'Brien et al. (2025). *Steering Language Model Refusal with Sparse Autoencoders.*
+- Paulo, G., Mallen, A., Juang, C. & Belrose, N. (2025). *Automatically Interpreting Millions of Features in Large Language Models.* ICML 2025. arXiv:2410.13928.
 - Paulo & Belrose (2025). *Sparse Autoencoders Trained on the Same Data Learn Different Features.*
 - Qwen Team (2025). *Qwen3Guard.*
 - Rajamanoharan et al. (2024). *JumpReLU Sparse Autoencoders.*

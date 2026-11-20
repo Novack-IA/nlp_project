@@ -66,6 +66,18 @@ def test_cache_io_reads_contract(cache):
     assert cache_io.load_latents(cache, "cells2x2", L, POS, "16k").shape == (960, NF)
 
 
+def test_load_latents_accepts_hand_made_csr(tmp_path):
+    M = sp.csr_matrix(np.array([[0, 1.5, 0], [2.0, 0, 0]], dtype=np.float32))
+    ldir = tmp_path / "resid_post" / "L03"
+    ldir.mkdir(parents=True)
+    np.savez(ldir / "pairs__post__16k.npz", indices=M.indices, values=M.data, indptr=M.indptr, d_sae=3)
+    got = cache_io.load_latents(tmp_path, "pairs", 3, "post", "16k")
+    assert (got.toarray() == M.toarray()).all()
+    np.savez(ldir / "pairs__post__262k.npz", indices=M.indices, values=M.data, indptr=M.indptr)
+    with pytest.raises(ValueError, match="shape"):
+        cache_io.load_latents(tmp_path, "pairs", 3, "post", "262k")
+
+
 def test_probes_recover_planted_directions(cache):
     res = probes.run(cache, n_boot=50)["resultados"]
     c = res["cells2x2"][f"L{L}/{POS}"]

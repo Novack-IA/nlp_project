@@ -1,20 +1,29 @@
 """Validador automático do 2×2 por frase-molde (frente D, D-U2). Substitui a auditoria humana.
 
-A frente A usa este módulo de dois jeitos:
+É uma **segunda checagem, independente**, do que a frente A já valida em `t2_cells.structural_check`.
+Aceita os dois formatos de grupo:
+
+- o da frente A (`t2_cells.py`, o que de fato sai no `cells_2x2.jsonl`): `frame` com `{FORM}`/`{INTENT}`,
+  `form_alarm`, `form_neutral`, `intent_harmful`, `intent_benign` e `cells[*].slots = {"form", "intent"}`;
+- o da seção A1 de `docs/tarefas/gustavo-frente-a.md`: `template` com `{FORMA}`/`{INTENCAO}`, `slots`
+  e `cells[*].spans = {"forma", "intencao"}`.
+
+Uso:
 
     from featgrpo.data.phase1.validate_template import render_cells, validate_group
-
-    cells = render_cells(template, slots)   # monta as 4 células + posições das lacunas
-    erros = validate_group(grupo)           # [] = grupo aprovado; senão, códigos de erro
-
-E na linha de comando, sobre o arquivo inteiro:
+    erros = validate_group(grupo)           # [] = aprovado; senão, códigos de erro
 
     PYTHONPATH=src python -m featgrpo.data.phase1.validate_template \
         datasets/phase1/cells_2x2.jsonl --report results/frente-a/validacao_2x2.json
 
-O formato do grupo está em `docs/tarefas/gustavo-frente-a.md`, seção A1. Este módulo só
-checa o que dá para checar por código: estrutura, gatilho, diff entre células, tamanho e
-posições. Se a intenção está certa e é a mesma do original, quem decide são os juízes da frente A.
+Só checa o que dá para checar por código: estrutura, palavra alarmante presente/ausente, diff entre
+células, tamanho e posições. Se a intenção está certa e é a mesma, quem decide são os juízes da frente A.
+
+Regras alinhadas com a frente A (parecer de 2026-11-20 e `results/DESVIOS.md`):
+- a presença/ausência é checada pela **palavra alarmante** (`form_alarm`); nos gatilhos `surface`/`action`
+  ela precisa ser o gatilho do grupo, e nos `intent_marker` é outra palavra alarmante do Q⁺;
+- tamanho: máx/mín de palavras ≤ 1,2 **ou** diferença ≤ 3 palavras;
+- se o molde começa por uma lacuna, a primeira letra do texto vai em maiúscula.
 """
 from __future__ import annotations
 
@@ -39,7 +48,12 @@ CELL_SLOTS = {
 }
 SLOT_KEYS = ("forma_trig", "forma_neutra", "intencao_nociva", "intencao_benigna")
 SPLITS = ("train", "val", "test")
-MAX_LEN_DIFF = 0.20
+LEN_RATIO = 1.20
+LEN_SLACK = 3
+# nomes da frente A -> nomes usados aqui
+TYPE_ALIASES = {"surface": "superficie", "action": "acao", "intent_marker": "marcador_intencao"}
+FRONT_A_SLOTS = {"forma_trig": "form_alarm", "forma_neutra": "form_neutral",
+                 "intencao_nociva": "intent_harmful", "intencao_benigna": "intent_benign"}
 
 _STEM = PorterStemmer()
 _TOKEN = re.compile(r"[a-z0-9']+")
@@ -69,15 +83,16 @@ def trigger_present(text: str, trigger: str) -> bool:
 def render(template: str, forma: str, intencao: str) -> tuple[str, dict]:
     """Preenche o molde e devolve o texto e as posições [início, fim) de cada lacuna."""
     pos = sorted([(template.index(FORMA), FORMA, forma), (template.index(INTENCAO), INTENCAO, intencao)])
-    out, spans, cursor = [], {}, 0
+    text, spans, cursor = "", {}, 0
     for start, ph, value in pos:
-        out.append(template[cursor:start])
-        s = sum(len(p) for p in out)
-        out.append(value)
-        spans["forma" if ph == FORMA else "intencao"] = [s, s + len(value)]
+        text += template[cursor:start]
+        spans["forma" if ph == FORMA else "intencao"] = [len(text), len(text) + len(value)]
+        text += value
         cursor = start + len(ph)
-    out.append(template[cursor:])
-    return "".join(out), spans
+    text += template[cursor:]
+    if text and text[0].islower():  # mesma regra da frente A
+        text = text[0].upper() + text[1:]
+    return text, spans
 
 
 def render_cells(template: str, slots: dict) -> dict:
@@ -87,6 +102,23 @@ def render_cells(template: str, slots: dict) -> dict:
         text, spans = render(template, slots[k_forma], slots[k_int])
         cells[cell] = {"text": text, "spans": spans}
     return cells
+
+
+def normalize_group(g: dict) -> dict:
+    """Converte o formato da frente A para o deste módulo (sem alterar o original)."""
+    g = dict(g)
+    if "frame" in g:
+        frame = g.get("frame")
+        g["template"] = frame.replace("{FORM}", FORMA).replace("{INTENT}", INTENCAO) if frame else None
+        g["slots"] = {k: g.get(v) for k, v in FRONT_A_SLOTS.items()}
+        cells = {}
+        for c, v in (g.get("cells") or {}).items():
+            sl = v.get("spans") or v.get("slots") or {}
+            cells[c] = {**v, "spans": {"forma": sl.get("forma", sl.get("form")),
+                                       "intencao": sl.get("intencao", sl.get("intent"))}}
+        g["cells"] = cells
+    g["trigger_type"] = TYPE_ALIASES.get(g.get("trigger_type"), g.get("trigger_type"))
+    return g
 
 
 # ---------------------------------------------------------------- validação
@@ -106,8 +138,14 @@ def _n_words(text: str) -> int:
     return len(text.split())
 
 
-def validate_group(g: dict, max_len_diff: float = MAX_LEN_DIFF) -> list[str]:
-    """Lista de erros do grupo (`código: detalhe`). Lista vazia = aprovado."""
+def length_ok(lens: list[int], ratio: float = LEN_RATIO, slack: int = LEN_SLACK) -> bool:
+    """Máx/mín ≤ ratio, ou diferença absoluta ≤ slack palavras (regra da frente A)."""
+    return min(lens) > 0 and (max(lens) / min(lens) <= ratio or max(lens) - min(lens) <= slack)
+
+
+def validate_group(g: dict) -> list[str]:
+    """Lista de erros do grupo (`código: detalhe`). Lista vazia = aprovado. Aceita os dois formatos."""
+    g = normalize_group(g)
     errs: list[str] = []
     for key in ("group_id", "domain", "split", "trigger", "cells"):
         if not g.get(key):
@@ -116,10 +154,7 @@ def validate_group(g: dict, max_len_diff: float = MAX_LEN_DIFF) -> list[str]:
         return errs
     if g["split"] not in SPLITS:
         errs.append(f"split_invalido: {g['split']}")
-    if g.get("trigger_type") == "marcador_intencao":
-        errs.append("gatilho_marcador_intencao: fica fora da análise principal")
 
-    trigger = g["trigger"]
     cells = g["cells"]
     missing = [c for c in CELLS if c not in cells or not (cells[c] or {}).get("text")]
     if missing:
@@ -128,48 +163,50 @@ def validate_group(g: dict, max_len_diff: float = MAX_LEN_DIFF) -> list[str]:
 
     template = g.get("template")
     if template is not None:
-        errs += _validate_template(g, template, trigger, cells)
+        errs += _validate_template(g, template, cells)
+        alarm = (g.get("slots") or {}).get("forma_trig") or g["trigger"]
     else:
-        errs += _validate_local_edit(texts, trigger, cells)
+        errs += _validate_local_edit(texts, g["trigger"], cells)
+        alarm = g["trigger"]
 
-    # gatilho presente/ausente
+    # palavra alarmante presente com gatilho, ausente sem gatilho
     for c in CELLS:
-        has = trigger_present(texts[c], trigger)
+        has = trigger_present(texts[c], alarm)
         if c.endswith("_trig") and not has:
             errs.append(f"gatilho_ausente: {c}")
         if c.endswith("_notrig") and has:
             errs.append(f"gatilho_presente: {c}")
 
-    # tamanho
     lens = [_n_words(texts[c]) for c in CELLS]
-    if max(lens) and (max(lens) - min(lens)) / max(lens) > max_len_diff:
-        errs.append(f"tamanho: {min(lens)}–{max(lens)} palavras (> {max_len_diff:.0%})")
-
-    # textos iguais entre células que deveriam diferir
+    if not length_ok(lens):
+        errs.append(f"tamanho: {min(lens)}–{max(lens)} palavras")
     if len(set(texts.values())) < 4:
         errs.append("celulas_repetidas")
     return errs
 
 
-def _validate_template(g: dict, template: str, trigger: str, cells: dict) -> list[str]:
+def _validate_template(g: dict, template: str, cells: dict) -> list[str]:
     errs = []
     if template.count(FORMA) != 1 or template.count(INTENCAO) != 1:
-        return [f"molde_invalido: precisa de {FORMA} e {INTENCAO} exatamente uma vez cada"]
+        return ["molde_invalido: precisa de uma lacuna de forma e uma de intenção, uma vez cada"]
     slots = g.get("slots") or {}
-    absent = [k for k in SLOT_KEYS if not str(slots.get(k, "")).strip()]
+    absent = [k for k in SLOT_KEYS if not str(slots.get(k) or "").strip()]
     if absent:
         return [f"peca_ausente: {','.join(absent)}"]
-    if trigger_present(template.replace(FORMA, " ").replace(INTENCAO, " "), trigger):
-        errs.append("gatilho_no_molde: o gatilho aparece fora da lacuna de forma")
-    if not trigger_present(slots["forma_trig"], trigger):
-        errs.append("forma_trig_sem_gatilho")
-    if trigger_present(slots["forma_neutra"], trigger):
-        errs.append("forma_neutra_com_gatilho")
+    alarm, neutral = slots["forma_trig"], slots["forma_neutra"]
+    rest = template.replace(FORMA, " ").replace(INTENCAO, " ")
+
+    if trigger_present(rest, alarm):
+        errs.append("gatilho_no_molde: a palavra alarmante aparece fora da lacuna de forma")
     for k in ("intencao_nociva", "intencao_benigna"):
-        if trigger_present(slots[k], trigger):
+        if trigger_present(slots[k], alarm):
             errs.append(f"gatilho_na_intencao: {k}")
-    if slots["forma_trig"].strip().lower() == slots["forma_neutra"].strip().lower():
-        errs.append("formas_iguais")
+    if set(_stems(alarm)) & set(_stems(neutral)) or alarm.strip().lower() == neutral.strip().lower():
+        errs.append("forma_neutra_compartilha_radical")
+    if g.get("trigger_type") in ("superficie", "acao"):
+        trig = g["trigger"]
+        if not (trigger_present(alarm, trig) or trigger_present(trig, alarm)):
+            errs.append("forma_alarmante_nao_e_o_gatilho")
     if slots["intencao_nociva"].strip().lower() == slots["intencao_benigna"].strip().lower():
         errs.append("intencoes_iguais")
 
@@ -189,14 +226,12 @@ def _validate_local_edit(texts: dict, trigger: str, cells: dict) -> list[str]:
         a, b = texts[f"{row}_trig"], texts[f"{row}_notrig"]
         sa, _ = _single_edit(a, b)
         changed = a[sa[0]:sa[1]]
-        # o trecho trocado precisa cobrir o gatilho, e não pode ser quase a frase toda
         if not trigger_present(changed, trigger):
             errs.append(f"edicao_nao_cobre_gatilho: {row}")
         if len(changed) > 0.5 * len(a):
             errs.append(f"edicao_grande_demais: {row} ({len(changed)}/{len(a)} caracteres)")
     for c in CELLS:
-        spans = cells[c].get("spans") or {}
-        f = spans.get("forma")
+        f = (cells[c].get("spans") or {}).get("forma")
         if f is None or not (0 <= f[0] < f[1] <= len(texts[c])):
             errs.append(f"spans_errados: {c}")
     return errs
@@ -220,10 +255,11 @@ def validate_file(path: Path) -> dict:
             errs = validate_group(g)
             passed = not errs
             ok += passed
+            ttype = TYPE_ALIASES.get(g.get("trigger_type"), g.get("trigger_type"))
             by_domain[g.get("domain")][0] += 1
             by_domain[g.get("domain")][1] += passed
-            by_type[g.get("trigger_type")][0] += 1
-            by_type[g.get("trigger_type")][1] += passed
+            by_type[ttype][0] += 1
+            by_type[ttype][1] += passed
             for e in errs:
                 reasons[e.split(":")[0]] += 1
             if errs:

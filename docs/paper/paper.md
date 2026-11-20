@@ -61,7 +61,7 @@ _(a escrever: Davi.)_
 
 - **Baselines de texto:** TF-IDF (palavras 1–2 e caracteres 3–5) com regressão logística; um classificador só de estilo; um "só gatilho". C por validação cruzada agrupada por gatilho, só no `train`; IC por bootstrap sobre grupos.
 - **Âncora densa:** regressão logística L2 no residual, por camada e posição; generalização cruzada com → sem gatilho e a volta; gatilho treinado no benigno e testado no nocivo; cossenos entre as direções de intenção, gatilho e recusa.
-- **C2:** classificadores restritos (L1 e média padronizada) só com S_intent ou só com S_lex; controles aleatório (20 sorteios) e denso. Critério principal relativo: razão entre a queda de S_intent e a do TF-IDF ao tirar o gatilho, ≤ 0,5 com o limite superior do IC 95% < 1.
+- **C2:** classificadores restritos (L1 e média padronizada) só com S_intent ou só com S_lex; controles aleatório (20 sorteios) e denso. Critério principal relativo: em três generalizações em que um classificador de palavras falha (gatilho inédito, domínio inédito e XSTest), a queda de AUROC de S_intent é no máximo metade da queda do TF-IDF (limite superior do IC 95% da razão < 1), em pelo menos 2 das 3.
 - **Recortes C4:** Q⁰ *retrieved* e células de tamanho pareado.
 
 ### 4.4 Intervenção

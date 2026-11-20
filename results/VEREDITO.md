@@ -29,7 +29,10 @@ Todos no `test`, recorte **gatilho inédito**, salvo indicação.
 | C1 | Fração de S_intent que replica no `test` (\|d_I\| ≥ 0,3, mesmo sinal) | | ≥ 70% | | `results/frente-c/c1_c3.json` |
 | C2(a) | AUROC de S_intent, intenção **com** gatilho | | ≥ 0,85 | | `results/frente-d/c2_c4.json` → `principal.C2a.auroc_com_gatilho` |
 | C2(a) | AUROC de S_intent, intenção **sem** gatilho | | ≥ 0,80 | | `… principal.C2a.auroc_sem_gatilho` |
-| **C2(b)** | Razão queda(S_intent)/queda(TF-IDF), com IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.razao`, `ic95` |
+| C2(b).1 | Gatilho inédito: razão queda(S_intent)/queda(TF-IDF), IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.gatilho_inedito` |
+| C2(b).2 | Leave-one-domain-out: razão, IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.leave_one_domain_out` |
+| C2(b).3 | XSTest: razão, IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.xstest` |
+| **C2(b)** | Generalizações que atendem | | **≥ 2 de 3** | | `… principal.C2b.n_atende`, `atende` |
 | C2(c) | Consistência: S_intent no gatilho / S_lex no gatilho | | ≤ 0,65 / ≥ 0,85 | não decide | `… principal.C2c_consistencia` |
 | C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | | maioria | | `results/frente-c/c1_c3.json` |
 | C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | | ≥ 60% | | `results/frente-c/c1_c3.json` |

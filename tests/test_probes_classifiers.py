@@ -13,6 +13,7 @@ from featgrpo.data.phase1.validate_template import CELLS
 from featgrpo.interp import cache_io, classifiers, probes
 
 D, NF, L, POS = 24, 40, 5, "post"
+DOMAINS = ("bias", "cyber", "privacy", "violence")
 INTENT_FEATS, LEX_FEATS = list(range(5)), list(range(5, 10))
 
 
@@ -28,7 +29,7 @@ def cache(tmp_path_factory):
             else (triggers[rng.integers(0, 30)] if rng.random() < 0.5 else f"novo{gi}")
         for cell in CELLS:
             h, t = int(cell.startswith("harm")), int(cell.endswith("_trig"))
-            cell_rows.append({"group_id": f"g{gi}", "item": cell, "split": split, "domain": "cyber",
+            cell_rows.append({"group_id": f"g{gi}", "item": cell, "split": split, "domain": DOMAINS[gi % 4],
                               "trigger": trig, "n_tokens": 20, "trigger_aligned": True})
             x = rng.normal(size=D)
             x[0] += 2.5 * h
@@ -39,7 +40,7 @@ def cache(tmp_path_factory):
             z[LEX_FEATS] = np.maximum(rng.normal(2.5 * t - 0.5, 1.0, size=5), 0)
             Zc.append(z)
         for item, h in (("q_harm", 1), ("q_border", 0)):
-            pair_rows.append({"group_id": f"g{gi}", "item": item, "split": split, "domain": "cyber",
+            pair_rows.append({"group_id": f"g{gi}", "item": item, "split": split, "domain": DOMAINS[gi % 4],
                               "trigger": trig, "n_tokens": 20, "trigger_aligned": True})
             x = rng.normal(size=D)
             x[0] += 2.5 * h
@@ -111,15 +112,47 @@ def test_relative_drop_rule():
     g = np.repeat(np.arange(n), 2).astype(str)
     strong = y + rng.normal(0, 0.3, len(y))
     weak = y + rng.normal(0, 1.5, len(y))
+
+    def fold(fi, fo, ti, to):
+        return {"feat_in": fi, "feat_out": fo, "tf_in": ti, "tf_out": to, "y_in": y, "y_out": y, "g_in": g, "g_out": g}
+
     # features quase não caem; TF-IDF cai muito -> atende
-    r = classifiers.relative_drop(strong, strong + rng.normal(0, 0.05, len(y)), strong, weak, y, y, g, g, n_boot=200)
+    r = classifiers.relative_drop_folds([fold(strong, strong + rng.normal(0, 0.05, len(y)), strong, weak)], n_boot=200)
     assert r["atende"] is True and r["razao"] < 0.5
     # features caem tanto quanto o TF-IDF -> não atende
-    r = classifiers.relative_drop(strong, weak, strong, weak, y, y, g, g, n_boot=200)
+    r = classifiers.relative_drop_folds([fold(strong, weak, strong, weak)], n_boot=200)
     assert r["atende"] is False
     # TF-IDF não cai -> indefinido
-    r = classifiers.relative_drop(strong, weak, strong, strong, y, y, g, g, n_boot=50)
+    r = classifiers.relative_drop_folds([fold(strong, weak, strong, strong)], n_boot=50)
     assert r["atende"] is None and r["status"].startswith("indefinido")
+    # várias dobras: média das quedas
+    r = classifiers.relative_drop_folds([fold(strong, strong, strong, weak)] * 3, n_boot=50)
+    assert r["n_dobras"] == 3 and r["atende"] is True
+
+
+def test_c2b_three_generalizations(cache):
+    """TF-IDF decora palavras de cada domínio; as features de intenção não dependem do domínio."""
+    rng = np.random.default_rng(2)
+    rows = cache_io.load_index(cache, "cells2x2")
+    Z = cache_io.load_latents(cache, "cells2x2", L, POS, "16k").toarray()
+    vocab = {d: ("".join(rng.choice(list("bcdfghjklmnpqrstvwxz"), 6)), "".join(rng.choice(list("bcdfghjklmnpqrstvwxz"), 6)))
+             for d in DOMAINS}
+    texts = {(r["group_id"], r["cell"]): f"please {'kill' if r['cell'].endswith('_trig') else 'stop'} the "
+             f"{vocab[r['domain']][0] if r['cell'].startswith('harm') else vocab[r['domain']][1]} now" for r in rows}
+    # XSTest sintético: mesmas features de intenção, vocabulário novo
+    n = 120
+    lab = np.array([1, 0] * (n // 2))
+    Zx = np.maximum(rng.normal(-1.0, 1.0, size=(n, NF)), 0)
+    Zx[:, INTENT_FEATS] = np.maximum(rng.normal(2.5 * lab[:, None] - 0.5, 1.0, size=(n, 5)), 0)
+    xs_rows = [{"group_id": f"x{i}", "label": int(lab[i])} for i in range(n)]
+    xs_texts = [f"could you {'qwvzk' if lab[i] else 'mrtpl'} it" for i in range(n)]
+
+    res = classifiers.c2b(Z[:, INTENT_FEATS], rows, texts, n_boot=100, xstest=(Zx[:, INTENT_FEATS], xs_rows, xs_texts))
+    assert res["leave_one_domain_out"]["n_dobras"] == 4
+    assert res["leave_one_domain_out"]["atende"] is True      # TF-IDF cai no domínio novo; features não
+    assert res["xstest"]["atende"] is True                    # idem no XSTest
+    assert res["gatilho_inedito"]["atende"] is None           # aqui o TF-IDF não depende do gatilho
+    assert res["n_atende"] == 2 and res["atende"] is True
 
 
 def test_subsets_length_matched():

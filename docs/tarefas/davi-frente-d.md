@@ -25,7 +25,7 @@ Se você recuperar o acesso à h1003, avise o time: o SAE próprio (A5) pode pas
    - CV agrupada **por gatilho normalizado** para hiperparâmetros;
    - `test` em gatilho visto × inédito e por domínio.
 2. **Só estilo:** atributos que não olham o conteúdo (tamanho, pontuação, forma da pergunta). Mede a confusão de fonte PKU × gerador. Deu AUROC 0,88 no `test`.
-3. **Generalização lexical:** o mesmo classificador aplicado às células do 2×2 quando A1 sair e ao XSTest. Espera-se que o TF-IDF caia bastante nas células sem gatilho. **Essa queda é a régua do C2(b).** O script já calcula `cells_2x2.queda_auroc_tfidf` quando o arquivo existir.
+3. **Generalização lexical:** o mesmo classificador aplicado às células do 2×2 quando A1 sair e ao XSTest. No molde, o TF-IDF provavelmente **não** cai muito nas células sem gatilho, porque as palavras da intenção ficam. Essa queda é só descritiva; a régua do C2(b) usa as três generalizações de D4.3. O script já calcula `cells_2x2.queda_auroc_tfidf` quando o arquivo existir.
 4. **"Só gatilho":** vê **apenas** a presença do gatilho. Deu AUROC 0,5 nos pares, como o desenho prevê.
 
 ## D2. Validador automático do 2×2 (D1, substitui a auditoria humana)
@@ -79,7 +79,17 @@ Se você recuperar o acesso à h1003, avise o time: o SAE próprio (A5) pode pas
    - um conjunto **aleatório** de features com o mesmo tamanho (média de 20 sorteios);
    - o **probe denso** de D3 como teto;
    - o **TF-IDF** de D1 como régua.
-3. **C2(b), o critério principal, relativo:** treine em `harm_trig` × `ben_trig` e teste em `harm_notrig` × `ben_notrig`. Compare a queda de AUROC de S_intent com a do TF-IDF no mesmo protocolo. **Atende** se razão = queda(S_intent)/queda(TF-IDF) ≤ 0,5 **e** o limite superior do IC 95% da razão (bootstrap sobre grupos) < 1, ou seja, S_intent cai menos que o TF-IDF com confiança. Implementado em `classifiers.relative_drop`. Se o TF-IDF não cair (queda ≤ 0,02), o critério fica **indefinido** e isso vai para o veredito: o 2×2 não removeu o sinal lexical.
+3. **C2(b), o critério principal, relativo ao TF-IDF onde ele sofre.** Implementado em `classifiers.c2b`. Tarefa: intenção, nas 4 células. Três generalizações:
+
+   | Generalização | Treina em | Dentro (referência) | Fora |
+   |---|---|---|---|
+   | Gatilho inédito | `train` | `test`, gatilho visto | `test`, gatilho inédito |
+   | Leave-one-domain-out | `train` de 3 domínios | `test` desses 3 | `test` do 4º (média das 4 dobras) |
+   | XSTest | `train` do 2×2 | `test` do 2×2 | XSTest |
+
+   - Em cada uma: queda = AUROC dentro − AUROC fora; razão = queda(S_intent)/queda(TF-IDF). **Atende** se razão ≤ 0,5 **e** o limite superior do IC 95% da razão (bootstrap sobre grupos) < 1. **Indefinida** se o TF-IDF cair ≤ 0,02.
+   - **O C2(b) atende se ≥ 2 das 3 atendem**; indefinida e pendente não contam.
+   - Por que não "com → sem gatilho": no molde, as palavras da intenção não mudam entre essas células, então o TF-IDF quase não cai (emenda 3 do parecer da frente A). A queda "com → sem gatilho" continua reportada em `probes.json` e no baseline, como descrição.
 4. **Generalização:** S_intent treinado no 2×2 e aplicado ao XSTest.
 5. **Por domínio e por tipo de gatilho** (análise secundária).
 6. **Saída:** `results/frente-d/c2_c4.json` e o heatmap da matriz.
@@ -124,7 +134,7 @@ Rotule `results/frente-c/fichas_cegas.csv` junto com o Frederico, sem ver a clas
 | `baseline_lexical.json` | Pares (**feito**) + 2×2 + XSTest, com IC |
 | `validate_template.py` + testes | Usado pela frente A na rodada seca (D1) |
 | `probes.json` + figura | 4 camadas × posições, generalização cruzada |
-| `c2_c4.json` + heatmap | Matriz 2×2 no `test` (gatilho inédito) com controles aleatório, denso e TF-IDF; C2(b) relativo; recortes b e c |
+| `c2_c4.json` + heatmap | Matriz 2×2 no `test` (gatilho inédito) com controles aleatório, denso e TF-IDF; C2(b) nas 3 generalizações; recortes b e c |
 | `VEREDITO.md` | Revisado pelos quatro |
 
 **Branch:** `frente-d-densa`.

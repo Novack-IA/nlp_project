@@ -14,6 +14,13 @@ Projeto acadêmico (UFG / CEIA) sobre segurança em LLMs. Tem dois objetivos:
 | [`docs/phase0-v5-execucao.md`](docs/phase0-v5-execucao.md) | O que mudou da v4 (Spark) para a v5/v5b (cluster H100/B200), problemas conhecidos e decisões. |
 | [`plano.md`](plano.md) | Roteiro resumido das fases 0 a 2. |
 
+## Mudança de escopo (2026-11-20)
+
+Por recomendação dos orientadores, **o controller (Paper 2) saiu do escopo**. O trabalho agora é só de interpretabilidade: *as representações internas de um LLM separam o que é nocivo de como o pedido soa, sem retreinar o modelo?* O modelo passa a ser o Gemma-3-4B-IT, com os SAEs do Gemma Scope 2 e um SAE próprio.
+
+- Plano, hipóteses e divisão de tarefas: [`docs/fase1-interpretabilidade.md`](docs/fase1-interpretabilidade.md)
+- Dataset para o time: dataset privado no Hugging Face (ficha em [`docs/dataset_card_phase0.md`](docs/dataset_card_phase0.md)). O pacote é gerado por `export_release.py` e enviado por `upload_release.py`.
+
 ## Estado atual (2026-11-08)
 
 **Fase 0 concluída em versão provisória**, `phase0-v5b-h100`, sem auditoria humana:

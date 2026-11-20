@@ -1,0 +1,3669 @@
+{
+ "sampled_groups": [
+  "g_000039",
+  "g_000235",
+  "g_001533",
+  "g_001511",
+  "g_001444",
+  "g_000283",
+  "g_001509",
+  "g_000331",
+  "g_001586",
+  "g_000209",
+  "g_001527",
+  "g_000130",
+  "g_000262",
+  "g_000474",
+  "g_001963",
+  "g_000447",
+  "g_001869",
+  "g_001986",
+  "g_000560",
+  "g_002063",
+  "g_001802",
+  "g_001937",
+  "g_001993",
+  "g_001856",
+  "g_002060",
+  "g_000861",
+  "g_000998",
+  "g_000822",
+  "g_002372",
+  "g_000802",
+  "g_002326",
+  "g_001016",
+  "g_002125",
+  "g_002212",
+  "g_001035",
+  "g_002095",
+  "g_001004",
+  "g_002260",
+  "g_002683",
+  "g_001284",
+  "g_002607",
+  "g_002553",
+  "g_002525",
+  "g_002584",
+  "g_001338",
+  "g_001141",
+  "g_002799",
+  "g_002605",
+  "g_001097",
+  "g_001178"
+ ],
+ "n_disputed_units": 356,
+ "units": {
+  "g_000039": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_000235": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001533": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001511": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001444": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_000283": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001509": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_000331": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001586": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_000209": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001527": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_000130": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_000262": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_000474": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001963": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_000447": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001869": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001986": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_000560": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_002063": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001802": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001937": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001993": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001856": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_002060": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_000861": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_000998": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_000822": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002372": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_000802": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_002326": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_001016": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002125": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_002212": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001035": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002095": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001004": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_002260": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002683": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001284": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002607": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002553": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_002525": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_002584": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_001338": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001141": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002799": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_002605": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": "all"
+  },
+  "g_001097": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": "all"
+  },
+  "g_001178": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": "all"
+  },
+  "g_000000:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000000_q_harm"
+   ]
+  },
+  "g_000011:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000011_r1"
+   ]
+  },
+  "g_000013:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000013_q_harm",
+    "g_000013_r0",
+    "g_000013_r1"
+   ]
+  },
+  "g_000016:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000016_r1"
+   ]
+  },
+  "g_000023:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000023_r1"
+   ]
+  },
+  "g_000047:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000047_r1"
+   ]
+  },
+  "g_000048:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000048_r1"
+   ]
+  },
+  "g_000049:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000049_r1"
+   ]
+  },
+  "g_000057:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000057_r1"
+   ]
+  },
+  "g_000059:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000059_q_harm"
+   ]
+  },
+  "g_000071:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000071_r1"
+   ]
+  },
+  "g_000073:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000073_r1"
+   ]
+  },
+  "g_000079:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000079_r0"
+   ]
+  },
+  "g_000083:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000083_r1"
+   ]
+  },
+  "g_000115:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000115_r1"
+   ]
+  },
+  "g_000126:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000126_r1"
+   ]
+  },
+  "g_000149:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000149_r1"
+   ]
+  },
+  "g_000160:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000160_r0",
+    "g_000160_r1"
+   ]
+  },
+  "g_000164:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000164_r1"
+   ]
+  },
+  "g_000169:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000169_r1"
+   ]
+  },
+  "g_000182:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000182_r1"
+   ]
+  },
+  "g_000194:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000194_q_border"
+   ]
+  },
+  "g_000208:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000208_r1"
+   ]
+  },
+  "g_000222:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000222_r1"
+   ]
+  },
+  "g_000223:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000223_r1"
+   ]
+  },
+  "g_000229:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000229_q_border"
+   ]
+  },
+  "g_000230:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000230_r1"
+   ]
+  },
+  "g_000234:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000234_r1"
+   ]
+  },
+  "g_000247:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000247_r0"
+   ]
+  },
+  "g_000250:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000250_r1"
+   ]
+  },
+  "g_000260:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000260_r1"
+   ]
+  },
+  "g_000263:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000263_r1"
+   ]
+  },
+  "g_000266:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000266_q_harm",
+    "g_000266_r1"
+   ]
+  },
+  "g_000282:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000282_r1"
+   ]
+  },
+  "g_000285:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000285_r1"
+   ]
+  },
+  "g_000291:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000291_r1"
+   ]
+  },
+  "g_000303:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000303_r1"
+   ]
+  },
+  "g_000309:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000309_r1"
+   ]
+  },
+  "g_000317:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000317_r1"
+   ]
+  },
+  "g_000319:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000319_q_border"
+   ]
+  },
+  "g_000325:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000325_r1"
+   ]
+  },
+  "g_000336:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000336_q_border"
+   ]
+  },
+  "g_000352:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000352_q_harm",
+    "g_000352_r1"
+   ]
+  },
+  "g_000357:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000357_r1"
+   ]
+  },
+  "g_000360:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000360_r0",
+    "g_000360_r1"
+   ]
+  },
+  "g_000367:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000367_r1"
+   ]
+  },
+  "g_000373:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000373_r1"
+   ]
+  },
+  "g_000394:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000394_q_harm",
+    "g_000394_r1"
+   ]
+  },
+  "g_000403:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000403_r1"
+   ]
+  },
+  "g_000412:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000412_q_harm",
+    "g_000412_r0",
+    "g_000412_r1"
+   ]
+  },
+  "g_000418:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000418_q_border"
+   ]
+  },
+  "g_000429:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000429_r1"
+   ]
+  },
+  "g_000441:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000441_r1"
+   ]
+  },
+  "g_000442:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000442_q_harm",
+    "g_000442_r0"
+   ]
+  },
+  "g_000444:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000444_q_border",
+    "g_000444_r1"
+   ]
+  },
+  "g_000454:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000454_r1"
+   ]
+  },
+  "g_000457:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000457_q_harm"
+   ]
+  },
+  "g_000460:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000460_r1"
+   ]
+  },
+  "g_000501:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000501_q_border",
+    "g_000501_r1"
+   ]
+  },
+  "g_000506:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000506_r1"
+   ]
+  },
+  "g_000513:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000513_r1"
+   ]
+  },
+  "g_000515:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000515_q_border"
+   ]
+  },
+  "g_000527:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000527_r1"
+   ]
+  },
+  "g_000550:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000550_r1"
+   ]
+  },
+  "g_000551:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000551_r1"
+   ]
+  },
+  "g_000557:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000557_r1"
+   ]
+  },
+  "g_000569:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000569_r0"
+   ]
+  },
+  "g_000571:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000571_q_border"
+   ]
+  },
+  "g_000599:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000599_r0"
+   ]
+  },
+  "g_000600:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000600_q_border",
+    "g_000600_r1",
+    "g_000600_r5"
+   ]
+  },
+  "g_000606:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000606_q_border"
+   ]
+  },
+  "g_000616:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000616_r1"
+   ]
+  },
+  "g_000617:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000617_r0",
+    "g_000617_r1"
+   ]
+  },
+  "g_000622:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000622_r1"
+   ]
+  },
+  "g_000631:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000631_r1"
+   ]
+  },
+  "g_000640:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000640_r1"
+   ]
+  },
+  "g_000641:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000641_q_border",
+    "g_000641_r1"
+   ]
+  },
+  "g_000649:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000649_q_border"
+   ]
+  },
+  "g_000663:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000663_r1"
+   ]
+  },
+  "g_000676:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000676_r1"
+   ]
+  },
+  "g_000682:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000682_r1"
+   ]
+  },
+  "g_000690:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000690_r1"
+   ]
+  },
+  "g_000701:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000701_r6"
+   ]
+  },
+  "g_000720:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000720_r1"
+   ]
+  },
+  "g_000731:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000731_r0",
+    "g_000731_r1"
+   ]
+  },
+  "g_000733:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000733_q_border"
+   ]
+  },
+  "g_000750:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000750_q_harm",
+    "g_000750_r0"
+   ]
+  },
+  "g_000755:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000755_r0",
+    "g_000755_r1"
+   ]
+  },
+  "g_000764:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000764_r1"
+   ]
+  },
+  "g_000768:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000768_q_harm",
+    "g_000768_r0",
+    "g_000768_r1"
+   ]
+  },
+  "g_000770:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000770_r1"
+   ]
+  },
+  "g_000779:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000779_r1"
+   ]
+  },
+  "g_000781:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000781_r1"
+   ]
+  },
+  "g_000786:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000786_r1"
+   ]
+  },
+  "g_000787:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000787_r1"
+   ]
+  },
+  "g_000788:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000788_q_harm",
+    "g_000788_r0",
+    "g_000788_r1"
+   ]
+  },
+  "g_000797:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000797_r1"
+   ]
+  },
+  "g_000809:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000809_r1"
+   ]
+  },
+  "g_000813:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000813_r1"
+   ]
+  },
+  "g_000815:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000815_q_harm",
+    "g_000815_r0",
+    "g_000815_r1"
+   ]
+  },
+  "g_000824:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000824_q_border"
+   ]
+  },
+  "g_000825:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000825_r1"
+   ]
+  },
+  "g_000826:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000826_r1"
+   ]
+  },
+  "g_000828:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000828_q_harm"
+   ]
+  },
+  "g_000870:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000870_r1"
+   ]
+  },
+  "g_000878:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000878_r0"
+   ]
+  },
+  "g_000882:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000882_r1"
+   ]
+  },
+  "g_000884:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000884_q_border"
+   ]
+  },
+  "g_000887:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000887_r1"
+   ]
+  },
+  "g_000890:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000890_r1"
+   ]
+  },
+  "g_000896:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000896_r1"
+   ]
+  },
+  "g_000921:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000921_r1"
+   ]
+  },
+  "g_000939:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_000939_r0",
+    "g_000939_r1"
+   ]
+  },
+  "g_000944:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_000944_r1"
+   ]
+  },
+  "g_000947:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_000947_r1"
+   ]
+  },
+  "g_000968:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_000968_r1"
+   ]
+  },
+  "g_000973:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_000973_q_harm"
+   ]
+  },
+  "g_000983:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_000983_r1"
+   ]
+  },
+  "g_001006:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001006_q_border"
+   ]
+  },
+  "g_001010:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001010_r1"
+   ]
+  },
+  "g_001012:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001012_r1"
+   ]
+  },
+  "g_001020:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001020_q_border"
+   ]
+  },
+  "g_001048:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001048_r1"
+   ]
+  },
+  "g_001049:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001049_q_harm"
+   ]
+  },
+  "g_001062:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001062_q_border",
+    "g_001062_r5"
+   ]
+  },
+  "g_001072:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001072_r1"
+   ]
+  },
+  "g_001075:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001075_q_harm",
+    "g_001075_r1"
+   ]
+  },
+  "g_001086:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001086_r1"
+   ]
+  },
+  "g_001099:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001099_r1"
+   ]
+  },
+  "g_001103:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001103_r1"
+   ]
+  },
+  "g_001104:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001104_r6"
+   ]
+  },
+  "g_001105:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001105_q_border"
+   ]
+  },
+  "g_001110:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001110_r6"
+   ]
+  },
+  "g_001111:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001111_r0"
+   ]
+  },
+  "g_001115:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001115_r1",
+    "g_001115_r5"
+   ]
+  },
+  "g_001135:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001135_r1"
+   ]
+  },
+  "g_001149:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001149_r1"
+   ]
+  },
+  "g_001168:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001168_q_harm"
+   ]
+  },
+  "g_001170:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001170_r1"
+   ]
+  },
+  "g_001176:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001176_r1"
+   ]
+  },
+  "g_001186:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001186_r0"
+   ]
+  },
+  "g_001203:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001203_q_border"
+   ]
+  },
+  "g_001207:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001207_r1"
+   ]
+  },
+  "g_001212:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001212_r1",
+    "g_001212_r5"
+   ]
+  },
+  "g_001221:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001221_r1"
+   ]
+  },
+  "g_001223:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001223_q_harm",
+    "g_001223_r1"
+   ]
+  },
+  "g_001231:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001231_r1"
+   ]
+  },
+  "g_001243:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001243_r6"
+   ]
+  },
+  "g_001244:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001244_q_harm"
+   ]
+  },
+  "g_001253:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001253_r6"
+   ]
+  },
+  "g_001255:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001255_r6"
+   ]
+  },
+  "g_001271:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001271_r1"
+   ]
+  },
+  "g_001277:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001277_q_border",
+    "g_001277_q_harm",
+    "g_001277_r0"
+   ]
+  },
+  "g_001280:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001280_r6"
+   ]
+  },
+  "g_001289:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001289_q_border",
+    "g_001289_r0"
+   ]
+  },
+  "g_001297:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001297_r1"
+   ]
+  },
+  "g_001298:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001298_r6"
+   ]
+  },
+  "g_001322:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001322_r1"
+   ]
+  },
+  "g_001337:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001337_q_border"
+   ]
+  },
+  "g_001345:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001345_r1"
+   ]
+  },
+  "g_001353:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001353_q_border"
+   ]
+  },
+  "g_001355:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001355_r1"
+   ]
+  },
+  "g_001360:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001360_r1"
+   ]
+  },
+  "g_001363:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001363_r6"
+   ]
+  },
+  "g_001371:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001371_r0",
+    "g_001371_r1"
+   ]
+  },
+  "g_001373:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001373_r1"
+   ]
+  },
+  "g_001374:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001374_r1"
+   ]
+  },
+  "g_001382:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001382_q_harm",
+    "g_001382_r1"
+   ]
+  },
+  "g_001386:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001386_r1"
+   ]
+  },
+  "g_001387:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001387_r1"
+   ]
+  },
+  "g_001398:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001398_q_harm"
+   ]
+  },
+  "g_001401:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001401_q_harm",
+    "g_001401_r1"
+   ]
+  },
+  "g_001414:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001414_r6"
+   ]
+  },
+  "g_001416:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001416_r1"
+   ]
+  },
+  "g_001419:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001419_r6"
+   ]
+  },
+  "g_001422:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001422_r1"
+   ]
+  },
+  "g_001426:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001426_r6"
+   ]
+  },
+  "g_001433:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001433_r1"
+   ]
+  },
+  "g_001445:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001445_r1"
+   ]
+  },
+  "g_001446:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001446_r1"
+   ]
+  },
+  "g_001450:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001450_r1"
+   ]
+  },
+  "g_001454:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001454_r1"
+   ]
+  },
+  "g_001456:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001456_r1"
+   ]
+  },
+  "g_001469:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001469_r1"
+   ]
+  },
+  "g_001475:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001475_r1"
+   ]
+  },
+  "g_001479:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001479_r1"
+   ]
+  },
+  "g_001491:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001491_q_harm"
+   ]
+  },
+  "g_001497:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001497_r1"
+   ]
+  },
+  "g_001499:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001499_r1"
+   ]
+  },
+  "g_001504:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001504_r1"
+   ]
+  },
+  "g_001512:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001512_r1"
+   ]
+  },
+  "g_001513:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001513_r1"
+   ]
+  },
+  "g_001516:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001516_r1"
+   ]
+  },
+  "g_001520:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001520_r1"
+   ]
+  },
+  "g_001522:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001522_r1"
+   ]
+  },
+  "g_001528:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001528_r1"
+   ]
+  },
+  "g_001536:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001536_q_harm",
+    "g_001536_r0"
+   ]
+  },
+  "g_001553:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001553_r1"
+   ]
+  },
+  "g_001556:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001556_r1"
+   ]
+  },
+  "g_001560:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001560_r1"
+   ]
+  },
+  "g_001602:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001602_r1"
+   ]
+  },
+  "g_001604:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001604_r1"
+   ]
+  },
+  "g_001610:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001610_q_border"
+   ]
+  },
+  "g_001614:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001614_r1"
+   ]
+  },
+  "g_001615:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001615_r1"
+   ]
+  },
+  "g_001639:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001639_r1"
+   ]
+  },
+  "g_001648:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001648_r1"
+   ]
+  },
+  "g_001657:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001657_r1"
+   ]
+  },
+  "g_001670:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001670_r1"
+   ]
+  },
+  "g_001676:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001676_r1"
+   ]
+  },
+  "g_001678:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001678_r1"
+   ]
+  },
+  "g_001680:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001680_r1"
+   ]
+  },
+  "g_001697:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001697_r0"
+   ]
+  },
+  "g_001707:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001707_q_harm"
+   ]
+  },
+  "g_001713:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001713_r1"
+   ]
+  },
+  "g_001720:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001720_r0"
+   ]
+  },
+  "g_001723:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001723_r1"
+   ]
+  },
+  "g_001732:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001732_q_border"
+   ]
+  },
+  "g_001739:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001739_q_harm"
+   ]
+  },
+  "g_001740:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001740_r1"
+   ]
+  },
+  "g_001747:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001747_r0"
+   ]
+  },
+  "g_001748:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001748_r1"
+   ]
+  },
+  "g_001767:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001767_r1"
+   ]
+  },
+  "g_001777:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001777_r1"
+   ]
+  },
+  "g_001785:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001785_q_border"
+   ]
+  },
+  "g_001789:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001789_r0"
+   ]
+  },
+  "g_001790:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001790_r1"
+   ]
+  },
+  "g_001791:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001791_q_border"
+   ]
+  },
+  "g_001794:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001794_r1"
+   ]
+  },
+  "g_001800:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001800_r1"
+   ]
+  },
+  "g_001810:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001810_r1"
+   ]
+  },
+  "g_001829:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001829_q_border",
+    "g_001829_r1"
+   ]
+  },
+  "g_001839:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001839_q_border"
+   ]
+  },
+  "g_001846:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001846_q_harm",
+    "g_001846_r1"
+   ]
+  },
+  "g_001851:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001851_r1"
+   ]
+  },
+  "g_001859:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001859_r1"
+   ]
+  },
+  "g_001864:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001864_q_border",
+    "g_001864_r0"
+   ]
+  },
+  "g_001865:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001865_r1"
+   ]
+  },
+  "g_001877:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001877_q_border"
+   ]
+  },
+  "g_001878:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001878_q_border"
+   ]
+  },
+  "g_001879:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001879_r1"
+   ]
+  },
+  "g_001886:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001886_r1"
+   ]
+  },
+  "g_001888:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001888_r1"
+   ]
+  },
+  "g_001897:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001897_r1"
+   ]
+  },
+  "g_001898:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001898_r1"
+   ]
+  },
+  "g_001900:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001900_r1"
+   ]
+  },
+  "g_001908:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001908_r1"
+   ]
+  },
+  "g_001917:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001917_r1"
+   ]
+  },
+  "g_001918:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001918_q_border"
+   ]
+  },
+  "g_001928:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001928_r1"
+   ]
+  },
+  "g_001976:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001976_r1"
+   ]
+  },
+  "g_001977:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_001977_q_border"
+   ]
+  },
+  "g_001979:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_001979_r1"
+   ]
+  },
+  "g_001981:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_001981_r1"
+   ]
+  },
+  "g_001987:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_001987_q_harm"
+   ]
+  },
+  "g_001989:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_001989_r0"
+   ]
+  },
+  "g_001999:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_001999_r1"
+   ]
+  },
+  "g_002006:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002006_r1"
+   ]
+  },
+  "g_002009:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002009_q_border"
+   ]
+  },
+  "g_002016:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002016_r1"
+   ]
+  },
+  "g_002025:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002025_q_border",
+    "g_002025_r5"
+   ]
+  },
+  "g_002037:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002037_q_border",
+    "g_002037_r1"
+   ]
+  },
+  "g_002038:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002038_r1"
+   ]
+  },
+  "g_002039:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002039_q_border"
+   ]
+  },
+  "g_002045:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002045_r1"
+   ]
+  },
+  "g_002049:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002049_q_border"
+   ]
+  },
+  "g_002056:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002056_r1"
+   ]
+  },
+  "g_002131:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002131_r1"
+   ]
+  },
+  "g_002141:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002141_r1"
+   ]
+  },
+  "g_002143:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002143_r1"
+   ]
+  },
+  "g_002152:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002152_q_border"
+   ]
+  },
+  "g_002166:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002166_r1"
+   ]
+  },
+  "g_002171:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002171_r1"
+   ]
+  },
+  "g_002207:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002207_q_harm",
+    "g_002207_r1"
+   ]
+  },
+  "g_002221:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002221_r1"
+   ]
+  },
+  "g_002226:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002226_r1"
+   ]
+  },
+  "g_002229:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002229_r1"
+   ]
+  },
+  "g_002240:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002240_r1"
+   ]
+  },
+  "g_002256:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002256_r1"
+   ]
+  },
+  "g_002258:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002258_r0",
+    "g_002258_r1"
+   ]
+  },
+  "g_002265:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002265_q_border"
+   ]
+  },
+  "g_002285:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002285_r1"
+   ]
+  },
+  "g_002288:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002288_r1"
+   ]
+  },
+  "g_002293:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002293_r1"
+   ]
+  },
+  "g_002297:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002297_r0"
+   ]
+  },
+  "g_002299:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002299_r1"
+   ]
+  },
+  "g_002307:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002307_r1"
+   ]
+  },
+  "g_002320:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002320_r1"
+   ]
+  },
+  "g_002322:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002322_q_harm",
+    "g_002322_r0"
+   ]
+  },
+  "g_002327:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002327_r1"
+   ]
+  },
+  "g_002332:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002332_r1"
+   ]
+  },
+  "g_002335:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002335_r1"
+   ]
+  },
+  "g_002338:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002338_r1"
+   ]
+  },
+  "g_002344:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002344_q_harm"
+   ]
+  },
+  "g_002351:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002351_r6"
+   ]
+  },
+  "g_002354:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002354_r1"
+   ]
+  },
+  "g_002360:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002360_r1"
+   ]
+  },
+  "g_002361:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002361_r1"
+   ]
+  },
+  "g_002366:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002366_r1"
+   ]
+  },
+  "g_002374:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002374_r1"
+   ]
+  },
+  "g_002384:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002384_r0"
+   ]
+  },
+  "g_002396:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002396_r1"
+   ]
+  },
+  "g_002403:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002403_r1"
+   ]
+  },
+  "g_002412:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002412_r1"
+   ]
+  },
+  "g_002424:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002424_r1"
+   ]
+  },
+  "g_002482:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002482_r1"
+   ]
+  },
+  "g_002488:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002488_q_border",
+    "g_002488_r5"
+   ]
+  },
+  "g_002504:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002504_r0",
+    "g_002504_r1"
+   ]
+  },
+  "g_002513:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002513_r6"
+   ]
+  },
+  "g_002517:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002517_r1"
+   ]
+  },
+  "g_002521:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002521_r1"
+   ]
+  },
+  "g_002523:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002523_r1"
+   ]
+  },
+  "g_002528:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002528_r1"
+   ]
+  },
+  "g_002534:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002534_r0",
+    "g_002534_r1"
+   ]
+  },
+  "g_002546:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002546_r1"
+   ]
+  },
+  "g_002554:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002554_r6"
+   ]
+  },
+  "g_002562:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002562_r0"
+   ]
+  },
+  "g_002565:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002565_r1"
+   ]
+  },
+  "g_002567:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002567_r1"
+   ]
+  },
+  "g_002579:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002579_r1"
+   ]
+  },
+  "g_002586:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002586_r1"
+   ]
+  },
+  "g_002591:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002591_r1"
+   ]
+  },
+  "g_002595:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002595_r6"
+   ]
+  },
+  "g_002596:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002596_r1"
+   ]
+  },
+  "g_002598:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002598_r1"
+   ]
+  },
+  "g_002604:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002604_r1"
+   ]
+  },
+  "g_002616:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002616_r1"
+   ]
+  },
+  "g_002618:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002618_r1"
+   ]
+  },
+  "g_002628:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002628_r1"
+   ]
+  },
+  "g_002630:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002630_r6"
+   ]
+  },
+  "g_002631:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002631_r1"
+   ]
+  },
+  "g_002633:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002633_r0"
+   ]
+  },
+  "g_002643:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002643_q_harm",
+    "g_002643_r1"
+   ]
+  },
+  "g_002651:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002651_r1"
+   ]
+  },
+  "g_002660:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002660_r0",
+    "g_002660_r1"
+   ]
+  },
+  "g_002665:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002665_r1"
+   ]
+  },
+  "g_002677:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002677_q_harm"
+   ]
+  },
+  "g_002689:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002689_q_border",
+    "g_002689_r5"
+   ]
+  },
+  "g_002690:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002690_r1"
+   ]
+  },
+  "g_002695:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002695_r1"
+   ]
+  },
+  "g_002696:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002696_q_harm",
+    "g_002696_r0"
+   ]
+  },
+  "g_002701:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002701_q_harm",
+    "g_002701_r1"
+   ]
+  },
+  "g_002729:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002729_q_harm"
+   ]
+  },
+  "g_002737:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002737_r1"
+   ]
+  },
+  "g_002741:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002741_r1"
+   ]
+  },
+  "g_002742:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002742_r1"
+   ]
+  },
+  "g_002744:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002744_q_harm",
+    "g_002744_r1"
+   ]
+  },
+  "g_002755:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002755_q_border",
+    "g_002755_r1"
+   ]
+  },
+  "g_002758:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002758_q_harm"
+   ]
+  },
+  "g_002764:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002764_r6"
+   ]
+  },
+  "g_002777:disputed": {
+   "pair": [
+    "A",
+    "D"
+   ],
+   "items": [
+    "g_002777_r1"
+   ]
+  },
+  "g_002778:disputed": {
+   "pair": [
+    "B",
+    "C"
+   ],
+   "items": [
+    "g_002778_q_harm",
+    "g_002778_r1"
+   ]
+  },
+  "g_002788:disputed": {
+   "pair": [
+    "A",
+    "B"
+   ],
+   "items": [
+    "g_002788_r1"
+   ]
+  },
+  "g_002796:disputed": {
+   "pair": [
+    "C",
+    "D"
+   ],
+   "items": [
+    "g_002796_r1"
+   ]
+  },
+  "g_002797:disputed": {
+   "pair": [
+    "A",
+    "C"
+   ],
+   "items": [
+    "g_002797_r0",
+    "g_002797_r1"
+   ]
+  },
+  "g_002801:disputed": {
+   "pair": [
+    "B",
+    "D"
+   ],
+   "items": [
+    "g_002801_r1"
+   ]
+  }
+ }
+}

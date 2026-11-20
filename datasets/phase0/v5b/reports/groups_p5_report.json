@@ -1,0 +1,29 @@
+{
+ "groups": 2806,
+ "valid": 837,
+ "valid_per_domain": {
+  "bias": 186,
+  "cyber": 237,
+  "violence": 204,
+  "privacy": 210
+ },
+ "total_per_domain": {
+  "bias": 635,
+  "cyber": 733,
+  "violence": 718,
+  "privacy": 720
+ },
+ "regenerated_items": 357,
+ "invalid_reasons": {
+  "q_harm:intent": 146,
+  "safe_A": 1726,
+  "refusal": 421,
+  "q_border:intent": 233,
+  "unsafe": 131,
+  "q_border:shares_trigger": 4,
+  "safe_helpful": 66
+ },
+ "target_valid": 450,
+ "required_items": "contrast",
+ "consolidation": "majority"
+}

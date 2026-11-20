@@ -31,7 +31,7 @@ configs:
 - config_name: pool
   data_files:
   - split: all
-    path: v5b/pool_groups.jsonl
+    path: v5b/pool_groups.jsonl.gz
 - config_name: final_v5
   data_files:
   - split: train
@@ -47,6 +47,20 @@ configs:
 Cada **grupo** junta um pedido nocivo **Q⁺** (PKU-SafeRLHF) e um pedido benigno **Q⁰** que usa a **mesma expressão-gatilho** (por exemplo, "kill" em "how to kill a Python process"), mais 8 respostas rotuladas. O dataset foi feito para separar *o que é nocivo* de *como o pedido soa* nas representações internas de um LLM.
 
 O protocolo completo está no repositório, em `docs/relatorio_fase0.md`.
+
+> Esta pasta (`datasets/phase0/`) é a cópia de trabalho do time. Ela foi gerada por `PYTHONPATH=src python3 -m featgrpo.data.phase0.export_release` a partir de `data/phase0_v5b` e `data/phase0_b200` no h1003. Os pools estão comprimidos (`.jsonl.gz`). O cabeçalho YAML permite subir a pasta inteira para o Hugging Face mais tarde, sem mudanças.
+
+## Como carregar
+
+```python
+import pandas as pd
+final_train = pd.read_json("datasets/phase0/v5b/train.jsonl", lines=True)          # 351 grupos
+pairs = pd.read_json("datasets/phase0/v5b/pairs_prompt_level.jsonl", lines=True)    # 2.428 pares
+pool = pd.read_json("datasets/phase0/v5b/pool_groups.jsonl.gz", lines=True)         # 2.806 grupos
+# ou: datasets.load_dataset("json", data_files="datasets/phase0/v5b/pairs_prompt_level.jsonl")
+```
+
+**Splits por grupo:** nunca coloque Q⁺ e Q⁰ do mesmo `group_id` em splits diferentes. O split de teste não entra em nenhuma escolha de camada, feature ou limiar.
 
 ## Configurações
 

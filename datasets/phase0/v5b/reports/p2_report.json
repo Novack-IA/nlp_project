@@ -1,0 +1,33 @@
+{
+ "stats": {
+  "no_trigger": 10,
+  "retrieved": 614,
+  "generated": 2192,
+  "discarded": 95
+ },
+ "per_domain": {
+  "bias": {
+   "retrieved": 121,
+   "generated": 514
+  },
+  "cyber": {
+   "retrieved": 240,
+   "generated": 493
+  },
+  "violence": {
+   "retrieved": 130,
+   "generated": 588
+  },
+  "privacy": {
+   "retrieved": 123,
+   "generated": 597
+  }
+ },
+ "seeds": 2911,
+ "groups": 2806,
+ "generator": {
+  "calls": 2529,
+  "prompt_tokens": 377278,
+  "completion_tokens": 205044
+ }
+}

@@ -79,27 +79,47 @@ O pipeline da Fase 0 já é parametrizado pelo modelo-alvo (`models.subject` no 
 
 ## Divisão em 4 frentes
 
-Cada frente tem um dono, entregáveis com formato fixo e só uma dependência forte: o cache de ativações, disponível no dia 2.
+Os recursos de cada um definem a divisão:
+- **Gustavo:** acesso normal à h1003 (H100/B200, juiz de 70B).
+- **Caio e Frederico:** uma RTX 4090 cada (24 GB). O Gemma-3-4B em bf16 ocupa ~9 GB, e os SAEs de 16k a 262k cabem junto.
+- **Davi:** temporariamente **sem GPU de cluster**. Fica com o que roda em CPU: texto, vetores densos já extraídos e a escrita.
 
-| Frente | Dono | O que faz | Entrega |
-|---|---|---|---|
-| **A. Dados e comportamento** | Gustavo (h1003) | Config `phase1_gemma3_4b.yaml`: respostas naturais do 4B aos 2.428 pares, rotuladas com P4. Formatar XSTest, OR-Bench-Hard-1K e FalseReject. Gerar e validar as células do 2×2. Mineração adversarial de Q⁰. | `behavior_gemma3_4b.jsonl`, `cells_2x2.jsonl`, `external/*.jsonl`, tabela HCR/ORR por domínio |
-| **B. Ativações e SAE próprio** | Davi (h1003) | Extrator único de ativações (camadas × posições: gatilho, pós-instrução, média, resposta), com cache em disco. Avaliar o Gemma Scope 2 nos nossos dados: variância explicada, ΔNLL ao substituir a ativação pela reconstrução, L0, features mortas. Treinar o SAE próprio (BatchTopK, 1–2 camadas). Script de intervenção: ablação e steering de features. | `acts/<modelo>/<camada>/<split>.safetensors` + índice, checkpoint do SAE, tabela de qualidade dos SAEs, `intervene.py` |
-| **C. Análise densa** | Caio | Probes lineares por camada (nocivo × benigno) com CV agrupada por `group_id`. **Baseline lexical** (TF-IDF + regressão logística) para mostrar o que a representação sabe além das palavras. Direções por diferença de médias. Generalização cruzada (pares → 2×2, XSTest, OR-Bench-Hard). Cosseno com a direção de recusa. Escolher as camadas para o SAE. | curvas por camada, matriz de generalização, camadas escolhidas |
-| **D. Features do SAE** | Frederico | Efeito pareado d_j por feature em cada contraste (pedidos e respostas), com FDR. Classificar features em nocividade, superfície/gatilho, recusa ou mistas. Rótulos do Neuronpedia + autointerp com LLM nos exemplos de maior ativação. Comparar Gemma Scope 2 × SAE próprio (casamento por cosseno dos decoders). Com B, rodar o teste causal de H4. | ranking de features por contraste, fichas das top-k, resultados de ablação |
+| Frente | Dono | Recurso | O que faz | Entrega |
+|---|---|---|---|---|
+| **A. Dados, comportamento e SAE próprio** | Gustavo | h1003 | Tudo que precisa de modelo grande ou de muitas horas de GPU: respostas do 4B aos 2.428 pares e aos conjuntos externos, rotulagem com o juiz de 70B (P4), geração e validação das células do 2×2, mineração adversarial de Q⁰, treino do SAE próprio (BatchTopK, 1–2 camadas) | `behavior_gemma3_4b.jsonl`, `cells_2x2.jsonl`, `external/*.jsonl`, checkpoint do SAE |
+| **B. Ativações e intervenção** | Caio | 4090 | Extrator único de ativações (camadas × posições) e o cache denso, publicado na pasta compartilhada. Qualidade do Gemma Scope 2 nos nossos dados: variância explicada, ΔNLL, L0, features mortas. `intervene.py` para ablação e steering de features por hooks. Roda os testes causais de H4 junto com C. | `artifacts/acts/...` + `index.jsonl`, tabela de qualidade dos SAEs, `intervene.py` |
+| **C. Features do SAE** | Frederico | 4090 | Codifica as ativações com o Gemma Scope 2 (16k, depois 262k). Efeito pareado d_j por feature em cada contraste, com FDR. Classifica features em nocividade, superfície, recusa ou mistas. Gera os exemplos de maior ativação e o autointerp (LLM local na 4090, mais os rótulos do Neuronpedia). Compara com o SAE próprio da frente A. | ranking de features por contraste, fichas das top-k, resultados de ablação (com B) |
+| **D. Análise densa, baseline e escrita** | Davi | CPU | **Baseline lexical** (TF-IDF + regressão logística), que só precisa de texto e começa no D1. Especificação e prompts das células do 2×2, que a frente A roda. Sobre o cache denso de B (~25 MB por camada × posição): probes por camada com CV agrupada, generalização cruzada (pares → 2×2, XSTest, OR-Bench-Hard), direções por diferença de médias e cosseno com a direção de recusa, correlação com o comportamento (H4, com os rótulos de A). Coordena o texto final: esqueleto, related work e figuras. | curvas por camada, matriz de generalização, rascunho do paper |
+
+Se o Davi recuperar o acesso à h1003, ele assume o treino do SAE próprio, e a frente A fica só com dados e comportamento.
+
+### Fluxo e dependências
+
+```
+            texto (datasets/phase0) ──► D: baseline lexical, especificação do 2×2
+                                         │
+A (h1003): 4B + juiz 70B ──► comportamento, 2×2, externos ──► B, C, D
+                                         │
+B (4090): extrator ──► cache denso ──► pasta compartilhada ──► D (probes)
+       └─► extrator ──► C (4090): latentes do SAE, features
+B + C: intervenção (H4)       A: SAE próprio ──► C (comparação)
+```
 
 ### Cronograma sugerido
 
 | Dias | O que acontece |
 |---|---|
-| D1–D2 | **B** entrega um cache pequeno (500 grupos, 4 camadas). Para não ficarem parados: **C** monta o baseline lexical e o código dos probes; **D** monta o autointerp e o acesso ao Neuronpedia; **A** sobe o 4B e começa a rotular. |
-| D3–D7 | Análises completas nos 2.428 pares. **A** entrega o 2×2 e os conjuntos externos. **B** treina o SAE próprio. |
-| D8–D10 | Testes de H3 (generalização) e H4 (comportamento e intervenção). Comparação entre os dois SAEs. |
-| D11+ | Figuras e escrita. Cada frente escreve sua seção de métodos e resultados. |
+| D1–D2 | **B**: extrator e cache pequeno (500 grupos finais, 4 camadas). **C**: SAELens + Gemma Scope 2 e o pipeline de autointerp. **D**: baseline lexical e especificação do 2×2. **A**: config do 4B, respostas e rotulagem. |
+| D3–D7 | **B**: cache dos 2.428 pares e das respostas. **C**: ranking de features. **D**: probes e camadas. **A**: entrega o 2×2 e os conjuntos externos, e treina o SAE próprio. |
+| D8–D10 | H3 (generalização: D e C) e H4 (comportamento: D; intervenção: B e C). Comparação entre os dois SAEs (C). |
+| D11+ | Figuras e escrita, coordenadas por D. Cada frente escreve sua seção. |
 
-### Acesso ao cluster
+### Onde fica cada coisa
 
-Só Gustavo e Davi têm conta na h1003. Caio e Frederico trabalham sobre o **cache de ativações** (CPU ou GPU pequena basta para probes e estatística) e sobre o 4B, que cabe numa GPU de 24 GB. Vale pedir contas ao admin ou usar o cluster Spark (laudite).
+- **Dataset:** `datasets/phase0/`, no git.
+- **Artefatos grandes** (ativações, latentes, checkpoints): `artifacts/`, fora do git. Ficam numa pasta compartilhada do time (Drive) com a mesma estrutura.
+- **Resultados pequenos** (CSV, JSON, PNG): `results/<frente>/`, no git.
+- **Contexto para os agentes de cada um:** [`AGENTS.md`](../AGENTS.md).
 
 ## Riscos
 

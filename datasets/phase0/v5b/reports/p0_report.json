@@ -1,0 +1,19 @@
+{
+ "sources": {
+  "xstest": 450,
+  "orbench_hard1k": 1319,
+  "orbench_toxic": 655,
+  "falsereject_test": 1187,
+  "harmbench_standard": 200,
+  "harmbench_contextual": 100,
+  "harmbench_copyright": 100,
+  "strongreject": 313,
+  "donotanswer": 939
+ },
+ "exclusion_total": 5263,
+ "exclusion_unique": 5255,
+ "emb_shape": [
+  5255,
+  1024
+ ]
+}

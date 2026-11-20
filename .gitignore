@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 .pytest_cache/
 slurm-logs/
+artifacts/

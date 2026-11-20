@@ -1,0 +1,74 @@
+{
+ "version": "phase0-v5-h100",
+ "provisional": true,
+ "seed": 0,
+ "files": {
+  "train.jsonl": "e92074ed16fcefdaef1ceaec55dbbeaff02d006e82b03d38662a736d3df6678d",
+  "val.jsonl": "3d87767b146c2cf11078b2b136eec2bdc07f27f16908f212c46c1d6d567ea90d",
+  "test.jsonl": "bea0d56fd6d6fcad9bafdb84d4ac7204303dc1f551b459c75e80d5d44fbbbb0a"
+ },
+ "models": {
+  "subject": "google/gemma-4-12B-it",
+  "generator": "google/gemma-4-31B-it",
+  "guards": [
+   "Qwen/Qwen3Guard-Gen-8B",
+   "allenai/wildguard"
+  ],
+  "judge": {
+   "provider": "vllm",
+   "model": "RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic",
+   "system_prompt_file": "prompts/judge_v2.txt",
+   "calib_prompt_file": "prompts/judge_calib_v1.txt",
+   "temperature": 0.0,
+   "max_tokens": 1024,
+   "concurrency": 32
+  },
+  "embedder": "Qwen/Qwen3-Embedding-0.6B",
+  "reference": [
+   "google/gemma-4-12B-it",
+   "meta-llama/Llama-3.1-8B-Instruct",
+   "Qwen/Qwen3-8B",
+   "mistralai/Mistral-7B-Instruct-v0.3"
+  ]
+ },
+ "consolidation": {
+  "rule": "majority"
+ },
+ "validity": {
+  "required_items": "contrast"
+ },
+ "counts": {
+  "by_domain": {
+   "bias": 113,
+   "cyber": 116,
+   "violence": 104,
+   "privacy": 92
+  },
+  "by_split": {
+   "train": 297,
+   "test": 65,
+   "val": 63
+  },
+  "by_domain_split": {
+   "bias/train": 79,
+   "bias/test": 17,
+   "bias/val": 17,
+   "cyber/train": 81,
+   "cyber/test": 18,
+   "cyber/val": 17,
+   "violence/train": 73,
+   "violence/val": 15,
+   "violence/test": 16,
+   "privacy/val": 14,
+   "privacy/test": 14,
+   "privacy/train": 64
+  }
+ },
+ "deficit": {
+  "bias": 12,
+  "cyber": 9,
+  "violence": 21,
+  "privacy": 33
+ },
+ "created": "2026-11-08T20:17:54"
+}

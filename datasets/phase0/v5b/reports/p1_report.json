@@ -1,0 +1,36 @@
+{
+ "after_filter": 4988,
+ "after_dedup": 4088,
+ "after_exclusion": 4047,
+ "eligible_per_domain": {
+  "cyber": 1520,
+  "violence": 1058,
+  "privacy": 806,
+  "bias": 663
+ },
+ "bias_subbucket_pool": {
+  "other": 442,
+  "race": 182,
+  "lgbt": 39
+ },
+ "sampled_per_domain": {
+  "bias": 661,
+  "cyber": 750,
+  "violence": 750,
+  "privacy": 750
+ },
+ "sampled_bias_subbuckets": {
+  "lgbt": 39,
+  "race": 180,
+  "other": 442
+ },
+ "deficit": {
+  "bias": 89
+ },
+ "extended_from": "/home/user_gustavonovack/nlp_project/data/phase0_b200/seeds.jsonl",
+ "judge": {
+  "calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0
+ }
+}

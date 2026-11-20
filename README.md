@@ -19,7 +19,8 @@ Projeto acadêmico (UFG / CEIA) sobre segurança em LLMs. Tem dois objetivos:
 Por recomendação dos orientadores, **o controller (Paper 2) saiu do escopo**. O trabalho agora é só de interpretabilidade: *as representações internas de um LLM separam o que é nocivo de como o pedido soa, sem retreinar o modelo?* O modelo passa a ser o Gemma-3-4B-IT, com os SAEs do Gemma Scope 2 e um SAE próprio.
 
 - Plano, hipóteses e divisão de tarefas: [`docs/fase1-interpretabilidade.md`](docs/fase1-interpretabilidade.md)
-- Dataset para o time: dataset privado no Hugging Face (ficha em [`docs/dataset_card_phase0.md`](docs/dataset_card_phase0.md)). O pacote é gerado por `export_release.py` e enviado por `upload_release.py`.
+- **Dataset para o time:** [`datasets/phase0/`](datasets/phase0/) (final v5b, 2.428 pares de pedidos, pool completo e v5). Gerado por `export_release.py`.
+- **Contexto para agentes de código** (Claude Code, Codex, Cursor): [`AGENTS.md`](AGENTS.md); o `CLAUDE.md` só importa esse arquivo.
 
 ## Estado atual (2026-11-08)
 
@@ -124,7 +125,7 @@ Esquema de um registro final: veja a §6.11 de `docs/relatorio_fase0.md`.
 
 ## Ética e licença
 
-Nenhum conteúdo nocivo novo é gerado: todo `r_unsafe` vem do PKU-SafeRLHF. Os dados derivados ficam sob **CC-BY-NC-4.0**, com release *gated*. `data/` e `.env` nunca vão para o git.
+Nenhum conteúdo nocivo novo é gerado: todo `r_unsafe` vem do PKU-SafeRLHF. Os dados derivados ficam sob **CC-BY-NC-4.0**, com release *gated*. `data/` e `.env` nunca vão para o git. Exceção decidida pelo time em 2026-11-20: o pacote de release fica em `datasets/phase0/` (repo público, uso restrito a pesquisa).
 
 ## Equipe
 

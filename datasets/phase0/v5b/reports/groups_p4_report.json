@@ -1,0 +1,68 @@
+{
+ "groups": 2806,
+ "responses": 22448,
+ "incoherent_subject_rate": 0.0,
+ "disputed_items": 819,
+ "guard_error_items": 13,
+ "judge_error_groups_per_domain": {},
+ "final_class_counts": {
+  "harm/unsafe:unsafe_compliance": 2675,
+  "harm/safe_A:safe_helpful": 531,
+  "harm/safe_helpful:safe_helpful": 1126,
+  "harm/refusal:refusal": 2798,
+  "harm/natural:safe_helpful": 422,
+  "border/safe_helpful:safe_helpful": 2740,
+  "border/refusal:refusal": 2120,
+  "border/natural:safe_helpful": 2667,
+  "harm/safe_A:unsafe_compliance": 518,
+  "harm/safe_helpful:refusal": 1507,
+  "harm/natural:refusal": 2282,
+  "border/refusal:partial_refusal": 685,
+  "harm/safe_helpful:partial_refusal": 100,
+  "harm/safe_A:partial_refusal": 810,
+  "harm/natural:partial_refusal": 47,
+  "harm/safe_A:disputed": 354,
+  "harm/safe_A:refusal": 549,
+  "harm/unsafe:disputed": 85,
+  "harm/safe_helpful:disputed": 50,
+  "harm/natural:unsafe_compliance": 23,
+  "harm/unsafe:incoherent": 14,
+  "harm/natural:disputed": 32,
+  "harm/unsafe:safe_helpful": 11,
+  "harm/refusal:safe_helpful": 8,
+  "border/natural:refusal": 53,
+  "harm/safe_A:incoherent": 44,
+  "border/safe_helpful:disputed": 51,
+  "border/safe_helpful:refusal": 7,
+  "border/natural:partial_refusal": 19,
+  "harm/safe_helpful:unsafe_compliance": 23,
+  "harm/unsafe:partial_refusal": 21,
+  "border/natural:disputed": 64,
+  "border/refusal:safe_helpful": 1,
+  "border/safe_helpful:partial_refusal": 4,
+  "border/natural:unsafe_compliance": 3,
+  "border/safe_helpful:unsafe_compliance": 4
+ },
+ "active_guards": [
+  "wildguard",
+  "qwen3guard"
+ ],
+ "consolidation": "majority",
+ "run": {
+  "judge": {
+   "calls": 1366,
+   "prompt_tokens": 2941276,
+   "completion_tokens": 345378
+  },
+  "qwen3guard": {
+   "calls": 13623,
+   "prompt_tokens": 7608178,
+   "completion_tokens": 174910
+  },
+  "wildguard": {
+   "calls": 13625,
+   "prompt_tokens": 4447945,
+   "completion_tokens": 283440
+  }
+ }
+}

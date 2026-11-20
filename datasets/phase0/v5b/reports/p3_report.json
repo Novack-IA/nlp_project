@@ -1,0 +1,11 @@
+{
+ "groups": 2806,
+ "subject_responses": 16836,
+ "thinking_blocks_stripped": 0,
+ "finish_length": 6166,
+ "run": {
+  "vllm:google/gemma-4-12B-it:calls": 8193,
+  "vllm:google/gemma-4-12B-it:prompt_tokens": 632436,
+  "vllm:google/gemma-4-12B-it:completion_tokens": 1950145
+ }
+}

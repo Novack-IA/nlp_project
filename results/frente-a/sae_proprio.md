@@ -28,12 +28,16 @@ O ΔNLL é a perda do modelo com o residual da camada substituído pela reconstr
 | 22 | Gemma Scope 2, 16k, L0 small | nossos pedidos | 0,126 | 17 | +0,58 |
 | 22 | **próprio** | UltraChat | **0,070** | 65 | +0,36 |
 | 22 | Gemma Scope 2, 16k, L0 medium | UltraChat | 0,109 | 59 | −0,35 ⚠️ |
-| 29 | próprio | — | em treino | | |
+| 29 | **próprio** | nossos pedidos | **0,112** | 50 | **+0,46** |
+| 29 | Gemma Scope 2, 16k, L0 medium | nossos pedidos | 0,163 | 48 | +0,69 |
+| 29 | Gemma Scope 2, 16k, L0 small | nossos pedidos | 0,208 | 16 | +1,07 |
+| 29 | **próprio** | UltraChat | **0,145** | 65 | +0,52 |
+| 29 | Gemma Scope 2, 16k, L0 medium | UltraChat | 0,217 | 59 | −0,15 ⚠️ |
 
 **Leitura**
-- **Com L0 parecido, o SAE próprio reconstrói melhor** nas duas camadas: o FVU fica entre 35% e 45% menor.
-- **Na camada 22, nos nossos pedidos, ele também preserva melhor o comportamento do modelo** (ΔNLL +0,21 contra +0,55). O corpus de treino inclui pedidos de segurança.
-- **⚠️ Anomalia:** no UltraChat, que tem contextos longos, a reconstrução do Gemma Scope 2 *reduz* a perda do modelo. Isso não deveria acontecer e se repete nas duas camadas. Hipóteses:
+- **Com L0 parecido, o SAE próprio reconstrói melhor** nas três camadas: o FVU fica entre 30% e 45% menor. A dificuldade cresce com a profundidade: o FVU fica em torno de 0,03 na camada 17, 0,06 na 22 e 0,11 na 29.
+- **Nas camadas 22 e 29, nos nossos pedidos, ele também preserva melhor o comportamento do modelo:** ΔNLL +0,21 contra +0,55 na 22 e +0,46 contra +0,69 na 29. O corpus de treino inclui pedidos de segurança.
+- **⚠️ Anomalia:** no UltraChat, que tem contextos longos, a reconstrução do Gemma Scope 2 *reduz* a perda do modelo. Isso não deveria acontecer e se repete nas três camadas. Hipóteses:
   1. tokens de norma muito alta no Gemma 3 (os "sinks" de atenção) que o SAE "conserta";
   2. diferença de pré-processamento esperada pelo Gemma Scope 2 (normalização, posição do hook, tokens de template).
 

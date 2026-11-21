@@ -46,7 +46,20 @@ Depois do ajuste para o plano B: **1.794 de 1.825 grupos aprovados (98,3%)**. A 
 
 **26 dos 31 grupos reprovados estão no `qc_grammatical`.** O juiz de gramática deixou passar as palavras quebradas. A lista está em `validacao_2x2.json` → `falhas`.
 
-## 3. Pares originais (diagnóstico, não entra no veredito)
+## 3. Probes densos nos pares (diagnóstico, não entra no veredito)
+
+Cache `pairs` da frente B (baixado da pasta compartilhada, 65/65 arquivos conferidos pelo sha256 do `MANIFEST.json`). Regressão logística L2 no residual completo, Q⁺ × Q⁰, C escolhido por GroupKFold por gatilho no `train`. AUROC no `test`:
+
+| Camada | `inst_last` | `post_last` | `post` | `mean` | `trig` |
+|---|---|---|---|---|---|
+| L9 | 0,999 | 0,999 | 0,999 | 1,000 | 0,991 |
+| L17 | 0,999 | 0,999 | 0,999 | 0,999 | 0,993 |
+| L22 | 0,996 | 0,999 | 0,998 | 0,999 | 0,987 |
+| L29 | 0,995 | 0,998 | 0,998 | 0,999 | 0,980 |
+
+Com gatilho inédito, os números são os mesmos (0,976–1,000). **Leitura:** o residual separa Q⁺ de Q⁰ quase perfeitamente em todas as camadas e posições, tanto quanto o TF-IDF (0,995). Nos pares originais, isso não distingue intenção de palavras ou estilo, então serve só para confirmar que o cache e o código funcionam. A âncora densa do veredito sai do 2×2 (`cells2x2`), quando o cache dele existir.
+
+## 4. Pares originais (diagnóstico, não entra no veredito)
 
 | Classificador (`test`, 347 pares) | AUROC | IC 95% |
 |---|---|---|

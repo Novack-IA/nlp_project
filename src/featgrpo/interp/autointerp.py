@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 import urllib.request
 from pathlib import Path
 from typing import Callable
@@ -57,6 +58,7 @@ def fetch_feature(layer: int, sae: str, index: int, cache_dir: Path = NP_CACHE) 
     req = urllib.request.Request(url, headers={"User-Agent": "research-client"})
     with urllib.request.urlopen(req, timeout=60) as r:
         data = json.load(r)
+    time.sleep(0.25)                       # gentileza com a API pública
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(data), encoding="utf-8")
     return data
@@ -154,9 +156,77 @@ def avaliar(fred: pd.DataFrame, davi: pd.DataFrame, chave: pd.DataFrame, limiar:
                                               & (df["davi"] == "lexical")).sum())}
 
 
+def _md(s: str) -> str:
+    return str(s).replace("|", "\\|").replace("\n", " ").strip()
+
+
+def explicacao(layer: int, sae: str, f: int, fetch: Callable[[int, str, int], dict], tentativas: int = 3) -> str:
+    import time
+    for k in range(tentativas):
+        try:
+            return resumo_neuronpedia(fetch(layer, sae, f))["explicacao"]
+        except Exception:  # rede instável: tenta de novo
+            time.sleep(2 * (k + 1))
+    return "(falha ao buscar no Neuronpedia)"
+
+
+def provisorio_md(prov: dict, csv_dir: Path, sae: str, fetch: Callable[[int, str, int], dict] = fetch_feature) -> str:
+    """Texto do `provisorio.md`: resumo das 8 combinações e o top-20 de cada lado com o rótulo do Neuronpedia."""
+    linhas = [
+        "# Modo provisório nos pares originais (C1 provisório)",
+        "",
+        "> **Diagnóstico, fora do veredito** (pré-registro, regra 4 da seção 5). Nos pares originais, só o estilo do "
+        "texto já separa nocivo de benigno com AUROC 0,88 (`results/frente-d/baseline_lexical.json`), então features "
+        "\"de intenção\" aqui podem ser features de estilo ou de assunto. Serve para depurar o código e ter uma "
+        "primeira ideia. Só a descoberta (train + val).",
+        f"> Gerado por `python -m featgrpo.interp.autointerp provisorio` a partir de `provisorio_{sae}.json` "
+        f"(commit {str(prov.get('git_commit') or '')[:7]}). Os rótulos são as explicações automáticas do Neuronpedia "
+        "(`gemma-3-4b-it/{L}-gemmascope-2-res-" + sae + "`), escritas por um LLM a partir de texto genérico: são "
+        "ponto de partida, não verdade.",
+        "",
+        "Intenção provisória = ativação em Q⁺ − ativação em Q⁰, pareada por grupo. \"Efeito grande\" = "
+        "\\|d\\| ≥ 0,5 e q < 0,01 (BH na família das 8 combinações). \"Sobrevivem ao estilo\" = controle de estilo "
+        "(`DESVIOS.md`, 2026-11-21).",
+        "",
+        "## Resumo",
+        "",
+        "| Combinação | Pares na descoberta | Efeito grande | Mais ativas em Q⁺ | Mais ativas em Q⁰ | Sobrevivem ao estilo | R² do estilo (mediana) |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for c in prov["combinacoes"]:
+        e = c.get("controle_estilo") or {}
+        n_pos, n_neg = len(c["top20_mais_ativas_em_Q_harm"]), len(c["top20_mais_ativas_em_Q_border"])
+        sob = f"{e['n_sobrevivem']} de {e['n_features']}" if e.get("status") == "ok" else "—"
+        r2 = f"{e['r2_mediano']:.2f}".replace(".", ",") if e.get("status") == "ok" else "—"
+        linhas.append(f"| L{c['camada']} · {c['rotulo']} | {c['n_grupos_descoberta']} | {c['n_sig_d05']} | "
+                      f"{n_pos}{'+' if n_pos == 20 else ''} | {n_neg}{'+' if n_neg == 20 else ''} | {sob} | {r2} |")
+    linhas += ["", "\"20+\" = há mais de 20 features desse lado; abaixo aparecem só as 20 de maior \\|d\\|.", ""]
+    for c in prov["combinacoes"]:
+        layer, pos = c["camada"], c["posicao"]
+        df = pd.read_csv(Path(csv_dir) / f"provisorio_L{layer}_{pos}_{sae}.csv").set_index("feature")
+        linhas += [f"## L{layer} · {c['rotulo']}", ""]
+        for titulo, feats in (("Mais ativas em Q⁺ (nocivo)", c["top20_mais_ativas_em_Q_harm"]),
+                              ("Mais ativas em Q⁰ (benigno)", c["top20_mais_ativas_em_Q_border"])):
+            linhas += [f"**{titulo}**", ""]
+            if not feats:
+                linhas += ["Nenhuma feature com efeito grande.", ""]
+                continue
+            linhas += ["| # | Feature | d | Ativa em | Rótulo do Neuronpedia |", "|---|---|---|---|---|"]
+            for k, f in enumerate(feats, 1):
+                url = NP_PAGE.format(model=NP_MODEL, source=np_source(layer, sae), index=f)
+                d = f"{df.loc[f, 'd_int']:.2f}".replace(".", ",").replace("-", "−")
+                fr = f"{100 * df.loc[f, 'freq_ativacao']:.0f}%"
+                linhas.append(f"| {k} | [{f}]({url}) | {d} | {fr} | {_md(explicacao(layer, sae, f, fetch))} |")
+            linhas.append("")
+    return "\n".join(linhas).rstrip() + "\n"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Fichas cegas do C3 (frente C).")
     sub = ap.add_subparsers(dest="cmd", required=True)
+    pv = sub.add_parser("provisorio", help="monta results/frente-c/provisorio.md com os rótulos do Neuronpedia")
+    pv.add_argument("--sae", default="16k")
+    pv.add_argument("--dir", type=Path, default=OUT_DIR)
     m = sub.add_parser("montar")
     m.add_argument("--root", type=Path, default=cache_io.DEFAULT_ROOT)
     m.add_argument("--sae", default="16k")
@@ -169,6 +239,13 @@ def main(argv=None) -> int:
     a.add_argument("--chave", type=Path, default=KEY_DIR / "fichas_chave.csv")
     a.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args(argv)
+
+    if args.cmd == "provisorio":
+        prov = json.loads((args.dir / f"provisorio_{args.sae}.json").read_text(encoding="utf-8"))
+        out = args.dir / "provisorio.md"
+        out.write_text(provisorio_md(prov, args.dir, args.sae), encoding="utf-8")
+        print(f"salvo em {out}")
+        return 0
 
     if args.cmd == "montar":
         resumo = json.loads((args.out_dir / "c1_c3.json").read_text(encoding="utf-8"))[args.sae]

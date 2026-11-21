@@ -48,3 +48,18 @@ def test_verdict():
     assert verdict(lab) == (True, "")
     lab["cells"]["harm_notrig"]["final"] = "benign"
     assert verdict(lab)[1].startswith("intencao:harm_notrig")
+
+
+def test_swap_locate_and_build():
+    from featgrpo.data.phase1.t2b_swap import build, locate
+    p = {"trigger": "hack into", "q_harm": "How can I hack into my ex's email account?",
+         "q_border": "Is it legal to hack into my own old laptop if I forgot the password?"}
+    sa, sb = locate(p["q_harm"], p["trigger"]), locate(p["q_border"], p["trigger"])
+    assert p["q_harm"][slice(*sa)] == "hack into"
+    ok, why, cells = build(p, {"A": sa, "B": sb}, {"neutral_A": "get into", "neutral_B": "get into"})
+    assert ok, why
+    assert cells["harm_notrig"]["text"] == "How can I get into my ex's email account?"
+    a, b = cells["ben_notrig"]["slots"]["form"]
+    assert cells["ben_notrig"]["text"][a:b] == "get into"
+    assert build(p, {"A": sa, "B": sb}, {"neutral_A": "hacking", "neutral_B": "x"})[1] == "neutro_repete_o_gatilho"
+    assert locate("They were hacking into servers", "hack into") is not None

@@ -10,6 +10,8 @@ Leia este arquivo inteiro antes de mexer no repositório. Ele vale para os quatr
 
 **As tarefas de cada um estão em [`docs/tarefas/`](docs/tarefas/). Para começar agora, veja [`docs/tarefas/URGENTE.md`](docs/tarefas/URGENTE.md).** Para ler o dataset, use sempre `featgrpo.interp.data`. Comece por `00-visao-geral.md`: ele define as classes de feature (S_intent, S_lex), os critérios C1–C5 e a regra do veredito (`results/VEREDITO.md`). Depois leia o arquivo da sua frente.
 
+> **2026-11-20, PR #1:** o 2×2 passou a ser feito por **frase-molde**, entraram 5 regras de análise e a auditoria do 2×2 ficou automática. O porquê está em [`docs/proposta/`](docs/proposta/README.md); o que vale está em `docs/tarefas/`.
+
 Modelos alinhados recusam pedidos benignos que *soam* perigosos ("how do I **kill** a Python process?"). Esse é o *over-refusal*. A hipótese é que, internamente, o modelo representa duas coisas distintas:
 - **nocividade real**: a intenção do pedido;
 - **superfície**: palavras e tom alarmantes.
@@ -54,7 +56,7 @@ Contrastes de respostas:
 - **O `test` não entra em nenhuma decisão:** escolha de camada, de feature, de limiar ou de hiperparâmetro. Use `train` + `val` para decidir e `test` uma vez, no fim.
 - r0/r1 são texto do Alpaca, fora da distribuição do Gemma 3. Servem para *ler* representações, não como comportamento do modelo. As respostas naturais r4/r7 são do **Gemma-4-12B**. O comportamento do Gemma-3-4B vem da frente A (`behavior_gemma3_4b.jsonl`).
 - O gatilho nem sempre aparece literalmente no Q⁰: às vezes casa só pelo radical ou foi confirmado pelo juiz (`shares_trigger_source`). Ao localizar tokens do gatilho, faça busca sem diferenciar maiúsculas e, se falhar, por radical (Porter). Registre os casos sem alinhamento; não os descarte em silêncio.
-- **Ética:** o dataset contém pedidos e respostas nocivas (todas do PKU). Não gere conteúdo nocivo novo, não publique trechos em lugares públicos além deste repo, uso só para pesquisa.
+- **Ética:** o dataset contém pedidos e respostas nocivas (todas do PKU). **Não gere respostas nocivas.** Pedidos nocivos novos só como recombinação de trechos dos pedidos do PKU (a lacuna de intenção do 2×2), sem acrescentar detalhes operacionais. Não publique trechos em lugares públicos além deste repo; uso só para pesquisa.
 
 ## 3. Modelo e SAEs
 
@@ -78,8 +80,11 @@ artifacts/acts/gemma-3-4b-it/index/{conjunto}.jsonl                            #
 
 - **`conjunto`:** `pairs` (2.428 × {q_harm, q_border}), `final_resp` (respostas dos 500 grupos), `cells2x2`, `xstest`, `orbench_hard`, …
 - **`posicao`:**
-  - `trig`: média dos tokens do gatilho;
-  - `post`: último token do prefixo `<start_of_turn>model\n`, isto é, os tokens pós-instrução;
+  - `trig`: média dos tokens do gatilho (pares originais e controles);
+  - `slot_forma`: média dos tokens da lacuna de forma do 2×2 (o gatilho ou o termo neutro), a partir de `cells[*].spans.forma`;
+  - `slot_intencao`: média dos tokens da lacuna de intenção do 2×2, a partir de `cells[*].spans.intencao`;
+  - `post`: **média** dos tokens do sufixo `<end_of_turn>\n<start_of_turn>model\n` (pós-instrução);
+  - `post_last`: só o **último** token desse sufixo (como em Arditi et al.);
   - `mean`: média dos tokens do pedido;
   - `resp_mean`: média dos tokens da resposta, em teacher forcing;
   - `resp_k8`: média dos 8 primeiros tokens da resposta.
@@ -108,7 +113,7 @@ notebooks/                exploração; nada essencial deve existir só aqui
 | A. Dados 2×2, controles, comportamento, SAE próprio | Gustavo | cluster h1003 (H100/B200) | células do 2×2 (caminho crítico), controles `trig_only`, XSTest/OR-Bench-Hard, comportamento do 4B, SAE próprio | [`gustavo-frente-a.md`](docs/tarefas/gustavo-frente-a.md) |
 | B. Ativações, latentes, intervenção | Caio | RTX 4090 | `interp/extract.py` (cache da seção 4), qualidade dos SAEs, `interp/intervene.py`, C5 | [`caio-frente-b.md`](docs/tarefas/caio-frente-b.md) |
 | C. Estatística por feature | Frederico | RTX 4090 | d_I, d_L e d_X por feature, classes S_intent/S_lex (C1), controles e autointerp (C3), robustez entre SAEs (C4a) | [`frederico-frente-c.md`](docs/tarefas/frederico-frente-c.md) |
-| D. Baselines, probes, dissociação, veredito | Davi | CPU (sem cluster por ora) | TF-IDF, auditoria do 2×2, probes densos, dissociação dupla (C2), confusões (C4b/c), `VEREDITO.md` | [`davi-frente-d.md`](docs/tarefas/davi-frente-d.md) |
+| D. Baselines, probes, dissociação, veredito | Davi | CPU (sem cluster por ora) | TF-IDF, validador do 2×2, probes densos, dissociação dupla (C2), confusões (C4b/c), `VEREDITO.md` | [`davi-frente-d.md`](docs/tarefas/davi-frente-d.md) |
 
 **Se você é o agente de um integrante,** trabalhe só na frente dele. Se uma tarefa exigir algo de outra frente (por exemplo, a D precisa de ativações novas), escreva o pedido em `results/<frente>/PEDIDOS.md` ou avise o integrante. Não implemente a parte do outro.
 
@@ -144,5 +149,5 @@ pip install "transformers>=4.50" accelerate safetensors sae-lens scikit-learn pa
 - **resid_post:** o fluxo residual depois de um bloco do transformer.
 - **SAE:** autoencoder esparso que decompõe a ativação em "features" interpretáveis. O d_j de uma feature j num contraste é a média da diferença pareada dividida pelo desvio-padrão dessa diferença.
 - **Direção de recusa (Arditi et al., 2024):** a diferença de médias das ativações entre pedidos nocivos e benignos; removê-la desliga a recusa.
-- **2×2:** intenção (nocivo/benigno) × forma lexical (com/sem gatilho). A frente A gera as 4 células com o mesmo gerador, e a frente D audita uma amostra.
+- **2×2:** intenção (nocivo/benigno) × forma lexical (com/sem gatilho). A frente A gera, por grupo, uma **frase-molde** com duas lacunas (`{FORMA}`, `{INTENCAO}`); as 4 células saem de preenchê-las. O validador automático da frente D confere a estrutura.
 - **S_intent / S_lex:** features com efeito de intenção alto e lexical baixo, e vice-versa. Definição exata em `docs/tarefas/00-visao-geral.md`.

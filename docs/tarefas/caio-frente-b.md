@@ -6,6 +6,11 @@
 
 Recursos: RTX 4090 (24 GB). O Gemma-3-4B-IT em bf16 ocupa ~9 GB; os SAEs de 16k a 262k cabem junto.
 
+> **O que mudou em 2026-11-20 (PR #1):** pouco.
+> - No 2×2, a posição `trig` vira **`slot_forma`** e entra uma posição nova, **`slot_intencao`**. As duas vêm de `cells[*].spans` do `cells_2x2.jsonl`, sem busca de gatilho.
+> - `post` (média) e `post_last` (último token) ficam como já estavam aqui. Confirme-as no `fatos_modelo.md`.
+> - O cache provisório dos pares (B-U3) não muda.
+
 ---
 
 ## B1. Setup e fatos do modelo (D1, entregar até o fim do dia)
@@ -32,9 +37,8 @@ Recursos: RTX 4090 (24 GB). O Gemma-3-4B-IT em bf16 ocupa ~9 GB; os SAEs de 16k 
 - **Posições:**
   - `post`: os tokens do sufixo de geração `<end_of_turn>\n<start_of_turn>model\n`. Salve a **média** desses tokens e também o **último**, em `post_last`.
   - `mean`: média dos tokens do conteúdo do pedido, sem os tokens de template.
-  - `trig`: média dos tokens que cobrem o gatilho. Localize pelo `offset_mapping` do tokenizer: busca exata sem diferenciar maiúsculas; se falhar, por radical Porter palavra a palavra. Grave `trigger_aligned` no índice.
-    - Nas células `*_notrig`, use o **termo neutro** como "gatilho". Isso mantém a posição comparável.
-    - Nos controles `trig_only` e `neutral_only`, idem.
+  - `trig` (**pares originais**): média dos tokens que cobrem o gatilho. Localize pelo `offset_mapping` do tokenizer: busca exata sem diferenciar maiúsculas; se falhar, por radical Porter palavra a palavra. Grave `trigger_aligned` no índice.
+  - `slot_forma` e `slot_intencao` (**2×2 e controles**): média dos tokens cujo `offset_mapping` cruza `cells[c].spans.forma` e `cells[c].spans.intencao`. As posições vêm prontas do arquivo, então não há busca e o alinhamento é sempre exato. Em `*_notrig`, `slot_forma` é o termo neutro, o que mantém a posição comparável.
   - Para respostas, `resp_mean` e `resp_k8`, se a frente D pedir. Para a pergunta principal, bastam os pedidos.
 - **Duas saídas por item:**
   1. **Denso:** `float16 [N, d_model]` por camada × posição.
@@ -50,7 +54,7 @@ Recursos: RTX 4090 (24 GB). O Gemma-3-4B-IT em bf16 ocupa ~9 GB; os SAEs de 16k 
 | Cache | Conteúdo | Quando |
 |---|---|---|
 | `pairs` | 2.428 × {q_harm, q_border}, 4 camadas, posições `post`, `post_last`, `mean`, `trig`; denso + latentes 16k | **D2** (destrava C e D no modo provisório) |
-| `cells2x2` | ~1.200 × 4 células (+ originais) | D5, quando A1 sair |
+| `cells2x2` | ~1.200 × 4 células (+ originais); posições `post`, `post_last`, `mean`, `slot_forma`, `slot_intencao` | D5, quando A1 sair |
 | `controls` | `trig_only` e `neutral_only` | D4–D5 |
 | `xstest`, `orbench_hard` | itens externos | D5 |
 | 262k | latentes 262k para `cells2x2` e `controls` nas 4 camadas | D6 |

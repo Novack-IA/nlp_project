@@ -1,0 +1,142 @@
+{
+  "script": "src/featgrpo/interp/sim_poder.py",
+  "args": {
+    "ns": [
+      150,
+      260,
+      400,
+      550,
+      680
+    ],
+    "reps": 300,
+    "seed": 0,
+    "base": -0.3,
+    "noise": 0.7,
+    "p_cut": 1e-06,
+    "n_boot": 1000,
+    "out": "/Users/fredrelvas/Documents/bia/6-periodo/nlp/nlp_project/results/frente-c/poder.json"
+  },
+  "git_commit": "0306146ecb4ec6f2d89bf76492eb0cae6f6b3699",
+  "gerado_em": "2026-11-21T02:04:53+00:00",
+  "contagens": {
+    "pares_hoje": {
+      "descoberta": 2081,
+      "confirmacao": 347,
+      "confirmacao_gatilho_inedito": 214,
+      "descoberta_por_dominio": {
+        "bias": 494,
+        "cyber": 521,
+        "privacy": 544,
+        "violence": 522
+      },
+      "confirmacao_inedito_por_dominio": {
+        "bias": 62,
+        "cyber": 52,
+        "privacy": 38,
+        "violence": 62
+      }
+    },
+    "perda_suposta_fim_pedido": 0.2,
+    "cenarios_2x2": [
+      {
+        "fracao_pares_que_viram_grupo": 0.2,
+        "grupos_total": 486,
+        "descoberta": 416,
+        "descoberta_fim_pedido_apos_perda": 333,
+        "confirmacao_gatilho_inedito": 43,
+        "menor_dominio_descoberta": 99
+      },
+      {
+        "fracao_pares_que_viram_grupo": 0.33,
+        "grupos_total": 801,
+        "descoberta": 687,
+        "descoberta_fim_pedido_apos_perda": 549,
+        "confirmacao_gatilho_inedito": 71,
+        "menor_dominio_descoberta": 163
+      },
+      {
+        "fracao_pares_que_viram_grupo": 0.5,
+        "grupos_total": 1214,
+        "descoberta": 1040,
+        "descoberta_fim_pedido_apos_perda": 832,
+        "confirmacao_gatilho_inedito": 107,
+        "menor_dominio_descoberta": 247
+      }
+    ],
+    "nota": "Supõe que o rendimento do 2×2 é igual em todos os splits e domínios."
+  },
+  "simulacao": {
+    "intencao_pura": {
+      "d_I_verdadeiro": 0.601,
+      "d_L_verdadeiro": 0.0,
+      "fracao_grupos_com_efeito": 1.0,
+      "P_classificada_S_intent": {
+        "150": 0.34,
+        "260": 0.7466666666666667,
+        "400": 0.9566666666666667,
+        "550": 0.99,
+        "680": 1.0
+      }
+    },
+    "intencao_forte": {
+      "d_I_verdadeiro": 1.002,
+      "d_L_verdadeiro": 0.001,
+      "fracao_grupos_com_efeito": 1.0,
+      "P_classificada_S_intent": {
+        "150": 0.3333333333333333,
+        "260": 0.8133333333333334,
+        "400": 0.98,
+        "550": 0.9966666666666667,
+        "680": 1.0
+      }
+    },
+    "intencao_vazamento_leve": {
+      "d_I_verdadeiro": 0.609,
+      "d_L_verdadeiro": 0.099,
+      "fracao_grupos_com_efeito": 1.0,
+      "P_classificada_S_intent": {
+        "150": 0.22,
+        "260": 0.34,
+        "400": 0.49333333333333335,
+        "550": 0.6866666666666666,
+        "680": 0.7733333333333333
+      }
+    },
+    "lexical": {
+      "d_I_verdadeiro": 0.002,
+      "d_L_verdadeiro": 0.801,
+      "fracao_grupos_com_efeito": 1.0,
+      "P_classificada_S_intent": {
+        "150": 0.0,
+        "260": 0.0,
+        "400": 0.0,
+        "550": 0.0,
+        "680": 0.0
+      }
+    },
+    "tema_um_dominio_25pct": {
+      "d_I_verdadeiro": 0.551,
+      "d_L_verdadeiro": 0.004,
+      "fracao_grupos_com_efeito": 0.25,
+      "P_classificada_S_intent": {
+        "150": 0.17333333333333334,
+        "260": 0.6833333333333333,
+        "400": 0.8766666666666667,
+        "550": 0.96,
+        "680": 0.9733333333333334
+      }
+    },
+    "nula": {
+      "d_I_verdadeiro": 0.002,
+      "d_L_verdadeiro": 0.001,
+      "fracao_grupos_com_efeito": 1.0,
+      "P_classificada_S_intent": {
+        "150": 0.0,
+        "260": 0.0,
+        "400": 0.0,
+        "550": 0.0,
+        "680": 0.0
+      }
+    }
+  }
+}

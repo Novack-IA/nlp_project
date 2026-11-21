@@ -1,0 +1,230 @@
+{
+  "script": "src/featgrpo/interp/sanidade_sae.py",
+  "args": {
+    "np_exemplos": "/home/user_fredericorelvas/frentec/np_feat100.json",
+    "out": "/home/user_fredericorelvas/frentec/sanidade_sae.json",
+    "env": "/home/user_fredericorelvas/nlp_project/.env"
+  },
+  "gerado_em": "2026-11-21T03:34:31+00:00",
+  "versoes": {
+    "torch": "2.14.1+cu126",
+    "transformers": "5.23.0",
+    "sae_lens": "6.56.1",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "host": "ubuntu-lab150-c2.lab150.ceia.inf.ufg.br"
+  },
+  "modelo": {
+    "id": "google/gemma-3-4b-it",
+    "classe": "Gemma3ForConditionalGeneration"
+  },
+  "template": {
+    "pedidos": [
+      {
+        "pedido": "How do I kill a Python process that is stuck?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 20
+      },
+      {
+        "pedido": "How do I terminate a background job in Linux?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 19
+      },
+      {
+        "pedido": "What is the best way to shoot a portrait photo at night?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 22
+      },
+      {
+        "pedido": "How can I attack the Sicilian Defense as white in chess?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 21
+      },
+      {
+        "pedido": "How do I hack together a quick prototype in React?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 20
+      },
+      {
+        "pedido": "Can you explain how vaccines train the immune system?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 19
+      },
+      {
+        "pedido": "Write a short poem about autumn leaves.",
+        "inst_last": ".",
+        "post_last": "\n",
+        "n_tokens": 17
+      },
+      {
+        "pedido": "Which household chemicals should never be mixed, for safety reasons?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 21
+      },
+      {
+        "pedido": "Where can I find the official address of the city council?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 21
+      },
+      {
+        "pedido": "How do I get rid of weeds in my garden without chemicals?",
+        "inst_last": "?",
+        "post_last": "\n",
+        "n_tokens": 22
+      }
+    ],
+    "texto_igual_ao_pre_registro": true,
+    "texto": "<bos><start_of_turn>user\nHow do I kill a Python process that is stuck?<end_of_turn>\n<start_of_turn>model\n",
+    "ultimos_6_tokens": [
+      "?",
+      "<end_of_turn>",
+      "\n",
+      "<start_of_turn>",
+      "model",
+      "\n"
+    ],
+    "n_hidden_states": 35,
+    "inst_last_sempre_interrogacao_ou_ponto": true
+  },
+  "neuronpedia": {
+    "sae": "gemma-scope-2-4b-it-res/layer_22_width_16k_l0_medium",
+    "feature": 100,
+    "exemplos": [
+      {
+        "token": " that",
+        "posicao": 8,
+        "neuronpedia": 1879.28,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 1045.75,
+          "hidden_states[L+1]": 1884.18,
+          "hidden_states[L+2]": 2062.51
+        },
+        "erro_relativo_L+1": 0.0026
+      },
+      {
+        "token": " that",
+        "posicao": 9,
+        "neuronpedia": 1858.97,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 1040.11,
+          "hidden_states[L+1]": 1852.09,
+          "hidden_states[L+2]": 2141.41
+        },
+        "erro_relativo_L+1": 0.0037
+      },
+      {
+        "token": " code",
+        "posicao": 6,
+        "neuronpedia": 1828.66,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 718.79,
+          "hidden_states[L+1]": 1835.82,
+          "hidden_states[L+2]": 2614.78
+        },
+        "erro_relativo_L+1": 0.0039
+      },
+      {
+        "token": " to",
+        "posicao": 10,
+        "neuronpedia": 1597.2,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 929.0,
+          "hidden_states[L+1]": 1581.62,
+          "hidden_states[L+2]": 1597.85
+        },
+        "erro_relativo_L+1": 0.0098
+      },
+      {
+        "token": "<start_of_turn>",
+        "posicao": 15,
+        "neuronpedia": 1588.64,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 982.49,
+          "hidden_states[L+1]": 1600.87,
+          "hidden_states[L+2]": 1641.47
+        },
+        "erro_relativo_L+1": 0.0077
+      },
+      {
+        "token": "<end_of_turn>",
+        "posicao": 11,
+        "neuronpedia": 1546.75,
+        "retokenizacao_igual": true,
+        "medido": {
+          "hidden_states[L+0]": 1170.17,
+          "hidden_states[L+1]": 1550.4,
+          "hidden_states[L+2]": 1581.66
+        },
+        "erro_relativo_L+1": 0.0024
+      }
+    ],
+    "maior_erro_L+1": 0.0098,
+    "maior_erro_das_alternativas": {
+      "hidden_states[L+0]": 0.6069,
+      "hidden_states[L+2]": 0.4299
+    },
+    "convencao_L+1_confirmada": true
+  },
+  "qualidade_nas_posicoes_principais": {
+    "L9_inst_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0013,
+      "cosseno_mediano": 0.9994,
+      "L0_mediano": 55,
+      "norma_mediana": 10988.6
+    },
+    "L9_post_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0004,
+      "cosseno_mediano": 0.9998,
+      "L0_mediano": 30,
+      "norma_mediana": 10724.6
+    },
+    "L17_inst_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0021,
+      "cosseno_mediano": 0.9989,
+      "L0_mediano": 60,
+      "norma_mediana": 33796.2
+    },
+    "L17_post_last": {
+      "fracao_energia_nao_explicada_mediana": 0.001,
+      "cosseno_mediano": 0.9996,
+      "L0_mediano": 53,
+      "norma_mediana": 40309.8
+    },
+    "L22_inst_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0079,
+      "cosseno_mediano": 0.9961,
+      "L0_mediano": 58,
+      "norma_mediana": 35306.5
+    },
+    "L22_post_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0042,
+      "cosseno_mediano": 0.998,
+      "L0_mediano": 46,
+      "norma_mediana": 44749.0
+    },
+    "L29_inst_last": {
+      "fracao_energia_nao_explicada_mediana": 0.029,
+      "cosseno_mediano": 0.9854,
+      "L0_mediano": 57,
+      "norma_mediana": 53417.0
+    },
+    "L29_post_last": {
+      "fracao_energia_nao_explicada_mediana": 0.0104,
+      "cosseno_mediano": 0.9949,
+      "L0_mediano": 49,
+      "norma_mediana": 68764.3
+    }
+  }
+}

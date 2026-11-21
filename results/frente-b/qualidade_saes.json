@@ -1,0 +1,55 @@
+[
+  {
+    "args": {
+      "layers": [
+        9,
+        17,
+        22,
+        29
+      ],
+      "widths": [
+        "16k",
+        "262k"
+      ],
+      "n_pairs": 600,
+      "n_gen": 150,
+      "batch_size": 16,
+      "max_new_tokens": 64,
+      "out": "results/frente-b/qualidade_saes.csv"
+    },
+    "commit": "7d1b5d1c63940f0890c541df807bbe84dcb13d39",
+    "n_prompts": 1200,
+    "n_responses": 300,
+    "n_response_tokens": 19188,
+    "created": "2026-11-20T23:02:13"
+  },
+  {
+    "args": {
+      "layers": [
+        9,
+        17,
+        22,
+        29
+      ],
+      "widths": [
+        "16k",
+        "262k"
+      ],
+      "n_pairs": 600,
+      "n_gen": 150,
+      "batch_size": 16,
+      "max_new_tokens": 64,
+      "out": "results/frente-b/qualidade_saes.csv",
+      "positions": [
+        "inst_last",
+        "post_last"
+      ],
+      "skip_full": true
+    },
+    "commit": "21d1fb4ed97bdeb13fd18a6c498496a1a1914d0f",
+    "n_prompts": 1200,
+    "n_responses": 300,
+    "n_response_tokens": 19188,
+    "created": "2026-11-21T12:07:40"
+  }
+]

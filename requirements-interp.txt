@@ -1,0 +1,17 @@
+# Fase 1 (interpretabilidade). Versões testadas na RTX 4090 (CUDA 12.4), Python 3.11, 2026-11-20.
+# torch: pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124  (CPU: sem --index-url)
+torch==2.6.0
+transformers==5.23.0
+accelerate==1.16.0
+safetensors==0.8.0
+huggingface_hub==2.4.0
+sae-lens==6.56.1
+scikit-learn==1.9.1
+pandas==3.1.1
+numpy==2.4.6
+scipy==1.17.1
+statsmodels==0.15.0
+matplotlib==3.11.2
+nltk==3.10.4
+python-dotenv==1.2.4
+pytest==9.2.0

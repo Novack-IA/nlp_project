@@ -345,8 +345,10 @@ def top_k(df: pd.DataFrame, classe: str, regras: Regras) -> pd.DataFrame:
     return sel.reindex(sel[col].abs().sort_values(ascending=False).index).head(regras.top)
 
 
-def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras) -> pd.DataFrame:
-    """Seção 3, item 4: d_I por domínio das S_intent e em quantos domínios o sinal se mantém."""
+def por_categoria(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras,
+                  cat: np.ndarray, nomes, prefixo: str) -> pd.DataFrame:
+    """d_I das S_intent dentro de cada categoria (domínio ou tipo de gatilho) e em quantas o sinal se mantém
+    (mesmo sinal do d global e |d| >= regras.dom_d). Categorias com menos de regras.piso_dominio grupos ficam NaN."""
     if len(feats) == 0:
         return pd.DataFrame(columns=["feature"])
     a = sub[:, feats].toarray().astype(np.float64).reshape(len(g), 4, len(feats)).transpose(1, 0, 2)
@@ -354,21 +356,44 @@ def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.n
     out = {"feature": feats}
     consist = np.zeros(len(feats), dtype=int)
     avaliados = 0
-    for dom in DOMAINS:
-        m = g.domain == dom
+    for nome in nomes:
+        m = cat == nome
         n = int(m.sum())
-        out[f"n_{dom}"] = np.full(len(feats), n)
+        out[f"n_{nome}"] = np.full(len(feats), n)
         if n < regras.piso_dominio:
-            out[f"d_I_{dom}"] = np.full(len(feats), np.nan)       # "dados insuficientes"
+            out[f"d_I_{nome}"] = np.full(len(feats), np.nan)       # "dados insuficientes"
             continue
         avaliados += 1
         d = cohen_d(i_g[m])
-        out[f"d_I_{dom}"] = d
+        out[f"d_I_{nome}"] = d
         consist += ((np.sign(d) == np.sign(d_global)) & (np.abs(d) >= regras.dom_d)).astype(int)
-    out["dominios_avaliados"] = np.full(len(feats), avaliados)
-    out["dominios_consistentes"] = consist
-    out["geral"] = consist >= regras.dom_geral
+    out[f"{prefixo}_avaliados"] = np.full(len(feats), avaliados)
+    out[f"{prefixo}_consistentes"] = consist
     return pd.DataFrame(out)
+
+
+def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras) -> pd.DataFrame:
+    """Seção 3, item 4: d_I por domínio das S_intent e em quantos domínios o sinal se mantém."""
+    df = por_categoria(sub, g, feats, d_global, regras, g.domain, DOMAINS, "dominios")
+    if len(df):
+        df["geral"] = df["dominios_consistentes"] >= regras.dom_geral
+    return df
+
+
+TIPOS_GATILHO = ("surface", "action", "intent_marker")
+
+
+def tipos_de_gatilho(path: Path | None = None) -> dict[str, str]:
+    """group_id → tipo do gatilho (`trigger_type` do arquivo do 2×2 da frente A)."""
+    with open(caminho_cells(path), encoding="utf-8") as f:
+        return {g["group_id"]: g.get("trigger_type") for g in map(json.loads, filter(str.strip, f))}
+
+
+def por_tipo_gatilho(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras,
+                     tipos: dict[str, str]) -> pd.DataFrame:
+    """Seção 5, regra 5 (secundária, descritiva): d_I das S_intent por tipo de gatilho."""
+    cat = np.array([tipos.get(x) for x in g.gid], dtype=object)
+    return por_categoria(sub, g, feats, d_global, regras, cat, TIPOS_GATILHO, "tipos")
 
 
 # ---------------------------------------------------------------- confirmação
@@ -586,7 +611,8 @@ def _textos_2x2_padrao() -> dict:
 def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confirmacao: bool,
             regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None,
             conjunto_controles: str = "controls", textos: dict | None = None,
-            grupos_permitidos: set[str] | None = None, subconjunto: str = "todos") -> dict:
+            grupos_permitidos: set[str] | None = None, subconjunto: str = "todos",
+            tipos_gatilho: dict[str, str] | None = None) -> dict:
     rows = cache_io.load_index(root, conjunto)
     train_trigs = {r["trig_norm"] for r in rows if r.get("split") == "train"}
     tabelas, n_desc, excluidos, grupos = {}, {}, {}, {}
@@ -607,7 +633,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     resumo = resumo_combinacoes(tabelas, n_desc, regras)
     principal = principal_forcada or escolher_principal(resumo)
 
-    dominio_df, rep, rep_df = None, None, None
+    dominio_df, tipo_df, rep, rep_df = None, None, None, None
     estilo_res = {"status": "sem combinação principal"}
     if principal is not None and principal in tabelas:
         df_p, g_p = tabelas[principal], grupos[principal]
@@ -615,6 +641,9 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         desc = g_p.subset(np.isin(g_p.split, DISCOVERY))
         s_int = df_p[df_p["classe"] == "S_intent"]
         dominio_df = por_dominio(linhas(Z, desc), desc, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(), regras)
+        if tipos_gatilho:
+            tipo_df = por_tipo_gatilho(linhas(Z, desc), desc, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(),
+                                       regras, tipos_gatilho)
         estilo_res = {"status": "sem textos do 2×2 (datasets/phase1/cells_2x2.jsonl)"}
         tx = textos if textos is not None else _textos_2x2_padrao()
         if len(s_int) == 0:
@@ -700,6 +729,18 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
                 "S_intent_de_um_dominio_ou_menos": int((dominio_df["dominios_consistentes"] <= 1).sum()),
                 "dominios_avaliados": int(dominio_df["dominios_avaliados"].iloc[0]),
                 "features": dominio_df.to_dict("records"),
+            }
+        if tipo_df is not None and len(tipo_df):
+            res["por_tipo_gatilho"] = {
+                "descritivo": True,
+                "tipos": {t_: {"n_grupos_descoberta": int(tipo_df[f"n_{t_}"].iloc[0]),
+                               "S_intent_com_mesmo_sinal_e_d_ge_0_3": int(((np.sign(tipo_df[f"d_I_{t_}"]) ==
+                                                                            np.sign(df_p.set_index("feature").loc[tipo_df["feature"], "d_I"].to_numpy()))
+                                                                           & (tipo_df[f"d_I_{t_}"].abs() >= regras.dom_d)).sum()),
+                               "mediana_abs_d_I": float(tipo_df[f"d_I_{t_}"].abs().median())}
+                          for t_ in TIPOS_GATILHO if tipo_df[f"d_I_{t_}"].notna().any()},
+                "n_S_intent": int(len(tipo_df)),
+                "features": tipo_df.to_dict("records"),
             }
     return res
 
@@ -892,6 +933,7 @@ def main(argv=None) -> int:
                   conjunto_controles=args.conjunto_controles, textos=textos,
                   grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
                                                           validado=not args.sem_validador),
+                  tipos_gatilho=tipos_de_gatilho(args.cells_jsonl),
                   subconjunto=args.subconjunto + ("" if args.subconjunto == "todos" or args.sem_validador
                                                   else "+validator_pass"))
     summary[args.sae] = {**meta, **res}

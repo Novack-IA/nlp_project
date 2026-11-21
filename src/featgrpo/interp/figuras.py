@@ -121,6 +121,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Figura d_I × d_L da frente C.")
     ap.add_argument("--sae", default="16k")
     ap.add_argument("--dir", type=Path, default=OUT_DIR)
+    ap.add_argument("--paper-dir", type=Path, default=OUT_DIR.parents[1] / "docs" / "paper" / "figuras",
+                    help="onde copiar a figura 2 do paper (só no 16k)")
     args = ap.parse_args(argv)
     tabelas = {}
     for layer in LAYERS:
@@ -136,6 +138,13 @@ def main(argv=None) -> int:
             principal = (int(pr["camada"]), pr["posicao"])
     out = scatter_di_dl(tabelas, args.dir / f"fig_dI_dL_{args.sae}.png", args.sae, principal)
     print(f"salvo em {out} (e .pdf)")
+    if args.sae == "16k" and args.paper_dir is not None:
+        # figura 2 do paper: cópia feita pelo script, nunca à mão (docs/paper/README.md)
+        import shutil
+        args.paper_dir.mkdir(parents=True, exist_ok=True)
+        for ext in (".png", ".pdf"):
+            shutil.copyfile(Path(out).with_suffix(ext), args.paper_dir / f"fig2_dI_dL{ext}")
+        print(f"copiada para {args.paper_dir / 'fig2_dI_dL.png'} (e .pdf)")
     return 0
 
 

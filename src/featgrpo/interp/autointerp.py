@@ -263,6 +263,12 @@ def _lista(dir_: Path, cls: str, camada: int, pos: str, sae: str) -> set[int] | 
     return set(json.loads(p.read_text(encoding="utf-8"))["features"]) if p.exists() else None
 
 
+def _max_dl_slot(out_dir: Path) -> float | None:
+    """Maior |d_L| no `slot_forma` (posições secundárias), para a checagem de sanidade da seção 1, regra 4."""
+    vals = [pd.read_csv(c)["d_L"].abs().max() for c in sorted((Path(out_dir) / "secundarias").glob("feature_classes_L*_slot_forma_16k.csv"))]
+    return float(max(vals)) if vals else None
+
+
 def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict] = fetch_feature,
                   diag: dict | None = None, top: int = 10) -> str:
     """Texto do `descoberta.md`: o C1 no 2×2, só na descoberta. Primeiro o resumo em palavras, depois poucas
@@ -321,10 +327,15 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         + (f"{e['n_sobrevivem']} de {e['n_features']} sobrevivem ao controle de estilo; " if e.get("status") == "ok" else "")
         + (f"{_n(100 * t['S_intent']['fracao_sem_efeito'], 0)}% não reagem ao gatilho solto (C3 atende); "
            if t.get("status") == "ok" else "")
-        + (f"{dom['S_intent_gerais']} de {len(base)} valem nos 4 domínios." if dom else ""),
+        + (f"{dom['S_intent_gerais']} de {len(base)} valem nos 4 domínios" if dom else "")
+        + (f"; e {min(v['S_intent_com_mesmo_sinal_e_d_ge_0_3'] for v in r['por_tipo_gatilho']['tipos'].values())} "
+           f"de {r['por_tipo_gatilho']['n_S_intent']} se mantêm em cada um dos {len(r['por_tipo_gatilho']['tipos'])} tipos de gatilho."
+           if r.get("por_tipo_gatilho") else "."),
         f"3. **Não existe feature \"da palavra\".** {n_lex} S_lex e {n_mix} S_mixed nas 8 combinações. A troca do "
         "gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito "
-        "na maioria dos grupos.",
+        "na maioria dos grupos." + (f" A checagem de sanidade do pré-registro (seção 1, regra 4), que esperava efeito "
+        f"lexical forte no próprio token do gatilho, **não passa como foi escrita**: lá o maior \\|d_L\\| é {_n(san)}."
+        if (san := _max_dl_slot(out_dir)) is not None else ""),
     ]
     if vz:
         linhas.append(f"4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em {_n(100 * vz[0], 0)}% "
@@ -445,7 +456,11 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
             if c["camada"] == L:
                 linhas.append(f"| {c['rotulo']} | {_n(c['consistencia_I'])} | {_n(c['consistencia_L'])} |")
         linhas += ["", "Mesmo no token do gatilho (`slot_forma`), onde a troca muda muito a representação, o efeito do "
-                   "gatilho não tem direção comum entre os grupos. As outras camadas estão no JSON.", ""]
+                   "gatilho não tem direção comum entre os grupos. As outras camadas estão no JSON. Pela regra 4 da seção 1, "
+                   "a falta de efeito lexical forte ali significaria que \"o SAE não representa o gatilho\"; o diagnóstico "
+                   "mostra outra coisa: as features mudam com o gatilho, mas cada gatilho mexe em features diferentes. A "
+                   "segunda parte da regra (efeito de intenção zero no `slot_forma`) não se aplica ao plano B, que não tem "
+                   "lacuna de intenção: as linhas nociva e benigna são frases diferentes antes do gatilho.", ""]
     linhas += ["**D. Vazamento do gatilho por camada (pre_resposta, exploratório).** Entre as features com intenção grande: "
                "% com d_L no mesmo sentido de d_I, e o tamanho típico d_L ÷ d_I.", "",
                "| Camada | Mesmo sentido | d_L ÷ d_I |", "|---|---|---|"]

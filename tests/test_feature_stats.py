@@ -412,6 +412,19 @@ def test_lista_exploratoria(run_desc):
     assert classifiers.load_list(p) == lst["features"]
 
 
+def test_por_tipo_gatilho(cache, tmp_path):
+    tipos = {f"g{i}": fs.TIPOS_GATILHO[i % 3] for i in range(N_GROUPS)}
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     tipos_gatilho=tipos)
+    pt = res["por_tipo_gatilho"]
+    assert pt["descritivo"] is True and set(pt["tipos"]) == set(fs.TIPOS_GATILHO)
+    # as features de intenção plantadas valem em todos os tipos
+    for t_ in fs.TIPOS_GATILHO:
+        assert pt["tipos"][t_]["S_intent_com_mesmo_sinal_e_d_ge_0_3"] >= len(INTENT)
+    assert "por_tipo_gatilho" not in fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path / "b",
+                                                abrir_confirmacao=False, regras=fs.Regras())
+
+
 def test_figura_di_dl(run_desc, tmp_path):
     import pandas as pd
     from featgrpo.interp import figuras

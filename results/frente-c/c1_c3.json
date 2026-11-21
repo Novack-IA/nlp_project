@@ -33,8 +33,8 @@
       "top": 20,
       "bloco": 16384
     },
-    "git_commit": "27b567bbbd2d6012ce5c69d1b89094df03694d3e",
-    "gerado_em": "2026-11-21T21:18:31+00:00",
+    "git_commit": "b299ef46006fad6d8be3737b527aa148874eadbc",
+    "gerado_em": "2026-11-21T21:50:17+00:00",
     "cells_jsonl": {
       "caminho": "artifacts/frente-c/cells_2x2_pr11.jsonl",
       "sha256": "da6cebd6d825ac1707bf6509403507e503c2570e0f290f2716bac16f1c5b8022"
@@ -2442,6 +2442,557 @@
           "dominios_avaliados": 4,
           "dominios_consistentes": 4,
           "geral": true
+        }
+      ]
+    },
+    "por_tipo_gatilho": {
+      "descritivo": true,
+      "tipos": {
+        "surface": {
+          "n_grupos_descoberta": 371,
+          "S_intent_com_mesmo_sinal_e_d_ge_0_3": 48,
+          "mediana_abs_d_I": 0.5550061431603192
+        },
+        "action": {
+          "n_grupos_descoberta": 673,
+          "S_intent_com_mesmo_sinal_e_d_ge_0_3": 48,
+          "mediana_abs_d_I": 0.7066132027791892
+        },
+        "intent_marker": {
+          "n_grupos_descoberta": 411,
+          "S_intent_com_mesmo_sinal_e_d_ge_0_3": 48,
+          "mediana_abs_d_I": 0.732283239557193
+        }
+      },
+      "n_S_intent": 48,
+      "features": [
+        {
+          "feature": 10,
+          "n_surface": 371,
+          "d_I_surface": 0.5556600903812224,
+          "n_action": 673,
+          "d_I_action": 0.6589461502484384,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.646635303537485,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 21,
+          "n_surface": 371,
+          "d_I_surface": 0.6925824633904766,
+          "n_action": 673,
+          "d_I_action": 0.8447421074395395,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.9473240013533308,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 48,
+          "n_surface": 371,
+          "d_I_surface": 0.9063084519307454,
+          "n_action": 673,
+          "d_I_action": 1.1499268853043827,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.0432063493947963,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 125,
+          "n_surface": 371,
+          "d_I_surface": -0.9883302797105709,
+          "n_action": 673,
+          "d_I_action": -0.9613366828179406,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -1.0337008224496849,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 210,
+          "n_surface": 371,
+          "d_I_surface": 0.6037841786558776,
+          "n_action": 673,
+          "d_I_action": 0.8146987908500942,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.7355283231987764,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 319,
+          "n_surface": 371,
+          "d_I_surface": 0.5339587487040548,
+          "n_action": 673,
+          "d_I_action": 0.826158736565927,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.6477433170456114,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 348,
+          "n_surface": 371,
+          "d_I_surface": -0.4427725753300162,
+          "n_action": 673,
+          "d_I_action": -0.6899043353790252,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.7047533941616393,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 399,
+          "n_surface": 371,
+          "d_I_surface": -0.4553368212743807,
+          "n_action": 673,
+          "d_I_action": -0.5534189337276779,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.6175113972255045,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 436,
+          "n_surface": 371,
+          "d_I_surface": -0.4865744827170812,
+          "n_action": 673,
+          "d_I_action": -0.7080959242601854,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.7021106552406144,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 523,
+          "n_surface": 371,
+          "d_I_surface": 0.5203036309515946,
+          "n_action": 673,
+          "d_I_action": 0.5841991106109975,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.5917118041379118,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 533,
+          "n_surface": 371,
+          "d_I_surface": -0.8040408274869363,
+          "n_action": 673,
+          "d_I_action": -0.7472659620569474,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.8613167533106137,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 534,
+          "n_surface": 371,
+          "d_I_surface": 0.42871824486042587,
+          "n_action": 673,
+          "d_I_action": 0.5754407781044856,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.4844978966508081,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 662,
+          "n_surface": 371,
+          "d_I_surface": 0.4321882097866658,
+          "n_action": 673,
+          "d_I_action": 0.5521577597011285,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.4935845603385008,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 687,
+          "n_surface": 371,
+          "d_I_surface": 1.1144417620612914,
+          "n_action": 673,
+          "d_I_action": 1.3485796824906326,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.4137927159490642,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 694,
+          "n_surface": 371,
+          "d_I_surface": -0.5542926126310002,
+          "n_action": 673,
+          "d_I_action": -0.757922042357174,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.7290381559156096,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 791,
+          "n_surface": 371,
+          "d_I_surface": 1.1615978530814328,
+          "n_action": 673,
+          "d_I_action": 2.120183353769653,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 2.2735729950022097,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 796,
+          "n_surface": 371,
+          "d_I_surface": -0.48088641376176416,
+          "n_action": 673,
+          "d_I_action": -0.7012705095902354,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.724359935375765,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 799,
+          "n_surface": 371,
+          "d_I_surface": 0.4666967701889518,
+          "n_action": 673,
+          "d_I_action": 0.5552181338272419,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.5727796510723815,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 916,
+          "n_surface": 371,
+          "d_I_surface": 0.4533977261340007,
+          "n_action": 673,
+          "d_I_action": 1.0589338635705086,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.2433047551460477,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1235,
+          "n_surface": 371,
+          "d_I_surface": -1.21077838103709,
+          "n_action": 673,
+          "d_I_action": -1.4058357944834778,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -1.3629243194938039,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1293,
+          "n_surface": 371,
+          "d_I_surface": -0.40761351037112753,
+          "n_action": 673,
+          "d_I_action": -0.5485669796365801,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.9116710868721563,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1335,
+          "n_surface": 371,
+          "d_I_surface": 0.8026425609917858,
+          "n_action": 673,
+          "d_I_action": 1.108463623093665,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.241904566395643,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1569,
+          "n_surface": 371,
+          "d_I_surface": 0.38354004277199405,
+          "n_action": 673,
+          "d_I_action": 0.5275056318868181,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.5757814765788796,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1610,
+          "n_surface": 371,
+          "d_I_surface": -1.276024095197521,
+          "n_action": 673,
+          "d_I_action": -1.4319217835191806,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -1.5391890451634316,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1812,
+          "n_surface": 371,
+          "d_I_surface": 1.0914789717022877,
+          "n_action": 673,
+          "d_I_action": 1.5183952121668514,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.4937803579322775,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1976,
+          "n_surface": 371,
+          "d_I_surface": 1.1373552196995476,
+          "n_action": 673,
+          "d_I_action": 2.0674161465034437,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 2.1279566912792816,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 1977,
+          "n_surface": 371,
+          "d_I_surface": -0.5215757071144691,
+          "n_action": 673,
+          "d_I_action": -0.8860096877294018,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.8179752550030033,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 2043,
+          "n_surface": 371,
+          "d_I_surface": 0.42688842903700824,
+          "n_action": 673,
+          "d_I_action": 0.5176066714033482,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.6386786404651815,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 3126,
+          "n_surface": 371,
+          "d_I_surface": -0.5845399162323779,
+          "n_action": 673,
+          "d_I_action": -0.7882763457625614,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.8689160381448365,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 3444,
+          "n_surface": 371,
+          "d_I_surface": 0.5707429006142878,
+          "n_action": 673,
+          "d_I_action": 0.7505646828751515,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.6700387632402419,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 4144,
+          "n_surface": 371,
+          "d_I_surface": 0.8175732836849982,
+          "n_action": 673,
+          "d_I_action": 1.441847362654703,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.382535443772733,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 5194,
+          "n_surface": 371,
+          "d_I_surface": -0.5938959351021972,
+          "n_action": 673,
+          "d_I_action": -0.6789413860002049,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.6936346972914956,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 5551,
+          "n_surface": 371,
+          "d_I_surface": 0.8181272580038671,
+          "n_action": 673,
+          "d_I_action": 1.4038954179023506,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 1.1695800474328808,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 5780,
+          "n_surface": 371,
+          "d_I_surface": -0.7424704077942871,
+          "n_action": 673,
+          "d_I_action": -0.9896272832647529,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -1.0889589137312603,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 5949,
+          "n_surface": 371,
+          "d_I_surface": 0.4196976632704832,
+          "n_action": 673,
+          "d_I_action": 0.5442039374671298,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.590248738547805,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 5974,
+          "n_surface": 371,
+          "d_I_surface": 0.3917650030488624,
+          "n_action": 673,
+          "d_I_action": 0.6910130986782193,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.8333531399796754,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 6251,
+          "n_surface": 371,
+          "d_I_surface": 0.3571569428666754,
+          "n_action": 673,
+          "d_I_action": 0.5551334100649233,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.5674108103910614,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 6436,
+          "n_surface": 371,
+          "d_I_surface": -0.5543521959394159,
+          "n_action": 673,
+          "d_I_action": -0.6370451579423775,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.6020172887867485,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 6797,
+          "n_surface": 371,
+          "d_I_surface": -0.44808467927215756,
+          "n_action": 673,
+          "d_I_action": -0.6271923582807928,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.6244546888952328,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 7980,
+          "n_surface": 371,
+          "d_I_surface": 0.4873120025035595,
+          "n_action": 673,
+          "d_I_action": 0.6923045460641991,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.711639743607217,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 8147,
+          "n_surface": 371,
+          "d_I_surface": 0.44299853566864217,
+          "n_action": 673,
+          "d_I_action": 0.6012015500747745,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.45533807151183225,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 8613,
+          "n_surface": 371,
+          "d_I_surface": 0.5825117721916285,
+          "n_action": 673,
+          "d_I_action": 0.8777115310410433,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.8909725604631472,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 9364,
+          "n_surface": 371,
+          "d_I_surface": 0.5725324546239864,
+          "n_action": 673,
+          "d_I_action": 0.7051304812981928,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.7855301720343483,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 9545,
+          "n_surface": 371,
+          "d_I_surface": -0.7806521002778556,
+          "n_action": 673,
+          "d_I_action": -0.684022657699676,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": -0.895980112197543,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 9733,
+          "n_surface": 371,
+          "d_I_surface": 0.6100193307167937,
+          "n_action": 673,
+          "d_I_action": 0.8586842019054258,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.9102684045883883,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 10654,
+          "n_surface": 371,
+          "d_I_surface": 0.39740646071375557,
+          "n_action": 673,
+          "d_I_action": 0.579402257331007,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.4954779753442743,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 14305,
+          "n_surface": 371,
+          "d_I_surface": 0.6136441552652386,
+          "n_action": 673,
+          "d_I_action": 0.6712943761971029,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.7050021076715677,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
+        },
+        {
+          "feature": 14924,
+          "n_surface": 371,
+          "d_I_surface": 0.5283550109934246,
+          "n_action": 673,
+          "d_I_action": 0.5900918149745707,
+          "n_intent_marker": 411,
+          "d_I_intent_marker": 0.580033088499545,
+          "tipos_avaliados": 3,
+          "tipos_consistentes": 3
         }
       ]
     }

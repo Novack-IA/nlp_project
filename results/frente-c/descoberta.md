@@ -1,12 +1,12 @@
 # C1 no 2×2: resultados
 
-> Descoberta (train + val) e confirmação (`test`, aberta uma vez, na combinação principal). Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit 27b567b, conjunto `qc_grammatical+validator_pass`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, não verdade.
+> Descoberta (train + val) e confirmação (`test`, aberta uma vez, na combinação principal). Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit b299ef4, conjunto `qc_grammatical+validator_pass`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, não verdade.
 
 ## Em resumo
 
 1. **Existem features que separam a intenção da palavra.** Na combinação principal (L29 · pre_resposta) são **48** S_intent: reagem ao fato de o pedido ser nocivo e não à troca do gatilho. No SAE maior (262k), 60.
-2. **Elas são robustas.** Quase as mesmas aparecem com outros filtros de qualidade; 48 de 48 sobrevivem ao controle de estilo; 81% não reagem ao gatilho solto (C3 atende); 48 de 48 valem nos 4 domínios.
-3. **Não existe feature "da palavra".** 0 S_lex e 0 S_mixed nas 8 combinações. A troca do gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito na maioria dos grupos.
+2. **Elas são robustas.** Quase as mesmas aparecem com outros filtros de qualidade; 48 de 48 sobrevivem ao controle de estilo; 81% não reagem ao gatilho solto (C3 atende); 48 de 48 valem nos 4 domínios; e 48 de 48 se mantêm em cada um dos 3 tipos de gatilho.
+3. **Não existe feature "da palavra".** 0 S_lex e 0 S_mixed nas 8 combinações. A troca do gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito na maioria dos grupos. A checagem de sanidade do pré-registro (seção 1, regra 4), que esperava efeito lexical forte no próprio token do gatilho, **não passa como foi escrita**: lá o maior \|d_L\| é 0,44.
 4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em 90% delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de 9% do tamanho do efeito de intenção.
 5. **As features de intenção mais fortes ficam fora de S_intent** (exploratório). São 23 com efeito de intenção grande e esse vazamento pequeno do gatilho, que passa da margem de ±0,2 da regra. Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia.
 6. **Elas se confirmam em dados novos.** No `test` com gatilho inédito (155 grupos), 48 de 48 replicam (mesmo sinal, \|d_I\| ≥ 0,3): **C1 atende**. No 262k, 60 de 60: **C4a atende**.
@@ -106,7 +106,7 @@ O efeito de intenção no `test` tem o mesmo tamanho que na descoberta, e o efei
 | pre_resposta | 0,71 | 0,17 |
 | slot_forma | 0,17 | 0,10 |
 
-Mesmo no token do gatilho (`slot_forma`), onde a troca muda muito a representação, o efeito do gatilho não tem direção comum entre os grupos. As outras camadas estão no JSON.
+Mesmo no token do gatilho (`slot_forma`), onde a troca muda muito a representação, o efeito do gatilho não tem direção comum entre os grupos. As outras camadas estão no JSON. Pela regra 4 da seção 1, a falta de efeito lexical forte ali significaria que "o SAE não representa o gatilho"; o diagnóstico mostra outra coisa: as features mudam com o gatilho, mas cada gatilho mexe em features diferentes. A segunda parte da regra (efeito de intenção zero no `slot_forma`) não se aplica ao plano B, que não tem lacuna de intenção: as linhas nociva e benigna são frases diferentes antes do gatilho.
 
 **D. Vazamento do gatilho por camada (pre_resposta, exploratório).** Entre as features com intenção grande: % com d_L no mesmo sentido de d_I, e o tamanho típico d_L ÷ d_I.
 

@@ -81,7 +81,7 @@ def test_load_latents_accepts_hand_made_csr(tmp_path):
 
 def test_probes_recover_planted_directions(cache):
     res = probes.run(cache, n_boot=50)["resultados"]
-    c = res["cells2x2"][f"L{L}/{POS}"]
+    c = res["cells2x2"]["principal"][f"L{L}/{POS}"]
     assert _auc(c["cruzado_trig_para_notrig"]) > 0.9          # intenção sobrevive sem gatilho
     assert _auc(c["gatilho_independe_intencao"]) > 0.9        # gatilho independe da intenção
     assert abs(c["direcoes"]["cos_intencao_gatilho"]) < 0.3   # direções quase ortogonais
@@ -152,7 +152,8 @@ def test_c2b_three_generalizations(cache):
     assert res["leave_one_domain_out"]["atende"] is True      # TF-IDF cai no domínio novo; features não
     assert res["xstest"]["atende"] is True                    # idem no XSTest
     assert res["gatilho_inedito"]["atende"] is None           # aqui o TF-IDF não depende do gatilho
-    assert res["n_atende"] == 2 and res["atende"] is True
+    assert res["n_atende"] == 2
+    assert res["atende"] is res["xstest"]["atende"]          # só o XSTest decide (DESVIOS 2026-11-21)
 
 
 def test_subsets_length_matched():

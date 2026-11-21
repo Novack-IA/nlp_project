@@ -1,8 +1,8 @@
 {
   "descricao": "Baselines de texto (frente D, D-P1). Ver docstring de src/featgrpo/interp/baselines.py.",
   "leitura": "Nos pares originais, estes números medem sobretudo a diferença de estilo entre as fontes (PKU × gerador): são diagnóstico, não evidência para o veredito. A régua de C2/C4 é o resultado nas células do 2×2.",
-  "gerado_em": "2026-11-21T17:01:07+00:00",
-  "commit": "0d51f8d53d9c71115e5f94fa3946a64b3d35cdfa",
+  "gerado_em": "2026-11-21T22:12:13+00:00",
+  "commit": "1d7071ddc6195f299d916102e5d88e382ec4e90e",
   "args": {
     "n_boot": 1000,
     "seed": 0,
@@ -640,7 +640,369 @@
       "q_border": 0.9988
     },
     "cells_2x2": {
-      "conjunto_principal": "qc_grammatical",
+      "conjunto_principal": "principal (qc_grammatical sem os reprovados do validador)",
+      "principal": {
+        "n_grupos": {
+          "train": 1201,
+          "val": 254,
+          "test": 242
+        },
+        "pares_para_2x2": {
+          "com_gatilho": {
+            "tfidf": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.9967,
+              "accuracy": 0.9711,
+              "paired_accuracy": 0.9959,
+              "ci95": {
+                "auroc": [
+                  0.9938,
+                  0.9987
+                ],
+                "accuracy": [
+                  0.9545,
+                  0.9835
+                ],
+                "paired_accuracy": [
+                  0.9875,
+                  1.0
+                ]
+              }
+            },
+            "style": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.8903,
+              "accuracy": 0.8017,
+              "paired_accuracy": 0.8843,
+              "ci95": {
+                "auroc": [
+                  0.8639,
+                  0.9158
+                ],
+                "accuracy": [
+                  0.7665,
+                  0.8347
+                ],
+                "paired_accuracy": [
+                  0.843,
+                  0.9215
+                ]
+              }
+            }
+          },
+          "sem_gatilho": {
+            "tfidf": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.9964,
+              "accuracy": 0.9731,
+              "paired_accuracy": 0.9876,
+              "ci95": {
+                "auroc": [
+                  0.9927,
+                  0.9988
+                ],
+                "accuracy": [
+                  0.9587,
+                  0.9855
+                ],
+                "paired_accuracy": [
+                  0.9711,
+                  1.0
+                ]
+              }
+            },
+            "style": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.8886,
+              "accuracy": 0.7934,
+              "paired_accuracy": 0.8802,
+              "ci95": {
+                "auroc": [
+                  0.8615,
+                  0.915
+                ],
+                "accuracy": [
+                  0.7562,
+                  0.8264
+                ],
+                "paired_accuracy": [
+                  0.8388,
+                  0.9215
+                ]
+              }
+            }
+          },
+          "queda_auroc_tfidf": 0.0003
+        },
+        "treinado_no_2x2": {
+          "intencao_todas": {
+            "tfidf": {
+              "n_items": 968,
+              "n_groups": 242,
+              "auroc": 0.9967,
+              "accuracy": 0.9649,
+              "paired_accuracy": 0.9917,
+              "ci95": {
+                "auroc": [
+                  0.9938,
+                  0.9987
+                ],
+                "accuracy": [
+                  0.9494,
+                  0.9783
+                ],
+                "paired_accuracy": [
+                  0.9793,
+                  1.0
+                ]
+              }
+            },
+            "so_estilo": {
+              "n_items": 968,
+              "n_groups": 242,
+              "auroc": 0.8889,
+              "accuracy": 0.8027,
+              "paired_accuracy": 0.8843,
+              "ci95": {
+                "auroc": [
+                  0.8611,
+                  0.9156
+                ],
+                "accuracy": [
+                  0.7686,
+                  0.8368
+                ],
+                "paired_accuracy": [
+                  0.843,
+                  0.9215
+                ]
+              }
+            }
+          },
+          "intencao_com_gatilho": {
+            "tfidf": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.9964,
+              "accuracy": 0.9587,
+              "paired_accuracy": 0.9917,
+              "ci95": {
+                "auroc": [
+                  0.9933,
+                  0.9985
+                ],
+                "accuracy": [
+                  0.9401,
+                  0.9732
+                ],
+                "paired_accuracy": [
+                  0.9793,
+                  1.0
+                ]
+              }
+            },
+            "so_estilo": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.8889,
+              "accuracy": 0.7996,
+              "paired_accuracy": 0.8843,
+              "ci95": {
+                "auroc": [
+                  0.8614,
+                  0.9152
+                ],
+                "accuracy": [
+                  0.7645,
+                  0.8327
+                ],
+                "paired_accuracy": [
+                  0.843,
+                  0.9215
+                ]
+              }
+            }
+          },
+          "intencao_sem_gatilho": {
+            "tfidf": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.9971,
+              "accuracy": 0.9711,
+              "paired_accuracy": 0.9959,
+              "ci95": {
+                "auroc": [
+                  0.9944,
+                  0.9989
+                ],
+                "accuracy": [
+                  0.9566,
+                  0.9855
+                ],
+                "paired_accuracy": [
+                  0.9876,
+                  1.0
+                ]
+              }
+            },
+            "so_estilo": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.8889,
+              "accuracy": 0.8058,
+              "paired_accuracy": 0.8802,
+              "ci95": {
+                "auroc": [
+                  0.8601,
+                  0.9156
+                ],
+                "accuracy": [
+                  0.7707,
+                  0.8409
+                ],
+                "paired_accuracy": [
+                  0.8388,
+                  0.9215
+                ]
+              }
+            }
+          },
+          "gatilho_todas": {
+            "tfidf": {
+              "n_items": 968,
+              "n_groups": 242,
+              "auroc": 0.7647,
+              "accuracy": 0.6983,
+              "paired_accuracy": 0.8802,
+              "ci95": {
+                "auroc": [
+                  0.7377,
+                  0.7907
+                ],
+                "accuracy": [
+                  0.6705,
+                  0.7252
+                ],
+                "paired_accuracy": [
+                  0.8387,
+                  0.9174
+                ]
+              }
+            }
+          }
+        },
+        "regua_C2b_tfidf": {
+          "gatilho_inedito": {
+            "n_dobras": 1,
+            "auroc_dentro": 0.9983,
+            "auroc_fora": 0.9955,
+            "queda": 0.0028,
+            "ic95_queda": [
+              -0.0021,
+              0.008
+            ],
+            "tfidf_cai_o_suficiente": false
+          },
+          "leave_one_domain_out": {
+            "n_dobras": 4,
+            "auroc_dentro": 0.9959,
+            "auroc_fora": 0.9813,
+            "queda": 0.0146,
+            "ic95_queda": [
+              0.0067,
+              0.0256
+            ],
+            "tfidf_cai_o_suficiente": false
+          },
+          "xstest": {
+            "n_dobras": 1,
+            "auroc_dentro": 0.9967,
+            "auroc_fora": 0.7165,
+            "queda": 0.2802,
+            "ic95_queda": [
+              0.2363,
+              0.3302
+            ],
+            "tfidf_cai_o_suficiente": true
+          },
+          "leitura": "Metade TF-IDF do C2(b). Onde 'tfidf_cai_o_suficiente' é falso, aquela generalização sai indefinida no C2(b), qualquer que seja o resultado das features."
+        },
+        "por_tipo_gatilho": {
+          "action": {
+            "tfidf": {
+              "n_items": 220,
+              "n_groups": 110,
+              "auroc": 0.9976,
+              "accuracy": 0.9773,
+              "paired_accuracy": 0.9818,
+              "ci95": {
+                "auroc": [
+                  0.9936,
+                  0.9998
+                ],
+                "accuracy": [
+                  0.9591,
+                  0.9955
+                ],
+                "paired_accuracy": [
+                  0.9545,
+                  1.0
+                ]
+              }
+            }
+          },
+          "intent_marker": {
+            "tfidf": {
+              "n_items": 134,
+              "n_groups": 67,
+              "auroc": 0.9973,
+              "accuracy": 0.9701,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9911,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9403,
+                  0.9925
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "surface": {
+            "tfidf": {
+              "n_items": 130,
+              "n_groups": 65,
+              "auroc": 0.9948,
+              "accuracy": 0.9692,
+              "paired_accuracy": 0.9846,
+              "ci95": {
+                "auroc": [
+                  0.9856,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9385,
+                  0.9923
+                ],
+                "paired_accuracy": [
+                  0.9538,
+                  1.0
+                ]
+              }
+            }
+          }
+        }
+      },
       "qc_grammatical": {
         "n_grupos": {
           "train": 1219,
@@ -902,8 +1264,8 @@
             "auroc_fora": 0.9952,
             "queda": 0.0032,
             "ic95_queda": [
-              -0.0015,
-              0.009
+              -0.0014,
+              0.0083
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -913,8 +1275,8 @@
             "auroc_fora": 0.9817,
             "queda": 0.0142,
             "ic95_queda": [
-              0.0053,
-              0.0238
+              0.006,
+              0.0241
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -924,8 +1286,8 @@
             "auroc_fora": 0.7153,
             "queda": 0.2813,
             "ic95_queda": [
-              0.2344,
-              0.3286
+              0.2332,
+              0.3295
             ],
             "tfidf_cai_o_suficiente": true
           },
@@ -1264,8 +1626,8 @@
             "auroc_fora": 0.9893,
             "queda": 0.0107,
             "ic95_queda": [
-              0.0015,
-              0.0257
+              0.0009,
+              0.0256
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -1275,8 +1637,8 @@
             "auroc_fora": 0.9805,
             "queda": 0.0122,
             "ic95_queda": [
-              -0.0032,
-              0.036
+              -0.0043,
+              0.0345
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -1286,8 +1648,8 @@
             "auroc_fora": 0.6937,
             "queda": 0.2995,
             "ic95_queda": [
-              0.2481,
-              0.348
+              0.2513,
+              0.3506
             ],
             "tfidf_cai_o_suficiente": true
           },
@@ -1627,7 +1989,7 @@
             "queda": 0.0044,
             "ic95_queda": [
               -0.0008,
-              0.0109
+              0.011
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -1637,8 +1999,8 @@
             "auroc_fora": 0.9809,
             "queda": 0.0139,
             "ic95_queda": [
-              0.0055,
-              0.024
+              0.0049,
+              0.0248
             ],
             "tfidf_cai_o_suficiente": false
           },
@@ -1648,8 +2010,8 @@
             "auroc_fora": 0.7153,
             "queda": 0.2803,
             "ic95_queda": [
-              0.2314,
-              0.3274
+              0.2343,
+              0.3256
             ],
             "tfidf_cai_o_suficiente": true
           },

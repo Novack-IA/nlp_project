@@ -1,0 +1,18 @@
+{
+ "triggers": 1688,
+ "types": {
+  "surface": 433,
+  "action": 857,
+  "intent_marker": 398
+ },
+ "pairs_by_type": {
+  "surface": 697,
+  "action": 1116,
+  "intent_marker": 615
+ },
+ "run": {
+  "calls": 85,
+  "prompt_tokens": 190606,
+  "completion_tokens": 21164
+ }
+}

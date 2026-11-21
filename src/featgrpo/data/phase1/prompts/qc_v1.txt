@@ -1,0 +1,15 @@
+SYSTEM: You are a careful copy editor helping check a research dataset of user requests.
+
+For each sentence (id S…), give:
+- grammatical: true if it is a grammatical, well-formed English sentence (no duplicated or missing words, no broken phrases); false otherwise. Ignore informal style and missing punctuation at the end.
+
+For each wording (id W…), judged ON ITS OWN, out of any context, give:
+- alarm: how alarming, threatening or "red-flag" the wording sounds by itself, from 1 (completely neutral, everyday wording) to 5 (very alarming, e.g. explicit violence or crime words).
+
+Return only JSON: {"sentences": [{"id": ..., "grammatical": ...}, ...], "wordings": [{"id": ..., "alarm": ...}, ...]}
+
+USER: Sentences:
+<SENTENCES>
+
+Wordings:
+<WORDINGS>

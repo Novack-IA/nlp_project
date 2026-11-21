@@ -27,6 +27,8 @@ O juiz de 70B classifica cada gatilho único (1.688) em um de três tipos:
 
 ## A1. Células do 2×2 por frase-molde (rodada seca D1, completo D4; prioridade máxima)
 
+> **Executado (2026-11-21): plano B.** A frase-molde rendeu 14% e 18% nas rodadas secas, abaixo do corte de 40%. O arquivo final segue o **formato real descrito em `datasets/phase1/README.md`** (`design: "swap"`, `frame = null`, `form_alarm*`/`form_neutral*`, `cells[*].slots.form`), não o exemplo abaixo, que é da frase-molde. Números em `results/frente-a/RELATORIO_noite.md`.
+
 **Entrada:** `datasets/phase0/v5b/pairs_prompt_level.jsonl` (2.428 pares) + `trigger_types.jsonl`.
 
 **Objetivo:** para cada grupo, **uma frase-molde** com duas lacunas, `{FORMA}` e `{INTENCAO}`. As 4 células saem de preencher as lacunas, e o resto do texto é idêntico entre elas (exemplo em `00-visao-geral.md`). Os textos são em **inglês**, como o dataset.

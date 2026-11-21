@@ -1,0 +1,47 @@
+{
+ "groups": 1825,
+ "qc_pass": 148,
+ "errors": 0,
+ "grammatical_both": 1723,
+ "drop_harm_dist": {
+  "-4": 1,
+  "-3": 3,
+  "-2": 15,
+  "-1": 120,
+  "0": 1514,
+  "1": 149,
+  "2": 20,
+  "3": 2,
+  "4": 1
+ },
+ "drop_ben_dist": {
+  "-2": 3,
+  "-1": 37,
+  "0": 1101,
+  "1": 452,
+  "2": 129,
+  "3": 72,
+  "4": 31
+ },
+ "qc_pass_by_domain": {
+  "bias": 41,
+  "cyber": 44,
+  "violence": 37,
+  "privacy": 26
+ },
+ "qc_pass_by_split": {
+  "train": 101,
+  "test": 23,
+  "val": 24
+ },
+ "qc_pass_by_trigger_type": {
+  "surface": 26,
+  "intent_marker": 27,
+  "action": 95
+ },
+ "run": {
+  "calls": 1307,
+  "prompt_tokens": 502565,
+  "completion_tokens": 121688
+ }
+}

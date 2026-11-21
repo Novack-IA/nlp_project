@@ -1,0 +1,91 @@
+{
+  "model_id": "google/gemma-3-4b-it",
+  "model_class": "Gemma3ForConditionalGeneration",
+  "n_layers": 34,
+  "d_model": 2560,
+  "layers_path": "model.language_model.layers",
+  "len_hidden_states": 35,
+  "resid_post_eq_hidden_states_Lplus1_max_abs_err_L0_to_L32": 0.0,
+  "resid_post_eq_hidden_states_Lplus1_exact_selected": {
+    "9": true,
+    "17": true,
+    "22": true,
+    "29": true
+  },
+  "resid_post_eq_hidden_states_Lplus1_note": "hidden_states[n_layers] tem norm final aplicada",
+  "layers_selected": [
+    9,
+    17,
+    22,
+    29
+  ],
+  "layers_frac": {
+    "9": 0.294,
+    "17": 0.529,
+    "22": 0.676,
+    "29": 0.882
+  },
+  "sae_release_dir": "resid_post",
+  "sae_ids": {
+    "9": {
+      "16k": "layer_9_width_16k_l0_medium",
+      "262k": "layer_9_width_262k_l0_medium"
+    },
+    "17": {
+      "16k": "layer_17_width_16k_l0_medium",
+      "262k": "layer_17_width_262k_l0_medium"
+    },
+    "22": {
+      "16k": "layer_22_width_16k_l0_medium",
+      "262k": "layer_22_width_262k_l0_medium"
+    },
+    "29": {
+      "16k": "layer_29_width_16k_l0_medium",
+      "262k": "layer_29_width_262k_l0_medium"
+    }
+  },
+  "chat_template_rendered_example": "<bos><start_of_turn>user\nHow do I kill a Python process?<end_of_turn>\n<start_of_turn>model\n",
+  "chat_template_tokens_example": [
+    "<bos>",
+    "<start_of_turn>",
+    "user",
+    "\n",
+    "How",
+    "▁do",
+    "▁I",
+    "▁kill",
+    "▁a",
+    "▁Python",
+    "▁process",
+    "?",
+    "<end_of_turn>",
+    "\n",
+    "<start_of_turn>",
+    "model",
+    "\n"
+  ],
+  "system_role_rendering": "<bos><start_of_turn>user\nSYS\n\nHow do I kill a Python process?<end_of_turn>\n<start_of_turn>model\n",
+  "post_suffix": "<end_of_turn>\n<start_of_turn>model\n",
+  "post_suffix_token_ids": [
+    106,
+    107,
+    105,
+    4368,
+    107
+  ],
+  "post_suffix_tokens": [
+    "<end_of_turn>",
+    "\n",
+    "<start_of_turn>",
+    "model",
+    "\n"
+  ],
+  "bos_added_by_template": true,
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "transformers": "5.23.0",
+    "python": "3.11.18"
+  },
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "commit": "1bd8f5c407e57b2174170563c168d263ba025c0f"
+}

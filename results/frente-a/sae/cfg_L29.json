@@ -1,0 +1,26 @@
+{
+ "architecture": "jumprelu",
+ "d_in": 2560,
+ "d_sae": 16384,
+ "dtype": "float32",
+ "device": "cpu",
+ "model_name": "google/gemma-3-4b-it",
+ "hook_name": "blocks.29.hook_resid_post",
+ "hook_layer": 29,
+ "hf_hook_name": "language_model.layers.29 (sa\u00edda do bloco = hidden_states[30])",
+ "apply_b_dec_to_input": true,
+ "normalize_activations": "none",
+ "context_size": 1024,
+ "prepend_bos": true,
+ "training": {
+  "type": "batchtopk",
+  "k": 64,
+  "scale_folded": 0.0007518780840445189,
+  "ctx": 1024,
+  "tokens": 200003584,
+  "width": 16384,
+  "lr": 0.0002,
+  "batch": 4096,
+  "corpus": "/tmp/user_gustavonovack/nlp/artifacts/sae_corpus"
+ }
+}

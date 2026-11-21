@@ -65,7 +65,7 @@ Contrastes de respostas:
   - Chat template: o Gemma 3 **não tem papel `system`**. Um system prompt vai no início do turno do usuário.
   - bf16 ocupa ~9 GB e cabe numa 4090 junto com SAEs.
 - **SAEs prontos:** Gemma Scope 2, `google/gemma-scope-2-4b-it`.
-  - Release no SAELens: `gemma-scope-2-4b-it-resid_post`, com `sae_id` do tipo `layer_{L}_width_{16k|65k|262k|1m}_l0_{small|medium|large}`.
+  - Release no SAELens: **`gemma-scope-2-4b-it-res`** (conferido no SAELens 6.56.1; os pesos ficam na pasta `resid_post/` do repo HF), com `sae_id` do tipo `layer_{L}_width_{16k|65k|262k|1m}_l0_{small|medium|big}` (não existe `large`). Usamos `l0_medium`, a única variante com fichas no Neuronpedia.
   - Neuronpedia: `gemma-3-4b-it/{L}-gemmascope-2-res-16k`.
   - **Verifique a lista real de camadas e larguras** antes de fixar. As 4 profundidades com todas as larguras ficam em 25/50/65/85% das camadas; segundo o anúncio, as larguras 16k e 262k existem em todas.
 - **Convenção de camada:** `resid_post` da camada L = saída do bloco L = `hidden_states[L+1]` no `output_hidden_states` do HF (`hidden_states[0]` são os embeddings). Errar isso desloca tudo em uma camada.
@@ -74,23 +74,32 @@ Contrastes de respostas:
 ## 4. Formato do cache de ativações (contrato entre as frentes)
 
 ```
-artifacts/acts/gemma-3-4b-it/resid_post/L{L:02d}/{conjunto}__{posicao}.npy   # float16 [N, d_model]
-artifacts/acts/gemma-3-4b-it/index/{conjunto}.jsonl                            # linha i ↔ linha i do .npy
+artifacts/acts/gemma-3-4b-it/resid_post/L{L:02d}/{conjunto}__{posicao}.npy          # denso, float32 [N, d_model]
+artifacts/acts/gemma-3-4b-it/resid_post/L{L:02d}/{conjunto}__{posicao}__{sae}.npz   # latentes, scipy CSR float32 [N, d_sae]
+artifacts/acts/gemma-3-4b-it/index/{conjunto}.jsonl                                  # linha i ↔ linha i do .npy/.npz
+artifacts/acts/gemma-3-4b-it/MANIFEST.json                                           # sha256, commit, versões, sae_ids
 ```
 
+- Leia com `featgrpo.interp.cache_io` (`load_dense`, `load_latents`, `load_index`).
+- **Denso em float32, não float16:** o residual do Gemma 3 passa de 65.504 (máximo do fp16) a partir de ~L17; em fp16 saía `inf`. Detalhes em `results/frente-b/fatos_modelo.md`.
+- **Camadas:** L9, L17, L22, L29. **`sae`:** `16k` ou `262k` (Gemma Scope 2, `l0_medium`) ou `proprio`.
+
 - **`conjunto`:** `pairs` (2.428 × {q_harm, q_border}), `final_resp` (respostas dos 500 grupos), `cells2x2`, `xstest`, `orbench_hard`, …
-- **`posicao`:**
+- **`posicao`** (principais do C1, pelo pré-registro da frente C: `inst_last` e `post_last`):
+  - `inst_last`: o último token do texto do usuário, logo antes de `<end_of_turn>`. No 2×2 é o mesmo token nas 4 células quando o molde termina em texto fixo; confira com `inst_last_token_id` no índice;
   - `trig`: média dos tokens do gatilho (pares originais e controles);
-  - `slot_forma`: média dos tokens da lacuna de forma do 2×2 (o gatilho ou o termo neutro), a partir de `cells[*].spans.forma`;
-  - `slot_intencao`: média dos tokens da lacuna de intenção do 2×2, a partir de `cells[*].spans.intencao`;
+  - `slot_forma`: média dos tokens da lacuna de forma do 2×2 (o gatilho ou o termo neutro), a partir de `cells[*].slots.form` (formato da frente A) ou `cells[*].spans.forma`;
+  - `slot_intencao`: média dos tokens da lacuna de intenção do 2×2, a partir de `cells[*].slots.intent` ou `cells[*].spans.intencao`;
   - `post`: **média** dos tokens do sufixo `<end_of_turn>\n<start_of_turn>model\n` (pós-instrução);
   - `post_last`: só o **último** token desse sufixo (como em Arditi et al.);
   - `mean`: média dos tokens do pedido;
   - `resp_mean`: média dos tokens da resposta, em teacher forcing;
   - `resp_k8`: média dos 8 primeiros tokens da resposta.
-- **`index`** tem, por linha: `group_id, item` (`q_harm`, `q_border` ou `r0`…`r7`), `split, domain, trigger_aligned` (bool) e `n_tokens`.
+- **Variantes de latentes** (só nos `.npz`): `{posicao}` é o SAE aplicado ao vetor médio da posição. `{posicao}_tokmean` / `{posicao}_tokmax` é o SAE aplicado a cada token da posição, seguido de média ou máximo (para `post`, `mean`, `trig` e os slots). A média de muitos tokens sai da distribuição do SAE (L0 de `mean` ≈ 6–9 contra ≈ 50 por token); a frente C escolhe qual usar.
+- **`index`** tem, por linha: `item_id, group_id, item` (`q_harm`/`q_border`, `r0`…`r7`, a célula do 2×2 `harm_trig`… ou `trig_only`/`neutral_only`), `label, has_trigger` (2×2 e controles), `split, domain, subdomain, trigger, trigger_aligned, trigger_method` (`span` nos controles, que trazem o span da peça), `template_id` (controles; o par é `group_id` + `template_id`, com o `group_id` do 2×2), `slots_aligned` (2×2), `inst_last_token_id`, `n_tokens` e `n_prompt_tokens`.
+- **Lotes:** padding à direita, com os itens de um mesmo `group_id` sempre no mesmo lote. Os tokens do prefixo comum às células de um grupo saem bit a bit iguais (por exemplo, `slot_forma` quando ela vem antes da lacuna de intenção).
 - Ativações por token (para exemplos de maior ativação) ficam com quem precisa delas (frente C). Não entram no cache compartilhado.
-- O cache denso é pequeno (~25 MB por camada × posição para os pares). Vai para a pasta compartilhada do time com a mesma árvore. `artifacts/` **nunca** vai para o git.
+- O cache denso é pequeno (~50 MB por camada × posição para os pares; ~1 GB com latentes 16k). Vai para a pasta compartilhada do time com a mesma árvore. `artifacts/` **nunca** vai para o git.
 
 ## 5. Estrutura do repositório
 
@@ -126,7 +135,7 @@ pip install "transformers>=4.50" accelerate safetensors sae-lens scikit-learn pa
 ```
 
 - Fixe as versões que funcionarem em `requirements-interp.txt` e commite.
-- Teste do SAELens: confira se a versão instalada conhece a release `gemma-scope-2-4b-it-resid_post`. Se não conhecer, atualize. Em último caso, baixe os pesos com `huggingface_hub` e carregue à mão.
+- Teste do SAELens: confira se a versão instalada conhece a release `gemma-scope-2-4b-it-res`. Se não conhecer, atualize. Em último caso, baixe os pesos com `huggingface_hub` e carregue à mão.
 - Seeds fixas (`torch.manual_seed(0)`, `numpy`, `random`); registre a versão do modelo, do SAE e o commit do código em cada resultado.
 
 ## 8. Regras de trabalho

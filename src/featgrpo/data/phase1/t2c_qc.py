@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter
+from pathlib import Path
 
 from ..phase0.common import LLM, get_cache, pmap, read_jsonl, write_json, write_jsonl
 from .common1 import JUDGE_MODEL, chat_template, data1, fill, judge_json, log, out_dir
@@ -26,8 +27,10 @@ from .common1 import JUDGE_MODEL, chat_template, data1, fill, judge_json, log, o
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--judge-url", required=True)
+    ap.add_argument("--path", default=None, help="jsonl do 2×2 a anotar (default datasets/phase1/cells_2x2.jsonl)")
+    ap.add_argument("--report", default="cells_qc_report.json")
     a = ap.parse_args()
-    path = out_dir() / "cells_2x2.jsonl"
+    path = Path(a.path) if a.path else out_dir() / "cells_2x2.jsonl"
     rows = read_jsonl(path)
     jl = LLM(a.judge_url, JUDGE_MODEL); jl.wait()
     cache = get_cache()
@@ -60,10 +63,14 @@ def main():
         r["qc"] = q
         r["qc_pass"] = (not q.get("error") and q["grammatical_harm_notrig"] and q["grammatical_ben_notrig"]
                         and q["alarm_drop_harm"] >= 1 and q["alarm_drop_ben"] >= 1)
+        r["qc_grammatical"] = bool(not q.get("error") and q["grammatical_harm_notrig"] and q["grammatical_ben_notrig"])
+        r["qc_pass_lenient"] = bool(r["qc_grammatical"] and q["alarm_drop_harm"] >= 0 and q["alarm_drop_ben"] >= 0
+                                    and q["alarm_drop_harm"] + q["alarm_drop_ben"] >= 1)
     write_jsonl(path, rows)
     ok = [r for r in rows if r["qc_pass"]]
     good = [r for r in rows if not r["qc"].get("error")]
     rep = {"groups": len(rows), "qc_pass": len(ok), "errors": len(rows) - len(good),
+           "qc_grammatical": sum(r["qc_grammatical"] for r in rows), "qc_pass_lenient": sum(r["qc_pass_lenient"] for r in rows),
            "grammatical_both": sum(r["qc"]["grammatical_harm_notrig"] and r["qc"]["grammatical_ben_notrig"] for r in good),
            "drop_harm_dist": dict(sorted(Counter(r["qc"]["alarm_drop_harm"] for r in good).items())),
            "drop_ben_dist": dict(sorted(Counter(r["qc"]["alarm_drop_ben"] for r in good).items())),
@@ -71,7 +78,7 @@ def main():
            "qc_pass_by_split": dict(Counter(r["split"] for r in ok)),
            "qc_pass_by_trigger_type": dict(Counter(str(r["trigger_type"]) for r in ok)),
            "run": jl.stats}
-    write_json(data1() / "cells_qc_report.json", rep)
+    write_json(data1() / a.report, rep)
     log(f"qc 2×2: {json.dumps(rep)}")
 
 

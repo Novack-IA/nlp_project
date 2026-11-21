@@ -70,8 +70,7 @@ def response_items(groups: list[dict]) -> list[dict]:
     """Achata grupos do final em itens de resposta (pedido + resposta) para teacher forcing."""
     out = []
     for g in groups:
-        txt = lambda q: q["text"] if isinstance(q, dict) else q  # noqa: E731 (no final, Q⁺ e Q⁰ são objetos)
-        q = {"harm": txt(g["q_harm"]), "border": txt(g["q_border"])}
+        q = {"harm": g["q_harm"], "border": g["q_border"]["text"]}
         for r in g["responses"]:
             out.append({
                 "item_id": f"{g['group_id']}:{r['id'][-2:]}",

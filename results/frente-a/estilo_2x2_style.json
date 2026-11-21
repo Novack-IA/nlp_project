@@ -1,0 +1,26 @@
+{
+ "original_todos": {
+  "groups": 1825,
+  "auroc_style": 0.887,
+  "len_diff_words_median": 9.0,
+  "same_last_char": 0.879
+ },
+ "original_mesmos_grupos": {
+  "groups": 876,
+  "auroc_style": 0.887,
+  "len_diff_words_median": 7.0,
+  "same_last_char": 0.886
+ },
+ "estilo_comum": {
+  "groups": 996,
+  "auroc_style": 0.802,
+  "len_diff_words_median": 7.0,
+  "same_last_char": 1.0
+ },
+ "estilo_comum_qc_grammatical": {
+  "groups": 968,
+  "auroc_style": 0.801,
+  "len_diff_words_median": 7.0,
+  "same_last_char": 1.0
+ }
+}

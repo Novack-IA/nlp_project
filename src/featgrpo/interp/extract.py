@@ -47,7 +47,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from featgrpo.interp.common import ACTS, LAYERS, MODEL_ID, SAE_REPO, get_layers, sae_id, set_seeds
+from featgrpo.interp.common import (ACTS, LAYERS, MODEL_ID, REPO, SAE_REPO, get_layers, sae_id,
+                                    set_seeds)
 
 POST_SUFFIX = "<end_of_turn>\n<start_of_turn>model\n"
 BASE_POSITIONS = ("inst_last", "post", "post_last", "mean")
@@ -510,8 +511,12 @@ def main() -> None:
         torch.cuda.empty_cache()
     root = Path(args.out_root)
     written = save_cache(root, args.set, dense, latents, index)
+    try:                                       # caminho relativo ao repositório, sem o da máquina
+        out_root = str(root.resolve().relative_to(REPO))
+    except ValueError:
+        out_root = root.name
     mf = update_manifest(root, args.set, written, {
-        **vars(args), "sae_ids": {w: {L: (f"artifacts/sae_proprio/{sae_id(L, w)}" if w == "proprio"
+        **vars(args), "out_root": out_root, "sae_ids": {w: {L: (f"artifacts/sae_proprio/{sae_id(L, w)}" if w == "proprio"
                                           else f"{SAE_REPO}/resid_post/{sae_id(L, w)}")
                                       for L in args.layers if sae_available(L, w)}
                                   for w in args.widths}})

@@ -1,6 +1,6 @@
-# Frente B: relatório dos testes e achados (até 2026-11-20)
+# Frente B: relatório dos testes e achados (até 2026-11-21)
 
-> Escopo: o que foi rodado na RTX 4090 (`4090simulation`) para a frente B (B-U1, B-U2, B-U3, B4), o que cada teste mostrou e o que mudou por causa disso.
+> Escopo: o que foi rodado numa RTX 4090 para a frente B (B-U1, B-U2, B-U3, B4), o que cada teste mostrou e o que mudou por causa disso.
 > Os detalhes estão em:
 > - [`fatos_modelo.md`](fatos_modelo.md): modelo, camadas, template e posições;
 > - [`qualidade_saes.md`](qualidade_saes.md): qualidade dos SAEs;
@@ -143,10 +143,24 @@ O `inst_last` cai no mesmo token em 92% dos pedidos (id 236881) e em outro em 6%
 - só **55–89% da variação entre pedidos** é reconstruída, então parte do sinal pode ficar no erro do SAE, o que entra nas limitações;
 - zerar `inst_last` em L22/L29 não muda a resposta, mas zerar `post_last` muda.
 
-## 8. Limitações e pendências
+## 8. Caches do 2×2 e dos controles, e SAE próprio (2026-11-21)
 
-- **O cache só cobre os pares.** A frente A subiu na master, em 2026-11-21, o `cells_2x2.jsonl`, os controles e o XSTest/OR-Bench; as próximas extrações são desses conjuntos. O extrator já suporta `--set cells2x2` com `slot_forma` e `slot_intencao`.
-- **Latentes 262k ainda não foram extraídos** para nenhum conjunto. Por ora só os do 16k.
+- **`controls`** (commit `deb93f4`): 10.950 frases `trig_only`/`neutral_only` no formato da frente A (uma linha por frase), com 16k e 262k. O par é (`group_id`, `template_id`), com o `group_id` do 2×2. A posição `trig` vem do `span` do arquivo e está 100% alinhada. Todas as frases terminam no mesmo token, então nenhum par tem `inst_last` diferente.
+- **`cells2x2`** (commit `7b11650`): 1.825 grupos × 4 células do plano B (swap), com 16k, 262k e `proprio`.
+  - **Lacunas:** só existe a de forma; os arquivos `slot_intencao` são todos NaN.
+  - **`trig`:** lê a peça de forma de cada célula.
+  - **Alinhamento:** 100% das células.
+  - **`inst_last`:** mesmo token nas 4 células em 1.596 grupos. No `qc_grammatical` são 1.518 dos 1.723 (1.082 train / 224 val / 212 test).
+  - **Reprodutibilidade:** a extração com `proprio` refez as ativações e os latentes do Gemma Scope com sha256 idênticos aos da extração anterior.
+- **SAEs de 262k:** são carregados uma camada por vez, porque os quatro em float32 não cabem com o modelo em 24 GB. A saída é idêntica bit a bit à da extração com todas as camadas de uma vez.
+- **SAE próprio (B4):** detalhes em `qualidade_saes.md`.
+  - **Reconstrução:** FVE maior que o Gemma Scope 16k (0,975 / 0,943 / 0,898 em L17/L22/L29), mas ΔNLL 2,5–3× maior (1,00 / 0,55 / 0,43).
+  - **Posições principais:** preserva mais a variação entre pedidos (FVE entre itens 0,69–0,83 contra 0,55–0,67). É uma robustez útil para o C1.
+
+## 9. Limitações e pendências
+
 - **O ΔNLL mede respostas curtas** (≤ 64 tokens) e greedy. Basta para comparar camadas, mas não descreve gerações longas.
 - **"Sem ativar" é uma medida em 47k tokens.** Não serve como estimativa de features mortas no pré-treino.
-- **Próximo passo:** B5 / C5, com o `intervene.py` (x' = x − dec(f) + dec(f'), mais controles com features aleatórias e IC por bootstrap).
+- **No plano B, o efeito de intenção compara frases diferentes** (Q⁺ × Q⁰ originais com a troca do gatilho). O teste de "efeito de intenção exatamente zero na `slot_forma`" pressupõe a frase-molde e não se aplica ao 2×2 entregue.
+- **Ainda não extraídos:** XSTest, OR-Bench-Hard e o 2×2 em estilo comum (`cells_2x2_style.jsonl`), que precisa de suporte no `load_set`.
+- **Próximo passo:** B5 / C5, com o `intervene.py` (x' = x − dec(f) + dec(f'), mais controles com features aleatórias e IC por bootstrap). Em L22/L29, a intervenção vai em `post_last` ou no sufixo, não em `inst_last`.

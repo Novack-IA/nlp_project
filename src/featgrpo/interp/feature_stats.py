@@ -47,6 +47,21 @@ DISCOVERY = ("train", "val")
 CONFIRMATION = ("test",)
 OUT_DIR = REPO / "results" / "frente-c"
 DOMAINS = ("bias", "cyber", "privacy", "violence")
+SUBCONJUNTOS = ("qc_grammatical", "qc_pass_lenient", "qc_pass", "todos")
+SUBCONJUNTO_PRINCIPAL = "qc_grammatical"   # DESVIOS 2026-11-21 (sugestão da frente A); os outros são robustez
+
+
+def grupos_do_subconjunto(nome: str, path: Path | None = None) -> set[str] | None:
+    """Grupos do 2×2 que passam no QC da frente A (`qc_grammatical`, `qc_pass_lenient`, `qc_pass`).
+    `todos` devolve None (sem filtro)."""
+    if nome == "todos":
+        return None
+    if nome not in SUBCONJUNTOS:
+        raise ValueError(f"subconjunto desconhecido: {nome}")
+    from featgrpo.interp.data import PHASE1
+    path = path or PHASE1 / "cells_2x2.jsonl"
+    with open(path, encoding="utf-8") as f:
+        return {g["group_id"] for g in map(json.loads, filter(str.strip, f)) if g.get(nome)}
 
 
 @dataclass(frozen=True)
@@ -530,7 +545,8 @@ def _textos_2x2_padrao() -> dict:
 
 def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confirmacao: bool,
             regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None,
-            conjunto_controles: str = "controles", textos: dict | None = None) -> dict:
+            conjunto_controles: str = "controles", textos: dict | None = None,
+            grupos_permitidos: set[str] | None = None, subconjunto: str = "todos") -> dict:
     rows = cache_io.load_index(root, conjunto)
     train_trigs = {r["trig_norm"] for r in rows if r.get("split") == "train"}
     tabelas, n_desc, excluidos, grupos = {}, {}, {}, {}
@@ -538,6 +554,10 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         for pos in posicoes:
             Z = cache_io.load_latents(root, conjunto, layer, pos, sae)
             g = montar_grupos(rows, pos)
+            if grupos_permitidos is not None:
+                dentro = np.array([gid in grupos_permitidos for gid in g.gid], dtype=bool)
+                g = g.subset(dentro)
+                g.excluidos["fora_do_subconjunto"] = int((~dentro).sum())
             desc = g.subset(np.isin(g.split, DISCOVERY))
             tabelas[(layer, pos)] = tabela_2x2(linhas(Z, desc), len(desc), regras)
             n_desc[(layer, pos)], excluidos[(layer, pos)], grupos[(layer, pos)] = len(desc), g.excluidos, g
@@ -580,9 +600,12 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         controle = {"status": f"sem cache de controles ('{conjunto_controles}') para esta combinação"}
         if cache_io.latents_path(root, conjunto_controles, principal[0], principal[1], sae).exists():
             df_p = tabelas[principal]
+            rows_c = cache_io.load_index(root, conjunto_controles)
+            if grupos_permitidos is not None:
+                rows_c = [r for r in rows_c if r.get("group_id") in grupos_permitidos]
             controle = controle_trig_only(
                 cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
-                cache_io.load_index(root, conjunto_controles), principal[1],
+                rows_c, principal[1],
                 df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
                 df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
 
@@ -608,7 +631,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
                 json.dumps(payload, ensure_ascii=False, indent=1, default=_json_default), encoding="utf-8")
 
     res = {
-        "sae": sae, "conjunto": conjunto,
+        "sae": sae, "conjunto": conjunto, "subconjunto": subconjunto,
         "combinacoes_descoberta": resumo.to_dict("records"),
         "grupos_excluidos": {tag(k[0], k[1], sae): v for k, v in excluidos.items()},
         "principal": None if principal is None else {"camada": principal[0], "posicao": principal[1],
@@ -711,11 +734,17 @@ def main(argv=None) -> int:
     ap.add_argument("--posicoes", nargs="+", default=list(MAIN_POSITIONS))
     ap.add_argument("--abrir-confirmacao", action="store_true",
                     help="abre o split test na combinação principal (uma vez, no fim)")
-    ap.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    ap.add_argument("--out-dir", type=Path, default=None,
+                    help="padrão: results/frente-c (principal) ou results/frente-c/robustez_<subconjunto>")
     ap.add_argument("--conjunto-controles", default="controles",
                     help="conjunto do cache com os controles trig_only/neutral_only (C3)")
+    ap.add_argument("--subconjunto", choices=SUBCONJUNTOS, default=SUBCONJUNTO_PRINCIPAL,
+                    help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical, os outros são robustez")
     args = ap.parse_args(argv)
     regras = Regras()
+    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL
+    if args.out_dir is None:
+        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{args.subconjunto}"
 
     meta = {"script": "src/featgrpo/interp/feature_stats.py", "args": {k: str(v) for k, v in vars(args).items()},
             "regras": asdict(regras), "git_commit": git_commit(),
@@ -733,14 +762,19 @@ def main(argv=None) -> int:
 
     summary_path = args.out_dir / "c1_c3.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else {}
+    main_summary_path = OUT_DIR / "c1_c3.json"
+    main_summary = json.loads(main_summary_path.read_text(encoding="utf-8")) if main_summary_path.exists() else {}
     forcada = None
-    if args.sae != "16k":
-        p16 = (summary.get("16k") or {}).get("principal")
+    if args.sae != "16k" or not principal_run:
+        # C4a (262k) e as robustezes de QC usam a combinação principal do 16k no subconjunto principal
+        p16 = (main_summary.get("16k") or {}).get("principal")
         if not p16:
-            raise SystemExit("C4a usa a combinação principal do 16k: rode o 16k antes (pré-registro, seção 5).")
+            raise SystemExit("Rode antes o 16k no subconjunto principal (qc_grammatical): C4a e as robustezes "
+                             "usam a combinação principal dele (pré-registro, seção 5; DESVIOS 2026-11-21).")
         forcada = (int(p16["camada"]), p16["posicao"])
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
-                  regras, principal_forcada=forcada, conjunto_controles=args.conjunto_controles)
+                  regras, principal_forcada=forcada, conjunto_controles=args.conjunto_controles,
+                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto), subconjunto=args.subconjunto)
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

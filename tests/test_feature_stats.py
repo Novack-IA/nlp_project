@@ -373,3 +373,49 @@ def test_controle_estilo_no_fluxo_2x2(cache, tmp_path):
     sem = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
                      textos={})
     assert sem["C1_controle_estilo"]["status"].startswith("sem textos")
+
+
+# ---------------------------------------------------------------- subconjunto do QC (DESVIOS 2026-11-21)
+
+def test_subconjunto_filtra_grupos_e_controles(cache, tmp_path):
+    permitidos = {f"g{i}" for i in range(50, N_GROUPS)}             # tira os 50 primeiros
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     grupos_permitidos=permitidos, subconjunto="qc_grammatical")
+    ex = res["grupos_excluidos"]["L22_inst_last_16k"]
+    assert ex["fora_do_subconjunto"] == 50 - N_TOKEN_MISMATCH        # os 40 de token diferente já tinham saído
+    assert res["subconjunto"] == "qc_grammatical"
+    assert res["C3_controle_trig_only"]["n_pares_controle"] == 150   # g50…g99, 3 frases cada
+
+
+def test_subconjunto_pequeno_fica_inconclusivo(cache, tmp_path):
+    permitidos = {f"g{i}" for i in range(N_TOKEN_MISMATCH, N_TOKEN_MISMATCH + 200)}
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     grupos_permitidos=permitidos, principal_forcada=(22, "inst_last"), subconjunto="qc_pass")
+    assert res["C1"]["status"] == "inconclusivo"                    # < 260 grupos na descoberta
+
+
+def test_grupos_do_subconjunto(tmp_path):
+    p = tmp_path / "cells.jsonl"
+    p.write_text("\n".join(json.dumps({"group_id": f"g{i}", "qc_grammatical": i % 2 == 0, "qc_pass": i == 0})
+                           for i in range(6)), encoding="utf-8")
+    assert fs.grupos_do_subconjunto("qc_grammatical", p) == {"g0", "g2", "g4"}
+    assert fs.grupos_do_subconjunto("qc_pass", p) == {"g0"}
+    assert fs.grupos_do_subconjunto("todos", p) is None
+    with pytest.raises(ValueError):
+        fs.grupos_do_subconjunto("outro", p)
+
+
+def test_provisorio_md(tmp_path):
+    import pandas as pd
+    from featgrpo.interp import autointerp
+    pd.DataFrame({"feature": [5, 9], "d_int": [0.8, -0.6], "freq_ativacao": [0.3, 0.1]}).to_csv(
+        tmp_path / "provisorio_L22_inst_last_16k.csv", index=False)
+    prov = {"git_commit": "abc1234def", "combinacoes": [{
+        "camada": 22, "posicao": "inst_last", "rotulo": "fim_pedido", "n_grupos_descoberta": 100, "n_sig_d05": 2,
+        "top20_mais_ativas_em_Q_harm": [5], "top20_mais_ativas_em_Q_border": [],
+        "controle_estilo": {"status": "ok", "n_sobrevivem": 2, "n_features": 2, "r2_mediano": 0.1}}]}
+    fake = lambda layer, sae, f: {"explanations": [{"description": "a | b\nc"}]}
+    md = autointerp.provisorio_md(prov, tmp_path, "16k", fetch=fake)
+    assert "[5](https://www.neuronpedia.org/gemma-3-4b-it/22-gemmascope-2-res-16k/5)" in md
+    assert "| 0,80 |" in md and "Nenhuma feature com efeito grande" in md
+    assert "a \\| b c" in md and "Diagnóstico, fora do veredito" in md and "2 de 2" in md

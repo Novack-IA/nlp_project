@@ -1,6 +1,6 @@
 # Veredito da Fase 1
 
-> **Status:** em preenchimento (2026-11-21). C1 e C3 vêm da frente C (commit `b299ef4` da `frente-c-features`); C2 e a âncora densa, da frente D. Os números entram quando cada frente publicar seus arquivos. **Os quatro revisam antes do merge final.**
+> **Status:** preenchido (2026-11-21), aplicando a regra pré-registrada como está escrita em `00-visao-geral.md`. C1 e C3 vêm da frente C (commit `b299ef4` da `frente-c-features`); C2, C4 e a âncora densa, da frente D. O C5 (frente B) ainda não saiu e não decide.
 > Como preencher: cada linha da tabela aponta para o arquivo e o campo de onde o número sai. Copie o número como está e não arredonde além de 2 casas. Não mude limiares aqui; os limiares valem como estão em `docs/tarefas/00-visao-geral.md`, e mudanças vão para `results/DESVIOS.md`.
 
 ## A pergunta
@@ -9,9 +9,20 @@
 
 ## Resposta
 
-**Veredito:** _SIM / PARCIAL / NÃO (a preencher)_
+**Veredito: PARCIAL.**
 
-_Uma frase com a resposta e o número que mais pesa. Exemplo de forma: "PARCIAL: existe um sinal de intenção em L22 (12 features, 83% replicam no test), mas ele cai quase tanto quanto o TF-IDF quando o gatilho sai (razão 0,9)."_
+Existe um sinal de intenção nas features do SAE que não depende do gatilho: em L29, no último token antes da resposta, 48 features (60 no 262k) replicam 100% no `test` com gatilho inédito (C1), e um classificador só com elas perde no XSTest um décimo do que perde o TF-IDF (C2, razão 0,11). Faltam dois critérios como pré-registrados: o C3 pedia leitura cega de **duas pessoas**, e as duas leituras foram de LLMs; e o C4(b/c) está incompleto. Além disso, **features sorteadas do mesmo tamanho fazem o mesmo que a S_intent no C2** (20/20 atendem), e **não existe nenhuma feature de forma lexical** (S_lex vazia).
+
+**Como a regra foi aplicada:**
+
+| Critério | Situação | Por quê |
+|---|---|---|
+| C1 | atende | 48 S_intent, 100% replicam |
+| C2 | atende | C2(a) 0,992 / 0,992; C2(b) razão 0,11 (IC 0,05–0,17). O C2(c) não decide |
+| C3 | **não atende como pré-registrado** | O controle `trig_only` atende (81%). A avaliação cega atinge o limiar (95% e 85%), mas foi feita por dois LLMs, e o pré-registro pede 2 pessoas |
+| C4 | **incompleto** | (a) atende (262k). (b) e (c): o C2(a) se mantém, mas o C1 e o C2(b) dentro dos recortes não foram calculados |
+
+C1 + C2 atendidos, C3 e C4 não → **PARCIAL** ("C1 atendido, mais um ou dois de C2–C4").
 
 **Regra** (pré-registrada em `00-visao-geral.md`):
 - **SIM:** C1, C2, C3 e C4 atendidos.
@@ -75,7 +86,7 @@ Nos pares originais, as palavras (0,995) e até o estilo (0,88) já separam noci
 
 ## Interpretação
 
-_Um parágrafo. O que a resposta significa para a hipótese de over-refusal: o modelo representa intenção separada da forma? Em que camada e posição? A recusa acompanha qual dos dois sinais (C5)?_
+O Gemma-3-4B-IT representa a intenção do pedido de um jeito que **não depende das palavras alarmantes**: trocar o gatilho por uma forma neutra quase não mexe nas features de intenção em L29 antes da resposta, e um probe treinado com gatilho acerta 0,998 sem ele. O lado lexical, por outro lado, **não vira feature**: cada gatilho mexe em features diferentes, e nenhuma reage do mesmo jeito na maioria dos grupos. Então a hipótese "intenção e forma em features separadas" vale só pela metade, e a dissociação é simples, não dupla. Dois avisos para a leitura. (1) A capacidade de classificar intenção não é exclusiva da S_intent: features sorteadas e o probe denso generalizam para o XSTest igualmente bem, então o que é específico da S_intent é ser **insensível ao gatilho** (C1, C3), não ser melhor classificadora. (2) A frente C viu que as features mais fortes de intenção parecem ser de **recusa** e ficaram fora da S_intent porque o gatilho as empurra um pouco (cerca de 10% do efeito de intenção). Se o over-refusal existe nas representações, é ali que ele deve estar, e quem testa é o C5.
 
 ## Se o veredito for PARCIAL
 
@@ -83,13 +94,15 @@ _Preencher só neste caso. Ele é o desfecho mais provável, então vale escreve
 
 | Pergunta | Resposta |
 |---|---|
-| Qual critério falhou? | |
-| Em qual recorte (camada, posição, SAE, domínio, tipo de gatilho)? | |
-| O probe denso também falha ali? | sim → limite do modelo ou dos dados · não → limite do SAE |
-| O efeito existe só em alguns domínios ou tipos de gatilho? | |
-| O que seria preciso para virar SIM? | |
+| Pergunta | Resposta |
+|---|---|
+| Qual critério falhou? | **C3**, por procedimento: a avaliação cega foi feita por dois LLMs, não por duas pessoas (o resultado em si passa: 95% e 85%). **C4**, por estar incompleto: falta o C1 e o C2(b) nos recortes (b) e (c) |
+| Em qual recorte (camada, posição, SAE, domínio, tipo de gatilho)? | Nenhum recorte falhou com número. A combinação principal é L29 · `post_last`; o C1 vale nos 4 domínios e nos dois SAEs |
+| O probe denso também falha ali? | Não falha em nada: 0,97–1,00 em todas as camadas e posições |
+| O efeito existe só em alguns domínios ou tipos de gatilho? | Não: as 48 S_intent são gerais nos 4 domínios (frente C) |
+| O que seria preciso para virar SIM? | (1) duas pessoas lerem as 20 fichas às cegas, sem ver os rótulos dos LLMs, e ≥ 60% saírem conceituais para as duas; (2) o C1 e o C2(b) nos recortes (b) Q⁰ *retrieved* (247 grupos) e (c) tamanho pareado (684 grupos) |
 
-Frase de abertura sugerida: _"Encontramos um sinal de intenção nas features do SAE (C1), mas ele [não se separa do lexical / não sobrevive a outro dicionário / depende do estilo das fontes]: [critério] falhou em [recorte] ([número])."_
+Frase de abertura: _"Encontramos um sinal de intenção nas features do SAE que não depende da forma lexical (C1, C2), mas não um sinal de forma lexical: nenhuma feature reage ao gatilho de modo consistente. A classificação de intenção, porém, não é exclusiva dessas features, e a avaliação humana e duas robustezes ficaram por fazer."_
 
 ## Limitações
 
@@ -97,9 +110,17 @@ _Começar por estas e acrescentar o que aparecer:_
 - O 2×2 é gerado por um LLM; a intenção é validada por juízes automáticos. A checagem humana é opcional (ver `DESVIOS.md`).
 - Os SAEs do Gemma Scope 2 foram treinados em dados genéricos; a qualidade nos nossos pedidos está em `results/frente-b/qualidade_saes.csv`.
 - Só inglês, 4 domínios, um modelo (Gemma-3-4B-IT).
-- O C2(c) é garantido em boa parte pela seleção das features e não conta como evidência.
+- O C2(c) é garantido em boa parte pela seleção das features e não conta como evidência. Aqui ele nem existe: a S_lex saiu vazia.
+- **No plano B, o contraste de intenção compara pedidos diferentes** (Q⁺ do PKU × Q⁰ gerado). O estilo sozinho separa as linhas com AUROC 0,89. O controle de estilo da frente C (48/48 sobrevivem) e o 2×2 em estilo comum (robustez) mitigam, mas não eliminam.
+- **Features aleatórias do mesmo tamanho fazem o mesmo que a S_intent no C2**, dentro do 2×2 e no XSTest. O C2 não mostra que a S_intent é necessária.
+- A avaliação cega do C3 foi feita por LLMs.
 - A frase-molde restringe os grupos que entram. Os tipos de gatilho e domínios que sobreviveram estão em `results/frente-a/rodada_seca.md`.
 
 ## Desvios do pré-registro
 
-Ver `results/DESVIOS.md`. Liste aqui só os que afetam a leitura do veredito, com uma linha cada.
+Ver `results/DESVIOS.md`. Os que afetam a leitura do veredito:
+- **Conjunto principal = `qc_grammatical` sem os 26 grupos reprovados pelo validador** (1.697), decidido antes de analisar o cache.
+- **C2(b) decidido só pelo XSTest** (antes "≥ 2 de 3", que falhava por construção), decidido antes do cache do XSTest.
+- **C3 com dois avaliadores LLM**, em vez de duas pessoas.
+- **Controle aleatório no XSTest**, acrescentado depois de ver o C2. Não muda o "atende", muda a leitura.
+- **2×2 em estilo comum** só como robustez (968 grupos, abaixo da regra de 1.200).

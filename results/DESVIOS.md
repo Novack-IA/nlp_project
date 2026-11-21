@@ -36,3 +36,11 @@ Formato: data · quem · o que mudou · por quê · se foi decidido antes ou dep
   Limitação conhecida: para casar o tamanho, o gerador às vezes acrescenta ao Q⁰ um contexto genérico que não estava no original ("for a history paper"). Os juízes aprovaram esses casos como o mesmo pedido.
 
   · **antes** de qualquer ativação do 2×2.
+- 2026-11-21 · Gustavo (A), a pedido do Davi (D, PR #8) · **Validador da frente D anotado nos dois 2×2:** `validator_pass` e `validator_errors` em cada grupo, sem descartar nenhum.
+  - `cells_2x2.jsonl`: 1.794/1.825 aprovados; 26 dos reprovados estão no `qc_grammatical`.
+  - `cells_2x2_style.jsonl`: 984/996 aprovados; 10 no `qc_grammatical`.
+  - Quase todos os reprovados têm a troca feita no meio de uma palavra flexionada ("derogatory term**ss**"), porque o `locate` do `t2b_swap` cortava o gatilho literal dentro da palavra. **Correção na origem:** o span agora vai até a borda da palavra; vale para gerações futuras, e as atuais só ficam marcadas.
+  - **Proposta, a confirmar pela frente C:** o conjunto principal passa a ser `qc_grammatical AND validator_pass` (1.697 grupos no 2×2 atual; 958 no de estilo comum).
+  - Não muda o `qc_grammatical`, que continua sendo o rótulo do juiz.
+
+  · **antes** de qualquer análise de ativação do 2×2. O cache do 2×2 já existe, mas só o índice precisa levar a marca nova.

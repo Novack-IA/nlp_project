@@ -181,3 +181,24 @@ Escrito em 2026-11-21, antes de qualquer ativação do 2×2. Tudo foi contado s�
 - **Pisos de poder (seção 4):** atendidos no conjunto principal e no `qc_pass_lenient`.
 - **Domínios** (conjunto principal): privacy 439, bias 436, cyber 434, violence 414. **Tipos de gatilho:** ação 800, marcador de intenção 482, superfície 441. **Q⁰ *retrieved*:** 224 grupos.
 - **Controles:** 3 frases por grupo (5.475 pares de frases no conjunto completo, 4.434 distintos), filtrados pelo mesmo subconjunto do 2×2.
+
+## Adendo 2: caminho (b) e IC do controle do C3
+
+Escrito em 2026-11-21, antes de qualquer cache do 2×2 (original ou em estilo comum). O cache dos controles já tinha chegado (hashes conferidos), mas não foi analisado. As duas decisões estão no `DESVIOS.md` com a mesma data.
+
+**1. Qual 2×2 é o principal.** O caminho (b) da frente A reescreve Q⁺ e Q⁰ juntos num estilo comum, antes da mesma troca do gatilho (`cells_2x2_style.jsonl`, mesmos `group_id`). Ele vira o conjunto principal do C1–C3 se valerem **as três** condições:
+
+| Condição | Limiar | Medida |
+|---|---|---|
+| Tamanho | ≥ 1.200 grupos no `qc_grammatical` do (b) | contagem no arquivo da frente A |
+| Estilo | AUROC só de estilo ≤ 0,70 (hoje 0,887) | `python -m featgrpo.data.phase1.style_gap`, no `qc_grammatical` do (b) |
+| Prazo | cache do (b) com a frente C até **2026-11-22, 12h** (Brasília) | data de entrega do zip, com hashes conferidos |
+
+- As três usam só o texto e a data de entrega, nunca ativações. Por isso dá para saber qual conjunto é o principal antes de olhar qualquer resultado.
+- **Se valerem:** o `qc_grammatical` do (b) é o principal. A combinação principal, as listas, o C1, o C3 e a confirmação saem dele. O `qc_grammatical` do 2×2 atual vira robustez, na combinação principal do (b), como os outros subconjuntos de robustez. As listas que as frentes B e D tiverem recebido do 2×2 atual são substituídas pelas do (b).
+- **Se alguma falhar:** nada muda. O 2×2 atual continua principal, e o (b), se chegar, entra como robustez na combinação principal do 2×2 atual.
+- **C4a:** usa o mesmo conjunto do C1. Se o cache 262k do (b) não existir, o C4a fica no 2×2 atual, e isso é declarado.
+- **Controle de estilo** (análise secundária): roda nos dois conjuntos. No (b), ele mede quanto do efeito de intenção restava do estilo.
+- **Confirmação:** nenhum `test` de 2×2 é aberto antes de o conjunto principal estar definido. Até lá, o 2×2 atual roda só na descoberta. Depois, a confirmação é aberta uma vez, no principal, como na seção 3.
+
+**2. IC do controle `trig_only` (C3, item 1).** O d continua sendo o dos pares de frases (seção 5). Muda só o IC 95%: ele passa a vir de um bootstrap **por grupo do 2×2**, em que cada sorteio pega um grupo inteiro com as suas frases (1.000 reamostras, semente 0). As 3 frases de um grupo usam o mesmo gatilho e o mesmo termo neutro, então não são independentes. Sortear frases soltas estreitaria o IC (até √3 vezes, quando as frases são quase iguais) e facilitaria passar no critério de equivalência. O bootstrap por frase, a versão original, é reportado como sensibilidade. O critério continua o mesmo: atende se mais da metade das S_intent tiver o IC dentro de ±0,2.

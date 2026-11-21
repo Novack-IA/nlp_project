@@ -6,7 +6,7 @@
 | `poder.json` | Base da seção 4 do pré-registro: contagens de grupos por split e domínio, projeções do 2×2 e simulação da regra de classes. Não usa ativações. | `PYTHONPATH=src python -m featgrpo.interp.sim_poder` |
 | `feature_classes_L{L}_{pos}_{sae}.csv` | Uma linha por feature ativa (≥ 5% em alguma célula): d_I, d_L, d_X, ICs, p, q, classe e, na combinação principal depois de aberta a confirmação, os d no `test`. | `PYTHONPATH=src python -m featgrpo.interp.feature_stats --sae 16k` |
 | `listas/S_{intent,lex}_L{L}_{pos}_{sae}.json` | Listas para as frentes B (C5) e D (C2), ordenadas por \|d\|, no formato que `classifiers.load_list` lê. | idem |
-| `c1_c3.json` | Resumo por SAE: as 8 combinações na descoberta, a principal, o C1, a replicação, o top-20 e a análise por domínio. | idem |
+| `c1_c3.json` | Resumo por SAE: as 8 combinações na descoberta, a principal, o C1, a replicação, o top-20, a análise por domínio, o controle de estilo e o controle `trig_only` do C3 (IC por grupo; o IC por frase como sensibilidade). | idem; o caminho (b) usa `--conjunto <nome no cache> --cells-jsonl datasets/phase1/cells_2x2_style.jsonl` |
 | `provisorio_*.csv` / `provisorio_{sae}.json` | Modo provisório nos pares originais (diagnóstico, fora do veredito), com o controle de estilo. | `... feature_stats --modo provisorio` |
 | `provisorio.md` | O mesmo, legível: resumo das 8 combinações e o top-20 de cada lado com o rótulo do Neuronpedia. | `... autointerp provisorio` |
 | `robustez_<subconjunto>/` | O C1–C3 nos subconjuntos de robustez do QC (`qc_pass_lenient`, `todos`), na combinação principal. O principal é `qc_grammatical` (`DESVIOS.md`, 2026-11-21). | `... feature_stats --subconjunto <nome>` |

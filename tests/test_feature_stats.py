@@ -88,14 +88,14 @@ def cache(tmp_path_factory):
     crows = [{"group_id": f"g{gi}", "template_id": t, "kind": kd, "item_id": f"g{gi}:ctl{t}:{kd}",
               "inst_last_token_id": 236761}
              for gi in range(n_g) for t in range(n_t) for kd in ("trig", "neutral")]
-    (root / "index" / "controles.jsonl").write_text("\n".join(json.dumps(r) for r in crows), encoding="utf-8")
+    (root / "index" / "controls.jsonl").write_text("\n".join(json.dumps(r) for r in crows), encoding="utf-8")
     zc = np.zeros((nc * 2, NF), dtype=np.float32)
     for f in range(NF):
         b = np.repeat(rng.normal(-0.3, 1.0, n_g), n_t)          # frases do mesmo grupo compartilham a base
         for k, t in ((0, 1), (1, 0)):
             shift = 1.5 * t if (f in LEX or f in MIXED) else 0.0
             zc[k::2, f] = np.maximum(b + shift + rng.normal(0, 0.7, nc), 0)
-    sp.save_npz(root / "resid_post" / "L22" / "controles__inst_last__16k.npz", sp.csr_matrix(zc))
+    sp.save_npz(root / "resid_post" / "L22" / "controls__inst_last__16k.npz", sp.csr_matrix(zc))
     return root
 
 
@@ -274,8 +274,8 @@ def test_controle_unidade_grupo(cache, run_desc):
     _, out = run_desc
     import pandas as pd
     df = pd.read_csv(out / "feature_classes_L22_inst_last_16k.csv")
-    z = cache_io.load_latents(cache, "controles", 22, "inst_last", "16k")
-    rows = cache_io.load_index(cache, "controles")
+    z = cache_io.load_latents(cache, "controls", 22, "inst_last", "16k")
+    rows = cache_io.load_index(cache, "controls")
     si, sl = (df.loc[df["classe"] == c, "feature"].to_numpy() for c in ("S_intent", "S_lex"))
     frase = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="frase")
     grupo = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="grupo")
@@ -283,6 +283,49 @@ def test_controle_unidade_grupo(cache, run_desc):
     assert grupo["S_lex"]["fracao_que_reage"] == 1.0
     with pytest.raises(ValueError):
         fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="outra")
+
+
+def test_pesos_bootstrap_por_grupo():
+    grupo = np.array(["a", "a", "b", "c", "c", "c"], dtype=object)
+    w = fs.pesos_bootstrap_por_grupo(grupo, 200, 0)
+    assert w.shape == (200, 6)
+    assert np.array_equal(w[:, 0], w[:, 1]) and np.array_equal(w[:, 3], w[:, 5])
+    # cada reamostra tem 3 grupos; o total de frases varia com os grupos sorteados
+    tam = np.array([2, 1, 3])
+    gw = np.stack([w[:, 0], w[:, 2], w[:, 3]], axis=1)
+    assert np.all(gw.sum(axis=1) == 3) and np.allclose(w.sum(axis=1), gw @ tam)
+
+
+def test_ic_d_igual_ao_bootstrap_simples_antigo():
+    rng = np.random.default_rng(1)
+    e = rng.normal(0.3, 1.0, (120, 5))
+    w = fs.pesos_bootstrap(120, 300, 0)
+    lo, hi = fs.ic_d(e, w)
+    n = 120   # fórmula de antes da generalização (total de cada reamostra = n)
+    m = w @ e / n
+    s = np.sqrt((w @ (e * e) / n - m * m) * (n / (n - 1)))
+    lo0, hi0 = np.percentile(m / s, [2.5, 97.5], axis=0)
+    assert np.allclose(lo, lo0) and np.allclose(hi, hi0)
+
+
+def test_reamostragem_por_grupo_alarga_o_ic_com_frases_dependentes():
+    rng = np.random.default_rng(2)
+    n_g, n_t = 150, 3
+    e = np.repeat(rng.normal(0.0, 1.0, (n_g, 4)), n_t, axis=0) + rng.normal(0, 0.2, (n_g * n_t, 4))
+    grupo = np.repeat(np.arange(n_g), n_t)
+    lo_f, hi_f = fs.ic_d(e, fs.pesos_bootstrap(len(e), 1000, 0))
+    lo_g, hi_g = fs.ic_d(e, fs.pesos_bootstrap_por_grupo(grupo, 1000, 0))
+    assert np.all((hi_g - lo_g) > 1.4 * (hi_f - lo_f))     # ≈ √3 quando as 3 frases são quase iguais
+
+
+def test_controle_principal_e_sensibilidade(run_desc):
+    res = run_desc[0]
+    c, s = res["C3_controle_trig_only"], res["C3_controle_trig_only_sensibilidade_reamostragem_frase"]
+    assert c["reamostragem"] == "grupo" and c["n_grupos_2x2"] == 100
+    assert s["reamostragem"] == "frase" and "features" not in s
+    assert s["S_intent"]["n"] == c["S_intent"]["n"]
+    larg_g = np.mean([f["ic_hi"] - f["ic_lo"] for f in c["features"]])
+    assert larg_g > 0
 
 
 def test_controle_ausente_fica_registrado(cache, tmp_path):

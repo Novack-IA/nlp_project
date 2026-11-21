@@ -184,13 +184,22 @@ def pesos_bootstrap(n: int, n_boot: int, seed: int) -> np.ndarray:
     return rng.multinomial(n, np.full(n, 1.0 / n), size=n_boot).astype(np.float64)
 
 
+def pesos_bootstrap_por_grupo(grupo: np.ndarray, n_boot: int, seed: int) -> np.ndarray:
+    """Bootstrap por conglomerado: sorteia grupos com reposição e repete o peso do grupo em cada uma das
+    suas linhas. Devolve a matriz (n_boot, n_linhas) para `ic_d`."""
+    _, inv = np.unique(np.asarray(grupo, dtype=object), return_inverse=True)
+    return pesos_bootstrap(int(inv.max()) + 1, n_boot, seed)[:, inv]
+
+
 def ic_d(e: np.ndarray, w: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """IC 95% percentil de d por bootstrap sobre grupos, com os pesos `w` (mesmos para todas as features)."""
-    n = e.shape[0]
+    """IC 95% percentil de d por bootstrap, com os pesos `w` (mesmos para todas as features). Cada linha de
+    `w` é uma reamostra; o total de cada linha é o tamanho da reamostra (n no bootstrap simples; varia no
+    bootstrap por conglomerado)."""
     mu = e.mean(axis=0)
     ec = e - mu                                   # centrar evita perda de precisão em E[x²] - m²
-    m_c = w @ ec / n
-    v = (w @ (ec * ec) / n - m_c * m_c) * (n / (n - 1))
+    tot = w.sum(axis=1, keepdims=True)
+    m_c = w @ ec / tot
+    v = (w @ (ec * ec) / tot - m_c * m_c) * (tot / (tot - 1))
     s = np.sqrt(np.clip(v, 0.0, None))
     m = m_c + mu
     d = np.divide(m, s, out=np.zeros_like(m), where=s > 0)
@@ -393,36 +402,49 @@ def normalizar_controles(rows: list[dict]) -> list[dict]:
 
 
 def controle_trig_only(z_ctrl: sp.csr_matrix, rows_ctrl: list[dict], posicao: str, feats_int: np.ndarray,
-                       feats_lex: np.ndarray, regras: Regras, unidade: str = "frase") -> dict:
+                       feats_lex: np.ndarray, regras: Regras, unidade: str = "frase",
+                       reamostragem: str = "grupo") -> dict:
     """C3, item 1 (pré-registro, seção 5): d de a(trig_only) − a(neutral_only), pareado por frase de controle,
     na mesma posição da combinação principal. Atende se mais da metade das S_intent tiver o IC 95% desse d
     dentro de ±0,2. Para S_lex espera-se o contrário (o controle funciona se elas reagem).
 
-    `unidade="frase"` (pré-registrado): cada par de frases é uma unidade. `unidade="grupo"` (alternativa,
-    não pré-registrada): média das frases de controle de cada grupo do 2×2 antes do d; usar só se a
-    mudança for registrada em results/DESVIOS.md.
+    `unidade="frase"` (pré-registrado): o d é calculado sobre os pares de frases. `unidade="grupo"`
+    (alternativa, não usada): média das frases de cada grupo do 2×2 antes do d.
+
+    `reamostragem` (só com `unidade="frase"`): `"grupo"` (DESVIOS 2026-11-21, o principal) sorteia grupos
+    do 2×2 inteiros, com as suas frases, porque as 3 frases de um grupo não são independentes; `"frase"`
+    (a versão original do pré-registro, mantida como sensibilidade) sorteia pares de frases.
     """
     feats_int, feats_lex = np.asarray(feats_int, dtype=int), np.asarray(feats_lex, dtype=int)
     rows_ctrl = normalizar_controles(rows_ctrl)
     g = montar_grupos(rows_ctrl, posicao, items=CONTROL_ITEMS)
     n, k = len(g), len(feats_int)
     feats = np.concatenate([feats_int, feats_lex])
-    base = {"n_pares_controle": n, "excluidos": g.excluidos, "posicao": posicao, "unidade": unidade}
+    if unidade not in ("frase", "grupo"):
+        raise ValueError(f"unidade desconhecida: {unidade}")
+    if reamostragem not in ("frase", "grupo"):
+        raise ValueError(f"reamostragem desconhecida: {reamostragem}")
+    base = {"n_pares_controle": n, "excluidos": g.excluidos, "posicao": posicao, "unidade": unidade,
+            "reamostragem": "grupo" if unidade == "grupo" else reamostragem}
     if n < 2 or len(feats) == 0:
         return {**base, "status": "sem dados suficientes"}
     a = linhas(z_ctrl, g)[:, feats].toarray().astype(np.float64).reshape(n, 2, len(feats)).transpose(1, 0, 2)
     e = a[0] - a[1]
+    origem = np.array([rows_ctrl[i]["grupo_2x2"] for i in g.rows[:, 0]], dtype=object)
+    _, inv = np.unique(origem, return_inverse=True)
+    base["n_grupos_2x2"] = int(inv.max()) + 1
     if unidade == "grupo":
-        origem = np.array([rows_ctrl[i]["grupo_2x2"] for i in g.rows[:, 0]], dtype=object)
-        _, inv = np.unique(origem, return_inverse=True)
         soma = np.zeros((inv.max() + 1, e.shape[1]))
         np.add.at(soma, inv, e)
         e = soma / np.bincount(inv)[:, None]
         base["n_unidades"] = int(e.shape[0])
-    elif unidade != "frase":
-        raise ValueError(f"unidade desconhecida: {unidade}")
+        w = pesos_bootstrap(e.shape[0], regras.n_boot, regras.seed)
+    elif reamostragem == "grupo":
+        w = pesos_bootstrap_por_grupo(origem, regras.n_boot, regras.seed)
+    else:
+        w = pesos_bootstrap(n, regras.n_boot, regras.seed)
     d = cohen_d(e)
-    lo, hi = ic_d(e, pesos_bootstrap(e.shape[0], regras.n_boot, regras.seed))
+    lo, hi = ic_d(e, w)
     m = regras.margem_eq
     sem_efeito = (lo > -m) & (hi < m)
     frac_int = float(sem_efeito[:k].mean()) if k else None
@@ -545,7 +567,7 @@ def _textos_2x2_padrao() -> dict:
 
 def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confirmacao: bool,
             regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None,
-            conjunto_controles: str = "controles", textos: dict | None = None,
+            conjunto_controles: str = "controls", textos: dict | None = None,
             grupos_permitidos: set[str] | None = None, subconjunto: str = "todos") -> dict:
     rows = cache_io.load_index(root, conjunto)
     train_trigs = {r["trig_norm"] for r in rows if r.get("split") == "train"}
@@ -596,6 +618,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     c1 = veredito_c1(resumo, principal, rep, regras) if principal in tabelas or principal is None else None
 
     controle = {"status": "sem combinação principal"}
+    controle_sens = None
     if principal is not None and principal in tabelas:
         controle = {"status": f"sem cache de controles ('{conjunto_controles}') para esta combinação"}
         if cache_io.latents_path(root, conjunto_controles, principal[0], principal[1], sae).exists():
@@ -603,11 +626,13 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
             rows_c = cache_io.load_index(root, conjunto_controles)
             if grupos_permitidos is not None:
                 rows_c = [r for r in rows_c if r.get("group_id") in grupos_permitidos]
-            controle = controle_trig_only(
-                cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
-                rows_c, principal[1],
-                df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
-                df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
+            args_c = (cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
+                      rows_c, principal[1],
+                      df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
+                      df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
+            controle = controle_trig_only(*args_c, reamostragem="grupo")      # DESVIOS 2026-11-21
+            sens = controle_trig_only(*args_c, reamostragem="frase")          # versão original, sensibilidade
+            controle_sens = {k: v for k, v in sens.items() if k != "features"}
 
     # ---- saídas
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -641,6 +666,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         "confirmacao_aberta": bool(abrir_confirmacao),
         "replicacao_S_intent": rep,
         "C3_controle_trig_only": controle,
+        "C3_controle_trig_only_sensibilidade_reamostragem_frase": controle_sens,
         "C1_controle_estilo": estilo_res,
     }
     if principal is not None and principal in tabelas:
@@ -736,7 +762,12 @@ def main(argv=None) -> int:
                     help="abre o split test na combinação principal (uma vez, no fim)")
     ap.add_argument("--out-dir", type=Path, default=None,
                     help="padrão: results/frente-c (principal) ou results/frente-c/robustez_<subconjunto>")
-    ap.add_argument("--conjunto-controles", default="controles",
+    ap.add_argument("--conjunto", default="cells2x2",
+                    help="conjunto do 2×2 no cache (o caminho (b), em estilo comum, sai com outro nome)")
+    ap.add_argument("--cells-jsonl", type=Path, default=None,
+                    help="arquivo do 2×2 da frente A, para o QC e os textos do controle de estilo "
+                         "(padrão: datasets/phase1/cells_2x2.jsonl; caminho (b): cells_2x2_style.jsonl)")
+    ap.add_argument("--conjunto-controles", default="controls",
                     help="conjunto do cache com os controles trig_only/neutral_only (C3)")
     ap.add_argument("--subconjunto", choices=SUBCONJUNTOS, default=SUBCONJUNTO_PRINCIPAL,
                     help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical, os outros são robustez")
@@ -772,9 +803,15 @@ def main(argv=None) -> int:
             raise SystemExit("Rode antes o 16k no subconjunto principal (qc_grammatical): C4a e as robustezes "
                              "usam a combinação principal dele (pré-registro, seção 5; DESVIOS 2026-11-21).")
         forcada = (int(p16["camada"]), p16["posicao"])
+    textos = None
+    if args.cells_jsonl is not None:
+        from featgrpo.interp.autointerp import textos_2x2
+        textos = textos_2x2(args.cells_jsonl)
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
-                  regras, principal_forcada=forcada, conjunto_controles=args.conjunto_controles,
-                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto), subconjunto=args.subconjunto)
+                  regras, conjunto=args.conjunto, principal_forcada=forcada,
+                  conjunto_controles=args.conjunto_controles, textos=textos,
+                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl),
+                  subconjunto=args.subconjunto)
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

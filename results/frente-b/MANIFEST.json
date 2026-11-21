@@ -1,0 +1,104 @@
+{
+  "model_id": "google/gemma-3-4b-it",
+  "sets": {
+    "pairs": {
+      "created": "2026-11-21T13:18:39",
+      "commit": "12631bf0ff4d6a5a58b09a3258ff9c64aeb4cdc8",
+      "dirty": false,
+      "args": {
+        "set": "pairs",
+        "layers": [
+          9,
+          17,
+          22,
+          29
+        ],
+        "widths": [
+          "16k"
+        ],
+        "batch_size": 16,
+        "limit": null,
+        "out_root": "/home/user_caiolucca/nlp_project/artifacts/acts/gemma-3-4b-it",
+        "sae_ids": {
+          "16k": {
+            "9": "google/gemma-scope-2-4b-it/resid_post/layer_9_width_16k_l0_medium",
+            "17": "google/gemma-scope-2-4b-it/resid_post/layer_17_width_16k_l0_medium",
+            "22": "google/gemma-scope-2-4b-it/resid_post/layer_22_width_16k_l0_medium",
+            "29": "google/gemma-scope-2-4b-it/resid_post/layer_29_width_16k_l0_medium"
+          }
+        }
+      },
+      "versions": {
+        "torch": "2.6.0+cu124",
+        "transformers": "5.23.0"
+      },
+      "files": {
+        "resid_post/L09/pairs__inst_last.npy": "64f5699af0fc39edba9c37ce9b3ad6fca3f3f037349441be0480e42172da5edf",
+        "resid_post/L09/pairs__post.npy": "08bd3e95e1d5b5049a54e5d0bc558f3ef1b2cc4e0a3f39251077abc0745f59d1",
+        "resid_post/L09/pairs__post_last.npy": "7df72f6a3bc5f5b5a17873d9dc8e00e1d04c1e494b4c49af2712bd3c7eb4557e",
+        "resid_post/L09/pairs__mean.npy": "5396ccb4163d289cbb18a3cda96c1cc1d1083a725aa26e88ad8d63da1fbe750d",
+        "resid_post/L09/pairs__trig.npy": "babb14363796f1d78b8021845c4bfd908c05099b5d22cf7eab7f2c0797c715a4",
+        "resid_post/L17/pairs__inst_last.npy": "b3af2c1267da849d732e23350a32230aca440e470997d9a633b62830b3124c8f",
+        "resid_post/L17/pairs__post.npy": "27310b33586f9da4e60531e4e5cb1f8f6d4ecee1b1f0b2f6b37045adac1659e5",
+        "resid_post/L17/pairs__post_last.npy": "4da01131bb65dcc2acf88de4f4bcbb36b7a434e1335f921d3799db5fd7531b87",
+        "resid_post/L17/pairs__mean.npy": "cbdaacdbe76f0ef030764cbc8ec4b89fa80cdc01b19aab9c5cc8623696f5541a",
+        "resid_post/L17/pairs__trig.npy": "20cffc4d94565dc93e295869e42cbe879abbd6b3f3dfcededad84d7e00d4cef2",
+        "resid_post/L22/pairs__inst_last.npy": "7a0360eea1261eabd17becde86d457a02affc547bbca1d0c306cc66898f0196d",
+        "resid_post/L22/pairs__post.npy": "609e8c48143f9090b921644dfe5f68c47a859c459ce5855e2f27b488e40db544",
+        "resid_post/L22/pairs__post_last.npy": "3c272edcbf709bf8ec57c136feeaf0f3d8a7c8a303f97dfeda9d837ef485ce4c",
+        "resid_post/L22/pairs__mean.npy": "2390a99751d7921d641cb31a8080460b0cde5de672e2542c294e85a5fe5618ce",
+        "resid_post/L22/pairs__trig.npy": "06f83fcd92bde125d7947a21afdc5bd5fb559aa347579809ab5336e4987fe173",
+        "resid_post/L29/pairs__inst_last.npy": "e83928e46d05f1fb16672b336c10988803154b7c091b0f2bb7dc7c77b7feac68",
+        "resid_post/L29/pairs__post.npy": "278bb52ea1434a6972e00454c334a0162dec1b0331ed9cc8593f395718e7c43c",
+        "resid_post/L29/pairs__post_last.npy": "953be711caadfb9e6f80fce7ee34c3d978581143c77c92773dba00c7addda597",
+        "resid_post/L29/pairs__mean.npy": "f8ae50970bc51bd2eb237339d2dee523d4bb68e40b8b3d7f618937fe2c1c2da6",
+        "resid_post/L29/pairs__trig.npy": "fb89f5e3a21f2096e0f786bbde8d1f921940560fa8063ca71f2db0e4ce56b525",
+        "resid_post/L09/pairs__inst_last__16k.npz": "97ae73cf6996ca1217b4a753d7b1f8ee7e360c635381cd63b67ec820f69fa811",
+        "resid_post/L09/pairs__post__16k.npz": "80484bf10a4dc6368a7b05ff890bfcef2c48db62c14544ab01dca12ff2bcfada",
+        "resid_post/L09/pairs__post_last__16k.npz": "aa9971f5d6f2adcc06f34513dbaad8b6abb289cb335f835122d10f11c95c1cbd",
+        "resid_post/L09/pairs__mean__16k.npz": "6970d4e40a1fdad94e88619646b6314019d3f8ff0149eaeffb3f2d6379dcf504",
+        "resid_post/L09/pairs__trig__16k.npz": "bfd5d55a2f528a119d21bbc635dbe3a0a7a879a0e1cb068fcbd8b514bd84e8c6",
+        "resid_post/L09/pairs__post_tokmean__16k.npz": "7b4a298638349f3440b4106ae261748aaae5a8661b6ceb0708e0f07bd348c917",
+        "resid_post/L09/pairs__post_tokmax__16k.npz": "cbbbd4fe6aa7acca6a46d7c583750ef50a8c3c58b0be765674a1389b5933253a",
+        "resid_post/L09/pairs__mean_tokmean__16k.npz": "910b9cdd64fd9208803cf5643fddae9a1d9dccc7d838735e9ef1fcbc1726c9dd",
+        "resid_post/L09/pairs__mean_tokmax__16k.npz": "3069cd86e9db8d63fa66ed4f4a60d1e2356baa7584816d9d7fa052b3dc6fd2d8",
+        "resid_post/L09/pairs__trig_tokmean__16k.npz": "ea5cb45fdf4f5c5244565769f89bc210b4b6e8d345ec01509cca51ec35b25215",
+        "resid_post/L09/pairs__trig_tokmax__16k.npz": "a0e08299a97a306edc4eb7e7883a6324467c5dfc756b96595b03da311cf706e9",
+        "resid_post/L17/pairs__inst_last__16k.npz": "6fe59f3b3ff7e0a466ecf1dde51624f8361af202384d1741e4de7fa41d766ff9",
+        "resid_post/L17/pairs__post__16k.npz": "2b857b20bf061dd7edb1c2c957c8b68940f9addf582c341bb68beb4e62f0f8f2",
+        "resid_post/L17/pairs__post_last__16k.npz": "9da44286b728353d7c8212abf2afa1f6abae07087da13765ed762467beb25681",
+        "resid_post/L17/pairs__mean__16k.npz": "6dd10e7690f5aeec18269c758665d6e27fcb455ae67b28250a478bf9de5ebd7f",
+        "resid_post/L17/pairs__trig__16k.npz": "f486d40f6559eb38024466a876a4680697b8826669fca55b72e58dd832879375",
+        "resid_post/L17/pairs__post_tokmean__16k.npz": "3b2e1c89eb4ed504d502059685d0e346846ce78b5ca0969dfe6a88f5dfb94670",
+        "resid_post/L17/pairs__post_tokmax__16k.npz": "07cdf7b340fbec82c6912edbe06789041ffac8bca65026647883bebc436f831f",
+        "resid_post/L17/pairs__mean_tokmean__16k.npz": "15ac5529aba9e89c5c61bc5071e97343da3bc7e5e5054ca9be5cf84303d1a02d",
+        "resid_post/L17/pairs__mean_tokmax__16k.npz": "7507a543c1b4accec81dd7d0192d82596e8767d40db648ee77ab09f10934335f",
+        "resid_post/L17/pairs__trig_tokmean__16k.npz": "5026f1005686ebe572bd7b14eaed257fe73267ee3712a1f71e0963f200c074dc",
+        "resid_post/L17/pairs__trig_tokmax__16k.npz": "90f49d734f11d2724e933b27c608e0fd6d06f459759f2589d83bb41a5d6a5a59",
+        "resid_post/L22/pairs__inst_last__16k.npz": "08c957b1b799f49219106c878068c8fd8b71ccbf4e05a252dea6786391335c86",
+        "resid_post/L22/pairs__post__16k.npz": "24c2a1aec781d87e39af71304ec48b1d40f975a02a4efffd526bcf51bf2ad3cb",
+        "resid_post/L22/pairs__post_last__16k.npz": "2cbca06c571630963a97d3016b1682b25e9f59587a1a74ba871ae570aca4a4c9",
+        "resid_post/L22/pairs__mean__16k.npz": "223fe6e253d49e250e75fdc2bd7d2337385940dac45acea3cbe90cf3117b7328",
+        "resid_post/L22/pairs__trig__16k.npz": "cf2d331b158787ed2a560ad3bcc71c764928f441442ebeb97334181e1f0831a6",
+        "resid_post/L22/pairs__post_tokmean__16k.npz": "1e2fc015dc2a57dbbf82bed2105584befb40d4edac16b70fc45fab2f82fcc44a",
+        "resid_post/L22/pairs__post_tokmax__16k.npz": "c0dfb399d9e79398e6b6db522034587f80ba60a88df1420c35a92df21f2fb1ef",
+        "resid_post/L22/pairs__mean_tokmean__16k.npz": "3e319b1bf53fb53b9b7a188a5589ef75fbc8406f6b1472fa85be207e49ff62e6",
+        "resid_post/L22/pairs__mean_tokmax__16k.npz": "2a33d9e070695b838441d937e74bcad36ecf09c5464b5a98caac06be208039a4",
+        "resid_post/L22/pairs__trig_tokmean__16k.npz": "7d5ebe3de689a4b3db312d6f083127df17d9cb708eec549baaf69b718461ada5",
+        "resid_post/L22/pairs__trig_tokmax__16k.npz": "9a1f25f59c30f895a6d7a130b5e7da51e44c5b7d48ef6f24ee7118bcb8f4da77",
+        "resid_post/L29/pairs__inst_last__16k.npz": "d4b522591dbfae8d8e33d724ed6d3506ccf3358eca25d4a4bac2b5a429b2fc2f",
+        "resid_post/L29/pairs__post__16k.npz": "b8352418bdd6e07cc7f8fa526710fcefce868dc28d953268312603d4f0885e94",
+        "resid_post/L29/pairs__post_last__16k.npz": "14154f23e6a3982023d45abed22f8d6e0918400a995f2dab569ef3a565038a4f",
+        "resid_post/L29/pairs__mean__16k.npz": "d80920168ca60c747bac0fb1270be9fce73c44c62a7d4d9bdd80eb019eb55bb0",
+        "resid_post/L29/pairs__trig__16k.npz": "e028cb9f3f489739ff942f50bc646cc9e716dba27805a2a50483236811d5ac6d",
+        "resid_post/L29/pairs__post_tokmean__16k.npz": "282edeed5a770962327f577a0a19b19254ef534f6b68d90d5619ee74a52a7fe7",
+        "resid_post/L29/pairs__post_tokmax__16k.npz": "32afea49022b6200cb7b34b0cc32fa5ab2abf710b91414691191e0a8869db0bb",
+        "resid_post/L29/pairs__mean_tokmean__16k.npz": "bb72f207670cf8a50195ff686a3e4cedb7077170736c83939297b4e43f92c18c",
+        "resid_post/L29/pairs__mean_tokmax__16k.npz": "db6be42d2241ce275ac133e1848641a8111a001b64eeda43633ea706d5ecf5d7",
+        "resid_post/L29/pairs__trig_tokmean__16k.npz": "dffc690cafb151c5fba4309ba875c7f703f6c6871f457a9362f33e187b6e4304",
+        "resid_post/L29/pairs__trig_tokmax__16k.npz": "35d31176442aeaec8911e463ea132a03c77e8cedb6aabb0f6523376fadf0b24e",
+        "index/pairs.jsonl": "e3355aa37a940d2e0f41ed7b104514841b325e185c76db6ece3fa743058bf2e3"
+      }
+    }
+  }
+}

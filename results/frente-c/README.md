@@ -8,6 +8,7 @@
 | `listas/S_{intent,lex}_L{L}_{pos}_{sae}.json` | Listas para as frentes B (C5) e D (C2), ordenadas por \|d\|, no formato que `classifiers.load_list` lê. | idem |
 | `c1_c3.json` | Resumo por SAE: as 8 combinações na descoberta, a principal, o C1, a replicação, o top-20 e a análise por domínio. | idem |
 | `provisorio_*.csv` / `provisorio_{sae}.json` | Modo provisório nos pares originais (diagnóstico, fora do veredito). | `... feature_stats --modo provisorio` |
+| `sanidade_sae.json` | Teste de sanidade do SAE (C-U3), só com pedidos escritos à mão e exemplos públicos do Neuronpedia: chat template, convenção de camada (resid_post L = `hidden_states[L+1]`, confere com o Neuronpedia com erro < 1%) e qualidade de reconstrução nas duas posições principais. | `python -m featgrpo.interp.sanidade_sae` numa 4090 (LAB150) |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente C. | — |
 
 Na posição, os arquivos usam o ID do cache: `inst_last` = fim_pedido, `post_last` = pre_resposta.

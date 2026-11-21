@@ -107,7 +107,19 @@ def render_cells(template: str, slots: dict) -> dict:
 def normalize_group(g: dict) -> dict:
     """Converte o formato da frente A para o deste módulo (sem alterar o original)."""
     g = dict(g)
-    if "frame" in g:
+    if g.get("design") == "swap" or ("frame" in g and g.get("frame") is None):
+        # plano B da frente A: sem molde; cada linha troca só o trecho do gatilho
+        g["template"] = None
+        g["row_pieces"] = {
+            "harm": (g.get("form_alarm"), g.get("form_neutral")),
+            "ben": (g.get("form_alarm_ben") or g.get("form_alarm"), g.get("form_neutral_ben") or g.get("form_neutral")),
+        }
+        cells = {}
+        for c, v in (g.get("cells") or {}).items():
+            sl = v.get("spans") or v.get("slots") or {}
+            cells[c] = {**v, "spans": {"forma": sl.get("forma", sl.get("form"))}}
+        g["cells"] = cells
+    elif "frame" in g:
         frame = g.get("frame")
         g["template"] = frame.replace("{FORM}", FORMA).replace("{INTENT}", INTENCAO) if frame else None
         g["slots"] = {k: g.get(v) for k, v in FRONT_A_SLOTS.items()}
@@ -161,27 +173,26 @@ def validate_group(g: dict) -> list[str]:
         return errs + [f"celula_ausente: {','.join(missing)}"]
     texts = {c: cells[c]["text"] for c in CELLS}
 
-    template = g.get("template")
-    if template is not None:
-        errs += _validate_template(g, template, cells)
-        alarm = (g.get("slots") or {}).get("forma_trig") or g["trigger"]
-    else:
-        errs += _validate_local_edit(texts, g["trigger"], cells)
-        alarm = g["trigger"]
+    if len(set(texts.values())) < 4:
+        errs.append("celulas_repetidas")
 
-    # palavra alarmante presente com gatilho, ausente sem gatilho
+    template = g.get("template")
+    if template is None:
+        # plano B: as linhas nociva e benigna vêm de pedidos diferentes; tudo é checado dentro de cada linha
+        pieces = g.get("row_pieces") or {"harm": (g["trigger"], None), "ben": (g["trigger"], None)}
+        return errs + _validate_swap(texts, cells, pieces)
+
+    errs += _validate_template(g, template, cells)
+    alarm = (g.get("slots") or {}).get("forma_trig") or g["trigger"]
     for c in CELLS:
         has = trigger_present(texts[c], alarm)
         if c.endswith("_trig") and not has:
             errs.append(f"gatilho_ausente: {c}")
         if c.endswith("_notrig") and has:
             errs.append(f"gatilho_presente: {c}")
-
     lens = [_n_words(texts[c]) for c in CELLS]
     if not length_ok(lens):
         errs.append(f"tamanho: {min(lens)}–{max(lens)} palavras")
-    if len(set(texts.values())) < 4:
-        errs.append("celulas_repetidas")
     return errs
 
 
@@ -219,21 +230,55 @@ def _validate_template(g: dict, template: str, cells: dict) -> list[str]:
     return errs
 
 
-def _validate_local_edit(texts: dict, trigger: str, cells: dict) -> list[str]:
-    """Plano B (sem molde): cada célula *_notrig difere da *_trig só num trecho, que contém o gatilho."""
+def _expand_to_words(text: str, s: int, e: int) -> tuple[int, int]:
+    """Estende [s, e) até as bordas das palavras (corrige recortes como "kill" → "kick" = "ll")."""
+    while s > 0 and text[s - 1].isalnum():
+        s -= 1
+    while e < len(text) and text[e].isalnum():
+        e += 1
+    return s, e
+
+
+def _valid_span(span, text: str) -> bool:
+    return isinstance(span, (list, tuple)) and len(span) == 2 and 0 <= span[0] < span[1] <= len(text)
+
+
+def _validate_swap(texts: dict, cells: dict, pieces: dict) -> list[str]:
+    """Plano B (`design: "swap"`), linha a linha (nociva e benigna separadas):
+
+    1. o `slots.form` de cada célula é uma posição válida e contém a peça da linha
+       (`form_alarm*` em *_trig, `form_neutral*` em *_notrig), sem diferenciar maiúsculas;
+    2. **fora** do `slots.form`, as duas versões da linha são idênticas (a troca ficou só ali);
+    3. a edição, estendida até a borda das palavras, cabe no `slots.form` (o termo neutro pode manter
+       palavras inocentes do gatilho, como "LGBT sickness" → "LGBT illness");
+    4. a forma alarmante não aparece na versão sem gatilho;
+    5. tamanho comparado **dentro** da linha (entre linhas, os pedidos são diferentes de propósito).
+    """
     errs = []
     for row in ("harm", "ben"):
-        a, b = texts[f"{row}_trig"], texts[f"{row}_notrig"]
-        sa, _ = _single_edit(a, b)
-        changed = a[sa[0]:sa[1]]
-        if not trigger_present(changed, trigger):
-            errs.append(f"edicao_nao_cobre_gatilho: {row}")
-        if len(changed) > 0.5 * len(a):
-            errs.append(f"edicao_grande_demais: {row} ({len(changed)}/{len(a)} caracteres)")
-    for c in CELLS:
-        f = (cells[c].get("spans") or {}).get("forma")
-        if f is None or not (0 <= f[0] < f[1] <= len(texts[c])):
-            errs.append(f"spans_errados: {c}")
+        ct, cn = f"{row}_trig", f"{row}_notrig"
+        a, b = texts[ct], texts[cn]
+        st, sn = (cells[ct].get("spans") or {}).get("forma"), (cells[cn].get("spans") or {}).get("forma")
+        if not (_valid_span(st, a) and _valid_span(sn, b)):
+            errs.append(f"spans_errados: {row}")
+            continue
+        alarm, neutral = pieces.get(row, (None, None))
+        if alarm and a[st[0]:st[1]].lower() != alarm.lower():
+            errs.append(f"forma_alarmante_fora_do_span: {row}")
+        if neutral and b[sn[0]:sn[1]].lower() != neutral.lower():
+            errs.append(f"forma_neutra_fora_do_span: {row}")
+        if a[:st[0]] != b[:sn[0]] or a[st[1]:] != b[sn[1]:]:
+            errs.append(f"texto_muda_fora_da_forma: {row}")
+        ea, eb = _single_edit(a, b)
+        ea, eb = _expand_to_words(a, *ea), _expand_to_words(b, *eb)
+        if ea[0] == ea[1] and eb[0] == eb[1]:
+            errs.append(f"sem_edicao: {row}")
+        elif not (st[0] <= ea[0] and ea[1] <= st[1] and sn[0] <= eb[0] and eb[1] <= sn[1]):
+            errs.append(f"edicao_fora_da_forma: {row}")
+        if alarm and trigger_present(b, alarm):
+            errs.append(f"gatilho_presente: {cn}")
+        if not length_ok([_n_words(a), _n_words(b)]):
+            errs.append(f"tamanho: {row} ({_n_words(a)} × {_n_words(b)} palavras)")
     return errs
 
 

@@ -2,9 +2,9 @@
   "model_id": "google/gemma-3-4b-it",
   "sets": {
     "pairs": {
-      "created": "2026-11-21T03:15:35",
-      "commit": "21d1fb4ed97bdeb13fd18a6c498496a1a1914d0f",
-      "dirty": true,
+      "created": "2026-11-21T13:18:39",
+      "commit": "12631bf0ff4d6a5a58b09a3258ff9c64aeb4cdc8",
+      "dirty": false,
       "args": {
         "set": "pairs",
         "layers": [

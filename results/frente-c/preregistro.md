@@ -145,7 +145,7 @@ Copiado de `docs/tarefas/00-visao-geral.md` (commit 21d1fb4), com as decisões d
 **Regras de análise do grupo (PR #1):**
 1. Todo número da confirmação sai em duas partes, gatilho visto e gatilho inédito. Os critérios usam o inédito, salvo o piso da seção 4.
 2. "Sem efeito" exige o IC 95% de d dentro de ±0,2 (teste de equivalência, na tabela acima).
-3. O C2 é relativo ao TF-IDF onde ele sofre: gatilho inédito, leave-one-domain-out e XSTest; atende com ≥ 2 das 3 (frente D, emenda 3 do Gustavo).
+3. O C2 é relativo ao TF-IDF onde ele sofre. ~~Gatilho inédito, leave-one-domain-out e XSTest; atende com ≥ 2 das 3 (frente D, emenda 3 do Gustavo).~~ **Atualizado em 2026-11-21** (proposta do Davi no PR #8, voto a favor no adendo 3; `DESVIOS.md`): o C2(b) é **só o XSTest**. S_intent, treinado no 2×2, perde no XSTest no máximo metade da AUROC que o TF-IDF perde (razão ≤ 0,5 e limite superior do IC 95% da razão < 1). Gatilho inédito e leave-one-domain-out viram descrição, porque neles o TF-IDF cai ≤ 0,02 e a régua fica indefinida.
 4. Os pares originais são diagnóstico e não entram no veredito.
 5. C1 e C2 saem também por domínio e por tipo de gatilho (`trigger_types.jsonl` da frente A), como análise secundária.
 
@@ -181,3 +181,42 @@ Escrito em 2026-11-21, antes de qualquer ativação do 2×2. Tudo foi contado s�
 - **Pisos de poder (seção 4):** atendidos no conjunto principal e no `qc_pass_lenient`.
 - **Domínios** (conjunto principal): privacy 439, bias 436, cyber 434, violence 414. **Tipos de gatilho:** ação 800, marcador de intenção 482, superfície 441. **Q⁰ *retrieved*:** 224 grupos.
 - **Controles:** 3 frases por grupo (5.475 pares de frases no conjunto completo, 4.434 distintos), filtrados pelo mesmo subconjunto do 2×2.
+
+## Adendo 2: caminho (b) e IC do controle do C3
+
+Escrito em 2026-11-21, antes de qualquer cache do 2×2 (original ou em estilo comum). O cache dos controles já tinha chegado (hashes conferidos), mas não foi analisado. As duas decisões estão no `DESVIOS.md` com a mesma data.
+
+**1. Qual 2×2 é o principal.** O caminho (b) da frente A reescreve Q⁺ e Q⁰ juntos num estilo comum, antes da mesma troca do gatilho (`cells_2x2_style.jsonl`, mesmos `group_id`). Ele vira o conjunto principal do C1–C3 se valerem **as três** condições:
+
+| Condição | Limiar | Medida |
+|---|---|---|
+| Tamanho | ≥ 1.200 grupos no `qc_grammatical` do (b) | contagem no arquivo da frente A |
+| Estilo | AUROC só de estilo ≤ 0,70 (hoje 0,887) | `python -m featgrpo.data.phase1.style_gap`, no `qc_grammatical` do (b) |
+| Prazo | cache do (b) com a frente C até **2026-11-22, 12h** (Brasília) | data de entrega do zip, com hashes conferidos |
+
+- As três usam só o texto e a data de entrega, nunca ativações. Por isso dá para saber qual conjunto é o principal antes de olhar qualquer resultado.
+- **Se valerem:** o `qc_grammatical` do (b) é o principal. A combinação principal, as listas, o C1, o C3 e a confirmação saem dele. O `qc_grammatical` do 2×2 atual vira robustez, na combinação principal do (b), como os outros subconjuntos de robustez. As listas que as frentes B e D tiverem recebido do 2×2 atual são substituídas pelas do (b).
+- **Se alguma falhar:** nada muda. O 2×2 atual continua principal, e o (b), se chegar, entra como robustez na combinação principal do 2×2 atual.
+- **C4a:** usa o mesmo conjunto do C1. Se o cache 262k do (b) não existir, o C4a fica no 2×2 atual, e isso é declarado.
+- **Controle de estilo** (análise secundária): roda nos dois conjuntos. No (b), ele mede quanto do efeito de intenção restava do estilo.
+- **Confirmação:** nenhum `test` de 2×2 é aberto antes de o conjunto principal estar definido. Até lá, o 2×2 atual roda só na descoberta. Depois, a confirmação é aberta uma vez, no principal, como na seção 3.
+
+**2. IC do controle `trig_only` (C3, item 1).** O d continua sendo o dos pares de frases (seção 5). Muda só o IC 95%: ele passa a vir de um bootstrap **por grupo do 2×2**, em que cada sorteio pega um grupo inteiro com as suas frases (1.000 reamostras, semente 0). As 3 frases de um grupo usam o mesmo gatilho e o mesmo termo neutro, então não são independentes. Sortear frases soltas estreitaria o IC (até √3 vezes, quando as frases são quase iguais) e facilitaria passar no critério de equivalência. O bootstrap por frase, a versão original, é reportado como sensibilidade. O critério continua o mesmo: atende se mais da metade das S_intent tiver o IC dentro de ±0,2.
+
+## Adendo 3: conjunto principal final
+
+Escrito em 2026-11-21, com o cache do 2×2 já recebido e conferido, mas **antes de calcular qualquer efeito**. Os números abaixo usam só o texto e o índice do cache.
+
+**Principal: `qc_grammatical AND validator_pass`** (`DESVIOS.md`, 2026-11-21). O `validator_pass` é a marca do validador estrutural da frente D, anotada pela frente A no `cells_2x2.jsonl` (PR #11). Até esse PR entrar no `master`, rodamos com uma cópia do arquivo anotado (`--cells-jsonl`), cujo sha256 fica gravado no `c1_c3.json`.
+
+| Subconjunto | Grupos | Descoberta (`fim_pedido` / `pre_resposta`) | `test` com gatilho inédito (`fim_pedido` / `pre_resposta`) | Papel |
+|---|---|---|---|---|
+| `qc_grammatical` + validador | 1.697 | 1.288 / 1.455 | 137 / 155 | **principal** |
+| `qc_grammatical` sem validador | 1.723 | 1.306 / 1.479 | 138 / 156 | robustez |
+| `qc_pass_lenient` + validador | 593 | 451 / 509 | 42 / 51 | robustez |
+| todos | 1.825 | 1.375 / 1.568 | 145 / 165 | robustez |
+
+- **`fim_pedido`:** no principal, 199 grupos (11,7%) têm o último token diferente entre as células e saem só dessa posição. Fica abaixo dos 20% (seção 1, regra 1).
+- **Pisos (seção 4):** atendidos no principal. Por domínio: privacy 434, bias 428, cyber 427, violence 408. No `qc_pass_lenient`, o `test` com gatilho inédito no `fim_pedido` fica abaixo de 50, então ali vale o `test` inteiro (seção 3).
+- **Caminho (b):** não virou o principal, porque reprovou em tamanho e estilo (`DESVIOS.md`). Entra como robustez.
+- **C2(b):** a frente C vota a favor da proposta do Davi (PR #8), em que o C2(b) passa a ser só o XSTest e o gatilho inédito e o domínio inédito ficam como descrição. A troca no texto da seção 5 e a entrada no `DESVIOS.md` ficam com a frente D, depois da votação do grupo. Feito em 2026-11-21, a pedido do Davi: seção 5, regra 3.

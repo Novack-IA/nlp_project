@@ -88,14 +88,14 @@ def cache(tmp_path_factory):
     crows = [{"group_id": f"g{gi}", "template_id": t, "kind": kd, "item_id": f"g{gi}:ctl{t}:{kd}",
               "inst_last_token_id": 236761}
              for gi in range(n_g) for t in range(n_t) for kd in ("trig", "neutral")]
-    (root / "index" / "controles.jsonl").write_text("\n".join(json.dumps(r) for r in crows), encoding="utf-8")
+    (root / "index" / "controls.jsonl").write_text("\n".join(json.dumps(r) for r in crows), encoding="utf-8")
     zc = np.zeros((nc * 2, NF), dtype=np.float32)
     for f in range(NF):
         b = np.repeat(rng.normal(-0.3, 1.0, n_g), n_t)          # frases do mesmo grupo compartilham a base
         for k, t in ((0, 1), (1, 0)):
             shift = 1.5 * t if (f in LEX or f in MIXED) else 0.0
             zc[k::2, f] = np.maximum(b + shift + rng.normal(0, 0.7, nc), 0)
-    sp.save_npz(root / "resid_post" / "L22" / "controles__inst_last__16k.npz", sp.csr_matrix(zc))
+    sp.save_npz(root / "resid_post" / "L22" / "controls__inst_last__16k.npz", sp.csr_matrix(zc))
     return root
 
 
@@ -274,8 +274,8 @@ def test_controle_unidade_grupo(cache, run_desc):
     _, out = run_desc
     import pandas as pd
     df = pd.read_csv(out / "feature_classes_L22_inst_last_16k.csv")
-    z = cache_io.load_latents(cache, "controles", 22, "inst_last", "16k")
-    rows = cache_io.load_index(cache, "controles")
+    z = cache_io.load_latents(cache, "controls", 22, "inst_last", "16k")
+    rows = cache_io.load_index(cache, "controls")
     si, sl = (df.loc[df["classe"] == c, "feature"].to_numpy() for c in ("S_intent", "S_lex"))
     frase = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="frase")
     grupo = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="grupo")
@@ -283,6 +283,49 @@ def test_controle_unidade_grupo(cache, run_desc):
     assert grupo["S_lex"]["fracao_que_reage"] == 1.0
     with pytest.raises(ValueError):
         fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="outra")
+
+
+def test_pesos_bootstrap_por_grupo():
+    grupo = np.array(["a", "a", "b", "c", "c", "c"], dtype=object)
+    w = fs.pesos_bootstrap_por_grupo(grupo, 200, 0)
+    assert w.shape == (200, 6)
+    assert np.array_equal(w[:, 0], w[:, 1]) and np.array_equal(w[:, 3], w[:, 5])
+    # cada reamostra tem 3 grupos; o total de frases varia com os grupos sorteados
+    tam = np.array([2, 1, 3])
+    gw = np.stack([w[:, 0], w[:, 2], w[:, 3]], axis=1)
+    assert np.all(gw.sum(axis=1) == 3) and np.allclose(w.sum(axis=1), gw @ tam)
+
+
+def test_ic_d_igual_ao_bootstrap_simples_antigo():
+    rng = np.random.default_rng(1)
+    e = rng.normal(0.3, 1.0, (120, 5))
+    w = fs.pesos_bootstrap(120, 300, 0)
+    lo, hi = fs.ic_d(e, w)
+    n = 120   # fórmula de antes da generalização (total de cada reamostra = n)
+    m = w @ e / n
+    s = np.sqrt((w @ (e * e) / n - m * m) * (n / (n - 1)))
+    lo0, hi0 = np.percentile(m / s, [2.5, 97.5], axis=0)
+    assert np.allclose(lo, lo0) and np.allclose(hi, hi0)
+
+
+def test_reamostragem_por_grupo_alarga_o_ic_com_frases_dependentes():
+    rng = np.random.default_rng(2)
+    n_g, n_t = 150, 3
+    e = np.repeat(rng.normal(0.0, 1.0, (n_g, 4)), n_t, axis=0) + rng.normal(0, 0.2, (n_g * n_t, 4))
+    grupo = np.repeat(np.arange(n_g), n_t)
+    lo_f, hi_f = fs.ic_d(e, fs.pesos_bootstrap(len(e), 1000, 0))
+    lo_g, hi_g = fs.ic_d(e, fs.pesos_bootstrap_por_grupo(grupo, 1000, 0))
+    assert np.all((hi_g - lo_g) > 1.4 * (hi_f - lo_f))     # ≈ √3 quando as 3 frases são quase iguais
+
+
+def test_controle_principal_e_sensibilidade(run_desc):
+    res = run_desc[0]
+    c, s = res["C3_controle_trig_only"], res["C3_controle_trig_only_sensibilidade_reamostragem_frase"]
+    assert c["reamostragem"] == "grupo" and c["n_grupos_2x2"] == 100
+    assert s["reamostragem"] == "frase" and "features" not in s
+    assert s["S_intent"]["n"] == c["S_intent"]["n"]
+    larg_g = np.mean([f["ic_hi"] - f["ic_lo"] for f in c["features"]])
+    assert larg_g > 0
 
 
 def test_controle_ausente_fica_registrado(cache, tmp_path):
@@ -331,6 +374,55 @@ def test_avaliacao_cega():
     assert r["concordancia_bruta"] == 5 / 6 and 0 < r["kappa_cohen"] < 1
     with pytest.raises(ValueError):
         autointerp.avaliar(fred.assign(rotulo="talvez"), davi, chave)
+
+
+def test_avaliacao_varios_avaliadores():
+    import pandas as pd
+    from featgrpo.interp import autointerp
+    chave = pd.DataFrame({"ficha": [f"F{i}" for i in range(5)], "classe": ["S_intent"] * 5})
+    llm = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual"] * 4 + ["lexical"]})
+    fred = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual"] * 3 + ["lexical"] * 2})
+    r = autointerp.avaliar_varios({"llm": llm}, chave, principal="llm")
+    assert r["fracao_S_intent_conceitual"]["llm"] == 0.8 and r["atende"] is True and r["pares"] == {}
+    r2 = autointerp.avaliar_varios({"llm": llm, "frederico": fred}, chave, principal="llm")
+    assert r2["fracao_S_intent_conceitual_para_todos"] == 0.6 and r2["pares"]["llm×frederico"]["concordancia_bruta"] == 0.8
+
+
+def test_fichas_sem_nome_da_celula(cache, run_desc):
+    from featgrpo.interp import autointerp, cache_io
+    rows = cache_io.load_index(cache, "cells2x2")
+    z = cache_io.load_latents(cache, "cells2x2", 22, "inst_last", "16k")
+    textos = {(r["group_id"], r["cell"]): "um pedido" for r in rows}
+    itens = autointerp.top_itens_2x2(z, rows, [0, 1], textos)
+    assert itens[0] and not any(c in s for s in itens[0] for c in ("harm_", "ben_"))
+    assert any("harm_" in s or "ben_" in s for s in autointerp.top_itens_2x2(z, rows, [0], textos, mostrar_celula=True)[0])
+
+
+def test_lista_exploratoria(run_desc):
+    from featgrpo.interp import autointerp, classifiers
+    res, out = run_desc
+    fake = lambda layer, sae, f: {"explanations": [{"description": "cannot fulfill requests" if f % 2 else "x"}]}
+    lst = autointerp.lista_exploratoria({"16k": res}, out, fetch=fake)
+    assert lst["exploratorio"] is True and lst["classe"] == "intencao_forte_fora_de_S_intent"
+    import pandas as pd
+    df = pd.read_csv(out / "feature_classes_L22_inst_last_16k.csv").set_index("feature")
+    assert all(df.loc[f, "classe"] != "S_intent" and abs(df.loc[f, "d_I"]) >= 0.5 for f in lst["features"])
+    assert lst["n_rotulo_de_recusa"] == sum(f % 2 for f in lst["features"])
+    p = out / "lst.json"; p.write_text(__import__("json").dumps(lst))
+    assert classifiers.load_list(p) == lst["features"]
+
+
+def test_por_tipo_gatilho(cache, tmp_path):
+    tipos = {f"g{i}": fs.TIPOS_GATILHO[i % 3] for i in range(N_GROUPS)}
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     tipos_gatilho=tipos)
+    pt = res["por_tipo_gatilho"]
+    assert pt["descritivo"] is True and set(pt["tipos"]) == set(fs.TIPOS_GATILHO)
+    # as features de intenção plantadas valem em todos os tipos
+    for t_ in fs.TIPOS_GATILHO:
+        assert pt["tipos"][t_]["S_intent_com_mesmo_sinal_e_d_ge_0_3"] >= len(INTENT)
+    assert "por_tipo_gatilho" not in fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path / "b",
+                                                abrir_confirmacao=False, regras=fs.Regras())
 
 
 def test_figura_di_dl(run_desc, tmp_path):
@@ -396,13 +488,58 @@ def test_subconjunto_pequeno_fica_inconclusivo(cache, tmp_path):
 
 def test_grupos_do_subconjunto(tmp_path):
     p = tmp_path / "cells.jsonl"
-    p.write_text("\n".join(json.dumps({"group_id": f"g{i}", "qc_grammatical": i % 2 == 0, "qc_pass": i == 0})
+    p.write_text("\n".join(json.dumps({"group_id": f"g{i}", "qc_grammatical": i % 2 == 0, "qc_pass": i == 0,
+                                       "validator_pass": i != 2})
                            for i in range(6)), encoding="utf-8")
-    assert fs.grupos_do_subconjunto("qc_grammatical", p) == {"g0", "g2", "g4"}
+    assert fs.grupos_do_subconjunto("qc_grammatical", p) == {"g0", "g4"}                  # g2 reprovado
+    assert fs.grupos_do_subconjunto("qc_grammatical", p, validado=False) == {"g0", "g2", "g4"}
     assert fs.grupos_do_subconjunto("qc_pass", p) == {"g0"}
     assert fs.grupos_do_subconjunto("todos", p) is None
     with pytest.raises(ValueError):
         fs.grupos_do_subconjunto("outro", p)
+    sem_marca = tmp_path / "antigo.jsonl"
+    sem_marca.write_text(json.dumps({"group_id": "g0", "qc_grammatical": True}), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        fs.grupos_do_subconjunto("qc_grammatical", sem_marca)
+    assert fs.grupos_do_subconjunto("qc_grammatical", sem_marca, validado=False) == {"g0"}
+
+
+def test_diagnostico_lexical(tmp_path):
+    """Intenção numa direção fixa; gatilho numa direção diferente por grupo, mais um empurrão pequeno no eixo da
+    intenção. O diagnóstico deve achar a intenção consistente, o gatilho inconsistente e o empurrão positivo."""
+    rng = np.random.default_rng(3)
+    n, d = 300, 32
+    rows = [{"group_id": f"g{i}", "item": c, "split": "train", "domain": "bias", "trigger": f"t{i}",
+             "inst_last_token_id": 7} for i in range(n) for c in CELLS]
+    (tmp_path / "index").mkdir()
+    (tmp_path / "index" / "cells2x2.jsonl").write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+    eixo = np.zeros(d); eixo[0] = 1.0
+    x = np.zeros((n, 4, d))
+    for i in range(n):
+        base, lex = rng.normal(0, 1, d), rng.normal(0, 1, d) * 2.0 + 0.1 * eixo * 5
+        for ci, c in enumerate(CELLS):
+            h, t = int(c.startswith("harm")), int(c.endswith("_trig"))
+            x[i, ci] = base + 5 * eixo * h + lex * t + rng.normal(0, 0.1, d)
+    ldir = tmp_path / "resid_post" / "L22"; ldir.mkdir(parents=True)
+    np.save(ldir / "cells2x2__inst_last.npy", x.reshape(n * 4, d).astype(np.float32))
+    sp.save_npz(ldir / "cells2x2__inst_last__16k.npz", sp.csr_matrix(np.maximum(x.reshape(n * 4, d), 0).astype(np.float32)))
+    (r,) = fs.diagnostico_lexical(tmp_path, "16k", (22,), ("inst_last",))
+    assert r["n_grupos_descoberta"] == n
+    assert r["consistencia_I"] > 0.9 and r["consistencia_L"] < 0.3
+    assert r["cos_L_medio_I_medio"] > 0 and 0 < r["L_no_eixo_da_intencao_razao"] < 0.3
+    assert fs.consistencia(np.ones((5, 3))) == pytest.approx(1.0)
+
+
+def test_descoberta_md(run_desc):
+    from featgrpo.interp import autointerp
+    res, out = run_desc
+    fake = lambda layer, sae, f: {"explanations": [{"description": f"conceito {f}"}]}
+    md = autointerp.descoberta_md({"16k": res}, out, fetch=fake)
+    assert "# C1 no 2×2: o que a descoberta mostra" in md and "## Em resumo" in md
+    import re
+    assert re.search(r"\| L22 \| \*\*\d+\*\* \(principal\) \|", md) and "## Onde está o sinal" in md
+    assert "conceito " in md and "Só a descoberta" in md and "## Anexo" in md
+    assert autointerp.RECUSA.search("cannot fulfill requests") and not autointerp.RECUSA.search("illegal activities")
 
 
 def test_provisorio_md(tmp_path):

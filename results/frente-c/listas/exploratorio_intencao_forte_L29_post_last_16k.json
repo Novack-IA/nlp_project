@@ -1,0 +1,314 @@
+{
+ "features": [
+  5680,
+  405,
+  3266,
+  1145,
+  342,
+  2337,
+  9819,
+  567,
+  3571,
+  660,
+  955,
+  745,
+  6086,
+  9394,
+  975,
+  4009,
+  1549,
+  714,
+  928,
+  15494,
+  13924,
+  5065,
+  2869
+ ],
+ "classe": "intencao_forte_fora_de_S_intent",
+ "exploratorio": true,
+ "camada": 29,
+ "posicao": "post_last",
+ "rotulo": "pre_resposta",
+ "sae": "16k",
+ "criterio": "|d_I| >= 0,5 e q_I < 0,01 na descoberta, fora de S_intent (IC de d_L passa de ±0,2)",
+ "ordenadas_por": "|d_I| decrescente",
+ "n_rotulo_de_recusa": 3,
+ "detalhe": [
+  {
+   "feature": 5680,
+   "d_I": 3.3871,
+   "d_L": 0.2369,
+   "d_L_ci": [
+    0.1928,
+    0.2836
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "acknowledging understanding and offering disclaimers",
+   "rotulo_de_recusa": true
+  },
+  {
+   "feature": 405,
+   "d_I": 2.9811,
+   "d_L": 0.2186,
+   "d_L_ci": [
+    0.1716,
+    0.2611
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 3266,
+   "d_I": 2.8544,
+   "d_L": 0.2245,
+   "d_L_ci": [
+    0.1775,
+    0.2664
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "cannot fulfill requests",
+   "rotulo_de_recusa": true
+  },
+  {
+   "feature": 1145,
+   "d_I": 2.4073,
+   "d_L": 0.18,
+   "d_L_ci": [
+    0.1325,
+    0.2266
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "I pronoun",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 342,
+   "d_I": 2.3242,
+   "d_L": 0.2338,
+   "d_L_ci": [
+    0.1858,
+    0.2767
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "I understand you're",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 2337,
+   "d_I": 2.2908,
+   "d_L": 0.2268,
+   "d_L_ci": [
+    0.179,
+    0.2715
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "refusal to provide",
+   "rotulo_de_recusa": true
+  },
+  {
+   "feature": 9819,
+   "d_I": 2.0005,
+   "d_L": 0.2024,
+   "d_L_ci": [
+    0.1509,
+    0.2506
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "ancient Hawaiian culture",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 567,
+   "d_I": 1.8789,
+   "d_L": 0.2723,
+   "d_L_ci": [
+    0.2262,
+    0.318
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "sincerely / heartfelt / goodbye",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 3571,
+   "d_I": 1.7335,
+   "d_L": 0.1938,
+   "d_L_ci": [
+    0.1421,
+    0.2427
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "code installation commands",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 660,
+   "d_I": 1.6883,
+   "d_L": 0.1945,
+   "d_L_ci": [
+    0.1482,
+    0.2414
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": ", let",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 955,
+   "d_I": 1.6841,
+   "d_L": 0.25,
+   "d_L_ci": [
+    0.2012,
+    0.2952
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "offers to help",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 745,
+   "d_I": 1.6437,
+   "d_L": 0.2137,
+   "d_L_ci": [
+    0.1613,
+    0.2606
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 6086,
+   "d_I": 1.6287,
+   "d_L": 0.2697,
+   "d_L_ci": [
+    0.2281,
+    0.3143
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 9394,
+   "d_I": 1.5542,
+   "d_L": 0.2049,
+   "d_L_ci": [
+    0.1544,
+    0.2576
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "structured lists starting with \"I\" or \"1\"",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 975,
+   "d_I": 1.448,
+   "d_L": 0.2124,
+   "d_L_ci": [
+    0.1631,
+    0.2582
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "greetings",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 4009,
+   "d_I": 1.4187,
+   "d_L": 0.2299,
+   "d_L_ci": [
+    0.1778,
+    0.2761
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "players like Best",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 1549,
+   "d_I": 1.2227,
+   "d_L": 0.176,
+   "d_L_ci": [
+    0.1263,
+    0.2253
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "value of data",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 714,
+   "d_I": 1.1968,
+   "d_L": 0.265,
+   "d_L_ci": [
+    0.2272,
+    0.3092
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 928,
+   "d_I": 1.1931,
+   "d_L": 0.2293,
+   "d_L_ci": [
+    0.1836,
+    0.2733
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 15494,
+   "d_I": 1.1795,
+   "d_L": 0.2228,
+   "d_L_ci": [
+    0.177,
+    0.2734
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "I after conjunctions/verbs",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 13924,
+   "d_I": -1.0535,
+   "d_L": -0.1727,
+   "d_L_ci": [
+    -0.2192,
+    -0.1267
+   ],
+   "mais_ativa_em": "benignos",
+   "rotulo_neuronpedia": "Okay, this is",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 5065,
+   "d_I": 1.0516,
+   "d_L": 0.1927,
+   "d_L_ci": [
+    0.1475,
+    0.2415
+   ],
+   "mais_ativa_em": "nocivos",
+   "rotulo_neuronpedia": "(sem explicação no Neuronpedia)",
+   "rotulo_de_recusa": false
+  },
+  {
+   "feature": 2869,
+   "d_I": -0.8592,
+   "d_L": -0.155,
+   "d_L_ci": [
+    -0.2054,
+    -0.1045
+   ],
+   "mais_ativa_em": "benignos",
+   "rotulo_neuronpedia": "giving you",
+   "rotulo_de_recusa": false
+  }
+ ]
+}

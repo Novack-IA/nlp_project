@@ -49,19 +49,37 @@ OUT_DIR = REPO / "results" / "frente-c"
 DOMAINS = ("bias", "cyber", "privacy", "violence")
 SUBCONJUNTOS = ("qc_grammatical", "qc_pass_lenient", "qc_pass", "todos")
 SUBCONJUNTO_PRINCIPAL = "qc_grammatical"   # DESVIOS 2026-11-21 (sugestão da frente A); os outros são robustez
+# DESVIOS 2026-11-21 (Davi, PR #8; Gustavo, PR #11): o principal é qc_grammatical AND validator_pass; o filtro do
+# validador vale em todos os subconjuntos menos `todos`. `validado=False` é robustez (o qc_grammatical sem ele).
 
 
-def grupos_do_subconjunto(nome: str, path: Path | None = None) -> set[str] | None:
-    """Grupos do 2×2 que passam no QC da frente A (`qc_grammatical`, `qc_pass_lenient`, `qc_pass`).
-    `todos` devolve None (sem filtro)."""
+def caminho_cells(path: Path | None = None) -> Path:
+    from featgrpo.interp.data import PHASE1
+    return Path(path) if path is not None else PHASE1 / "cells_2x2.jsonl"
+
+
+def grupos_do_subconjunto(nome: str, path: Path | None = None, validado: bool = True) -> set[str] | None:
+    """Grupos do 2×2 que passam no QC da frente A (`qc_grammatical`, `qc_pass_lenient`, `qc_pass`) e, com
+    `validado=True`, também no validador estrutural da frente D (`validator_pass`). `todos` devolve None."""
     if nome == "todos":
         return None
     if nome not in SUBCONJUNTOS:
         raise ValueError(f"subconjunto desconhecido: {nome}")
-    from featgrpo.interp.data import PHASE1
-    path = path or PHASE1 / "cells_2x2.jsonl"
-    with open(path, encoding="utf-8") as f:
-        return {g["group_id"] for g in map(json.loads, filter(str.strip, f)) if g.get(nome)}
+    with open(caminho_cells(path), encoding="utf-8") as f:
+        grupos = [g for g in map(json.loads, filter(str.strip, f))]
+    if validado and not all("validator_pass" in g for g in grupos):
+        raise SystemExit(f"{caminho_cells(path)} não tem a marca `validator_pass` (PR #11 da frente A). "
+                         "Atualize o master ou passe --cells-jsonl com o arquivo anotado.")
+    return {g["group_id"] for g in grupos if g.get(nome) and (g.get("validator_pass") or not validado)}
+
+
+def sha256_arquivo(path: Path) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""):
+            h.update(b)
+    return h.hexdigest()
 
 
 @dataclass(frozen=True)
@@ -184,13 +202,22 @@ def pesos_bootstrap(n: int, n_boot: int, seed: int) -> np.ndarray:
     return rng.multinomial(n, np.full(n, 1.0 / n), size=n_boot).astype(np.float64)
 
 
+def pesos_bootstrap_por_grupo(grupo: np.ndarray, n_boot: int, seed: int) -> np.ndarray:
+    """Bootstrap por conglomerado: sorteia grupos com reposição e repete o peso do grupo em cada uma das
+    suas linhas. Devolve a matriz (n_boot, n_linhas) para `ic_d`."""
+    _, inv = np.unique(np.asarray(grupo, dtype=object), return_inverse=True)
+    return pesos_bootstrap(int(inv.max()) + 1, n_boot, seed)[:, inv]
+
+
 def ic_d(e: np.ndarray, w: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """IC 95% percentil de d por bootstrap sobre grupos, com os pesos `w` (mesmos para todas as features)."""
-    n = e.shape[0]
+    """IC 95% percentil de d por bootstrap, com os pesos `w` (mesmos para todas as features). Cada linha de
+    `w` é uma reamostra; o total de cada linha é o tamanho da reamostra (n no bootstrap simples; varia no
+    bootstrap por conglomerado)."""
     mu = e.mean(axis=0)
     ec = e - mu                                   # centrar evita perda de precisão em E[x²] - m²
-    m_c = w @ ec / n
-    v = (w @ (ec * ec) / n - m_c * m_c) * (n / (n - 1))
+    tot = w.sum(axis=1, keepdims=True)
+    m_c = w @ ec / tot
+    v = (w @ (ec * ec) / tot - m_c * m_c) * (tot / (tot - 1))
     s = np.sqrt(np.clip(v, 0.0, None))
     m = m_c + mu
     d = np.divide(m, s, out=np.zeros_like(m), where=s > 0)
@@ -318,8 +345,10 @@ def top_k(df: pd.DataFrame, classe: str, regras: Regras) -> pd.DataFrame:
     return sel.reindex(sel[col].abs().sort_values(ascending=False).index).head(regras.top)
 
 
-def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras) -> pd.DataFrame:
-    """Seção 3, item 4: d_I por domínio das S_intent e em quantos domínios o sinal se mantém."""
+def por_categoria(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras,
+                  cat: np.ndarray, nomes, prefixo: str) -> pd.DataFrame:
+    """d_I das S_intent dentro de cada categoria (domínio ou tipo de gatilho) e em quantas o sinal se mantém
+    (mesmo sinal do d global e |d| >= regras.dom_d). Categorias com menos de regras.piso_dominio grupos ficam NaN."""
     if len(feats) == 0:
         return pd.DataFrame(columns=["feature"])
     a = sub[:, feats].toarray().astype(np.float64).reshape(len(g), 4, len(feats)).transpose(1, 0, 2)
@@ -327,21 +356,44 @@ def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.n
     out = {"feature": feats}
     consist = np.zeros(len(feats), dtype=int)
     avaliados = 0
-    for dom in DOMAINS:
-        m = g.domain == dom
+    for nome in nomes:
+        m = cat == nome
         n = int(m.sum())
-        out[f"n_{dom}"] = np.full(len(feats), n)
+        out[f"n_{nome}"] = np.full(len(feats), n)
         if n < regras.piso_dominio:
-            out[f"d_I_{dom}"] = np.full(len(feats), np.nan)       # "dados insuficientes"
+            out[f"d_I_{nome}"] = np.full(len(feats), np.nan)       # "dados insuficientes"
             continue
         avaliados += 1
         d = cohen_d(i_g[m])
-        out[f"d_I_{dom}"] = d
+        out[f"d_I_{nome}"] = d
         consist += ((np.sign(d) == np.sign(d_global)) & (np.abs(d) >= regras.dom_d)).astype(int)
-    out["dominios_avaliados"] = np.full(len(feats), avaliados)
-    out["dominios_consistentes"] = consist
-    out["geral"] = consist >= regras.dom_geral
+    out[f"{prefixo}_avaliados"] = np.full(len(feats), avaliados)
+    out[f"{prefixo}_consistentes"] = consist
     return pd.DataFrame(out)
+
+
+def por_dominio(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras) -> pd.DataFrame:
+    """Seção 3, item 4: d_I por domínio das S_intent e em quantos domínios o sinal se mantém."""
+    df = por_categoria(sub, g, feats, d_global, regras, g.domain, DOMAINS, "dominios")
+    if len(df):
+        df["geral"] = df["dominios_consistentes"] >= regras.dom_geral
+    return df
+
+
+TIPOS_GATILHO = ("surface", "action", "intent_marker")
+
+
+def tipos_de_gatilho(path: Path | None = None) -> dict[str, str]:
+    """group_id → tipo do gatilho (`trigger_type` do arquivo do 2×2 da frente A)."""
+    with open(caminho_cells(path), encoding="utf-8") as f:
+        return {g["group_id"]: g.get("trigger_type") for g in map(json.loads, filter(str.strip, f))}
+
+
+def por_tipo_gatilho(sub: sp.csr_matrix, g: Grupos, feats: np.ndarray, d_global: np.ndarray, regras: Regras,
+                     tipos: dict[str, str]) -> pd.DataFrame:
+    """Seção 5, regra 5 (secundária, descritiva): d_I das S_intent por tipo de gatilho."""
+    cat = np.array([tipos.get(x) for x in g.gid], dtype=object)
+    return por_categoria(sub, g, feats, d_global, regras, cat, TIPOS_GATILHO, "tipos")
 
 
 # ---------------------------------------------------------------- confirmação
@@ -393,36 +445,49 @@ def normalizar_controles(rows: list[dict]) -> list[dict]:
 
 
 def controle_trig_only(z_ctrl: sp.csr_matrix, rows_ctrl: list[dict], posicao: str, feats_int: np.ndarray,
-                       feats_lex: np.ndarray, regras: Regras, unidade: str = "frase") -> dict:
+                       feats_lex: np.ndarray, regras: Regras, unidade: str = "frase",
+                       reamostragem: str = "grupo") -> dict:
     """C3, item 1 (pré-registro, seção 5): d de a(trig_only) − a(neutral_only), pareado por frase de controle,
     na mesma posição da combinação principal. Atende se mais da metade das S_intent tiver o IC 95% desse d
     dentro de ±0,2. Para S_lex espera-se o contrário (o controle funciona se elas reagem).
 
-    `unidade="frase"` (pré-registrado): cada par de frases é uma unidade. `unidade="grupo"` (alternativa,
-    não pré-registrada): média das frases de controle de cada grupo do 2×2 antes do d; usar só se a
-    mudança for registrada em results/DESVIOS.md.
+    `unidade="frase"` (pré-registrado): o d é calculado sobre os pares de frases. `unidade="grupo"`
+    (alternativa, não usada): média das frases de cada grupo do 2×2 antes do d.
+
+    `reamostragem` (só com `unidade="frase"`): `"grupo"` (DESVIOS 2026-11-21, o principal) sorteia grupos
+    do 2×2 inteiros, com as suas frases, porque as 3 frases de um grupo não são independentes; `"frase"`
+    (a versão original do pré-registro, mantida como sensibilidade) sorteia pares de frases.
     """
     feats_int, feats_lex = np.asarray(feats_int, dtype=int), np.asarray(feats_lex, dtype=int)
     rows_ctrl = normalizar_controles(rows_ctrl)
     g = montar_grupos(rows_ctrl, posicao, items=CONTROL_ITEMS)
     n, k = len(g), len(feats_int)
     feats = np.concatenate([feats_int, feats_lex])
-    base = {"n_pares_controle": n, "excluidos": g.excluidos, "posicao": posicao, "unidade": unidade}
+    if unidade not in ("frase", "grupo"):
+        raise ValueError(f"unidade desconhecida: {unidade}")
+    if reamostragem not in ("frase", "grupo"):
+        raise ValueError(f"reamostragem desconhecida: {reamostragem}")
+    base = {"n_pares_controle": n, "excluidos": g.excluidos, "posicao": posicao, "unidade": unidade,
+            "reamostragem": "grupo" if unidade == "grupo" else reamostragem}
     if n < 2 or len(feats) == 0:
         return {**base, "status": "sem dados suficientes"}
     a = linhas(z_ctrl, g)[:, feats].toarray().astype(np.float64).reshape(n, 2, len(feats)).transpose(1, 0, 2)
     e = a[0] - a[1]
+    origem = np.array([rows_ctrl[i]["grupo_2x2"] for i in g.rows[:, 0]], dtype=object)
+    _, inv = np.unique(origem, return_inverse=True)
+    base["n_grupos_2x2"] = int(inv.max()) + 1
     if unidade == "grupo":
-        origem = np.array([rows_ctrl[i]["grupo_2x2"] for i in g.rows[:, 0]], dtype=object)
-        _, inv = np.unique(origem, return_inverse=True)
         soma = np.zeros((inv.max() + 1, e.shape[1]))
         np.add.at(soma, inv, e)
         e = soma / np.bincount(inv)[:, None]
         base["n_unidades"] = int(e.shape[0])
-    elif unidade != "frase":
-        raise ValueError(f"unidade desconhecida: {unidade}")
+        w = pesos_bootstrap(e.shape[0], regras.n_boot, regras.seed)
+    elif reamostragem == "grupo":
+        w = pesos_bootstrap_por_grupo(origem, regras.n_boot, regras.seed)
+    else:
+        w = pesos_bootstrap(n, regras.n_boot, regras.seed)
     d = cohen_d(e)
-    lo, hi = ic_d(e, pesos_bootstrap(e.shape[0], regras.n_boot, regras.seed))
+    lo, hi = ic_d(e, w)
     m = regras.margem_eq
     sem_efeito = (lo > -m) & (hi < m)
     frac_int = float(sem_efeito[:k].mean()) if k else None
@@ -545,8 +610,9 @@ def _textos_2x2_padrao() -> dict:
 
 def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confirmacao: bool,
             regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None,
-            conjunto_controles: str = "controles", textos: dict | None = None,
-            grupos_permitidos: set[str] | None = None, subconjunto: str = "todos") -> dict:
+            conjunto_controles: str = "controls", textos: dict | None = None,
+            grupos_permitidos: set[str] | None = None, subconjunto: str = "todos",
+            tipos_gatilho: dict[str, str] | None = None) -> dict:
     rows = cache_io.load_index(root, conjunto)
     train_trigs = {r["trig_norm"] for r in rows if r.get("split") == "train"}
     tabelas, n_desc, excluidos, grupos = {}, {}, {}, {}
@@ -567,7 +633,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     resumo = resumo_combinacoes(tabelas, n_desc, regras)
     principal = principal_forcada or escolher_principal(resumo)
 
-    dominio_df, rep, rep_df = None, None, None
+    dominio_df, tipo_df, rep, rep_df = None, None, None, None
     estilo_res = {"status": "sem combinação principal"}
     if principal is not None and principal in tabelas:
         df_p, g_p = tabelas[principal], grupos[principal]
@@ -575,6 +641,9 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         desc = g_p.subset(np.isin(g_p.split, DISCOVERY))
         s_int = df_p[df_p["classe"] == "S_intent"]
         dominio_df = por_dominio(linhas(Z, desc), desc, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(), regras)
+        if tipos_gatilho:
+            tipo_df = por_tipo_gatilho(linhas(Z, desc), desc, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(),
+                                       regras, tipos_gatilho)
         estilo_res = {"status": "sem textos do 2×2 (datasets/phase1/cells_2x2.jsonl)"}
         tx = textos if textos is not None else _textos_2x2_padrao()
         if len(s_int) == 0:
@@ -596,6 +665,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     c1 = veredito_c1(resumo, principal, rep, regras) if principal in tabelas or principal is None else None
 
     controle = {"status": "sem combinação principal"}
+    controle_sens = None
     if principal is not None and principal in tabelas:
         controle = {"status": f"sem cache de controles ('{conjunto_controles}') para esta combinação"}
         if cache_io.latents_path(root, conjunto_controles, principal[0], principal[1], sae).exists():
@@ -603,11 +673,13 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
             rows_c = cache_io.load_index(root, conjunto_controles)
             if grupos_permitidos is not None:
                 rows_c = [r for r in rows_c if r.get("group_id") in grupos_permitidos]
-            controle = controle_trig_only(
-                cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
-                rows_c, principal[1],
-                df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
-                df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
+            args_c = (cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
+                      rows_c, principal[1],
+                      df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
+                      df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
+            controle = controle_trig_only(*args_c, reamostragem="grupo")      # DESVIOS 2026-11-21
+            sens = controle_trig_only(*args_c, reamostragem="frase")          # versão original, sensibilidade
+            controle_sens = {k: v for k, v in sens.items() if k != "features"}
 
     # ---- saídas
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -641,6 +713,7 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         "confirmacao_aberta": bool(abrir_confirmacao),
         "replicacao_S_intent": rep,
         "C3_controle_trig_only": controle,
+        "C3_controle_trig_only_sensibilidade_reamostragem_frase": controle_sens,
         "C1_controle_estilo": estilo_res,
     }
     if principal is not None and principal in tabelas:
@@ -657,7 +730,65 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
                 "dominios_avaliados": int(dominio_df["dominios_avaliados"].iloc[0]),
                 "features": dominio_df.to_dict("records"),
             }
+        if tipo_df is not None and len(tipo_df):
+            res["por_tipo_gatilho"] = {
+                "descritivo": True,
+                "tipos": {t_: {"n_grupos_descoberta": int(tipo_df[f"n_{t_}"].iloc[0]),
+                               "S_intent_com_mesmo_sinal_e_d_ge_0_3": int(((np.sign(tipo_df[f"d_I_{t_}"]) ==
+                                                                            np.sign(df_p.set_index("feature").loc[tipo_df["feature"], "d_I"].to_numpy()))
+                                                                           & (tipo_df[f"d_I_{t_}"].abs() >= regras.dom_d)).sum()),
+                               "mediana_abs_d_I": float(tipo_df[f"d_I_{t_}"].abs().median())}
+                          for t_ in TIPOS_GATILHO if tipo_df[f"d_I_{t_}"].notna().any()},
+                "n_S_intent": int(len(tipo_df)),
+                "features": tipo_df.to_dict("records"),
+            }
     return res
+
+
+def consistencia(e: np.ndarray) -> float:
+    """Norma do efeito médio ÷ média das normas por grupo: 1 = todos os grupos na mesma direção; ~0 = cada
+    grupo numa direção. Serve para o efeito por grupo (I_g ou L_g) no espaço denso."""
+    return float(np.linalg.norm(e.mean(axis=0)) / np.linalg.norm(e, axis=1).mean())
+
+
+def diagnostico_lexical(root: Path, sae: str, camadas, posicoes, conjunto: str = "cells2x2",
+                        grupos_permitidos: set[str] | None = None) -> list[dict]:
+    """Análise descritiva (não decide nada): por que o d entre grupos não acha S_lex. Compara, na descoberta,
+    o tamanho e a consistência do efeito de intenção e do efeito do gatilho no vetor denso, e conta quantas
+    features do SAE mudam de estado (ativa ↔ inativa) com a troca do gatilho em cada grupo."""
+    rows = cache_io.load_index(root, conjunto)
+    out = []
+    for layer in camadas:
+        for pos in posicoes:
+            g = montar_grupos(rows, pos)
+            if grupos_permitidos is not None:
+                g = g.subset(np.array([x in grupos_permitidos for x in g.gid], dtype=bool))
+            g = g.subset(np.isin(g.split, DISCOVERY))
+            n = len(g)
+            x = cache_io.load_dense(root, conjunto, layer, pos)[g.rows.reshape(-1)].astype(np.float64).reshape(n, 4, -1)
+            i_g = 0.5 * (x[:, 0] + x[:, 1] - x[:, 2] - x[:, 3])     # ordem de CELLS: ht, hn, bt, bn
+            l_g = 0.5 * (x[:, 0] + x[:, 2] - x[:, 1] - x[:, 3])
+            z = linhas(cache_io.load_latents(root, conjunto, layer, pos, sae), g).toarray().reshape(n, 4, -1) > 0
+            muda = np.concatenate([z[:, 0] != z[:, 1], z[:, 2] != z[:, 3]])   # troca do gatilho, nas duas linhas
+            ativas = np.concatenate([z[:, 0] | z[:, 1], z[:, 2] | z[:, 3]]).sum(axis=1)
+            # o gatilho empurra na direção da intenção? projeção de L_g no eixo da intenção média
+            u = i_g.mean(axis=0) / np.linalg.norm(i_g.mean(axis=0))
+            proj_l, proj_i = l_g @ u, i_g @ u
+            out.append({
+                "camada": layer, "posicao": pos, "rotulo": LABELS.get(pos, pos), "n_grupos_descoberta": n,
+                "norma_media_I": round(float(np.linalg.norm(i_g, axis=1).mean()), 1),
+                "norma_media_L": round(float(np.linalg.norm(l_g, axis=1).mean()), 1),
+                "consistencia_I": round(consistencia(i_g), 3), "consistencia_L": round(consistencia(l_g), 3),
+                "cos_L_medio_I_medio": round(float(l_g.mean(axis=0) @ u / np.linalg.norm(l_g.mean(axis=0))), 3),
+                "L_no_eixo_da_intencao_razao": round(float(proj_l.mean() / proj_i.mean()), 4),
+                "L_no_eixo_da_intencao_d": round(float(proj_l.mean() / proj_l.std(ddof=1)), 3),
+                "L_no_eixo_da_intencao_frac_grupos_positivos": round(float((proj_l > 0).mean()), 3),
+                "sae": sae,
+                "features_que_mudam_com_o_gatilho_mediana": float(np.median(muda.sum(axis=1))),
+                "features_ativas_mediana": float(np.median(ativas)),
+                "maior_fracao_de_grupos_em_que_uma_feature_muda": round(float(muda.mean(axis=0).max()), 3),
+            })
+    return out
 
 
 def _textos_pares_padrao() -> dict:
@@ -728,7 +859,7 @@ def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regra
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Estatística por feature da frente C (ver docstring).")
     ap.add_argument("--root", type=Path, default=cache_io.DEFAULT_ROOT)
-    ap.add_argument("--modo", choices=["2x2", "provisorio"], default="2x2")
+    ap.add_argument("--modo", choices=["2x2", "provisorio", "diagnostico-lexical"], default="2x2")
     ap.add_argument("--sae", default="16k")
     ap.add_argument("--camadas", type=int, nargs="+", default=list(LAYERS))
     ap.add_argument("--posicoes", nargs="+", default=list(MAIN_POSITIONS))
@@ -736,19 +867,40 @@ def main(argv=None) -> int:
                     help="abre o split test na combinação principal (uma vez, no fim)")
     ap.add_argument("--out-dir", type=Path, default=None,
                     help="padrão: results/frente-c (principal) ou results/frente-c/robustez_<subconjunto>")
-    ap.add_argument("--conjunto-controles", default="controles",
+    ap.add_argument("--conjunto", default="cells2x2",
+                    help="conjunto do 2×2 no cache (o caminho (b), em estilo comum, sai com outro nome)")
+    ap.add_argument("--cells-jsonl", type=Path, default=None,
+                    help="arquivo do 2×2 da frente A, para o QC e os textos do controle de estilo "
+                         "(padrão: datasets/phase1/cells_2x2.jsonl; caminho (b): cells_2x2_style.jsonl)")
+    ap.add_argument("--conjunto-controles", default="controls",
                     help="conjunto do cache com os controles trig_only/neutral_only (C3)")
     ap.add_argument("--subconjunto", choices=SUBCONJUNTOS, default=SUBCONJUNTO_PRINCIPAL,
-                    help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical, os outros são robustez")
+                    help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical (com o validador), "
+                         "os outros são robustez")
+    ap.add_argument("--sem-validador", action="store_true",
+                    help="não exige validator_pass (robustez; o principal exige, DESVIOS 2026-11-21)")
     args = ap.parse_args(argv)
     regras = Regras()
-    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL
+    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL and not args.sem_validador
     if args.out_dir is None:
-        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{args.subconjunto}"
+        nome = args.subconjunto + ("_sem_validador" if args.sem_validador else "")
+        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{nome}"
 
     meta = {"script": "src/featgrpo/interp/feature_stats.py", "args": {k: str(v) for k, v in vars(args).items()},
             "regras": asdict(regras), "git_commit": git_commit(),
             "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    if args.modo != "provisorio":
+        cp = caminho_cells(args.cells_jsonl)
+        meta["cells_jsonl"] = {"caminho": str(cp), "sha256": sha256_arquivo(cp)}
+    if args.modo == "diagnostico-lexical":
+        res = diagnostico_lexical(args.root, args.sae, args.camadas, args.posicoes, args.conjunto,
+                                  grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
+                                                        validado=not args.sem_validador))
+        path = args.out_dir / f"diagnostico_lexical_{args.sae}.json"
+        path.write_text(json.dumps({**meta, "combinacoes": res}, ensure_ascii=False, indent=2,
+                                   default=_json_default), encoding="utf-8")
+        print(f"salvo em {path}")
+        return 0
     manifest = Path(args.root) / "MANIFEST.json"
     if manifest.exists():
         meta["cache_manifest"] = json.loads(manifest.read_text(encoding="utf-8"))
@@ -772,9 +924,18 @@ def main(argv=None) -> int:
             raise SystemExit("Rode antes o 16k no subconjunto principal (qc_grammatical): C4a e as robustezes "
                              "usam a combinação principal dele (pré-registro, seção 5; DESVIOS 2026-11-21).")
         forcada = (int(p16["camada"]), p16["posicao"])
+    textos = None
+    if args.cells_jsonl is not None:
+        from featgrpo.interp.autointerp import textos_2x2
+        textos = textos_2x2(args.cells_jsonl)
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
-                  regras, principal_forcada=forcada, conjunto_controles=args.conjunto_controles,
-                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto), subconjunto=args.subconjunto)
+                  regras, conjunto=args.conjunto, principal_forcada=forcada,
+                  conjunto_controles=args.conjunto_controles, textos=textos,
+                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
+                                                          validado=not args.sem_validador),
+                  tipos_gatilho=tipos_de_gatilho(args.cells_jsonl),
+                  subconjunto=args.subconjunto + ("" if args.subconjunto == "todos" or args.sem_validador
+                                                  else "+validator_pass"))
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

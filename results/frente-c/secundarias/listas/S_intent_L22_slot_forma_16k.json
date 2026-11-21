@@ -1,0 +1,27 @@
+{
+ "features": [
+  107
+ ],
+ "classe": "S_intent",
+ "camada": 22,
+ "posicao": "slot_forma",
+ "rotulo": "slot_forma",
+ "sae": "16k",
+ "principal": false,
+ "ordenadas_por": "|d_I| decrescente",
+ "detalhe": [
+  {
+   "feature": 107,
+   "d_I": 0.72648,
+   "d_L": 0.00869,
+   "d_X": -0.05918,
+   "d_I_ci_lo": 0.6673,
+   "d_I_ci_hi": 0.79139,
+   "d_L_ci_lo": -0.04239,
+   "d_L_ci_hi": 0.05532,
+   "q_I": 0.0,
+   "q_L": 0.99367,
+   "freq_ativacao": 0.99313
+  }
+ ]
+}

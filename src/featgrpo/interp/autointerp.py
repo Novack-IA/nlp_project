@@ -97,14 +97,17 @@ def textos_2x2(path: Path = PHASE1 / "cells_2x2.jsonl") -> dict[tuple[str, str],
     return out
 
 
-def top_itens_2x2(z: sp.csr_matrix, rows: list[dict], feats: list[int], textos: dict, k: int = 10) -> dict[int, list[str]]:
-    """Para cada feature, os k itens do 2×2 (só descoberta) com maior ativação, com a célula."""
+def top_itens_2x2(z: sp.csr_matrix, rows: list[dict], feats: list[int], textos: dict, k: int = 10,
+                  mostrar_celula: bool = False) -> dict[int, list[str]]:
+    """Para cada feature, os k itens do 2×2 (só descoberta) com maior ativação. Sem o nome da célula por padrão,
+    porque ele diria ao avaliador se o pedido é nocivo (DESVIOS 2026-11-21)."""
     keep = [i for i, r in enumerate(rows) if r.get("cell") and r.get("split") in DISCOVERY]
     sub = z[keep][:, feats].toarray()
     out = {}
     for j, f in enumerate(feats):
         order = [i for i in np.argsort(-sub[:, j])[:k] if sub[i, j] > 0]
-        out[f] = [f"{rows[keep[i]]['cell']}: {_limpa(textos.get((rows[keep[i]]['group_id'], rows[keep[i]]['cell']), '(texto não encontrado)'))}"
+        out[f] = [(f"{rows[keep[i]]['cell']}: " if mostrar_celula else "")
+                  + f"{_limpa(textos.get((rows[keep[i]]['group_id'], rows[keep[i]]['cell']), '(texto não encontrado)'))}"
                   f" (ativação {sub[i, j]:.1f})" for i in order]
     return out
 
@@ -132,6 +135,32 @@ def montar_fichas(resumo_sae: dict, sae: str, z: sp.csr_matrix, rows: list[dict]
                       "posicao": pos, "sae": sae,
                       "neuronpedia": NP_PAGE.format(model=NP_MODEL, source=np_source(layer, sae), index=f)})
     return pd.DataFrame(fichas), pd.DataFrame(chave)
+
+
+def avaliar_varios(avaliadores: dict[str, pd.DataFrame], chave: pd.DataFrame, principal: str,
+                   limiar: float = 0.60) -> dict:
+    """C3, item 2, com qualquer número de avaliadores (DESVIOS 2026-11-21: primeiro um LLM, depois a conferência
+    humana). O critério usa o avaliador `principal`; reportamos também a fração conceitual para todos e o κ de
+    Cohen de cada par."""
+    from itertools import combinations
+    from sklearn.metrics import cohen_kappa_score
+    df = chave.copy()
+    for nome, rot in avaliadores.items():
+        df = df.merge(rot[["ficha", "rotulo"]].rename(columns={"rotulo": nome}), on="ficha")
+        df[nome] = df[nome].astype(str).str.strip().str.lower()
+        invalidos = sorted(set(df[nome]) - set(ROTULOS))
+        if invalidos:
+            raise ValueError(f"rótulos inválidos de {nome}: {invalidos} (use {ROTULOS})")
+    si = df[df["classe"] == "S_intent"]
+    por = {nome: float((si[nome] == "conceitual").mean()) if len(si) else None for nome in avaliadores}
+    todos = float(si[list(avaliadores)].eq("conceitual").all(axis=1).mean()) if len(si) else None
+    pares = {f"{a}×{b}": {"kappa_cohen": float(cohen_kappa_score(df[a], df[b])) if df[a].nunique() + df[b].nunique() > 2
+                          else None, "concordancia_bruta": float((df[a] == df[b]).mean())}
+             for a, b in combinations(avaliadores, 2)}
+    frac = por[principal]
+    return {"n_fichas": len(df), "n_S_intent": len(si), "avaliador_principal": principal,
+            "fracao_S_intent_conceitual": por, "fracao_S_intent_conceitual_para_todos": todos,
+            "atende": None if frac is None else frac >= limiar, "limiar": limiar, "pares": pares}
 
 
 def avaliar(fred: pd.DataFrame, davi: pd.DataFrame, chave: pd.DataFrame, limiar: float = 0.60) -> dict:
@@ -221,12 +250,266 @@ def provisorio_md(prov: dict, csv_dir: Path, sae: str, fetch: Callable[[int, str
     return "\n".join(linhas).rstrip() + "\n"
 
 
+RECUSA = __import__("re").compile(r"refus|cannot|declin|disclaim|unable|can't|won't", __import__("re").I)
+LABELS_POS = {"inst_last": "fim_pedido", "post_last": "pre_resposta"}
+
+
+def _n(x: float, casas: int = 2) -> str:
+    return f"{x:.{casas}f}".replace(".", ",").replace("-", "−")
+
+
+def _lista(dir_: Path, cls: str, camada: int, pos: str, sae: str) -> set[int] | None:
+    p = Path(dir_) / "listas" / f"{cls}_L{camada}_{pos}_{sae}.json"
+    return set(json.loads(p.read_text(encoding="utf-8"))["features"]) if p.exists() else None
+
+
+def _max_dl_slot(out_dir: Path) -> float | None:
+    """Maior |d_L| no `slot_forma` (posições secundárias), para a checagem de sanidade da seção 1, regra 4."""
+    vals = [pd.read_csv(c)["d_L"].abs().max() for c in sorted((Path(out_dir) / "secundarias").glob("feature_classes_L*_slot_forma_16k.csv"))]
+    return float(max(vals)) if vals else None
+
+
+def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict] = fetch_feature,
+                  diag: dict | None = None, top: int = 10) -> str:
+    """Texto do `descoberta.md`: o C1 no 2×2, só na descoberta. Primeiro o resumo em palavras, depois poucas
+    tabelas pequenas; os detalhes ficam no anexo e nos CSV/JSON."""
+    r = c1["16k"]
+    p = r["principal"]
+    L, pos = int(p["camada"]), p["posicao"]
+    tag = f"L{L} · {p['rotulo']}"
+    out_dir = Path(out_dir)
+    combos = r["combinacoes_descoberta"]
+    n_si = next(c["S_intent"] for c in combos if (c["camada"], c["posicao"]) == (L, pos))
+    n_262 = (c1.get("262k") or {}).get("C1", {}).get("S_intent")
+    n_lex = sum(c["S_lex"] for c in combos)
+    n_mix = sum(c["S_mixed"] for c in combos)
+    e, t = r.get("C1_controle_estilo") or {}, r.get("C3_controle_trig_only") or {}
+    dom = r.get("por_dominio") or {}
+    base = _lista(out_dir, "S_intent", L, pos, "16k") or set()
+    rob = {nome: _lista(out_dir / f"robustez_{nome}", "S_intent", L, pos, "16k")
+           for nome in ("qc_grammatical_sem_validador", "todos", "qc_pass_lenient")}
+    df = pd.read_csv(out_dir / f"feature_classes_L{L}_{pos}_16k.csv") if (out_dir / f"feature_classes_L{L}_{pos}_16k.csv").exists() else None
+
+    def vazamento(layer: int, posicao: str) -> tuple[float, float, int] | None:
+        csv = out_dir / f"feature_classes_L{layer}_{posicao}_16k.csv"
+        if not csv.exists():
+            return None
+        d = pd.read_csv(csv)
+        big = d[(d["d_I"].abs() >= 0.5) & (d["q_I"] < 0.01)]
+        if not len(big):
+            return None
+        return (float((np.sign(big["d_L"]) == np.sign(big["d_I"])).mean()), float((big["d_L"] / big["d_I"]).median()),
+                int((big["classe"] != "S_intent").sum()))
+
+    vz = vazamento(L, pos)
+    fora = None
+    if df is not None:
+        fora = df[(df["d_I"].abs() >= 0.5) & (df["q_I"] < 0.01) & (df["classe"] != "S_intent")]
+        fora = fora.reindex(fora["d_I"].abs().sort_values(ascending=False).index)
+
+    rep, rep262 = r.get("replicacao_S_intent") or {}, (c1.get("262k") or {}).get("replicacao_S_intent") or {}
+    aberta = bool(r.get("confirmacao_aberta")) and bool(rep)
+    linhas = [
+        "# C1 no 2×2: resultados" if aberta else "# C1 no 2×2: o que a descoberta mostra",
+        "",
+        ("> Descoberta (train + val) e confirmação (`test`, aberta uma vez, na combinação principal). "
+         if aberta else "> Só a descoberta (train + val). A confirmação (`test`) ainda não foi aberta, e o C1 só fecha depois dela. ")
+        + 
+        f"Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit {str(r.get('git_commit') or '')[:7]}, "
+        f"conjunto `{r['subconjunto']}`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, "
+        "não verdade.",
+        "",
+        "## Em resumo",
+        "",
+        f"1. **Existem features que separam a intenção da palavra.** Na combinação principal ({tag}) são **{n_si}** "
+        f"S_intent: reagem ao fato de o pedido ser nocivo e não à troca do gatilho. No SAE maior (262k), {n_262}.",
+        f"2. **Elas são robustas.** Quase as mesmas aparecem com outros filtros de qualidade; "
+        + (f"{e['n_sobrevivem']} de {e['n_features']} sobrevivem ao controle de estilo; " if e.get("status") == "ok" else "")
+        + (f"{_n(100 * t['S_intent']['fracao_sem_efeito'], 0)}% não reagem ao gatilho solto (C3 atende); "
+           if t.get("status") == "ok" else "")
+        + (f"{dom['S_intent_gerais']} de {len(base)} valem nos 4 domínios" if dom else "")
+        + (f"; e {min(v['S_intent_com_mesmo_sinal_e_d_ge_0_3'] for v in r['por_tipo_gatilho']['tipos'].values())} "
+           f"de {r['por_tipo_gatilho']['n_S_intent']} se mantêm em cada um dos {len(r['por_tipo_gatilho']['tipos'])} tipos de gatilho."
+           if r.get("por_tipo_gatilho") else "."),
+        f"3. **Não existe feature \"da palavra\".** {n_lex} S_lex e {n_mix} S_mixed nas 8 combinações. A troca do "
+        "gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito "
+        "na maioria dos grupos." + (f" A checagem de sanidade do pré-registro (seção 1, regra 4), que esperava efeito "
+        f"lexical forte no próprio token do gatilho, **não passa como foi escrita**: lá o maior \\|d_L\\| é {_n(san)}."
+        if (san := _max_dl_slot(out_dir)) is not None else ""),
+    ]
+    if vz:
+        linhas.append(f"4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em {_n(100 * vz[0], 0)}% "
+                      f"delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de {_n(100 * vz[1], 0)}% do "
+                      "tamanho do efeito de intenção.")
+    n_rec = 0
+    if fora is not None and len(fora):
+        n_rec = sum(bool(RECUSA.search(explicacao(L, "16k", int(f), fetch))) for f in fora["feature"].head(8))
+        linhas.append(f"5. **As features de intenção mais fortes ficam fora de S_intent** (exploratório). São {len(fora)} "
+                      "com efeito de intenção grande e esse vazamento pequeno do gatilho, que passa da margem de ±0,2 da "
+                      f"regra. Entre as 8 mais fortes, {n_rec} têm rótulo de recusa no Neuronpedia.")
+    if aberta:
+        c1v, c4v = r.get("C1") or {}, (c1.get("262k") or {}).get("C1") or {}
+        linhas.append(
+            f"6. **Elas se confirmam em dados novos.** No `test` com gatilho inédito ({rep.get('n_gatilho_inedito')} grupos), "
+            f"{rep.get('n_replicam')} de {rep.get('n_features')} replicam (mesmo sinal, \\|d_I\\| ≥ 0,3): "
+            f"**C1 {c1v.get('status', '—')}**. No 262k, {rep262.get('n_replicam', '—')} de {rep262.get('n_features', '—')}: "
+            f"**C4a {c4v.get('status', '—')}**.")
+    cega = c1.get("C3_avaliacao_cega") or {}
+    if cega:
+        pr = cega["avaliador_principal"]
+        n_c = round(cega["fracao_S_intent_conceitual"][pr] * cega["n_S_intent"])
+        quem = "um LLM em contexto novo" if pr == "llm" else pr
+        linhas.append(f"7. **Lidas às cegas, quase todas são conceituais.** {n_c} de {cega['n_S_intent']} fichas do top-20 "
+                      f"foram julgadas conceituais por {quem} (mínimo 60%): **C3 {'atende' if cega['atende'] else 'não atende'}**"
+                      + (" (conferência humana pendente)." if pr == "llm" and len(cega["fracao_S_intent_conceitual"]) == 1 else "."))
+    tot_pos = {q: sum(c["S_intent"] for c in combos if c["posicao"] == q) for q in ("inst_last", "post_last")}
+    onde = max(tot_pos, key=tot_pos.get)
+    leitura = (f"**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no "
+               f"{LABELS_POS[onde]}" if n_si >= 5 else "**Leitura:** há poucas features de intenção separadas da palavra")
+    if vz and vz[0] >= 0.8 and vz[1] > 0:
+        leitura += (", mas a palavra ainda dá um empurrão pequeno na mesma direção. Se esse empurrão explica o "
+                    "over-refusal é a pergunta do C4b/c (frente D) e do C5 (frente B).")
+    else:
+        leitura += "."
+    linhas += ["", leitura, ""]
+
+    # onde está o sinal
+    linhas += ["## Onde está o sinal", "", "Número de S_intent (SAE 16k):", "",
+               "| Camada | fim_pedido | pre_resposta |", "|---|---|---|"]
+    por = {(c["camada"], c["posicao"]): c["S_intent"] for c in combos}
+    for layer in sorted({c["camada"] for c in combos}):
+        a, b = por.get((layer, "inst_last"), "—"), por.get((layer, "post_last"), "—")
+        if (layer, "inst_last") == (L, pos):
+            a = f"**{a}** (principal)"
+        if (layer, "post_last") == (L, pos):
+            b = f"**{b}** (principal)"
+        linhas.append(f"| L{layer} | {a} | {b} |")
+    tot = {q: sum(v for (_, pp), v in por.items() if pp == q) for q in ("inst_last", "post_last")}
+    mais, menos = ("post_last", "inst_last") if tot["post_last"] >= tot["inst_last"] else ("inst_last", "post_last")
+    serie = [por[(layer, mais)] for layer in sorted({c["camada"] for c in combos}) if (layer, mais) in por]
+    cresce = all(b >= a for a, b in zip(serie, serie[1:]))
+    linhas += ["", f"Somando as camadas: {tot[mais]} S_intent no **{LABELS_POS[mais]}** contra {tot[menos]} no "
+               f"{LABELS_POS[menos]}" + (", e o número cresce com a profundidade." if cresce else "."), ""]
+
+    # as features
+    if r.get("top20"):
+        feats = r["top20"]["S_intent"]
+        pos_f = [f for f in feats if f["d_I"] > 0][:top]
+        neg_f = [f for f in feats if f["d_I"] < 0][:top]
+        linhas += [f"## O que as S_intent parecem ser ({tag})", ""]
+        for titulo, fs_ in (("Mais ativas nos pedidos **nocivos**", pos_f), ("Mais ativas nos pedidos **benignos**", neg_f)):
+            if not fs_:
+                continue
+            linhas += [titulo, "", "| Feature | d_I | Rótulo do Neuronpedia |", "|---|---|---|"]
+            for f in fs_:
+                url = NP_PAGE.format(model=NP_MODEL, source=np_source(L, "16k"), index=f["feature"])
+                linhas.append(f"| [{f['feature']}]({url}) | {_n(f['d_I'])} | {_md(explicacao(L, '16k', f['feature'], fetch))} |")
+            linhas.append("")
+        linhas += ["Sem rótulo = o Neuronpedia não tem explicação para a feature.", ""]
+    if fora is not None and len(fora):
+        linhas += [f"## As features de intenção mais fortes ficaram fora de S_intent ({tag})", "",
+                   "| Feature | d_I | d_L | Rótulo do Neuronpedia |", "|---|---|---|---|"]
+        for f in fora.head(8).itertuples():
+            url = NP_PAGE.format(model=NP_MODEL, source=np_source(L, "16k"), index=int(f.feature))
+            linhas.append(f"| [{int(f.feature)}]({url}) | {_n(f.d_I)} | {_n(f.d_L)} | "
+                          f"{_md(explicacao(L, '16k', int(f.feature), fetch))} |")
+        d_si = max((abs(f["d_I"]) for f in r["top20"]["S_intent"]), default=float("nan")) if r.get("top20") else float("nan")
+        linhas += ["", f"{n_rec} das 8 têm rótulo de recusa. O maior d_I aqui é {_n(float(fora['d_I'].abs().max()))}, "
+                   f"contra {_n(d_si)} da S_intent mais forte. O d_L delas é o vazamento do gatilho (item 4 do resumo). "
+                   "No CSV aparecem como \"irrelevante\", porque a regra do pré-registro não as classifica.", ""]
+
+    if aberta and df is not None and "d_I_test_inedito" in df.columns:
+        si = df[df["classe"] == "S_intent"]
+        tt = si["d_I_test_inedito"]
+        linhas += ["## Confirmação (`test` com gatilho inédito)", "",
+                   "| Medida | Valor |", "|---|---|",
+                   f"| S_intent que replicam | {rep.get('n_replicam')} de {rep.get('n_features')} |",
+                   f"| d_I no test ÷ d_I na descoberta (mediana) | {_n(float((tt / si['d_I']).median()))} |",
+                   f"| Menor \\|d_I\\| no test | {_n(float(tt.abs().min()))} |",
+                   f"| \\|d_L\\| no test (mediana) | {_n(float(si['d_L_test_inedito'].abs().median()))} |", "",
+                   "O efeito de intenção no `test` tem o mesmo tamanho que na descoberta, e o efeito do gatilho continua "
+                   "pequeno." if float((tt / si["d_I"]).median()) >= 0.8 else
+                   "O efeito de intenção no `test` é menor que na descoberta.", ""]
+
+    # anexo
+    linhas += ["---", "", "## Anexo", ""]
+    linhas += ["**A. Robustez (mesma combinação).** S_intent em cada conjunto; entre parênteses, quantas também são S_intent "
+               "no principal.", ""]
+    nomes = {"qc_grammatical_sem_validador": "sem o validador", "todos": "conjunto completo",
+             "qc_pass_lenient": "`qc_pass_lenient` (1/3 dos grupos)"}
+    linhas += [f"- principal (`qc_grammatical` + validador): {len(base)}"]
+    for nome, s in rob.items():
+        if s is not None:
+            linhas.append(f"- {nomes[nome]}: {len(s)} ({len(s & base)})")
+    linhas.append("")
+    if t.get("status") == "ok":
+        ts = r.get("C3_controle_trig_only_sensibilidade_reamostragem_frase") or {}
+        linhas += [f"**B. Controle `trig_only` (C3).** {t['n_pares_controle']} pares de frases em {t['n_grupos_2x2']} grupos; "
+                   f"IC por grupo: {_n(100 * t['S_intent']['fracao_sem_efeito'], 0)}% das S_intent sem efeito; IC por frase "
+                   f"(sensibilidade): {_n(100 * ts.get('S_intent', {}).get('fracao_sem_efeito', float('nan')), 0)}%. Sem S_lex, "
+                   "o controle positivo (S_lex reagem ao gatilho solto) não pode ser verificado.", ""]
+    if diag:
+        linhas += ["**C. Por que não há S_lex** (`diagnostico_lexical_16k.json`). *Consistência*: 1 = o efeito aponta "
+                   f"na mesma direção em todos os grupos; perto de 0 = cada grupo para um lado. Camada {L}:", "",
+                   "| Posição | Intenção | Gatilho |", "|---|---|---|"]
+        for c in diag["combinacoes"]:
+            if c["camada"] == L:
+                linhas.append(f"| {c['rotulo']} | {_n(c['consistencia_I'])} | {_n(c['consistencia_L'])} |")
+        linhas += ["", "Mesmo no token do gatilho (`slot_forma`), onde a troca muda muito a representação, o efeito do "
+                   "gatilho não tem direção comum entre os grupos. As outras camadas estão no JSON. Pela regra 4 da seção 1, "
+                   "a falta de efeito lexical forte ali significaria que \"o SAE não representa o gatilho\"; o diagnóstico "
+                   "mostra outra coisa: as features mudam com o gatilho, mas cada gatilho mexe em features diferentes. A "
+                   "segunda parte da regra (efeito de intenção zero no `slot_forma`) não se aplica ao plano B, que não tem "
+                   "lacuna de intenção: as linhas nociva e benigna são frases diferentes antes do gatilho.", ""]
+    linhas += ["**D. Vazamento do gatilho por camada (pre_resposta, exploratório).** Entre as features com intenção grande: "
+               "% com d_L no mesmo sentido de d_I, e o tamanho típico d_L ÷ d_I.", "",
+               "| Camada | Mesmo sentido | d_L ÷ d_I |", "|---|---|---|"]
+    for layer in sorted({c["camada"] for c in combos}):
+        v = vazamento(layer, "post_last")
+        if v:
+            linhas.append(f"| L{layer} | {_n(100 * v[0], 0)}% | {_n(v[1])} |")
+    altos = [layer for layer in sorted({c["camada"] for c in combos})
+             if (v := vazamento(layer, "post_last")) and v[0] >= 0.8]
+    linhas += ["", f"Camadas com ≥ 80% no mesmo sentido: {', '.join(f'L{x}' for x in altos) or 'nenhuma'}.", ""]
+    linhas += ["**E. Arquivos.** Todas as features, com ICs e q: `feature_classes_L{L}_{pos}_{sae}.csv`. Listas para as "
+               "frentes B e D: `listas/`. Figura: `fig_dI_dL_16k.png`.", ""]
+    return "\n".join(linhas).rstrip() + "\n"
+
+
+def lista_exploratoria(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict] = fetch_feature,
+                       sae: str = "16k") -> dict:
+    """Exploratório, fora do pré-registro: features com efeito de intenção grande (|d_I| >= 0,5, q < 0,01) que
+    ficaram fora de S_intent na combinação principal porque o IC de d_L passa de ±0,2. Só a descoberta. Cada uma
+    leva o rótulo do Neuronpedia e a marca `rotulo_de_recusa` (busca simples no rótulo)."""
+    p = c1["16k"]["principal"]
+    L, pos = int(p["camada"]), p["posicao"]
+    df = pd.read_csv(Path(out_dir) / f"feature_classes_L{L}_{pos}_{sae}.csv")
+    fora = df[(df["d_I"].abs() >= 0.5) & (df["q_I"] < 0.01) & (df["classe"] != "S_intent")]
+    fora = fora.reindex(fora["d_I"].abs().sort_values(ascending=False).index)
+    detalhe = []
+    for f in fora.itertuples():
+        rot = explicacao(L, sae, int(f.feature), fetch)
+        detalhe.append({"feature": int(f.feature), "d_I": round(float(f.d_I), 4), "d_L": round(float(f.d_L), 4),
+                        "d_L_ci": [round(float(f.d_L_ci_lo), 4), round(float(f.d_L_ci_hi), 4)],
+                        "mais_ativa_em": "nocivos" if f.d_I > 0 else "benignos", "rotulo_neuronpedia": rot,
+                        "rotulo_de_recusa": bool(RECUSA.search(rot))})
+    return {"features": [d["feature"] for d in detalhe], "classe": "intencao_forte_fora_de_S_intent",
+            "exploratorio": True, "camada": L, "posicao": pos, "rotulo": LABELS_POS.get(pos, pos), "sae": sae,
+            "criterio": "|d_I| >= 0,5 e q_I < 0,01 na descoberta, fora de S_intent (IC de d_L passa de ±0,2)",
+            "ordenadas_por": "|d_I| decrescente", "n_rotulo_de_recusa": sum(d["rotulo_de_recusa"] for d in detalhe),
+            "detalhe": detalhe}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Fichas cegas do C3 (frente C).")
     sub = ap.add_subparsers(dest="cmd", required=True)
     pv = sub.add_parser("provisorio", help="monta results/frente-c/provisorio.md com os rótulos do Neuronpedia")
     pv.add_argument("--sae", default="16k")
     pv.add_argument("--dir", type=Path, default=OUT_DIR)
+    ds = sub.add_parser("descoberta", help="monta results/frente-c/descoberta.md (C1 do 2×2, descoberta)")
+    ds.add_argument("--dir", type=Path, default=OUT_DIR)
+    ex = sub.add_parser("exploratoria", help="lista exploratória: intenção forte fora de S_intent (para a frente B)")
+    ex.add_argument("--dir", type=Path, default=OUT_DIR)
     m = sub.add_parser("montar")
     m.add_argument("--root", type=Path, default=cache_io.DEFAULT_ROOT)
     m.add_argument("--sae", default="16k")
@@ -234,8 +517,9 @@ def main(argv=None) -> int:
     m.add_argument("--out-dir", type=Path, default=OUT_DIR)
     m.add_argument("--chave-dir", type=Path, default=KEY_DIR)
     a = sub.add_parser("avaliar")
-    a.add_argument("--frederico", type=Path, required=True)
-    a.add_argument("--davi", type=Path, required=True)
+    a.add_argument("--llm", type=Path, default=None, help="rótulos do avaliador LLM (o principal; DESVIOS 2026-11-21)")
+    a.add_argument("--frederico", type=Path, default=None)
+    a.add_argument("--davi", type=Path, default=None)
     a.add_argument("--chave", type=Path, default=KEY_DIR / "fichas_chave.csv")
     a.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args(argv)
@@ -245,6 +529,23 @@ def main(argv=None) -> int:
         out = args.dir / "provisorio.md"
         out.write_text(provisorio_md(prov, args.dir, args.sae), encoding="utf-8")
         print(f"salvo em {out}")
+        return 0
+
+    if args.cmd == "descoberta":
+        c1 = json.loads((args.dir / "c1_c3.json").read_text(encoding="utf-8"))
+        dp = args.dir / "diagnostico_lexical_16k.json"
+        diag = json.loads(dp.read_text(encoding="utf-8")) if dp.exists() else None
+        out = args.dir / "descoberta.md"
+        out.write_text(descoberta_md(c1, args.dir, diag=diag), encoding="utf-8")
+        print(f"salvo em {out}")
+        return 0
+
+    if args.cmd == "exploratoria":
+        c1 = json.loads((args.dir / "c1_c3.json").read_text(encoding="utf-8"))
+        res = lista_exploratoria(c1, args.dir)
+        out = args.dir / "listas" / f"exploratorio_intencao_forte_L{res['camada']}_{res['posicao']}_{res['sae']}.json"
+        out.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"{len(res['features'])} features ({res['n_rotulo_de_recusa']} com rótulo de recusa) em {out}")
         return 0
 
     if args.cmd == "montar":
@@ -260,7 +561,11 @@ def main(argv=None) -> int:
         print(f"{len(fichas)} fichas em {args.out_dir / 'fichas_cegas.csv'}; chave em {args.chave_dir / 'fichas_chave.csv'}")
         return 0
 
-    res = avaliar(pd.read_csv(args.frederico), pd.read_csv(args.davi), pd.read_csv(args.chave))
+    avaliadores = {nome: pd.read_csv(caminho) for nome, caminho in
+                   (("llm", args.llm), ("frederico", args.frederico), ("davi", args.davi)) if caminho is not None}
+    if not avaliadores:
+        raise SystemExit("passe pelo menos um avaliador (--llm, --frederico, --davi)")
+    res = avaliar_varios(avaliadores, pd.read_csv(args.chave), principal=next(iter(avaliadores)))
     path = args.out_dir / "c1_c3.json"
     resumo = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     resumo["C3_avaliacao_cega"] = res

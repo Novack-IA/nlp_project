@@ -199,9 +199,55 @@ def load_cells_items() -> list[dict] | None:
             for cell in CELLS:
                 c = g["cells"][cell]
                 out.append({"group_id": g["group_id"], "cell": cell, "split": g["split"],
-                            "trigger": g["trigger"], "domain": g["domain"],
-                            "label": int(cell.startswith("harm")), "text": c["text"]})
+                            "trigger": g["trigger"], "trig_norm": normalize_trigger(g["trigger"]),
+                            "domain": g["domain"], "trigger_type": g.get("trigger_type"),
+                            "q_border_method": (g.get("orig") or {}).get("q_border_method"),
+                            "qc_grammatical": bool(g.get("qc_grammatical", True)),
+                            "qc_pass_lenient": bool(g.get("qc_pass_lenient", True)),
+                            "label": int(cell.startswith("harm")), "has_trigger": int(cell.endswith("_trig")),
+                            "text": c["text"]})
     return out
+
+
+CELL_SUBSETS = {
+    "qc_grammatical": lambda c: c["qc_grammatical"],   # principal (pré-registro da frente C, adendo)
+    "qc_pass_lenient": lambda c: c["qc_pass_lenient"],  # robustez
+    "todos": lambda c: True,
+}
+
+
+def drop_with_ci(folds: list[dict], n_boot: int, seed: int = SEED) -> dict:
+    """Queda de AUROC (dentro − fora), média sobre dobras, com IC 95% por bootstrap sobre grupos.
+
+    Cada dobra: `s_in`, `y_in`, `g_in`, `s_out`, `y_out`, `g_out`.
+    """
+    def drop(idx):
+        return float(np.mean([roc_auc_score(f["y_in"][i], f["s_in"][i]) - roc_auc_score(f["y_out"][o], f["s_out"][o])
+                              for f, (i, o) in zip(folds, idx)]))
+
+    full = [(np.arange(len(f["y_in"])), np.arange(len(f["y_out"]))) for f in folds]
+    auc_in = float(np.mean([roc_auc_score(f["y_in"], f["s_in"]) for f in folds]))
+    auc_out = float(np.mean([roc_auc_score(f["y_out"], f["s_out"]) for f in folds]))
+    rng = np.random.default_rng(seed)
+    idx_g = [({g: np.flatnonzero(f["g_in"] == g) for g in set(f["g_in"])},
+              {g: np.flatnonzero(f["g_out"] == g) for g in set(f["g_out"])}) for f in folds]
+    boots = []
+    for _ in range(n_boot):
+        idx, ok = [], True
+        for f, (mi, mo) in zip(folds, idx_g):
+            ki, ko = list(mi), list(mo)
+            i = np.concatenate([mi[k] for k in rng.choice(ki, size=len(ki))])
+            o = np.concatenate([mo[k] for k in rng.choice(ko, size=len(ko))])
+            if len(set(f["y_in"][i])) < 2 or len(set(f["y_out"][o])) < 2:
+                ok = False
+                break
+            idx.append((i, o))
+        if ok:
+            boots.append(drop(idx))
+    d = drop(full)
+    return _round({"n_dobras": len(folds), "auroc_dentro": auc_in, "auroc_fora": auc_out, "queda": d,
+                   "ic95_queda": [float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5))] if boots else None,
+                   "tfidf_cai_o_suficiente": bool(d > 0.02)})
 
 
 def load_xstest_items() -> list[dict] | None:
@@ -212,6 +258,80 @@ def load_xstest_items() -> list[dict] | None:
         rows = [json.loads(line) for line in f if line.strip()]
     return [{"group_id": r["id"], "type": r.get("type"), "label": int(r["label"] == "harmful"),
              "text": r["text"]} for r in rows]
+
+
+def cells_report(cells: list[dict], xs: list[dict] | None, evaluate, C_tfidf: float, C_style: float,
+                 n_boot: int) -> dict:
+    """Baselines no 2×2 de um subconjunto. Tarefa principal: intenção (harm_* × ben_*)."""
+    def arr(rows, key="label"):
+        return np.array([r[key] for r in rows]), np.array([r["group_id"] for r in rows])
+
+    split = {s: [c for c in cells if c["split"] == s] for s in ("train", "val", "test")}
+    train, test = split["train"], split["test"]
+    train_trigs = {c["trig_norm"] for c in train}
+    out: dict = {"n_grupos": {s: len({c["group_id"] for c in v}) for s, v in split.items()}}
+
+    # 1. modelo dos pares aplicado às células (descritivo)
+    p2c = {}
+    for name, (h, b) in {"com_gatilho": ("harm_trig", "ben_trig"), "sem_gatilho": ("harm_notrig", "ben_notrig")}.items():
+        p2c[name] = evaluate([c for c in test if c["cell"] in (h, b)], models=("tfidf", "style"))
+    a, b_ = p2c["com_gatilho"]["tfidf"]["auroc"], p2c["sem_gatilho"]["tfidf"]["auroc"]
+    p2c["queda_auroc_tfidf"] = round(a - b_, 4) if a is not None and b_ is not None else None
+    out["pares_para_2x2"] = p2c
+
+    # 2. treinado no próprio 2×2: intenção (TF-IDF e só estilo) e gatilho (TF-IDF)
+    texts_tr = [c["text"] for c in train]
+    y_tr, _ = arr(train)
+    tf = make_tfidf(C_tfidf).fit(texts_tr, y_tr)
+    st = make_style(C_style).fit(style_features(texts_tr), y_tr)
+    t_tr, _ = arr(train, "has_trigger")
+    tf_trig = make_tfidf(C_tfidf).fit(texts_tr, t_tr)
+    own = {}
+    for name, cellset in (("todas", None), ("com_gatilho", ("harm_trig", "ben_trig")),
+                          ("sem_gatilho", ("harm_notrig", "ben_notrig"))):
+        rows = [c for c in test if cellset is None or c["cell"] in cellset]
+        y, g = arr(rows)
+        txt = [c["text"] for c in rows]
+        own[f"intencao_{name}"] = {"tfidf": report(tf.predict_proba(txt)[:, 1], y, g, n_boot),
+                                   "so_estilo": report(st.predict_proba(style_features(txt))[:, 1], y, g, n_boot)}
+    y, g = arr(test, "has_trigger")
+    own["gatilho_todas"] = {"tfidf": report(tf_trig.predict_proba([c["text"] for c in test])[:, 1], y, g, n_boot)}
+    out["treinado_no_2x2"] = own
+
+    # 3. metade TF-IDF do C2(b): queda nas três generalizações (mesmo protocolo do classifiers.c2b)
+    def fold(tr_rows, in_rows, out_texts, out_y, out_g):
+        m = make_tfidf(C_tfidf).fit([c["text"] for c in tr_rows], arr(tr_rows)[0])
+        yi, gi = arr(in_rows)
+        return {"s_in": m.predict_proba([c["text"] for c in in_rows])[:, 1], "y_in": yi, "g_in": gi,
+                "s_out": m.predict_proba(out_texts)[:, 1], "y_out": out_y, "g_out": out_g}
+
+    def fold_rows(tr_rows, in_rows, out_rows):
+        yo, go = arr(out_rows)
+        return fold(tr_rows, in_rows, [c["text"] for c in out_rows], yo, go)
+
+    regua = {}
+    seen = [c for c in test if c["trig_norm"] in train_trigs]
+    unseen = [c for c in test if c["trig_norm"] not in train_trigs]
+    regua["gatilho_inedito"] = drop_with_ci([fold_rows(train, seen, unseen)], n_boot)
+    folds = [fold_rows([c for c in train if c["domain"] != d], [c for c in test if c["domain"] != d],
+                       [c for c in test if c["domain"] == d]) for d in sorted({c["domain"] for c in cells})]
+    regua["leave_one_domain_out"] = drop_with_ci(folds, n_boot)
+    if xs:
+        regua["xstest"] = drop_with_ci([fold(train, test, [x["text"] for x in xs], np.array([x["label"] for x in xs]),
+                                             np.array([x["group_id"] for x in xs]))], n_boot)
+    else:
+        regua["xstest"] = "pendente: datasets/phase1/external/xstest.jsonl"
+    regua["leitura"] = ("Metade TF-IDF do C2(b). Onde 'tfidf_cai_o_suficiente' é falso, aquela generalização "
+                        "sai indefinida no C2(b), qualquer que seja o resultado das features.")
+    out["regua_C2b_tfidf"] = regua
+
+    # 4. recortes (descritivo): Q⁰ retrieved; por tipo de gatilho
+    out["por_tipo_gatilho"] = {
+        t: evaluate([c for c in test if c["trigger_type"] == t and c["cell"] in ("harm_notrig", "ben_notrig")],
+                    models=("tfidf",))
+        for t in sorted({c["trigger_type"] for c in test if c["trigger_type"]})
+    }
+    return out
 
 
 # ---------------------------------------------------------------- execução
@@ -290,20 +410,15 @@ def run(n_boot: int = 1000) -> dict:
 
     # --- 2×2 e XSTest, quando existirem (o modelo segue o treinado nos pares)
     cells = load_cells_items()
+    xs = load_xstest_items()
     if cells is None:
         results["cells_2x2"] = "pendente: datasets/phase1/cells_2x2.jsonl ainda não existe (entrega da frente A)"
     else:
-        test_cells = [c for c in cells if c["split"] == "test"]
-        out = {}
-        for name, (h, b) in {"com_gatilho": ("harm_trig", "ben_trig"),
-                             "sem_gatilho": ("harm_notrig", "ben_notrig")}.items():
-            rows = [c for c in test_cells if c["cell"] in (h, b)]
-            out[name] = evaluate(rows, models=("tfidf", "style"))
-        a, b_ = out["com_gatilho"]["tfidf"]["auroc"], out["sem_gatilho"]["tfidf"]["auroc"]
-        out["queda_auroc_tfidf"] = round(a - b_, 4) if a is not None and b_ is not None else None
-        results["cells_2x2"] = out
+        results["cells_2x2"] = {"conjunto_principal": "qc_grammatical"}
+        for name, keep in CELL_SUBSETS.items():
+            sub = [c for c in cells if keep(c)]
+            results["cells_2x2"][name] = cells_report(sub, xs, evaluate, C_tfidf, C_style, n_boot)
 
-    xs = load_xstest_items()
     results["xstest"] = (evaluate(xs, models=("tfidf", "style")) if xs is not None
                          else "pendente: datasets/phase1/external/xstest.jsonl ainda não existe (entrega da frente A)")
 

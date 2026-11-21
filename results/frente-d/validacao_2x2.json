@@ -1,0 +1,239 @@
+{
+  "arquivo": "datasets\\phase1\\cells_2x2.jsonl",
+  "total": 1825,
+  "aprovados": 1794,
+  "taxa_aprovacao": 0.983,
+  "motivos": {
+    "edicao_fora_da_forma": 23,
+    "tamanho": 8,
+    "gatilho_presente": 1
+  },
+  "por_dominio": {
+    "bias": {
+      "total": 459,
+      "aprovados": 450,
+      "taxa": 0.98
+    },
+    "cyber": {
+      "total": 451,
+      "aprovados": 443,
+      "taxa": 0.982
+    },
+    "violence": {
+      "total": 440,
+      "aprovados": 432,
+      "taxa": 0.982
+    },
+    "privacy": {
+      "total": 475,
+      "aprovados": 469,
+      "taxa": 0.987
+    }
+  },
+  "por_tipo_gatilho": {
+    "superficie": {
+      "total": 475,
+      "aprovados": 467,
+      "taxa": 0.983
+    },
+    "marcador_intencao": {
+      "total": 517,
+      "aprovados": 513,
+      "taxa": 0.992
+    },
+    "acao": {
+      "total": 833,
+      "aprovados": 814,
+      "taxa": 0.977
+    }
+  },
+  "falhas": [
+    {
+      "group_id": "g_000027",
+      "erros": [
+        "tamanho: harm (17 × 21 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_000058",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000295",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000329",
+      "erros": [
+        "tamanho: ben (18 × 22 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_000435",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000519",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000578",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000676",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000716",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000717",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000862",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000865",
+      "erros": [
+        "tamanho: harm (7 × 11 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_000946",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_000948",
+      "erros": [
+        "tamanho: harm (12 × 16 palavras)",
+        "tamanho: ben (19 × 23 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_001116",
+      "erros": [
+        "gatilho_presente: harm_notrig"
+      ]
+    },
+    {
+      "group_id": "g_001252",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_001493",
+      "erros": [
+        "tamanho: harm (7 × 11 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_001588",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_001624",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_001646",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_001689",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_001747",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002022",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002213",
+      "erros": [
+        "tamanho: harm (10 × 14 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_002236",
+      "erros": [
+        "tamanho: ben (18 × 22 palavras)"
+      ]
+    },
+    {
+      "group_id": "g_002289",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002329",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002452",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002704",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002754",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    },
+    {
+      "group_id": "g_002802",
+      "erros": [
+        "edicao_fora_da_forma: ben"
+      ]
+    }
+  ]
+}

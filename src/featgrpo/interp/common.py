@@ -26,8 +26,28 @@ def set_seeds(seed: int = 0) -> None:
     torch.manual_seed(seed)
 
 
+# SAE próprio da frente A (BatchTopK, 16k, k = 64), no formato do Gemma Scope 2
+# (results/frente-a/sae_proprio.md). Só existe nestas camadas.
+PROPRIO_LAYERS = (17, 22, 29)
+PROPRIO_SHA256 = {
+    17: "137104d016ff710f839c7eead77bf5b7a51baf2118ad3778a3d13e35c24221d7",
+    22: "ec9feaba5921f31743a1dc604b37ec2d6657e174c2471d62abc4781226416d7c",
+    29: "ef861de04f0db19df194d7d27f8573885627b211da687c4d06936ddef9e7d692",
+}
+
+
 def sae_id(layer: int, width: str, l0: str = SAE_L0) -> str:
+    if width == "proprio":
+        return f"gemma-3-4b-it_L{layer}_btk16k"
     return f"layer_{layer}_width_{width}_l0_{l0}"
+
+
+def sae_available(layer: int, width: str) -> bool:
+    return width != "proprio" or layer in PROPRIO_LAYERS
+
+
+def proprio_path(layer: int) -> Path:
+    return ARTIFACTS / "sae_proprio" / sae_id(layer, "proprio") / "params.safetensors"
 
 
 def load_model(dtype=torch.bfloat16, device="cuda"):
@@ -90,7 +110,16 @@ def load_sae(layer: int, width: str, l0: str = SAE_L0, device="cuda",
     from huggingface_hub import hf_hub_download
     from safetensors.torch import load_file
 
-    path = hf_hub_download(SAE_REPO, f"{SAE_RELEASE_DIR}/{sae_id(layer, width, l0)}/params.safetensors")
+    if width == "proprio":
+        import hashlib
+        path = proprio_path(layer)
+        if not path.exists():
+            raise FileNotFoundError(f"{path} (pesos da frente A, pasta compartilhada)")
+        sha = hashlib.sha256(path.read_bytes()).hexdigest()
+        if sha != PROPRIO_SHA256[layer]:
+            raise ValueError(f"sha256 de {path} não bate com results/frente-a/sae_proprio.md")
+    else:
+        path = hf_hub_download(SAE_REPO, f"{SAE_RELEASE_DIR}/{sae_id(layer, width, l0)}/params.safetensors")
     p = {k.lower(): v for k, v in load_file(path).items()}
     sae = JumpReLUSAE(p["w_enc"], p["b_enc"], p["w_dec"], p["b_dec"], p["threshold"])
     return sae.to(device=device, dtype=dtype)

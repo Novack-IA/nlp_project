@@ -73,6 +73,17 @@ def grupos_do_subconjunto(nome: str, path: Path | None = None, validado: bool = 
     return {g["group_id"] for g in grupos if g.get(nome) and (g.get("validator_pass") or not validado)}
 
 
+RECORTES_C4 = {"q0_retrieved": "b_q0_retrieved", "tamanho_pareado": "c_tamanho_pareado"}
+
+
+def grupos_do_recorte_c4(nome: str, root: Path, conjunto: str = "cells2x2") -> set[str]:
+    """Recortes do C4 (b) Q⁰ original *retrieved* e (c) células com diferença ≤ 20% em tokens, com a mesma
+    definição da frente D (`classifiers.subsets`), para os grupos serem exatamente os mesmos."""
+    from featgrpo.interp.classifiers import load_cells_texts, subsets
+    _, meta = load_cells_texts()
+    return subsets(cache_io.load_index(root, conjunto), meta)[RECORTES_C4[nome]]
+
+
 def sha256_arquivo(path: Path) -> str:
     import hashlib
     h = hashlib.sha256()
@@ -877,14 +888,20 @@ def main(argv=None) -> int:
     ap.add_argument("--subconjunto", choices=SUBCONJUNTOS, default=SUBCONJUNTO_PRINCIPAL,
                     help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical (com o validador), "
                          "os outros são robustez")
+    ap.add_argument("--recorte-c4", choices=sorted(RECORTES_C4), default=None,
+                    help="C1 dentro de um recorte do C4 (b: q0_retrieved; c: tamanho_pareado), na combinação "
+                         "principal do 16k; saída em results/frente-c/c4_<recorte>/")
     ap.add_argument("--sem-validador", action="store_true",
                     help="não exige validator_pass (robustez; o principal exige, DESVIOS 2026-11-21)")
     args = ap.parse_args(argv)
     regras = Regras()
-    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL and not args.sem_validador
+    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL and not args.sem_validador and args.recorte_c4 is None
     if args.out_dir is None:
         nome = args.subconjunto + ("_sem_validador" if args.sem_validador else "")
-        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{nome}"
+        if args.recorte_c4 is not None:
+            args.out_dir = OUT_DIR / f"c4_{args.recorte_c4}"
+        else:
+            args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{nome}"
 
     meta = {"script": "src/featgrpo/interp/feature_stats.py", "args": {k: str(v) for k, v in vars(args).items()},
             "regras": asdict(regras), "git_commit": git_commit(),
@@ -928,14 +945,18 @@ def main(argv=None) -> int:
     if args.cells_jsonl is not None:
         from featgrpo.interp.autointerp import textos_2x2
         textos = textos_2x2(args.cells_jsonl)
+    permitidos = grupos_do_subconjunto(args.subconjunto, args.cells_jsonl, validado=not args.sem_validador)
+    rotulo_sub = args.subconjunto + ("" if args.subconjunto == "todos" or args.sem_validador else "+validator_pass")
+    if args.recorte_c4 is not None:
+        recorte = grupos_do_recorte_c4(args.recorte_c4, args.root, args.conjunto)
+        permitidos = recorte if permitidos is None else permitidos & recorte
+        rotulo_sub += f" ∩ {args.recorte_c4}"
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
                   regras, conjunto=args.conjunto, principal_forcada=forcada,
                   conjunto_controles=args.conjunto_controles, textos=textos,
-                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
-                                                          validado=not args.sem_validador),
+                  grupos_permitidos=permitidos,
                   tipos_gatilho=tipos_de_gatilho(args.cells_jsonl),
-                  subconjunto=args.subconjunto + ("" if args.subconjunto == "todos" or args.sem_validador
-                                                  else "+validator_pass"))
+                  subconjunto=rotulo_sub)
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

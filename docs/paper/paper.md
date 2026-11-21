@@ -181,9 +181,14 @@ _(a escrever: todos, integrado pelo Davi, a partir de `results/VEREDITO.md`.)_ O
 - **Leitura cega:** 19 de 20 fichas são conceituais, **atende**. Do lado nocivo, as features falam de ilegalidade e dano; do lado benigno, de propósito legítimo (estudo, ficção). A leitura foi feita por um LLM; a conferência humana está pendente. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
 - **Ressalva:** sem S_lex, o controle positivo do C3 não pode ser verificado.
 
-### 5.4 Vale em outro dicionário? (C4a) · _texto da frente C_
+### 5.4 É robusto? (C4a e o C1 do C4b/c) · _texto da frente C_
 
 No SAE de 262k, a mesma combinação tem 60 S_intent, e as 60 replicam no `test`: o C1 vale no 262k. <!-- fonte: results/frente-c/c1_c3.json → 262k.C1 --> O C2 no 262k é da frente D.
+
+Nos recortes do C4, na mesma combinação: <!-- fonte: results/frente-c/c4_*/c1_c3.json -->
+
+- **(c) células de tamanho pareado** (684 grupos): 46 S_intent, e as 46 replicam. O C1 atende.
+- **(b) Q⁰ *retrieved*** (211 grupos): 15 S_intent, e as 15 replicam. Mas a descoberta tem 182 grupos, abaixo do piso de 260, então o C1 fica inconclusivo.
 
 ### 5.x Análises exploratórias · _texto da frente C; fora do pré-registro; detalhes no Apêndice A.2_
 

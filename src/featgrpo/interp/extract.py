@@ -47,7 +47,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from featgrpo.interp.common import ACTS, LAYERS, MODEL_ID, SAE_REPO, get_layers, sae_id, set_seeds
+from featgrpo.interp.common import (ACTS, LAYERS, MODEL_ID, PROPRIO_LAYERS, SAE_PROPRIO_DIR, SAE_REPO, get_layers,
+                                   sae_id, set_seeds)
 
 POST_SUFFIX = "<end_of_turn>\n<start_of_turn>model\n"
 BASE_POSITIONS = ("inst_last", "post", "post_last", "mean")
@@ -155,6 +156,9 @@ def encode_item(tok, item: dict, trigger_key: str = "trigger") -> Encoded:
     pos["trig"] = _tokens_in_spans(offs, [(c0 + s, c0 + e) for s, e in spans])
     if item.get("spans"):                  # 2×2: posições das lacunas, relativas ao `text` original
         for k in ("forma", "intencao"):
+            if item["spans"].get(k) is None:   # plano B da frente A: só há lacuna de forma (NaN, como `trig`)
+                pos[f"slot_{k}"] = []
+                continue
             s, e = item["spans"][k]
             assert item["text"][s:e].strip(), (item.get("item_id"), k, "span vazio")
             pos[f"slot_{k}"] = _tokens_in_spans(offs, [(c0 + s - lead, c0 + e - lead)])
@@ -170,7 +174,8 @@ def encode_item(tok, item: dict, trigger_key: str = "trigger") -> Encoded:
         "inst_last_token_id": ids[pos["inst_last"][0]] if pos["inst_last"] else None,
     }
     if item.get("spans"):
-        meta["slots_aligned"] = bool(pos["slot_forma"]) and bool(pos["slot_intencao"])
+        meta["slots_aligned"] = bool(pos["slot_forma"]) and (bool(pos["slot_intencao"])
+                                                              or item["spans"].get("intencao") is None)
     return Encoded(ids, pos, meta)
 
 
@@ -414,6 +419,8 @@ def load_set(name: str, limit: int | None = None) -> list[dict]:
                 items.append({**r, "text": r["prompt"]})
     elif name == "cells2x2":
         items = cells_items(data.load_cells_2x2())
+    elif name == "cells2x2_style":   # caminho (b) da frente A: 2×2 reescrito em estilo comum
+        items = cells_items(data._read_jsonl(data.PHASE1 / "cells_2x2_style.jsonl"))
     elif name == "controls":
         items = control_items(data._read_jsonl(data.PHASE1 / "controls_trig_only.jsonl"))
     else:
@@ -492,18 +499,20 @@ def main() -> None:
     # modelo numa GPU de 24 GB. O forward é o mesmo em cada passada, então o resultado não muda.
     dense, latents, index = {}, {w: {} for w in args.widths}, None
     for L in args.layers:
-        saes_L = {w: {L: load_sae(L, w)} for w in args.widths}
+        saes_L = {w: {L: load_sae(L, w)} for w in args.widths if w != "proprio" or L in PROPRIO_LAYERS}
         d, lat, index = extract(model, tok, items, [L], args.batch_size, saes_L)
         dense.update(d)
-        for w in args.widths:
+        for w in lat:
             latents[w].update(lat[w])
         del saes_L, lat
         torch.cuda.empty_cache()
     root = Path(args.out_root)
     written = save_cache(root, args.set, dense, latents, index)
     mf = update_manifest(root, args.set, written, {
-        **vars(args), "sae_ids": {w: {L: f"{SAE_REPO}/resid_post/{sae_id(L, w)}"
-                                      for L in args.layers} for w in args.widths}})
+        **vars(args), "sae_ids": {w: {L: (f"proprio:{SAE_PROPRIO_DIR}/gemma-3-4b-it_L{L}_btk16k" if w == "proprio"
+                                          else f"{SAE_REPO}/resid_post/{sae_id(L, w)}")
+                                      for L in args.layers if w != "proprio" or L in PROPRIO_LAYERS}
+                                  for w in args.widths}})
     if any("slots_aligned" in r for r in index):
         na = sum(not r.get("slots_aligned", True) for r in index)
         msg = f"lacunas sem alinhamento: {na}"

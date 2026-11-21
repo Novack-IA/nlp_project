@@ -18,6 +18,8 @@ LAYERS = [9, 17, 22, 29]                  # ≈ 25 / 50 / 65 / 85 % de profundid
 REPO = Path(__file__).resolve().parents[3]
 ARTIFACTS = Path(os.environ.get("ARTIFACTS", REPO / "artifacts"))
 ACTS = ARTIFACTS / "acts" / "gemma-3-4b-it"
+SAE_PROPRIO_DIR = Path(os.environ.get("SAE_PROPRIO_DIR", ARTIFACTS / "sae_proprio"))
+PROPRIO_LAYERS = (17, 22, 29)             # camadas com SAE próprio (results/frente-a/sae_proprio.md)
 
 
 def set_seeds(seed: int = 0) -> None:
@@ -90,7 +92,11 @@ def load_sae(layer: int, width: str, l0: str = SAE_L0, device="cuda",
     from huggingface_hub import hf_hub_download
     from safetensors.torch import load_file
 
-    path = hf_hub_download(SAE_REPO, f"{SAE_RELEASE_DIR}/{sae_id(layer, width, l0)}/params.safetensors")
+    if width == "proprio":   # SAE próprio da frente A (formato Gemma Scope 2, b_dec já dobrado no b_enc)
+        d = SAE_PROPRIO_DIR / f"gemma-3-4b-it_L{layer}_btk16k"
+        path = d / "params.safetensors" if (d / "params.safetensors").exists() else d / "sae" / "params.safetensors"
+    else:
+        path = hf_hub_download(SAE_REPO, f"{SAE_RELEASE_DIR}/{sae_id(layer, width, l0)}/params.safetensors")
     p = {k.lower(): v for k, v in load_file(path).items()}
     sae = JumpReLUSAE(p["w_enc"], p["b_enc"], p["w_dec"], p["b_dec"], p["threshold"])
     return sae.to(device=device, dtype=dtype)

@@ -1,0 +1,89 @@
+{
+ "tag": "full",
+ "design": "swap",
+ "groups": 2428,
+ "ok": 1825,
+ "yield": 0.7516474464579901,
+ "ok_by_candidate": {
+  "0": 1730,
+  "1": 55,
+  "2": 40
+ },
+ "by_domain": {
+  "bias": {
+   "n": 578,
+   "ok": 459
+  },
+  "cyber": {
+   "n": 606,
+   "ok": 451
+  },
+  "privacy": {
+   "n": 633,
+   "ok": 475
+  },
+  "violence": {
+   "n": 611,
+   "ok": 440
+  }
+ },
+ "by_trigger_type": {
+  "action": {
+   "n": 1116,
+   "ok": 833
+  },
+  "intent_marker": {
+   "n": 615,
+   "ok": 517
+  },
+  "surface": {
+   "n": 697,
+   "ok": 475
+  }
+ },
+ "failure_reasons_all_tries": {
+  "mudou_pedido:harm_row": 562,
+  "gatilho_presente_sem_gatilho": 350,
+  "intencao:harm_notrig": 221,
+  "nao_natural:ben_trig": 113,
+  "gatilho_nao_localizado": 99,
+  "intencao:harm_trig": 83,
+  "mudou_pedido:ben_row": 73,
+  "nao_natural:harm_trig": 49,
+  "neutro_repete_o_gatilho": 44,
+  "nao_natural:ben_notrig": 34,
+  "nao_natural:harm_notrig": 34,
+  "intencao:ben_notrig": 26,
+  "tamanho": 23,
+  "intencao:ben_trig": 22,
+  "json_invalido": 7,
+  "mudou_pedido:ben_vs_orig": 6
+ },
+ "split_ok": {
+  "train": 1297,
+  "test": 257,
+  "val": 271
+ },
+ "run": {
+  "gen": {
+   "calls": 6846,
+   "prompt_tokens": 2249637,
+   "completion_tokens": 145000
+  },
+  "judge": {
+   "calls": 2462,
+   "prompt_tokens": 1500596,
+   "completion_tokens": 440443
+  },
+  "qg": {
+   "calls": 4757,
+   "prompt_tokens": 1555959,
+   "completion_tokens": 45118
+  },
+  "wg": {
+   "calls": 4757,
+   "prompt_tokens": 708131,
+   "completion_tokens": 114168
+  }
+ }
+}

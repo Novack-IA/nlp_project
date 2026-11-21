@@ -1,0 +1,82 @@
+{
+ "tag": "dry_v2",
+ "groups": 50,
+ "ok": 9,
+ "yield": 0.18,
+ "ok_by_candidate": {
+  "0": 6,
+  "1": 2,
+  "2": 1
+ },
+ "by_domain": {
+  "bias": {
+   "n": 13,
+   "ok": 1
+  },
+  "cyber": {
+   "n": 13,
+   "ok": 3
+  },
+  "privacy": {
+   "n": 13,
+   "ok": 4
+  },
+  "violence": {
+   "n": 11,
+   "ok": 1
+  }
+ },
+ "by_trigger_type": {
+  "action": {
+   "n": 22,
+   "ok": 4
+  },
+  "intent_marker": {
+   "n": 15,
+   "ok": 5
+  },
+  "surface": {
+   "n": 13,
+   "ok": 0
+  }
+ },
+ "failure_reasons_all_tries": {
+  "forma_alarmante_nao_e_o_gatilho": 28,
+  "mudou_pedido:ben_vs_orig": 20,
+  "intencao:harm_trig": 15,
+  "mudou_pedido:harm_row": 15,
+  "intencao:ben_trig": 13,
+  "mudou_pedido:harm_vs_orig": 10,
+  "intencao:harm_notrig": 10,
+  "tamanho": 6,
+  "forma_neutra_fora_da_lacuna": 5,
+  "intencao:ben_notrig": 3,
+  "json_invalido": 1,
+  "nao_natural:harm_trig": 1
+ },
+ "split_ok": {
+  "train": 9
+ },
+ "run": {
+  "gen": {
+   "calls": 119,
+   "prompt_tokens": 87568,
+   "completion_tokens": 7553
+  },
+  "judge": {
+   "calls": 78,
+   "prompt_tokens": 42040,
+   "completion_tokens": 13972
+  },
+  "qg": {
+   "calls": 272,
+   "prompt_tokens": 84152,
+   "completion_tokens": 2699
+  },
+  "wg": {
+   "calls": 272,
+   "prompt_tokens": 35152,
+   "completion_tokens": 6528
+  }
+ }
+}

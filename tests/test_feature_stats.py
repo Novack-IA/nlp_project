@@ -398,6 +398,20 @@ def test_fichas_sem_nome_da_celula(cache, run_desc):
     assert any("harm_" in s or "ben_" in s for s in autointerp.top_itens_2x2(z, rows, [0], textos, mostrar_celula=True)[0])
 
 
+def test_lista_exploratoria(run_desc):
+    from featgrpo.interp import autointerp, classifiers
+    res, out = run_desc
+    fake = lambda layer, sae, f: {"explanations": [{"description": "cannot fulfill requests" if f % 2 else "x"}]}
+    lst = autointerp.lista_exploratoria({"16k": res}, out, fetch=fake)
+    assert lst["exploratorio"] is True and lst["classe"] == "intencao_forte_fora_de_S_intent"
+    import pandas as pd
+    df = pd.read_csv(out / "feature_classes_L22_inst_last_16k.csv").set_index("feature")
+    assert all(df.loc[f, "classe"] != "S_intent" and abs(df.loc[f, "d_I"]) >= 0.5 for f in lst["features"])
+    assert lst["n_rotulo_de_recusa"] == sum(f % 2 for f in lst["features"])
+    p = out / "lst.json"; p.write_text(__import__("json").dumps(lst))
+    assert classifiers.load_list(p) == lst["features"]
+
+
 def test_figura_di_dl(run_desc, tmp_path):
     import pandas as pd
     from featgrpo.interp import figuras

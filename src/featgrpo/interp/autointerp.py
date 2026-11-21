@@ -461,6 +461,30 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
     return "\n".join(linhas).rstrip() + "\n"
 
 
+def lista_exploratoria(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict] = fetch_feature,
+                       sae: str = "16k") -> dict:
+    """Exploratório, fora do pré-registro: features com efeito de intenção grande (|d_I| >= 0,5, q < 0,01) que
+    ficaram fora de S_intent na combinação principal porque o IC de d_L passa de ±0,2. Só a descoberta. Cada uma
+    leva o rótulo do Neuronpedia e a marca `rotulo_de_recusa` (busca simples no rótulo)."""
+    p = c1["16k"]["principal"]
+    L, pos = int(p["camada"]), p["posicao"]
+    df = pd.read_csv(Path(out_dir) / f"feature_classes_L{L}_{pos}_{sae}.csv")
+    fora = df[(df["d_I"].abs() >= 0.5) & (df["q_I"] < 0.01) & (df["classe"] != "S_intent")]
+    fora = fora.reindex(fora["d_I"].abs().sort_values(ascending=False).index)
+    detalhe = []
+    for f in fora.itertuples():
+        rot = explicacao(L, sae, int(f.feature), fetch)
+        detalhe.append({"feature": int(f.feature), "d_I": round(float(f.d_I), 4), "d_L": round(float(f.d_L), 4),
+                        "d_L_ci": [round(float(f.d_L_ci_lo), 4), round(float(f.d_L_ci_hi), 4)],
+                        "mais_ativa_em": "nocivos" if f.d_I > 0 else "benignos", "rotulo_neuronpedia": rot,
+                        "rotulo_de_recusa": bool(RECUSA.search(rot))})
+    return {"features": [d["feature"] for d in detalhe], "classe": "intencao_forte_fora_de_S_intent",
+            "exploratorio": True, "camada": L, "posicao": pos, "rotulo": LABELS_POS.get(pos, pos), "sae": sae,
+            "criterio": "|d_I| >= 0,5 e q_I < 0,01 na descoberta, fora de S_intent (IC de d_L passa de ±0,2)",
+            "ordenadas_por": "|d_I| decrescente", "n_rotulo_de_recusa": sum(d["rotulo_de_recusa"] for d in detalhe),
+            "detalhe": detalhe}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Fichas cegas do C3 (frente C).")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -469,6 +493,8 @@ def main(argv=None) -> int:
     pv.add_argument("--dir", type=Path, default=OUT_DIR)
     ds = sub.add_parser("descoberta", help="monta results/frente-c/descoberta.md (C1 do 2×2, descoberta)")
     ds.add_argument("--dir", type=Path, default=OUT_DIR)
+    ex = sub.add_parser("exploratoria", help="lista exploratória: intenção forte fora de S_intent (para a frente B)")
+    ex.add_argument("--dir", type=Path, default=OUT_DIR)
     m = sub.add_parser("montar")
     m.add_argument("--root", type=Path, default=cache_io.DEFAULT_ROOT)
     m.add_argument("--sae", default="16k")
@@ -497,6 +523,14 @@ def main(argv=None) -> int:
         out = args.dir / "descoberta.md"
         out.write_text(descoberta_md(c1, args.dir, diag=diag), encoding="utf-8")
         print(f"salvo em {out}")
+        return 0
+
+    if args.cmd == "exploratoria":
+        c1 = json.loads((args.dir / "c1_c3.json").read_text(encoding="utf-8"))
+        res = lista_exploratoria(c1, args.dir)
+        out = args.dir / "listas" / f"exploratorio_intencao_forte_L{res['camada']}_{res['posicao']}_{res['sae']}.json"
+        out.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"{len(res['features'])} features ({res['n_rotulo_de_recusa']} com rótulo de recusa) em {out}")
         return 0
 
     if args.cmd == "montar":

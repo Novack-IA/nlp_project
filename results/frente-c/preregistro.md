@@ -145,7 +145,7 @@ Copiado de `docs/tarefas/00-visao-geral.md` (commit 21d1fb4), com as decisões d
 **Regras de análise do grupo (PR #1):**
 1. Todo número da confirmação sai em duas partes, gatilho visto e gatilho inédito. Os critérios usam o inédito, salvo o piso da seção 4.
 2. "Sem efeito" exige o IC 95% de d dentro de ±0,2 (teste de equivalência, na tabela acima).
-3. O C2 é relativo ao TF-IDF onde ele sofre: gatilho inédito, leave-one-domain-out e XSTest; atende com ≥ 2 das 3 (frente D, emenda 3 do Gustavo).
+3. O C2 é relativo ao TF-IDF onde ele sofre. ~~Gatilho inédito, leave-one-domain-out e XSTest; atende com ≥ 2 das 3 (frente D, emenda 3 do Gustavo).~~ **Atualizado em 2026-11-21** (proposta do Davi no PR #8, voto a favor no adendo 3; `DESVIOS.md`): o C2(b) é **só o XSTest**. S_intent, treinado no 2×2, perde no XSTest no máximo metade da AUROC que o TF-IDF perde (razão ≤ 0,5 e limite superior do IC 95% da razão < 1). Gatilho inédito e leave-one-domain-out viram descrição, porque neles o TF-IDF cai ≤ 0,02 e a régua fica indefinida.
 4. Os pares originais são diagnóstico e não entram no veredito.
 5. C1 e C2 saem também por domínio e por tipo de gatilho (`trigger_types.jsonl` da frente A), como análise secundária.
 
@@ -219,4 +219,4 @@ Escrito em 2026-11-21, com o cache do 2×2 já recebido e conferido, mas **antes
 - **`fim_pedido`:** no principal, 199 grupos (11,7%) têm o último token diferente entre as células e saem só dessa posição. Fica abaixo dos 20% (seção 1, regra 1).
 - **Pisos (seção 4):** atendidos no principal. Por domínio: privacy 434, bias 428, cyber 427, violence 408. No `qc_pass_lenient`, o `test` com gatilho inédito no `fim_pedido` fica abaixo de 50, então ali vale o `test` inteiro (seção 3).
 - **Caminho (b):** não virou o principal, porque reprovou em tamanho e estilo (`DESVIOS.md`). Entra como robustez.
-- **C2(b):** a frente C vota a favor da proposta do Davi (PR #8), em que o C2(b) passa a ser só o XSTest e o gatilho inédito e o domínio inédito ficam como descrição. A troca no texto da seção 5 e a entrada no `DESVIOS.md` ficam com a frente D, depois da votação do grupo.
+- **C2(b):** a frente C vota a favor da proposta do Davi (PR #8), em que o C2(b) passa a ser só o XSTest e o gatilho inédito e o domínio inédito ficam como descrição. A troca no texto da seção 5 e a entrada no `DESVIOS.md` ficam com a frente D, depois da votação do grupo. Feito em 2026-11-21, a pedido do Davi: seção 5, regra 3.

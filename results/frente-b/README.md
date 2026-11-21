@@ -11,8 +11,14 @@
 | `qualidade_saes_proprio.json` | Argumentos e commit da rodada do SAE próprio | `interp/sae_quality.py` |
 | `qualidade_saes.json` | Argumentos, commit e tamanhos de amostra de cada rodada do `sae_quality.py` | `interp/sae_quality.py` |
 | `MANIFEST.json` | sha256 de cada arquivo do cache (`artifacts/acts/gemma-3-4b-it/`), commit, versões e `sae_id` | `interp/extract.py` (cópia do MANIFEST do cache) |
+| `C5.md` | **C5:** desenho, resultados e leitura da intervenção (ablação de S_intent e controles) | à mão, a partir dos arquivos abaixo |
+| `c5_ablacao.json` | Taxa de recusa (regex) por condição × alvo, diferença contra `base` e contra as aleatórias, com IC 95% | `interp/intervene.py resumo` |
+| `c5_config.json` | Eixo da intenção (c, t), listas e sha256, sorteios aleatórios de frequência casada | `interp/intervene.py eixo` |
+| `fig_c5_ablacao.png` / `.pdf` | Figura 5 do paper | `interp/intervene.py resumo` |
 | `PEDIDOS.md` | Pedidos das outras frentes para a B e as respostas | à mão |
 
-**Conjuntos no cache** (ver `MANIFEST.json`): `pairs` (16k), `controls` (16k, 262k) e `cells2x2` (16k, 262k e `proprio`), cada um gerado de um commit limpo.
+**Conjuntos no cache** (ver `MANIFEST.json`): `pairs` (16k), `controls` (16k, 262k), `cells2x2` (16k, 262k e `proprio`), `xstest` e `orbench_hard` (16k, 262k e `proprio`), cada um gerado de um commit limpo.
+
+As gerações do C5 (`artifacts/c5/c5_geracoes.jsonl`, 28.560 respostas) também ficam fora do git: incluem respostas em que o modelo, com features desligadas, passa a atender pedidos nocivos.
 
 O cache em si (`.npy`/`.npz`) **não vai para o git**. Ele fica na pasta compartilhada, em zips por conjunto, com a árvore da seção 4 do `AGENTS.md`. Leia com `featgrpo.interp.cache_io`.

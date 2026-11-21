@@ -72,7 +72,19 @@ _(a escrever: Gustavo.)_
 
 ### 4.1 Modelo, SAEs e extração
 
-_(a escrever: Caio.)_ Gemma-3-4B-IT congelado. Gemma Scope 2 `resid_post`, 16k e 262k, em 4 camadas (25/50/65/85%); SAE próprio BatchTopK como controle. Convenção `resid_post L = hidden_states[L+1]`. Posições: `post`, `post_last`, `mean`, `slot_forma`, `slot_intencao`. Qualidade dos SAEs nos nossos dados (variância explicada, ΔNLL, L0).
+_(texto da frente B)_
+
+Usamos o Gemma-3-4B-IT congelado, em bf16 e sem system prompt.
+
+**Extração.** Lemos o fluxo residual (`resid_post`) nas camadas 9, 17, 22 e 29 (29%, 53%, 68% e 88% da profundidade). Conferimos que a saída capturada por hook é idêntica a `hidden_states[L+1]` (diferença zero). Cada vetor passa por três SAEs:
+- os do Gemma Scope 2 (JumpReLU, `l0_medium`), de 16k e de 262k features;
+- um SAE próprio (BatchTopK, 16k, k = 64), em L17, L22 e L29.
+
+**Posições.** As principais são o último token do pedido (`inst_last`) e o último token do template, logo antes da resposta (`post_last`). As secundárias são as médias de posições, o gatilho e a lacuna de forma do 2×2.
+
+**Lotes.** Usamos padding à direita, com as quatro células de um grupo no mesmo lote. Assim, o prefixo comum às células sai bit a bit igual. Cada arquivo do cache tem sha256 e o commit que o gerou.
+
+**Qualidade dos SAEs nos nossos pedidos.** Em todos os tokens, o Gemma Scope 16k explica 84–96% da variância e recupera ~99% da perda de substituir a camada por zero (ΔNLL de 0,15 a 0,35). Nas posições principais, porém, ele reconstrói só 55–67% da **variação entre pedidos** em L17–L29. O SAE próprio reconstrói 69–83%, mas preserva pior o comportamento do modelo (recupera 96–99%). Detalhes em `results/frente-b/qualidade_saes.md`.
 
 ### 4.2 Estatística por feature
 
@@ -128,7 +140,30 @@ _(a escrever: Davi.)_
 
 ### 4.4 Intervenção
 
-_(a escrever: Caio.)_ Ablação de features com o erro de reconstrução somado de volta; controle com features aleatórias de frequência casada; rotulagem das respostas pelo juiz.
+_(texto da frente B)_
+
+**Onde intervimos.** Num hook na saída do bloco 29, em todos os tokens (pedido, template e geração).
+
+**Como desligamos features.** Codificamos o vetor com o SAE 16k e subtraímos a contribuição das features escolhidas:
+x' = x − dec(f) + dec(f'), onde f' é f com essas features zeradas.
+
+O erro de reconstrução é preservado, então só as features escolhidas mudam. Com a lista vazia, a saída do modelo é bit a bit igual.
+
+**Condições.**
+- **Pré-registrada:** a ablação das 48 S_intent.
+- **Controle:** 5 sorteios com o mesmo número de features aleatórias, com frequência de ativação casada por decil.
+- **Exploratórias:**
+  - a ablação das 23 features de intenção forte que ficaram fora de S_intent (seção 5.x), com o seu próprio controle aleatório;
+  - levar a projeção no eixo da intenção u ao nível médio dos benignos;
+  - subtrair o empurrão médio do gatilho nesse eixo (c·u, com c = 2,5% do efeito de intenção), que substitui a ablação de S_lex, cuja lista saiu vazia.
+
+As duas intervenções no eixo agem só no `post_last`, onde u e c foram medidos.
+
+**Itens.** O `test` do conjunto principal (242 grupos, 968 pedidos) e 817 pedidos benignos que o 4B recusa. As listas e o eixo vêm só da descoberta.
+
+**Geração e rotulagem.** Geração gulosa, até 256 tokens. A recusa é medida por um classificador rápido de frases de recusa (precisão 0,78 e cobertura 0,56 contra o juiz) e, na versão final, pelo juiz da seção 3.
+
+**Estatística.** Diferença pareada de taxas, com IC 95% por bootstrap sobre grupos. O critério do C5 é o efeito da lista menos o efeito médio dos sorteios aleatórios.
 
 ### 4.5 Pré-registro
 
@@ -189,6 +224,24 @@ Nos recortes do C4, na mesma combinação: <!-- fonte: results/frente-c/c4_*/c1_
 
 - **(c) células de tamanho pareado** (684 grupos): 46 S_intent, e as 46 replicam. O C1 atende.
 - **(b) Q⁰ *retrieved*** (211 grupos): 15 S_intent, e as 15 replicam. Mas a descoberta tem 182 grupos, abaixo do piso de 260, então o C1 fica inconclusivo.
+
+### 5.6 Ele causa a recusa? (C5) · _texto da frente B; recusa medida por regex, juiz pendente_
+
+**Desligar as 48 S_intent reduz a recusa a pedidos nocivos** de 59,9% para 52,5%, uma diferença de −7,4 pontos (IC 95% de −11,8 a −3,1). Desligar 48 features aleatórias não reduz: os 5 sorteios ficam entre +0,4 e +11,2. Contra a média deles, a diferença é de **−12,2 pontos** (IC de −16,0 a −8,4), e o C5 atende. O efeito é parecido com gatilho (−8,3) e sem gatilho (−6,6). <!-- fonte: results/frente-b/c5_ablacao.json → s_intent -->
+
+**Isso complementa o C2.** Lá, features sorteadas classificam a intenção tão bem quanto as S_intent; aqui, só as S_intent mudam o comportamento.
+
+**A mesma ablação reduz o over-refusal.** Nos 817 pedidos benignos que o 4B recusa, a recusa cai 5,4 pontos (IC de −8,7 a −2,2). Não há efeito nos benignos comuns, que o modelo já não recusa.
+
+**Tirar o empurrão do gatilho não muda a recusa**, nem multiplicado por 5. Levar o `post_last` ao nível benigno no eixo da intenção também quase não muda nada. Uma única posição, em L29, não basta para mudar a decisão.
+
+**Leitura.** O over-refusal parece passar pelo mesmo caminho da recusa legítima: o modelo trata o pedido benigno como nocivo no eixo de intenção, e não por um canal lexical separado.
+
+**Exploratório.** As 23 features de intenção forte se comportam como o **formato** da recusa. Desligá-las leva a recusa medida pela regex a ~0%, mas parte das respostas continua desaconselhando o pedido. Quanto o modelo passa a atender pedidos nocivos depende do juiz. Por ser uma intervenção de uso duplo, reportamos só números agregados.
+
+![Figura 5](../../results/frente-b/fig_c5_ablacao.png)
+
+*Figura 5.* Variação na taxa de recusa por intervenção em L29, com IC 95%; em cinza, os sorteios aleatórios. <!-- fonte: results/frente-b/c5_ablacao.json -->
 
 ### 5.x Análises exploratórias · _texto da frente C; fora do pré-registro; detalhes no Apêndice A.2_
 

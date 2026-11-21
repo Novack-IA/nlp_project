@@ -157,7 +157,16 @@ O `inst_last` cai no mesmo token em 92% dos pedidos (id 236881) e em outro em 6%
   - **Reconstrução:** FVE maior que o Gemma Scope 16k (0,975 / 0,943 / 0,898 em L17/L22/L29), mas ΔNLL 2,5–3× maior (1,00 / 0,55 / 0,43).
   - **Posições principais:** preserva mais a variação entre pedidos (FVE entre itens 0,69–0,83 contra 0,55–0,67). É uma robustez útil para o C1.
 
-## 9. Limitações e pendências
+## 9. C5: intervenção (2026-11-21)
+
+Detalhes em `C5.md`. Em L29, com o erro de reconstrução preservado e recusa medida por regex (juiz pendente):
+
+- **Desligar as 48 S_intent** reduz a recusa a pedidos nocivos em 7,4 pontos (IC 95% de −11,8 a −3,1). Contra a média de 5 sorteios aleatórios de frequência casada, a diferença é de 12,2 pontos (IC de −16,0 a −8,4). **O C5 pré-registrado atende.** O efeito é parecido com e sem gatilho.
+- **Over-refusal:** a mesma ablação reduz a recusa nos 817 benignos que o 4B recusa (−5,4 pontos). Não há efeito nos benignos comuns.
+- **Lado lexical:** a S_lex saiu vazia. Tirar o empurrão do gatilho no `post_last` (c = 2,46% do efeito de intenção) não muda a recusa, nem com 5×.
+- **Lista exploratória de intenção forte:** desligá-la zera a recusa pela regex, mas lendo as respostas parte delas continua desaconselhando o pedido. Essas features controlam sobretudo o formato da recusa. O juiz decide quanto vira atendimento.
+
+## 10. Limitações e pendências
 
 - **O ΔNLL mede respostas curtas** (≤ 64 tokens) e greedy. Basta para comparar camadas, mas não descreve gerações longas.
 - **"Sem ativar" é uma medida em 47k tokens.** Não serve como estimativa de features mortas no pré-treino.

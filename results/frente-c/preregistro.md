@@ -1,6 +1,6 @@
 # Pré-registro da frente C
 
-> **Status:** versão 1, escrita antes de qualquer ativação ser extraída ou vista. Falta só o adendo com a descrição dos dados do 2×2, que entra depois da rodada seca da frente A (ela olha só texto). Mudanças posteriores vão para `results/DESVIOS.md`.
+> **Status:** versão 1, escrita antes de qualquer ativação ser extraída ou vista, com o adendo dos dados do 2×2 (2026-11-21), escrito antes do cache do 2×2. Mudanças posteriores vão para `results/DESVIOS.md`.
 > **Autor:** Frederico (frente C) · **Base:** `docs/tarefas/00-visao-geral.md` e `docs/tarefas/frederico-frente-c.md` (commit 21d1fb4)
 
 **Termos usados aqui:**
@@ -17,7 +17,7 @@
 | 3. Combinação principal, listas e top-20 | Decidida em 2026-11-20 |
 | 4. Piso de poder | Decidida em 2026-11-20 |
 | 5. Medidas, classes e critérios (do grupo) | Copiada; 2 detalhes em aberto decididos em 2026-11-20 |
-| Adendo: dados do 2×2 | A escrever depois da rodada seca |
+| Adendo: dados do 2×2 | Escrito em 2026-11-21, antes do cache do 2×2 |
 
 ## 1. Posições lidas
 
@@ -162,4 +162,22 @@ Copiado de `docs/tarefas/00-visao-geral.md` (commit 21d1fb4), com as decisões d
 
 ## Adendo: dados do 2×2
 
-*A escrever depois da rodada seca da frente A:* molde ou plano B; nº de grupos por split e por domínio; tipos de gatilho incluídos; nº de grupos excluídos no `fim_pedido` (seção 1, regra 1).
+Escrito em 2026-11-21, antes de qualquer ativação do 2×2. Tudo foi contado só no texto tokenizado; o modo provisório nos pares originais já tinha rodado, como diagnóstico.
+
+**Desenho: plano B.** A frase-molde aproveitou 14% e 18% dos grupos nas rodadas secas, abaixo do corte de 40%, então vale o plano B: troca só do trecho do gatilho. Ele aproveitou 82% na rodada seca e 75% na geração completa (`results/frente-a/RELATORIO_noite.md`; `DESVIOS.md`).
+
+**As células com gatilho são os pedidos originais.** `harm_trig` é o Q⁺ do PKU e `ben_trig` é o Q⁰ original (gerado em 86% dos grupos, *retrieved* em 14%). As versões sem gatilho trocam só o trecho do gatilho, e o resto de cada linha é idêntico. Consequência: o contraste de intenção herda a diferença de fonte entre Q⁺ e Q⁰ (regra 4 da seção 5). Por isso o controle de estilo entrou como análise secundária (`DESVIOS.md`, 2026-11-21).
+
+**Conjunto principal: `qc_grammatical`** (`DESVIOS.md`, 2026-11-21), os grupos em que as duas versões sem gatilho são gramaticais.
+
+| Subconjunto | Grupos | train / val / test | Descoberta (no `fim_pedido`) | Confirmação com gatilho inédito | Papel |
+|---|---|---|---|---|---|
+| `qc_grammatical` | 1.723 | 1.219 / 260 / 244 | 1.479 (1.306) | 156 | **principal** |
+| `qc_pass_lenient` | 604 | 435 / 85 / 84 | 520 (461) | 51 | robustez |
+| todos | 1.825 | 1.297 / 271 / 257 | 1.568 (1.375) | 165 | robustez |
+| `qc_pass` | 148 | 101 / 24 / 23 | 125 (114) | 14 | só descrição (abaixo dos pisos) |
+
+- **`fim_pedido`:** no conjunto principal, 205 grupos (11,9%) têm o último token diferente entre as células e saem só dessa posição. Fica abaixo dos 20% da revisão prevista (seção 1, regra 1), então a regra se mantém.
+- **Pisos de poder (seção 4):** atendidos no conjunto principal e no `qc_pass_lenient`.
+- **Domínios** (conjunto principal): privacy 439, bias 436, cyber 434, violence 414. **Tipos de gatilho:** ação 800, marcador de intenção 482, superfície 441. **Q⁰ *retrieved*:** 224 grupos.
+- **Controles:** 3 frases por grupo (5.475 pares de frases no conjunto completo, 4.434 distintos), filtrados pelo mesmo subconjunto do 2×2.

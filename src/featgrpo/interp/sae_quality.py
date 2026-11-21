@@ -36,7 +36,8 @@ from pathlib import Path
 import torch
 
 from featgrpo.interp import data
-from featgrpo.interp.common import LAYERS, get_layers, load_model, load_sae, sae_id, set_seeds
+from featgrpo.interp.common import (LAYERS, get_layers, load_model, load_sae, sae_available,
+                                    sae_id, set_seeds)
 from featgrpo.interp.extract import encode_item, pad_right, run_batch
 
 
@@ -196,6 +197,8 @@ def main() -> None:
         zero_pos = {p: splice_metrics(model, tok, layers_mod, r_encs, L, "zero", pos=p)
                     for p in args.positions}
         for w in args.widths:
+            if not sae_available(L, w):
+                continue
             t0 = time.time()
             sae = load_sae(L, w)
             for p in args.positions:

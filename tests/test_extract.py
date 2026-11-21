@@ -261,3 +261,49 @@ def test_control_items_front_a_format_uses_file_span():
         assert "".join(rendered[offs[t][0]:offs[t][1]] for t in e.positions["trig"]).strip() == \
             it["trigger"]
         assert e.meta["trigger_method"] == "span"
+
+
+def test_cells_items_swap_design_has_only_form_slot():
+    from featgrpo.interp.extract import cells_items, encode_item
+    t = {"harm_trig": "How do I kill my neighbor?", "harm_notrig": "How do I stop my neighbor?",
+         "ben_trig": "How do I kill a process?", "ben_notrig": "How do I stop a process?"}
+    g = {"group_id": "g_1", "design": "swap", "split": "train", "domain": "violence",
+         "trigger": "kill", "qc_grammatical": True,
+         "cells": {c: {"text": x, "slots": {"form": [9, 13]}} for c, x in t.items()}}
+    items = cells_items([g])
+    tok = _Tok()
+    for it in items:
+        assert it["spans"]["intencao"] is None and it["qc_grammatical"] is True
+        e = encode_item(tok, it)
+        assert "slot_intencao" not in e.positions and e.meta["slots_aligned"]
+        rendered = tok.apply_chat_template([{"content": it["text"]}])
+        offs = tok(rendered)["offset_mapping"]
+        word = "".join(rendered[offs[k][0]:offs[k][1]] for k in e.positions["trig"]).strip()
+        assert word == it["text"][9:13] and e.meta["trigger_method"] == "span"
+
+
+def test_proprio_sae_only_in_its_layers():
+    from featgrpo.interp.common import PROPRIO_LAYERS, sae_available, sae_id
+    assert PROPRIO_LAYERS == (17, 22, 29)
+    assert not sae_available(9, "proprio") and sae_available(9, "16k")
+    assert sae_id(22, "proprio") == "gemma-3-4b-it_L22_btk16k"
+
+
+@gpu
+def test_proprio_sae_reconstructs(mt, sample_items):
+    from featgrpo.interp.common import PROPRIO_LAYERS, get_layers, load_sae, proprio_path
+    from featgrpo.interp.extract import encode_item, run_batch
+    if not all(proprio_path(L).exists() for L in PROPRIO_LAYERS):
+        pytest.skip("pesos do SAE próprio ausentes")
+    model, tok = mt
+    layers_mod, _ = get_layers(model)
+    encs = [encode_item(tok, it) for it in sample_items[:16]]
+    cap = run_batch(model, layers_mod, list(PROPRIO_LAYERS), encs, tok.pad_token_id)
+    for L in PROPRIO_LAYERS:
+        sae = load_sae(L, "proprio")
+        xs = torch.cat([cap[L][j, 1:len(e.input_ids)] for j, e in enumerate(encs)]).float()
+        rec = sae(xs)
+        fve = 1 - ((xs - rec) ** 2).sum() / ((xs - xs.mean(0)) ** 2).sum()
+        print(f"L{L} proprio: FVE={fve.item():.3f} L0={(sae.encode(xs) > 0).sum(1).float().mean():.1f}")
+        assert fve.item() > 0.6, (L, fve.item())
+        del sae

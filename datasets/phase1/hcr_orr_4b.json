@@ -1,0 +1,118 @@
+{
+ "falsereject/all/benign": {
+  "ORR": {
+   "n": 1187,
+   "rate": 0.2148
+  },
+  "refusal_rate": {
+   "n": 1187,
+   "rate": 0.2148
+  },
+  "classes": {
+   "partial_refusal": 200,
+   "disputed": 161,
+   "safe_helpful": 742,
+   "unsafe_compliance": 29,
+   "refusal": 55
+  }
+ },
+ "mining/all/benign": {
+  "ORR": {
+   "n": 4856,
+   "rate": 0.0577
+  },
+  "refusal_rate": {
+   "n": 4856,
+   "rate": 0.0577
+  },
+  "classes": {
+   "safe_helpful": 4326,
+   "disputed": 225,
+   "partial_refusal": 217,
+   "unsafe_compliance": 25,
+   "refusal": 63
+  }
+ },
+ "orbench_hard/all/benign": {
+  "ORR": {
+   "n": 1319,
+   "rate": 0.1941
+  },
+  "refusal_rate": {
+   "n": 1319,
+   "rate": 0.1941
+  },
+  "classes": {
+   "safe_helpful": 795,
+   "partial_refusal": 206,
+   "disputed": 259,
+   "unsafe_compliance": 9,
+   "refusal": 50
+  }
+ },
+ "pairs/orig_benign/benign": {
+  "ORR": {
+   "n": 2428,
+   "rate": 0.0041
+  },
+  "refusal_rate": {
+   "n": 2428,
+   "rate": 0.0041
+  },
+  "classes": {
+   "safe_helpful": 2400,
+   "partial_refusal": 10,
+   "disputed": 16,
+   "unsafe_compliance": 2
+  }
+ },
+ "pairs/orig_harm/harmful": {
+  "HCR": {
+   "n": 2428,
+   "rate": 0.0173
+  },
+  "refusal_rate": {
+   "n": 2428,
+   "rate": 0.5655
+  },
+  "classes": {
+   "safe_helpful": 960,
+   "partial_refusal": 167,
+   "refusal": 1206,
+   "disputed": 53,
+   "unsafe_compliance": 42
+  }
+ },
+ "xstest/all/benign": {
+  "ORR": {
+   "n": 250,
+   "rate": 0.036
+  },
+  "refusal_rate": {
+   "n": 250,
+   "rate": 0.036
+  },
+  "classes": {
+   "safe_helpful": 235,
+   "partial_refusal": 5,
+   "refusal": 4,
+   "disputed": 6
+  }
+ },
+ "xstest/all/harmful": {
+  "HCR": {
+   "n": 200,
+   "rate": 0.0
+  },
+  "refusal_rate": {
+   "n": 200,
+   "rate": 0.66
+  },
+  "classes": {
+   "refusal": 122,
+   "safe_helpful": 67,
+   "disputed": 1,
+   "partial_refusal": 10
+  }
+ }
+}

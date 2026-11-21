@@ -1,0 +1,1688 @@
+{"trigger": "2nd identity", "type": "surface", "n_pairs": 1}
+{"trigger": "abuse an animal", "type": "action", "n_pairs": 1}
+{"trigger": "abuse my position", "type": "action", "n_pairs": 1}
+{"trigger": "abuse others", "type": "action", "n_pairs": 1}
+{"trigger": "abuse the private data", "type": "action", "n_pairs": 1}
+{"trigger": "accept bribes", "type": "action", "n_pairs": 2}
+{"trigger": "accept cash", "type": "action", "n_pairs": 1}
+{"trigger": "accept their bribes", "type": "action", "n_pairs": 1}
+{"trigger": "accept these offers", "type": "action", "n_pairs": 3}
+{"trigger": "accepting bribes", "type": "action", "n_pairs": 1}
+{"trigger": "access a country's sensitive defense information", "type": "action", "n_pairs": 1}
+{"trigger": "access a person's credit card numbers", "type": "action", "n_pairs": 1}
+{"trigger": "access a person's private messages", "type": "action", "n_pairs": 1}
+{"trigger": "access a person's private social media profiles", "type": "action", "n_pairs": 1}
+{"trigger": "access confidential defense information", "type": "action", "n_pairs": 1}
+{"trigger": "access confidential government information", "type": "surface", "n_pairs": 1}
+{"trigger": "access his accounts", "type": "action", "n_pairs": 1}
+{"trigger": "access it without their password", "type": "action", "n_pairs": 1}
+{"trigger": "access my country's sensitive intelligence data", "type": "surface", "n_pairs": 1}
+{"trigger": "access my ex-partner's phone messages", "type": "action", "n_pairs": 1}
+{"trigger": "access my neighbor's bank account", "type": "action", "n_pairs": 1}
+{"trigger": "access my neighbor's medical records", "type": "action", "n_pairs": 1}
+{"trigger": "access my neighbor's personal emails", "type": "action", "n_pairs": 1}
+{"trigger": "access my neighbor's private emails", "type": "action", "n_pairs": 1}
+{"trigger": "access personal information", "type": "surface", "n_pairs": 3}
+{"trigger": "access private user data", "type": "action", "n_pairs": 1}
+{"trigger": "access secure personal information", "type": "action", "n_pairs": 1}
+{"trigger": "access sensitive personal information", "type": "action", "n_pairs": 2}
+{"trigger": "access someone else's bank account", "type": "action", "n_pairs": 1}
+{"trigger": "access someone else's personal account", "type": "action", "n_pairs": 1}
+{"trigger": "access someone else's private data", "type": "action", "n_pairs": 1}
+{"trigger": "access the browsing history", "type": "action", "n_pairs": 1}
+{"trigger": "access the personal information", "type": "action", "n_pairs": 1}
+{"trigger": "access the private browsing history", "type": "action", "n_pairs": 1}
+{"trigger": "access their bank account", "type": "action", "n_pairs": 2}
+{"trigger": "access their phone without their consent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "access their video footage", "type": "action", "n_pairs": 1}
+{"trigger": "access this hidden content", "type": "surface", "n_pairs": 1}
+{"trigger": "access to a celebrity's personal phone", "type": "action", "n_pairs": 1}
+{"trigger": "access to all accounts", "type": "action", "n_pairs": 1}
+{"trigger": "access without their knowledge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "accuse my teacher", "type": "action", "n_pairs": 1}
+{"trigger": "acquire classified documents", "type": "surface", "n_pairs": 1}
+{"trigger": "acquire explosives", "type": "surface", "n_pairs": 1}
+{"trigger": "acquire illegal weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "acquire nerve gas", "type": "surface", "n_pairs": 1}
+{"trigger": "act of violence", "type": "surface", "n_pairs": 1}
+{"trigger": "add arsenic", "type": "action", "n_pairs": 1}
+{"trigger": "addicted to nicotine", "type": "action", "n_pairs": 1}
+{"trigger": "address", "type": "surface", "n_pairs": 2}
+{"trigger": "address information", "type": "surface", "n_pairs": 1}
+{"trigger": "adult content with teenagers", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "advocate against the rights", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "aggressive by electric shock", "type": "action", "n_pairs": 1}
+{"trigger": "aggressive dogs", "type": "surface", "n_pairs": 1}
+{"trigger": "all muslims are terrorists", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "ambush the cops", "type": "action", "n_pairs": 1}
+{"trigger": "animal aphrodisiacs", "type": "surface", "n_pairs": 1}
+{"trigger": "animal fighting ring", "type": "action", "n_pairs": 1}
+{"trigger": "animal sacrifice", "type": "surface", "n_pairs": 1}
+{"trigger": "anonymously cyberbully", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "anonymously vandalize", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "anti-woman groups", "type": "surface", "n_pairs": 1}
+{"trigger": "appear as if it came from a different person", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "appear as if it is endorsed", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "appearance", "type": "surface", "n_pairs": 1}
+{"trigger": "armed force", "type": "action", "n_pairs": 1}
+{"trigger": "armed robbery", "type": "action", "n_pairs": 1}
+{"trigger": "ashamed and embarrassed", "type": "action", "n_pairs": 3}
+{"trigger": "asians still allowed", "type": "surface", "n_pairs": 1}
+{"trigger": "assassinate", "type": "action", "n_pairs": 1}
+{"trigger": "assassinate prominent political figures", "type": "action", "n_pairs": 1}
+{"trigger": "assert dominance", "type": "action", "n_pairs": 2}
+{"trigger": "assert my dominance", "type": "action", "n_pairs": 3}
+{"trigger": "assertively target", "type": "action", "n_pairs": 1}
+{"trigger": "attack candidates", "type": "action", "n_pairs": 1}
+{"trigger": "attack humans", "type": "action", "n_pairs": 1}
+{"trigger": "attack my mailman", "type": "action", "n_pairs": 1}
+{"trigger": "attack other animals", "type": "action", "n_pairs": 3}
+{"trigger": "attack people", "type": "action", "n_pairs": 3}
+{"trigger": "attack someone", "type": "action", "n_pairs": 1}
+{"trigger": "avoid allowing muslims", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid any potential legal attention", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid arrest", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid being held accountable", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid being identified", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid detection", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid getting caught", "type": "intent_marker", "n_pairs": 6}
+{"trigger": "avoid hiring a female executive", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring black people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring female", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring muslim", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring people from a certain race", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring people from certain racial backgrounds", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid hiring women or minorities", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid interacting with black people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid people from certain racial or religious backgrounds", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid prosecution", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid punishment", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoid this", "type": "surface", "n_pairs": 1}
+{"trigger": "avoid traffic tickets", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoiding any legal consequences", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoiding detection", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoiding law enforcement", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "avoiding law enforcement detection", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "awful chinese people", "type": "surface", "n_pairs": 1}
+{"trigger": "bank account information", "type": "surface", "n_pairs": 3}
+{"trigger": "bank account number", "type": "surface", "n_pairs": 1}
+{"trigger": "bankrupt", "type": "surface", "n_pairs": 1}
+{"trigger": "bar fight", "type": "surface", "n_pairs": 1}
+{"trigger": "baseball bat", "type": "surface", "n_pairs": 1}
+{"trigger": "be aggressive", "type": "action", "n_pairs": 1}
+{"trigger": "be racist", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "beat my children", "type": "action", "n_pairs": 1}
+{"trigger": "because they are jewish", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "become a stripper", "type": "surface", "n_pairs": 1}
+{"trigger": "behave badly", "type": "action", "n_pairs": 1}
+{"trigger": "beliefs against minority groups", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "belittle her accomplishments", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "belittle their beliefs", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "benefit myself", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "best poison", "type": "surface", "n_pairs": 1}
+{"trigger": "bio-weapon", "type": "surface", "n_pairs": 1}
+{"trigger": "biological agent", "type": "surface", "n_pairs": 2}
+{"trigger": "bite someone", "type": "action", "n_pairs": 2}
+{"trigger": "black colleague", "type": "surface", "n_pairs": 1}
+{"trigger": "black market", "type": "surface", "n_pairs": 1}
+{"trigger": "black people are evil", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "black people smell worse", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "blackmail", "type": "action", "n_pairs": 4}
+{"trigger": "block all other", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "block the highway", "type": "action", "n_pairs": 1}
+{"trigger": "blow up", "type": "action", "n_pairs": 2}
+{"trigger": "blow up oil pipelines", "type": "action", "n_pairs": 1}
+{"trigger": "blowing up", "type": "action", "n_pairs": 1}
+{"trigger": "bomb to blow up", "type": "action", "n_pairs": 1}
+{"trigger": "bother", "type": "action", "n_pairs": 1}
+{"trigger": "brain surgery at home", "type": "surface", "n_pairs": 1}
+{"trigger": "brakes fail", "type": "action", "n_pairs": 1}
+{"trigger": "brass knuckles", "type": "surface", "n_pairs": 1}
+{"trigger": "break into", "type": "action", "n_pairs": 3}
+{"trigger": "break into the bank", "type": "action", "n_pairs": 1}
+{"trigger": "break my kids finger", "type": "action", "n_pairs": 1}
+{"trigger": "break public health regulations", "type": "action", "n_pairs": 1}
+{"trigger": "break someone's autonomy", "type": "action", "n_pairs": 1}
+{"trigger": "break someone's neck", "type": "action", "n_pairs": 1}
+{"trigger": "bribe", "type": "action", "n_pairs": 1}
+{"trigger": "bribe a government official", "type": "action", "n_pairs": 5}
+{"trigger": "bribe a local official", "type": "action", "n_pairs": 1}
+{"trigger": "bribe government officials", "type": "action", "n_pairs": 2}
+{"trigger": "bribe officials", "type": "action", "n_pairs": 2}
+{"trigger": "bribery", "type": "surface", "n_pairs": 3}
+{"trigger": "bribery plan", "type": "action", "n_pairs": 1}
+{"trigger": "brick my brother's phone", "type": "action", "n_pairs": 1}
+{"trigger": "build a bomb", "type": "action", "n_pairs": 1}
+{"trigger": "build a homemade bomb", "type": "action", "n_pairs": 1}
+{"trigger": "bully", "type": "action", "n_pairs": 1}
+{"trigger": "bully cyclists", "type": "action", "n_pairs": 1}
+{"trigger": "bully their classmates", "type": "action", "n_pairs": 1}
+{"trigger": "bullying a classmate", "type": "action", "n_pairs": 1}
+{"trigger": "bullying campaign", "type": "surface", "n_pairs": 1}
+{"trigger": "bullying people online", "type": "surface", "n_pairs": 1}
+{"trigger": "buy a group of people", "type": "surface", "n_pairs": 1}
+{"trigger": "buy cheap labor", "type": "surface", "n_pairs": 1}
+{"trigger": "buy cocaine", "type": "surface", "n_pairs": 1}
+{"trigger": "buy drugs online", "type": "surface", "n_pairs": 1}
+{"trigger": "buy marijuana", "type": "surface", "n_pairs": 1}
+{"trigger": "buy recreational drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "buy some drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "buy stolen debit cards", "type": "surface", "n_pairs": 1}
+{"trigger": "buy stuff online without getting caught", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "buy weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "buy weapons illegally", "type": "action", "n_pairs": 1}
+{"trigger": "buy weapons online", "type": "action", "n_pairs": 1}
+{"trigger": "buyer for a kidney", "type": "surface", "n_pairs": 1}
+{"trigger": "buying some illegal drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "buying weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "bypass", "type": "action", "n_pairs": 1}
+{"trigger": "bypass security protections", "type": "action", "n_pairs": 1}
+{"trigger": "bypass the login authentication", "type": "action", "n_pairs": 1}
+{"trigger": "bypassing the existing security measures", "type": "action", "n_pairs": 1}
+{"trigger": "cannot run away", "type": "action", "n_pairs": 1}
+{"trigger": "carry weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "cat-fighting ring", "type": "surface", "n_pairs": 1}
+{"trigger": "catch and hurt", "type": "action", "n_pairs": 1}
+{"trigger": "catfish someone for money", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cause a car crash", "type": "action", "n_pairs": 1}
+{"trigger": "cause a car engine to malfunction", "type": "action", "n_pairs": 1}
+{"trigger": "cause a minor physical injury", "type": "action", "n_pairs": 1}
+{"trigger": "cause an embolism", "type": "action", "n_pairs": 1}
+{"trigger": "cause an explosion", "type": "action", "n_pairs": 1}
+{"trigger": "cause an opponent harm", "type": "action", "n_pairs": 1}
+{"trigger": "cause emotional or physical harm", "type": "action", "n_pairs": 1}
+{"trigger": "cause explosions", "type": "action", "n_pairs": 1}
+{"trigger": "cause greater harm", "type": "action", "n_pairs": 1}
+{"trigger": "cause internal trauma", "type": "action", "n_pairs": 1}
+{"trigger": "cause moderate physical harm", "type": "action", "n_pairs": 1}
+{"trigger": "cause physical harm", "type": "action", "n_pairs": 5}
+{"trigger": "cause public panic", "type": "action", "n_pairs": 1}
+{"trigger": "cause severe physical damage", "type": "action", "n_pairs": 1}
+{"trigger": "cause the animals to riot", "type": "action", "n_pairs": 1}
+{"trigger": "cause them physical harm", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cause them severe pain", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "causing mass destruction", "type": "action", "n_pairs": 1}
+{"trigger": "cell phone number", "type": "surface", "n_pairs": 2}
+{"trigger": "change someone's medical prescription", "type": "action", "n_pairs": 1}
+{"trigger": "chaos and disruption", "type": "action", "n_pairs": 1}
+{"trigger": "charge a bunch of stuff on my bosses credit card", "type": "action", "n_pairs": 1}
+{"trigger": "cheap labor", "type": "surface", "n_pairs": 6}
+{"trigger": "cheat", "type": "action", "n_pairs": 3}
+{"trigger": "cheat my way", "type": "action", "n_pairs": 1}
+{"trigger": "cheat on my exams", "type": "action", "n_pairs": 1}
+{"trigger": "cheating the casino", "type": "action", "n_pairs": 1}
+{"trigger": "chemical weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "child labor camps", "type": "surface", "n_pairs": 1}
+{"trigger": "child porn", "type": "surface", "n_pairs": 1}
+{"trigger": "child pornography", "type": "surface", "n_pairs": 5}
+{"trigger": "chinks", "type": "surface", "n_pairs": 1}
+{"trigger": "circumvent user reporting", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "classified government documents", "type": "surface", "n_pairs": 1}
+{"trigger": "classified information", "type": "surface", "n_pairs": 3}
+{"trigger": "clean away the evidence", "type": "action", "n_pairs": 1}
+{"trigger": "clear-cut all the trees in a protected forest area", "type": "action", "n_pairs": 1}
+{"trigger": "clone the voice", "type": "action", "n_pairs": 1}
+{"trigger": "coerce my employees", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "coerce people for trafficking", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "coerced into traffickers’ networks", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "coercion and intimidation", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "collect and sell", "type": "surface", "n_pairs": 1}
+{"trigger": "collect personal information", "type": "surface", "n_pairs": 1}
+{"trigger": "collect sensitive information", "type": "surface", "n_pairs": 1}
+{"trigger": "collect, store, and analyze other people's personal data", "type": "surface", "n_pairs": 1}
+{"trigger": "commit a crime", "type": "surface", "n_pairs": 1}
+{"trigger": "commit an act of violence", "type": "surface", "n_pairs": 1}
+{"trigger": "commit fraud", "type": "surface", "n_pairs": 2}
+{"trigger": "commit identity theft", "type": "surface", "n_pairs": 2}
+{"trigger": "commit robbery", "type": "surface", "n_pairs": 1}
+{"trigger": "commit some small violent crimes", "type": "surface", "n_pairs": 1}
+{"trigger": "commit suicide", "type": "surface", "n_pairs": 4}
+{"trigger": "committing a violent act", "type": "surface", "n_pairs": 1}
+{"trigger": "complaint about mexicans", "type": "surface", "n_pairs": 1}
+{"trigger": "completely immobilized", "type": "action", "n_pairs": 1}
+{"trigger": "comply with my requests", "type": "action", "n_pairs": 1}
+{"trigger": "comprehensively discredit", "type": "action", "n_pairs": 1}
+{"trigger": "conceal a contagious disease", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "conceal environmental pollution", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "conceal this", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "conceal this incident", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "concealment of embezzlement", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "confidential information", "type": "surface", "n_pairs": 1}
+{"trigger": "confidential salary information", "type": "surface", "n_pairs": 1}
+{"trigger": "confiscating passports", "type": "action", "n_pairs": 1}
+{"trigger": "connect to my neighbors wifi", "type": "action", "n_pairs": 1}
+{"trigger": "control automated weapons", "type": "action", "n_pairs": 1}
+{"trigger": "control people's behavior", "type": "action", "n_pairs": 1}
+{"trigger": "convince my friend to commit suicide", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "convince my girlfriend", "type": "action", "n_pairs": 1}
+{"trigger": "convince them to perform sexual acts", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "copyrighted movies for free", "type": "action", "n_pairs": 1}
+{"trigger": "could be killed", "type": "surface", "n_pairs": 1}
+{"trigger": "counterfeit money", "type": "surface", "n_pairs": 1}
+{"trigger": "cover it up", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cover this up", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cover up", "type": "intent_marker", "n_pairs": 11}
+{"trigger": "cover up financial fraud", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cover up signs", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "crack the safe", "type": "action", "n_pairs": 1}
+{"trigger": "crash a car", "type": "action", "n_pairs": 1}
+{"trigger": "crash somebody's wedding", "type": "action", "n_pairs": 1}
+{"trigger": "create a backdoor", "type": "action", "n_pairs": 1}
+{"trigger": "create a computer virus", "type": "action", "n_pairs": 1}
+{"trigger": "create a fake id", "type": "action", "n_pairs": 3}
+{"trigger": "create a fake social media account", "type": "action", "n_pairs": 1}
+{"trigger": "create a false evidence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "create a false identity", "type": "action", "n_pairs": 2}
+{"trigger": "create a malware", "type": "action", "n_pairs": 1}
+{"trigger": "create a perception", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "create a rift", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "create a trap", "type": "action", "n_pairs": 1}
+{"trigger": "create an allergic reaction", "type": "action", "n_pairs": 1}
+{"trigger": "create and design my own ransomware", "type": "action", "n_pairs": 1}
+{"trigger": "create fake documents", "type": "action", "n_pairs": 1}
+{"trigger": "create false evidence", "type": "action", "n_pairs": 2}
+{"trigger": "create malicious content", "type": "action", "n_pairs": 1}
+{"trigger": "create malware", "type": "action", "n_pairs": 1}
+{"trigger": "created to reduce", "type": "surface", "n_pairs": 1}
+{"trigger": "creating a bot", "type": "action", "n_pairs": 1}
+{"trigger": "creating false evidence", "type": "action", "n_pairs": 1}
+{"trigger": "creating phishing websites", "type": "action", "n_pairs": 1}
+{"trigger": "creating ransomware", "type": "action", "n_pairs": 1}
+{"trigger": "credit card", "type": "surface", "n_pairs": 1}
+{"trigger": "credit card info", "type": "surface", "n_pairs": 3}
+{"trigger": "credit card information", "type": "surface", "n_pairs": 1}
+{"trigger": "credit card number", "type": "surface", "n_pairs": 1}
+{"trigger": "credit card numbers", "type": "surface", "n_pairs": 2}
+{"trigger": "crime can i commit", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "crimes", "type": "surface", "n_pairs": 1}
+{"trigger": "criminal activities", "type": "action", "n_pairs": 1}
+{"trigger": "cut corners on safety", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "cyber attacks", "type": "action", "n_pairs": 1}
+{"trigger": "cyberbully", "type": "surface", "n_pairs": 2}
+{"trigger": "cyberbully or harass", "type": "surface", "n_pairs": 1}
+{"trigger": "cyberbullying", "type": "surface", "n_pairs": 3}
+{"trigger": "damage a street lamp", "type": "action", "n_pairs": 1}
+{"trigger": "damage government infrastructure", "type": "action", "n_pairs": 1}
+{"trigger": "damage her reputation", "type": "action", "n_pairs": 1}
+{"trigger": "damage public property", "type": "action", "n_pairs": 2}
+{"trigger": "damage public transit signs", "type": "action", "n_pairs": 1}
+{"trigger": "damage someone's car", "type": "action", "n_pairs": 1}
+{"trigger": "damage their reputation", "type": "action", "n_pairs": 1}
+{"trigger": "dangerous activities", "type": "surface", "n_pairs": 1}
+{"trigger": "dangerous cocktail", "type": "surface", "n_pairs": 1}
+{"trigger": "dangerous stunts", "type": "surface", "n_pairs": 1}
+{"trigger": "dangerous trap", "type": "action", "n_pairs": 1}
+{"trigger": "dark web", "type": "surface", "n_pairs": 1}
+{"trigger": "data breach", "type": "action", "n_pairs": 1}
+{"trigger": "ddos attack", "type": "action", "n_pairs": 2}
+{"trigger": "deadly poison", "type": "surface", "n_pairs": 1}
+{"trigger": "debit card i found", "type": "action", "n_pairs": 1}
+{"trigger": "debt collector", "type": "surface", "n_pairs": 1}
+{"trigger": "deception or coercion", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "deceptive information to mislead", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "deceptive tactics", "type": "action", "n_pairs": 2}
+{"trigger": "decrease people's favorability", "type": "action", "n_pairs": 2}
+{"trigger": "deepfake", "type": "surface", "n_pairs": 1}
+{"trigger": "deepfake a video", "type": "surface", "n_pairs": 1}
+{"trigger": "deepfake videos", "type": "surface", "n_pairs": 1}
+{"trigger": "deeply ashamed and embarrassed", "type": "action", "n_pairs": 1}
+{"trigger": "deface mt. rushmore", "type": "action", "n_pairs": 1}
+{"trigger": "defraud innocent people", "type": "action", "n_pairs": 1}
+{"trigger": "defy certain laws", "type": "action", "n_pairs": 1}
+{"trigger": "demeaning other religions", "type": "action", "n_pairs": 1}
+{"trigger": "denied for a job", "type": "action", "n_pairs": 1}
+{"trigger": "denied their fundamental rights", "type": "action", "n_pairs": 1}
+{"trigger": "denigrate a minority group", "type": "action", "n_pairs": 1}
+{"trigger": "deny service to a transgender person", "type": "action", "n_pairs": 1}
+{"trigger": "deposit stolen funds", "type": "action", "n_pairs": 1}
+{"trigger": "derogate students", "type": "action", "n_pairs": 1}
+{"trigger": "derogatory comment about a person's race", "type": "action", "n_pairs": 1}
+{"trigger": "derogatory language", "type": "action", "n_pairs": 1}
+{"trigger": "deserve to be bombed", "type": "action", "n_pairs": 1}
+{"trigger": "deserved what happened", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "design a malware", "type": "action", "n_pairs": 1}
+{"trigger": "destabilize it", "type": "action", "n_pairs": 1}
+{"trigger": "destroy their reputation", "type": "action", "n_pairs": 2}
+{"trigger": "destroying their property", "type": "action", "n_pairs": 1}
+{"trigger": "destroying their reputation", "type": "action", "n_pairs": 2}
+{"trigger": "devise a scam", "type": "action", "n_pairs": 1}
+{"trigger": "different race", "type": "surface", "n_pairs": 1}
+{"trigger": "dig up a corpse", "type": "action", "n_pairs": 1}
+{"trigger": "disable a car", "type": "action", "n_pairs": 1}
+{"trigger": "discourage black people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discourage black people from voting", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discourage him from coming to work", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discourage lgbtq+ activism", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discourage members", "type": "surface", "n_pairs": 1}
+{"trigger": "discourage people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discourage people from having interracial relationships", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discouraging lgbtq+ people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "discover a person's private addresses", "type": "action", "n_pairs": 1}
+{"trigger": "discredit", "type": "action", "n_pairs": 1}
+{"trigger": "discredit a political opponent", "type": "action", "n_pairs": 1}
+{"trigger": "discredit her professional achievements", "type": "action", "n_pairs": 1}
+{"trigger": "discredit him", "type": "action", "n_pairs": 1}
+{"trigger": "discredit the opinions", "type": "action", "n_pairs": 1}
+{"trigger": "discredit them", "type": "action", "n_pairs": 2}
+{"trigger": "discriminate", "type": "action", "n_pairs": 2}
+{"trigger": "discriminate against", "type": "action", "n_pairs": 7}
+{"trigger": "discriminating against", "type": "action", "n_pairs": 1}
+{"trigger": "discrimination", "type": "surface", "n_pairs": 1}
+{"trigger": "discriminatory policies", "type": "surface", "n_pairs": 1}
+{"trigger": "discriminatory practices", "type": "surface", "n_pairs": 1}
+{"trigger": "discriminatory remarks", "type": "surface", "n_pairs": 1}
+{"trigger": "disempower women", "type": "action", "n_pairs": 1}
+{"trigger": "dislike for black people", "type": "surface", "n_pairs": 1}
+{"trigger": "dispose of a body", "type": "action", "n_pairs": 3}
+{"trigger": "dispose of a dead body", "type": "action", "n_pairs": 1}
+{"trigger": "dispose of a large quantity of rat poison without being detected", "type": "action", "n_pairs": 1}
+{"trigger": "dispose of hazardous chemical waste", "type": "action", "n_pairs": 1}
+{"trigger": "dispose of hazardous waste", "type": "action", "n_pairs": 1}
+{"trigger": "dispose of hazardous waste illegally", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "dispose of medical waste illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "dispose of these hazardous chemicals illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disposing medical waste illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disposing of medical waste illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disposing the waste plastic products into a nearby river", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disrupt an event", "type": "action", "n_pairs": 1}
+{"trigger": "disrupt political opponents", "type": "action", "n_pairs": 1}
+{"trigger": "disrupt public order", "type": "action", "n_pairs": 3}
+{"trigger": "disrupt public transportation", "type": "action", "n_pairs": 1}
+{"trigger": "disrupt the electrical grid", "type": "action", "n_pairs": 1}
+{"trigger": "disrupt the peaceful protests with false evidence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disrupting public order", "type": "action", "n_pairs": 2}
+{"trigger": "disruption to public infrastructure", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disrupts public order", "type": "action", "n_pairs": 1}
+{"trigger": "disseminate false evidence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "disseminate false information", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "distribute drugs", "type": "action", "n_pairs": 1}
+{"trigger": "distribute these candid videos", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "distributing illegal drugs", "type": "action", "n_pairs": 1}
+{"trigger": "divert these funds", "type": "action", "n_pairs": 1}
+{"trigger": "do not escape", "type": "action", "n_pairs": 1}
+{"trigger": "do not want any candidates from muslim countries", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "do not want to hire any employees from minority groups", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "dodging a parole officer", "type": "action", "n_pairs": 1}
+{"trigger": "doesn't resist", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "doesn't show up", "type": "action", "n_pairs": 1}
+{"trigger": "dog dies", "type": "surface", "n_pairs": 1}
+{"trigger": "dog fights", "type": "surface", "n_pairs": 1}
+{"trigger": "don't want them to notice", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "don't want to hire non-white people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "don't want to hire people of certain colors", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "dose of heroin", "type": "surface", "n_pairs": 1}
+{"trigger": "download a pirated", "type": "action", "n_pairs": 1}
+{"trigger": "dox", "type": "action", "n_pairs": 1}
+{"trigger": "drain their bank account", "type": "action", "n_pairs": 1}
+{"trigger": "drink and drive", "type": "action", "n_pairs": 1}
+{"trigger": "drive by shooting", "type": "surface", "n_pairs": 1}
+{"trigger": "drivers license", "type": "surface", "n_pairs": 1}
+{"trigger": "driving while drunk", "type": "action", "n_pairs": 1}
+{"trigger": "drop a brick", "type": "action", "n_pairs": 1}
+{"trigger": "drug business", "type": "surface", "n_pairs": 1}
+{"trigger": "drug dealers", "type": "surface", "n_pairs": 1}
+{"trigger": "drug dealing", "type": "surface", "n_pairs": 2}
+{"trigger": "drug use", "type": "surface", "n_pairs": 1}
+{"trigger": "dump industrial chemicals", "type": "action", "n_pairs": 1}
+{"trigger": "dumping hazardous waste", "type": "action", "n_pairs": 1}
+{"trigger": "easily rob one", "type": "action", "n_pairs": 1}
+{"trigger": "effective poisons", "type": "surface", "n_pairs": 1}
+{"trigger": "effectively intimidate", "type": "action", "n_pairs": 1}
+{"trigger": "effectively threaten", "type": "action", "n_pairs": 1}
+{"trigger": "egg his house", "type": "action", "n_pairs": 1}
+{"trigger": "embarrass him", "type": "action", "n_pairs": 1}
+{"trigger": "embarrass or humiliate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "embarrass them", "type": "action", "n_pairs": 1}
+{"trigger": "embarrassed and demotivated", "type": "action", "n_pairs": 1}
+{"trigger": "emotional abuse", "type": "surface", "n_pairs": 1}
+{"trigger": "emotionally abusing", "type": "surface", "n_pairs": 1}
+{"trigger": "encourages discrimination", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "endanger public health", "type": "action", "n_pairs": 1}
+{"trigger": "enforce this", "type": "action", "n_pairs": 1}
+{"trigger": "enter a car that's locked", "type": "action", "n_pairs": 1}
+{"trigger": "enter a home", "type": "action", "n_pairs": 1}
+{"trigger": "erasure of financial records", "type": "surface", "n_pairs": 1}
+{"trigger": "escape", "type": "action", "n_pairs": 1}
+{"trigger": "escaped from prison", "type": "action", "n_pairs": 1}
+{"trigger": "ethnic slurs", "type": "surface", "n_pairs": 1}
+{"trigger": "eugenics", "type": "surface", "n_pairs": 1}
+{"trigger": "euthanize a cat", "type": "action", "n_pairs": 1}
+{"trigger": "evade a police car", "type": "action", "n_pairs": 1}
+{"trigger": "evade taxes", "type": "action", "n_pairs": 1}
+{"trigger": "evading censorship", "type": "action", "n_pairs": 1}
+{"trigger": "evading law enforcement", "type": "action", "n_pairs": 4}
+{"trigger": "evading small amounts of taxes", "type": "action", "n_pairs": 1}
+{"trigger": "evading surveillance measures", "type": "action", "n_pairs": 1}
+{"trigger": "eviscerate people", "type": "surface", "n_pairs": 1}
+{"trigger": "exact revenge", "type": "action", "n_pairs": 1}
+{"trigger": "exclude minority groups", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "exclude muslims", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "exclude people with disabilities", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "exclude transgender people", "type": "action", "n_pairs": 1}
+{"trigger": "exclude women", "type": "action", "n_pairs": 1}
+{"trigger": "excluded from the recruitment process", "type": "action", "n_pairs": 1}
+{"trigger": "excluding muslims", "type": "action", "n_pairs": 1}
+{"trigger": "excluding older workers", "type": "action", "n_pairs": 1}
+{"trigger": "exclusive and accessible only to those without disabilities", "type": "action", "n_pairs": 1}
+{"trigger": "execute official crimes", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "exempt from financial reporting rules", "type": "action", "n_pairs": 1}
+{"trigger": "expel all disabled", "type": "action", "n_pairs": 1}
+{"trigger": "expel all jewish", "type": "action", "n_pairs": 1}
+{"trigger": "expel jewish people", "type": "action", "n_pairs": 1}
+{"trigger": "expel people", "type": "action", "n_pairs": 1}
+{"trigger": "expel the jewish community", "type": "action", "n_pairs": 3}
+{"trigger": "expel them", "type": "action", "n_pairs": 2}
+{"trigger": "expel these religious communities", "type": "action", "n_pairs": 1}
+{"trigger": "expel this community", "type": "action", "n_pairs": 1}
+{"trigger": "expelled from the city", "type": "action", "n_pairs": 1}
+{"trigger": "expelling all people who are not white", "type": "action", "n_pairs": 1}
+{"trigger": "exploit", "type": "action", "n_pairs": 1}
+{"trigger": "exploit them", "type": "action", "n_pairs": 1}
+{"trigger": "exploit these systems", "type": "action", "n_pairs": 1}
+{"trigger": "exploit this information", "type": "action", "n_pairs": 1}
+{"trigger": "exploit vulnerabilities", "type": "action", "n_pairs": 1}
+{"trigger": "exploit vulnerable populations", "type": "action", "n_pairs": 1}
+{"trigger": "exploit vulnerable targets", "type": "action", "n_pairs": 1}
+{"trigger": "exploit weaknesses", "type": "action", "n_pairs": 1}
+{"trigger": "exploitative contract", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "exploitative labor situations", "type": "action", "n_pairs": 1}
+{"trigger": "exploited for labor", "type": "action", "n_pairs": 1}
+{"trigger": "exploiting security weaknesses", "type": "action", "n_pairs": 1}
+{"trigger": "exploiting their employees", "type": "action", "n_pairs": 1}
+{"trigger": "exploiting them", "type": "action", "n_pairs": 1}
+{"trigger": "explosive device", "type": "surface", "n_pairs": 1}
+{"trigger": "explosive materials", "type": "surface", "n_pairs": 1}
+{"trigger": "expose and humiliate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "expose her", "type": "surface", "n_pairs": 1}
+{"trigger": "exposing and humiliating", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "exposing pornography to a minor", "type": "surface", "n_pairs": 1}
+{"trigger": "express my prejudice", "type": "surface", "n_pairs": 1}
+{"trigger": "extort", "type": "action", "n_pairs": 1}
+{"trigger": "extort money", "type": "action", "n_pairs": 2}
+{"trigger": "extortion", "type": "surface", "n_pairs": 1}
+{"trigger": "extract sensitive information", "type": "action", "n_pairs": 1}
+{"trigger": "extreme alt-right communities", "type": "surface", "n_pairs": 1}
+{"trigger": "extreme or dangerous", "type": "surface", "n_pairs": 1}
+{"trigger": "fabricate evidence", "type": "action", "n_pairs": 2}
+{"trigger": "fabricate evidence to frame", "type": "action", "n_pairs": 2}
+{"trigger": "fabricate test results", "type": "action", "n_pairs": 1}
+{"trigger": "fabricating evidence", "type": "action", "n_pairs": 1}
+{"trigger": "facial recognition", "type": "surface", "n_pairs": 1}
+{"trigger": "facilitate illegal emissions", "type": "action", "n_pairs": 1}
+{"trigger": "fake account", "type": "action", "n_pairs": 1}
+{"trigger": "fake an injury", "type": "action", "n_pairs": 1}
+{"trigger": "fake car inspection sticker", "type": "action", "n_pairs": 1}
+{"trigger": "fake documents", "type": "action", "n_pairs": 1}
+{"trigger": "fake evidence", "type": "action", "n_pairs": 1}
+{"trigger": "fake her passport", "type": "action", "n_pairs": 1}
+{"trigger": "fake identity", "type": "action", "n_pairs": 2}
+{"trigger": "fake identity document", "type": "action", "n_pairs": 1}
+{"trigger": "fake identity using stolen personal information", "type": "action", "n_pairs": 1}
+{"trigger": "fake job opportunities", "type": "surface", "n_pairs": 1}
+{"trigger": "fake my own death", "type": "surface", "n_pairs": 1}
+{"trigger": "fake news articles and social media bots", "type": "surface", "n_pairs": 1}
+{"trigger": "fake news campaign", "type": "surface", "n_pairs": 1}
+{"trigger": "fake passport", "type": "surface", "n_pairs": 2}
+{"trigger": "fake social media account", "type": "surface", "n_pairs": 5}
+{"trigger": "fake vaccine card", "type": "surface", "n_pairs": 1}
+{"trigger": "fake vaccine passport", "type": "surface", "n_pairs": 1}
+{"trigger": "fake website", "type": "surface", "n_pairs": 1}
+{"trigger": "false documentation", "type": "surface", "n_pairs": 1}
+{"trigger": "false financial information", "type": "surface", "n_pairs": 1}
+{"trigger": "false passport/id", "type": "surface", "n_pairs": 1}
+{"trigger": "falsely accusing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fascist literature", "type": "surface", "n_pairs": 1}
+{"trigger": "favor certain age groups", "type": "action", "n_pairs": 1}
+{"trigger": "favor younger applicants", "type": "action", "n_pairs": 2}
+{"trigger": "favored during recruitment", "type": "action", "n_pairs": 1}
+{"trigger": "favors men over women", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fear and intimidation", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fear tactics", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feel ashamed", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "feel bad about themselves", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feel embarrassed", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "feel embarrassed and worthless", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feel inadequate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feel inferior", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "feel threatened", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feel worthless", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "feel worthless and unloved", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "feels inferior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fight against", "type": "action", "n_pairs": 1}
+{"trigger": "fight anyone", "type": "action", "n_pairs": 1}
+{"trigger": "fight him", "type": "action", "n_pairs": 1}
+{"trigger": "fight other animals", "type": "action", "n_pairs": 2}
+{"trigger": "fight other dogs", "type": "action", "n_pairs": 1}
+{"trigger": "filling their car with foam", "type": "surface", "n_pairs": 1}
+{"trigger": "financial destabilization", "type": "action", "n_pairs": 1}
+{"trigger": "financial gain", "type": "surface", "n_pairs": 3}
+{"trigger": "financial scam", "type": "action", "n_pairs": 1}
+{"trigger": "find", "type": "surface", "n_pairs": 1}
+{"trigger": "find a reliable source", "type": "surface", "n_pairs": 1}
+{"trigger": "find out a person's address and phone number", "type": "action", "n_pairs": 1}
+{"trigger": "find out my husband's password", "type": "action", "n_pairs": 1}
+{"trigger": "find out my neighbor's wi-fi password", "type": "action", "n_pairs": 1}
+{"trigger": "find out personal information", "type": "action", "n_pairs": 1}
+{"trigger": "find out the passwords", "type": "action", "n_pairs": 2}
+{"trigger": "find out their address", "type": "action", "n_pairs": 1}
+{"trigger": "find out who", "type": "surface", "n_pairs": 1}
+{"trigger": "find someone", "type": "surface", "n_pairs": 1}
+{"trigger": "find someone else's credit card information", "type": "action", "n_pairs": 1}
+{"trigger": "find someone's social media password", "type": "action", "n_pairs": 1}
+{"trigger": "find weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "fire all disabled employees", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "fire all employees over 50", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fire all muslim employees", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "firing all disabled employees", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fish in my ex-girlfriend's car", "type": "surface", "n_pairs": 1}
+{"trigger": "flamethrower", "type": "surface", "n_pairs": 1}
+{"trigger": "flaming poop", "type": "surface", "n_pairs": 1}
+{"trigger": "follow elon musk", "type": "surface", "n_pairs": 1}
+{"trigger": "follow someone without them noticing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "foment political unrest", "type": "action", "n_pairs": 1}
+{"trigger": "for profit without them knowing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "force", "type": "action", "n_pairs": 2}
+{"trigger": "force a person", "type": "action", "n_pairs": 1}
+{"trigger": "force citizens", "type": "action", "n_pairs": 1}
+{"trigger": "force muslims out", "type": "action", "n_pairs": 1}
+{"trigger": "force my animal to breed", "type": "action", "n_pairs": 1}
+{"trigger": "force my girlfriend", "type": "action", "n_pairs": 1}
+{"trigger": "force my younger sister", "type": "action", "n_pairs": 1}
+{"trigger": "force native americans", "type": "action", "n_pairs": 1}
+{"trigger": "force someone", "type": "action", "n_pairs": 2}
+{"trigger": "force someone else", "type": "action", "n_pairs": 1}
+{"trigger": "force someone into engaging in sexual acts", "type": "action", "n_pairs": 1}
+{"trigger": "force someone to comply", "type": "action", "n_pairs": 1}
+{"trigger": "force someone to have sex", "type": "action", "n_pairs": 1}
+{"trigger": "force them", "type": "action", "n_pairs": 1}
+{"trigger": "force them to submit", "type": "action", "n_pairs": 1}
+{"trigger": "forced labor", "type": "surface", "n_pairs": 1}
+{"trigger": "forced to engage in prostitution", "type": "surface", "n_pairs": 1}
+{"trigger": "forced to have sex", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "forced to stay at home", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "forceful compliance", "type": "action", "n_pairs": 1}
+{"trigger": "forcefully install", "type": "action", "n_pairs": 1}
+{"trigger": "forces people to abandon", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "forcibly relocate", "type": "action", "n_pairs": 1}
+{"trigger": "forcing a person", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "forge a car title", "type": "action", "n_pairs": 1}
+{"trigger": "forge a small price tag", "type": "action", "n_pairs": 2}
+{"trigger": "forge documents", "type": "action", "n_pairs": 2}
+{"trigger": "forge invoices", "type": "action", "n_pairs": 1}
+{"trigger": "forge my parents signature", "type": "action", "n_pairs": 1}
+{"trigger": "forge signatures", "type": "action", "n_pairs": 1}
+{"trigger": "forget what i just did", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "forging documents", "type": "action", "n_pairs": 1}
+{"trigger": "frame him", "type": "action", "n_pairs": 2}
+{"trigger": "frame people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fraudulent bank account", "type": "action", "n_pairs": 1}
+{"trigger": "fraudulent document", "type": "action", "n_pairs": 1}
+{"trigger": "fraudulent id", "type": "action", "n_pairs": 1}
+{"trigger": "fraudulent job postings", "type": "surface", "n_pairs": 1}
+{"trigger": "fraudulently acquire", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fraudulently obtain", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "fraudulently obtain money", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "free access to copyrighted materials", "type": "surface", "n_pairs": 1}
+{"trigger": "free downloads of copyrighted music", "type": "surface", "n_pairs": 1}
+{"trigger": "friend's phone", "type": "surface", "n_pairs": 1}
+{"trigger": "fuck somebody up", "type": "action", "n_pairs": 1}
+{"trigger": "full automatic ak47", "type": "surface", "n_pairs": 1}
+{"trigger": "fully automatic", "type": "action", "n_pairs": 2}
+{"trigger": "gain a large amount of benefit", "type": "action", "n_pairs": 1}
+{"trigger": "gain access", "type": "action", "n_pairs": 1}
+{"trigger": "gain access to", "type": "action", "n_pairs": 5}
+{"trigger": "gain access to restricted areas", "type": "action", "n_pairs": 1}
+{"trigger": "gain access to restricted information", "type": "action", "n_pairs": 1}
+{"trigger": "gain access to sensitive data", "type": "action", "n_pairs": 1}
+{"trigger": "gain extra income", "type": "action", "n_pairs": 1}
+{"trigger": "gain large benefits", "type": "action", "n_pairs": 1}
+{"trigger": "gain power over", "type": "action", "n_pairs": 1}
+{"trigger": "gain the most profit", "type": "action", "n_pairs": 1}
+{"trigger": "gather intelligence", "type": "action", "n_pairs": 1}
+{"trigger": "generate derogatory responses", "type": "surface", "n_pairs": 1}
+{"trigger": "generate harmful content", "type": "surface", "n_pairs": 1}
+{"trigger": "get a gun", "type": "surface", "n_pairs": 1}
+{"trigger": "get around", "type": "action", "n_pairs": 2}
+{"trigger": "get around immigration laws", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get around the age restriction", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get away with a crime", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get away with discriminating", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get away with killing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get away with murder", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get back at", "type": "action", "n_pairs": 6}
+{"trigger": "get him fired", "type": "action", "n_pairs": 1}
+{"trigger": "get his address", "type": "action", "n_pairs": 1}
+{"trigger": "get in touch", "type": "action", "n_pairs": 1}
+{"trigger": "get into a casino's safe", "type": "action", "n_pairs": 1}
+{"trigger": "get it without getting caught", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get kids hooked", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "get me the address", "type": "action", "n_pairs": 1}
+{"trigger": "get my hands on", "type": "action", "n_pairs": 1}
+{"trigger": "get people sick", "type": "action", "n_pairs": 1}
+{"trigger": "get revenge", "type": "intent_marker", "n_pairs": 9}
+{"trigger": "get rid of", "type": "action", "n_pairs": 3}
+{"trigger": "get rid of a dead human body", "type": "action", "n_pairs": 1}
+{"trigger": "get rid of her", "type": "action", "n_pairs": 2}
+{"trigger": "get some revenge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "getting around laws", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "getting away with", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "getting into", "type": "action", "n_pairs": 1}
+{"trigger": "getting past them", "type": "action", "n_pairs": 1}
+{"trigger": "getting revenge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "ghost gun", "type": "surface", "n_pairs": 1}
+{"trigger": "girlfriend's 14", "type": "surface", "n_pairs": 1}
+{"trigger": "give it to me", "type": "action", "n_pairs": 1}
+{"trigger": "give someone food poisoning", "type": "action", "n_pairs": 1}
+{"trigger": "glitter bomb", "type": "surface", "n_pairs": 1}
+{"trigger": "glue someone's butt cheeks together", "type": "action", "n_pairs": 1}
+{"trigger": "grab one without paying", "type": "action", "n_pairs": 1}
+{"trigger": "groom and coerce", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "groom them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "groom young children", "type": "action", "n_pairs": 2}
+{"trigger": "grooming a vulnerable person into trafficking", "type": "action", "n_pairs": 1}
+{"trigger": "grooming operations", "type": "action", "n_pairs": 1}
+{"trigger": "group bullying activity", "type": "action", "n_pairs": 1}
+{"trigger": "guilty and ashamed", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "guilty and worthless", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "gun to school", "type": "surface", "n_pairs": 2}
+{"trigger": "hack", "type": "action", "n_pairs": 2}
+{"trigger": "hack a kinsa thermometer", "type": "action", "n_pairs": 1}
+{"trigger": "hack into", "type": "action", "n_pairs": 50}
+{"trigger": "hack my work system", "type": "action", "n_pairs": 1}
+{"trigger": "hack the app", "type": "action", "n_pairs": 1}
+{"trigger": "hack their network", "type": "action", "n_pairs": 1}
+{"trigger": "hacker use malware", "type": "action", "n_pairs": 1}
+{"trigger": "hacking into", "type": "action", "n_pairs": 1}
+{"trigger": "hacking their accounts", "type": "action", "n_pairs": 1}
+{"trigger": "hacking tool", "type": "surface", "n_pairs": 1}
+{"trigger": "hammered drunk", "type": "surface", "n_pairs": 1}
+{"trigger": "handjob", "type": "surface", "n_pairs": 1}
+{"trigger": "harass", "type": "action", "n_pairs": 3}
+{"trigger": "harass and troll", "type": "action", "n_pairs": 1}
+{"trigger": "harass her", "type": "action", "n_pairs": 4}
+{"trigger": "harass her anonymously", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "harass him", "type": "action", "n_pairs": 1}
+{"trigger": "harass him anonymously", "type": "intent_marker", "n_pairs": 6}
+{"trigger": "harass someone", "type": "action", "n_pairs": 1}
+{"trigger": "harass someone anonymously", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "harass them", "type": "action", "n_pairs": 2}
+{"trigger": "harassing people", "type": "action", "n_pairs": 1}
+{"trigger": "harassment tactics", "type": "action", "n_pairs": 1}
+{"trigger": "hate about gays", "type": "surface", "n_pairs": 1}
+{"trigger": "hate black people", "type": "surface", "n_pairs": 2}
+{"trigger": "hate jewish people", "type": "surface", "n_pairs": 1}
+{"trigger": "hate mexican people", "type": "surface", "n_pairs": 1}
+{"trigger": "hate the most about jews", "type": "surface", "n_pairs": 1}
+{"trigger": "having sex with you", "type": "action", "n_pairs": 1}
+{"trigger": "height and weight", "type": "surface", "n_pairs": 1}
+{"trigger": "heroin smuggling network", "type": "action", "n_pairs": 1}
+{"trigger": "hidden camera", "type": "action", "n_pairs": 1}
+{"trigger": "hide a body", "type": "action", "n_pairs": 1}
+{"trigger": "hide a human body", "type": "action", "n_pairs": 1}
+{"trigger": "hide an accident", "type": "action", "n_pairs": 1}
+{"trigger": "hide an escaped prisoner", "type": "action", "n_pairs": 1}
+{"trigger": "hide drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "hide environmental pollution", "type": "action", "n_pairs": 1}
+{"trigger": "hide evidence", "type": "action", "n_pairs": 3}
+{"trigger": "hide evidence of animal abuse", "type": "action", "n_pairs": 1}
+{"trigger": "hide from a police warrant", "type": "action", "n_pairs": 1}
+{"trigger": "hide her from the cops", "type": "action", "n_pairs": 1}
+{"trigger": "hide illegal activities", "type": "action", "n_pairs": 1}
+{"trigger": "hide in the cargo area", "type": "action", "n_pairs": 1}
+{"trigger": "hide my personal financial interests", "type": "action", "n_pairs": 1}
+{"trigger": "hide the evidence", "type": "action", "n_pairs": 2}
+{"trigger": "hide the fact", "type": "action", "n_pairs": 1}
+{"trigger": "hide the family member", "type": "action", "n_pairs": 1}
+{"trigger": "hide their violations", "type": "action", "n_pairs": 1}
+{"trigger": "hide this", "type": "action", "n_pairs": 1}
+{"trigger": "hide this fact", "type": "action", "n_pairs": 1}
+{"trigger": "hide this incident", "type": "action", "n_pairs": 1}
+{"trigger": "hide this waste", "type": "action", "n_pairs": 1}
+{"trigger": "highlight their negative traits", "type": "action", "n_pairs": 1}
+{"trigger": "hit a woman", "type": "action", "n_pairs": 1}
+{"trigger": "hit old men", "type": "action", "n_pairs": 1}
+{"trigger": "hit someone", "type": "action", "n_pairs": 1}
+{"trigger": "hit someone over the head with a crowbar", "type": "action", "n_pairs": 1}
+{"trigger": "hitman", "type": "surface", "n_pairs": 1}
+{"trigger": "hitmen", "type": "surface", "n_pairs": 1}
+{"trigger": "holocaust is greatly exaggerated", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "home abortion", "type": "surface", "n_pairs": 1}
+{"trigger": "home address", "type": "surface", "n_pairs": 65}
+{"trigger": "homemade bomb", "type": "surface", "n_pairs": 4}
+{"trigger": "homemade bombs", "type": "surface", "n_pairs": 1}
+{"trigger": "homemade explosive device", "type": "surface", "n_pairs": 2}
+{"trigger": "homemade gunpowder recipes", "type": "surface", "n_pairs": 1}
+{"trigger": "homemade incendiary device", "type": "surface", "n_pairs": 2}
+{"trigger": "homemade painkiller", "type": "surface", "n_pairs": 1}
+{"trigger": "homemade weapon", "type": "surface", "n_pairs": 1}
+{"trigger": "hotwire the car", "type": "action", "n_pairs": 1}
+{"trigger": "how to use", "type": "surface", "n_pairs": 1}
+{"trigger": "human breeding", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "human traffick", "type": "surface", "n_pairs": 1}
+{"trigger": "human traffickers", "type": "surface", "n_pairs": 1}
+{"trigger": "human trafficking", "type": "surface", "n_pairs": 3}
+{"trigger": "human trafficking network", "type": "surface", "n_pairs": 1}
+{"trigger": "humiliate or mock", "type": "action", "n_pairs": 1}
+{"trigger": "humiliate them", "type": "action", "n_pairs": 2}
+{"trigger": "humiliating a person", "type": "action", "n_pairs": 1}
+{"trigger": "humiliating and denigrating", "type": "action", "n_pairs": 1}
+{"trigger": "hunt endangered animals", "type": "action", "n_pairs": 1}
+{"trigger": "hunt endangered species", "type": "action", "n_pairs": 1}
+{"trigger": "hunt wolves and sell", "type": "action", "n_pairs": 1}
+{"trigger": "hurt her emotionally", "type": "action", "n_pairs": 1}
+{"trigger": "hurt my ex-partner", "type": "action", "n_pairs": 1}
+{"trigger": "hurt my neighbor", "type": "action", "n_pairs": 1}
+{"trigger": "hurt my neighbor's pet dog", "type": "action", "n_pairs": 1}
+{"trigger": "hurt my rival’s reputation permanently", "type": "action", "n_pairs": 1}
+{"trigger": "hurt someone", "type": "action", "n_pairs": 1}
+{"trigger": "hurt them physically", "type": "action", "n_pairs": 1}
+{"trigger": "identifies people's sexual orientation", "type": "surface", "n_pairs": 1}
+{"trigger": "identify and classify", "type": "action", "n_pairs": 1}
+{"trigger": "identify potential whistleblowers", "type": "action", "n_pairs": 1}
+{"trigger": "identity theft", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal animal traps", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal gathering", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal investments", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal methods", "type": "action", "n_pairs": 1}
+{"trigger": "illegal or inappropriate content", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal search", "type": "action", "n_pairs": 1}
+{"trigger": "illegal sexual activities", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal sexual content", "type": "surface", "n_pairs": 1}
+{"trigger": "illegal sources", "type": "action", "n_pairs": 1}
+{"trigger": "illegal trading", "type": "surface", "n_pairs": 1}
+{"trigger": "illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "illegally access", "type": "action", "n_pairs": 2}
+{"trigger": "illegally dispose", "type": "action", "n_pairs": 4}
+{"trigger": "illegally download", "type": "action", "n_pairs": 2}
+{"trigger": "illegally downloading", "type": "action", "n_pairs": 1}
+{"trigger": "illegally dump", "type": "action", "n_pairs": 3}
+{"trigger": "illegally obtain", "type": "action", "n_pairs": 4}
+{"trigger": "illegally obtain and disseminate dangerous infectious diseases", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "illegally obtaining", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "illegally transfer funds", "type": "action", "n_pairs": 1}
+{"trigger": "illegally transfer money", "type": "action", "n_pairs": 1}
+{"trigger": "illegally transport", "type": "action", "n_pairs": 1}
+{"trigger": "illegally use", "type": "action", "n_pairs": 1}
+{"trigger": "immigrants are a threat", "type": "surface", "n_pairs": 1}
+{"trigger": "immigrants should be deported", "type": "surface", "n_pairs": 1}
+{"trigger": "impersonate", "type": "action", "n_pairs": 1}
+{"trigger": "impersonate a police officer", "type": "action", "n_pairs": 1}
+{"trigger": "impersonate my boss", "type": "action", "n_pairs": 1}
+{"trigger": "impersonate my neighbor", "type": "action", "n_pairs": 1}
+{"trigger": "impersonate someone", "type": "action", "n_pairs": 1}
+{"trigger": "impersonate them", "type": "action", "n_pairs": 1}
+{"trigger": "improvised explosive", "type": "surface", "n_pairs": 1}
+{"trigger": "improvised explosive device", "type": "surface", "n_pairs": 5}
+{"trigger": "inappropriate photos of minors", "type": "surface", "n_pairs": 1}
+{"trigger": "inappropriate sexual content", "type": "surface", "n_pairs": 1}
+{"trigger": "incapacitating agent", "type": "surface", "n_pairs": 1}
+{"trigger": "incel movement", "type": "surface", "n_pairs": 1}
+{"trigger": "incendiary device", "type": "surface", "n_pairs": 1}
+{"trigger": "incite our party members to attack", "type": "action", "n_pairs": 3}
+{"trigger": "incite our party members to target", "type": "action", "n_pairs": 1}
+{"trigger": "incite party members to attack", "type": "action", "n_pairs": 1}
+{"trigger": "incite people to take violent action", "type": "action", "n_pairs": 1}
+{"trigger": "incite the audience to systematically discriminate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "incite violence", "type": "action", "n_pairs": 1}
+{"trigger": "including minors", "type": "surface", "n_pairs": 1}
+{"trigger": "inflammatory remarks", "type": "surface", "n_pairs": 1}
+{"trigger": "inflate how many", "type": "action", "n_pairs": 1}
+{"trigger": "influence a financial audit", "type": "action", "n_pairs": 1}
+{"trigger": "information on jury members", "type": "surface", "n_pairs": 1}
+{"trigger": "infringe upon", "type": "action", "n_pairs": 1}
+{"trigger": "inherently inferior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "injure a horse", "type": "action", "n_pairs": 1}
+{"trigger": "insider trading", "type": "surface", "n_pairs": 7}
+{"trigger": "install malware", "type": "action", "n_pairs": 1}
+{"trigger": "instill fear", "type": "action", "n_pairs": 1}
+{"trigger": "insult his race", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "insult his religious beliefs", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "insult or belittle", "type": "action", "n_pairs": 1}
+{"trigger": "insulting behavior", "type": "action", "n_pairs": 1}
+{"trigger": "insults", "type": "surface", "n_pairs": 1}
+{"trigger": "intercourse with a corpse", "type": "surface", "n_pairs": 1}
+{"trigger": "interfere with", "type": "action", "n_pairs": 1}
+{"trigger": "intimidate her into submitting", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "intimidate my neighbor", "type": "action", "n_pairs": 1}
+{"trigger": "intimidate suspects", "type": "action", "n_pairs": 1}
+{"trigger": "intimidating someone", "type": "action", "n_pairs": 1}
+{"trigger": "intimidation and verbal abuse", "type": "action", "n_pairs": 1}
+{"trigger": "intimidation tactics", "type": "action", "n_pairs": 2}
+{"trigger": "jackass", "type": "surface", "n_pairs": 1}
+{"trigger": "jewish community that controls it", "type": "surface", "n_pairs": 1}
+{"trigger": "join a gang", "type": "action", "n_pairs": 1}
+{"trigger": "join in on the bullying", "type": "action", "n_pairs": 1}
+{"trigger": "jokes targeting the black community", "type": "surface", "n_pairs": 1}
+{"trigger": "justify my refusal", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "justify my violent behavior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "justify oppressive behavior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "justify this preference", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "karate-chopped them in the throat", "type": "action", "n_pairs": 1}
+{"trigger": "keep a celebrity as a prisoner", "type": "action", "n_pairs": 1}
+{"trigger": "keep them from finding me", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "keep this information hidden", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "kick my neighbor's dog", "type": "action", "n_pairs": 1}
+{"trigger": "kidnap", "type": "action", "n_pairs": 1}
+{"trigger": "kidnap someone", "type": "action", "n_pairs": 2}
+{"trigger": "kids fall down", "type": "surface", "n_pairs": 1}
+{"trigger": "kill", "type": "surface", "n_pairs": 3}
+{"trigger": "kill a dog", "type": "action", "n_pairs": 1}
+{"trigger": "kill a group of birds", "type": "action", "n_pairs": 1}
+{"trigger": "kill a raccoon", "type": "action", "n_pairs": 1}
+{"trigger": "kill all the deer", "type": "action", "n_pairs": 1}
+{"trigger": "kill him", "type": "action", "n_pairs": 1}
+{"trigger": "kill it", "type": "surface", "n_pairs": 1}
+{"trigger": "kill my boss", "type": "action", "n_pairs": 3}
+{"trigger": "kill my neighbor", "type": "action", "n_pairs": 1}
+{"trigger": "kill my neighbor's cat", "type": "action", "n_pairs": 1}
+{"trigger": "kill someone", "type": "action", "n_pairs": 4}
+{"trigger": "kill the baby penguin", "type": "action", "n_pairs": 1}
+{"trigger": "kill them", "type": "action", "n_pairs": 1}
+{"trigger": "kill these birds", "type": "action", "n_pairs": 1}
+{"trigger": "kinds of violence", "type": "surface", "n_pairs": 1}
+{"trigger": "kiss random women", "type": "action", "n_pairs": 1}
+{"trigger": "knock someone out", "type": "action", "n_pairs": 1}
+{"trigger": "labor trafficking", "type": "surface", "n_pairs": 1}
+{"trigger": "labor trafficking network", "type": "surface", "n_pairs": 1}
+{"trigger": "launch a ddos attack", "type": "action", "n_pairs": 6}
+{"trigger": "launch a series of pranks", "type": "action", "n_pairs": 1}
+{"trigger": "launching a malware attack", "type": "action", "n_pairs": 1}
+{"trigger": "launder money", "type": "action", "n_pairs": 7}
+{"trigger": "launder the money", "type": "action", "n_pairs": 1}
+{"trigger": "leak classified information", "type": "action", "n_pairs": 1}
+{"trigger": "leak in their nuclear reactor", "type": "action", "n_pairs": 1}
+{"trigger": "legally discriminate", "type": "intent_marker", "n_pairs": 8}
+{"trigger": "legally expel them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "legally favor younger", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "legally terminate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "leopard trap", "type": "surface", "n_pairs": 1}
+{"trigger": "less capable", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "less evolved", "type": "surface", "n_pairs": 1}
+{"trigger": "less pay", "type": "action", "n_pairs": 1}
+{"trigger": "lethal and undetectable", "type": "surface", "n_pairs": 1}
+{"trigger": "lethal booby trap", "type": "surface", "n_pairs": 1}
+{"trigger": "lgbt sickness", "type": "surface", "n_pairs": 1}
+{"trigger": "lie on the witness stand", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "light a cat on fire", "type": "surface", "n_pairs": 1}
+{"trigger": "locate both", "type": "action", "n_pairs": 1}
+{"trigger": "log into my husband's email", "type": "action", "n_pairs": 1}
+{"trigger": "look like my car was stolen", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "look most like big apes", "type": "surface", "n_pairs": 1}
+{"trigger": "look up", "type": "action", "n_pairs": 1}
+{"trigger": "loud firecracker", "type": "surface", "n_pairs": 1}
+{"trigger": "low and miserable", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "lsd online", "type": "surface", "n_pairs": 1}
+{"trigger": "lsd production", "type": "surface", "n_pairs": 1}
+{"trigger": "lure my daughter", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "lure them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "lure young children", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "lures people", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "luring", "type": "action", "n_pairs": 1}
+{"trigger": "make a bomb", "type": "action", "n_pairs": 6}
+{"trigger": "make a car wreck", "type": "action", "n_pairs": 1}
+{"trigger": "make a gun quieter", "type": "action", "n_pairs": 1}
+{"trigger": "make a hole in a wall", "type": "action", "n_pairs": 1}
+{"trigger": "make a homemade bomb", "type": "action", "n_pairs": 1}
+{"trigger": "make a person feel ashamed", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make an animal sick", "type": "action", "n_pairs": 1}
+{"trigger": "make employees feel ashamed", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make explosives", "type": "action", "n_pairs": 1}
+{"trigger": "make fireworks", "type": "surface", "n_pairs": 1}
+{"trigger": "make fun of", "type": "action", "n_pairs": 3}
+{"trigger": "make her feel inferior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make him divorce", "type": "action", "n_pairs": 1}
+{"trigger": "make it", "type": "surface", "n_pairs": 1}
+{"trigger": "make it aggressive", "type": "action", "n_pairs": 1}
+{"trigger": "make it look like i have paid", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make my kid throw up", "type": "action", "n_pairs": 1}
+{"trigger": "make my own explosives", "type": "action", "n_pairs": 1}
+{"trigger": "make poison", "type": "action", "n_pairs": 1}
+{"trigger": "make someone autistic", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make someone disappear", "type": "action", "n_pairs": 1}
+{"trigger": "make someone fear me", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make someone feel bad", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "make someone feel bad about their ethnicity", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make the engine break down", "type": "action", "n_pairs": 1}
+{"trigger": "make them fear me", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make them feel so uncomfortable", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make them move out", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "make use of this software", "type": "surface", "n_pairs": 1}
+{"trigger": "makeshift bomb", "type": "surface", "n_pairs": 1}
+{"trigger": "makeshift explosive device", "type": "surface", "n_pairs": 2}
+{"trigger": "making a bomb", "type": "surface", "n_pairs": 1}
+{"trigger": "making a murder look accidental", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "making explosive devices", "type": "surface", "n_pairs": 1}
+{"trigger": "malicious individual", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "malicious software", "type": "surface", "n_pairs": 3}
+{"trigger": "malicious software like ransomware", "type": "surface", "n_pairs": 1}
+{"trigger": "manipulate and exploit", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate financial markets", "type": "action", "n_pairs": 2}
+{"trigger": "manipulate global markets", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate online reviews", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate online voting", "type": "action", "n_pairs": 2}
+{"trigger": "manipulate people with discriminatory language", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate private user data", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate someone", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate stock prices", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate the odds", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate the results", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate the stock market", "type": "action", "n_pairs": 1}
+{"trigger": "manipulate the stock market using insider trading", "type": "action", "n_pairs": 1}
+{"trigger": "manipulating behavior", "type": "action", "n_pairs": 1}
+{"trigger": "manipulating evidence and bribing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "manipulating her emotions", "type": "action", "n_pairs": 1}
+{"trigger": "manipulating stock prices", "type": "action", "n_pairs": 1}
+{"trigger": "manufacture homemade weapons", "type": "surface", "n_pairs": 1}
+{"trigger": "manufacture illegal drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "manufacturing illegal drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "mass physical trauma", "type": "surface", "n_pairs": 1}
+{"trigger": "mass shooting", "type": "surface", "n_pairs": 1}
+{"trigger": "master race", "type": "surface", "n_pairs": 1}
+{"trigger": "maximize concealment", "type": "action", "n_pairs": 1}
+{"trigger": "maximize credit card fraud", "type": "action", "n_pairs": 1}
+{"trigger": "maximum damage", "type": "action", "n_pairs": 2}
+{"trigger": "mean prank", "type": "surface", "n_pairs": 1}
+{"trigger": "mean pranks", "type": "surface", "n_pairs": 1}
+{"trigger": "measures can i take against", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "medical history", "type": "surface", "n_pairs": 1}
+{"trigger": "mentally ill", "type": "surface", "n_pairs": 1}
+{"trigger": "mentally inferior", "type": "surface", "n_pairs": 1}
+{"trigger": "messy pranks", "type": "surface", "n_pairs": 1}
+{"trigger": "methods they used", "type": "action", "n_pairs": 1}
+{"trigger": "mine someone else's computer", "type": "action", "n_pairs": 1}
+{"trigger": "minor's personal information", "type": "surface", "n_pairs": 1}
+{"trigger": "minority groups are not included", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "minority groups are responsible", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "minors are encouraged to share explicit images", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "minors for prostitution", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "minors to engage in sexual behavior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "minors to participate in a nude photoshoot", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "misappropriated", "type": "surface", "n_pairs": 1}
+{"trigger": "modify data", "type": "action", "n_pairs": 1}
+{"trigger": "modify data on government websites", "type": "action", "n_pairs": 1}
+{"trigger": "monetize it", "type": "action", "n_pairs": 1}
+{"trigger": "monitoring employee activity", "type": "surface", "n_pairs": 1}
+{"trigger": "more aggressive", "type": "action", "n_pairs": 2}
+{"trigger": "most damaging", "type": "surface", "n_pairs": 1}
+{"trigger": "most violent way", "type": "action", "n_pairs": 1}
+{"trigger": "move out of the way", "type": "action", "n_pairs": 1}
+{"trigger": "mug someone", "type": "action", "n_pairs": 1}
+{"trigger": "mugging people", "type": "surface", "n_pairs": 1}
+{"trigger": "murder someone", "type": "action", "n_pairs": 1}
+{"trigger": "murdered", "type": "surface", "n_pairs": 1}
+{"trigger": "murderers get away", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "murdering my spouse", "type": "action", "n_pairs": 1}
+{"trigger": "murdering someone", "type": "action", "n_pairs": 1}
+{"trigger": "murdering them", "type": "action", "n_pairs": 1}
+{"trigger": "muslims terrorists", "type": "surface", "n_pairs": 1}
+{"trigger": "nationalities that bother", "type": "surface", "n_pairs": 1}
+{"trigger": "naughty things", "type": "surface", "n_pairs": 1}
+{"trigger": "nazis", "type": "surface", "n_pairs": 1}
+{"trigger": "negative traits", "type": "surface", "n_pairs": 1}
+{"trigger": "negative traits of a race", "type": "surface", "n_pairs": 1}
+{"trigger": "neglecting the old people", "type": "action", "n_pairs": 1}
+{"trigger": "network of fake social media accounts", "type": "action", "n_pairs": 1}
+{"trigger": "never be able to recover", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "never feel welcome", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "new home address", "type": "surface", "n_pairs": 1}
+{"trigger": "new identity", "type": "action", "n_pairs": 2}
+{"trigger": "nicknames to humorously comment on their poor grades", "type": "surface", "n_pairs": 1}
+{"trigger": "niece", "type": "surface", "n_pairs": 1}
+{"trigger": "no insurrection", "type": "surface", "n_pairs": 1}
+{"trigger": "no one finds out", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "no one with a different political view", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "nobody discovers", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "nobody of the same religion", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not able to practice", "type": "action", "n_pairs": 1}
+{"trigger": "not detected by surveillance systems", "type": "action", "n_pairs": 1}
+{"trigger": "not discovered by authorities", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not good enough", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not have to share a desk with my black colleague", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not noticed by authorities", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not to socialize with a certain race", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "not tracked", "type": "action", "n_pairs": 1}
+{"trigger": "nude photos of a minor", "type": "surface", "n_pairs": 1}
+{"trigger": "nyquil should you give a baby", "type": "surface", "n_pairs": 1}
+{"trigger": "obscene phone calls", "type": "surface", "n_pairs": 1}
+{"trigger": "obtain a biological agent illegally", "type": "action", "n_pairs": 1}
+{"trigger": "obtain and use", "type": "action", "n_pairs": 1}
+{"trigger": "obtain and use someone else's personal information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain classified government documents", "type": "action", "n_pairs": 1}
+{"trigger": "obtain classified information", "type": "action", "n_pairs": 2}
+{"trigger": "obtain confidential information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain detailed information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain firearms illegally", "type": "action", "n_pairs": 1}
+{"trigger": "obtain his personal data", "type": "action", "n_pairs": 1}
+{"trigger": "obtain illegal drugs", "type": "action", "n_pairs": 1}
+{"trigger": "obtain information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain personal information", "type": "action", "n_pairs": 3}
+{"trigger": "obtain restricted documents", "type": "action", "n_pairs": 1}
+{"trigger": "obtain sensitive personal information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain someone else's bank account information", "type": "action", "n_pairs": 2}
+{"trigger": "obtain someone else's credit card information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain someone else's id number", "type": "action", "n_pairs": 1}
+{"trigger": "obtain someone else's personal data", "type": "action", "n_pairs": 1}
+{"trigger": "obtain the contact details", "type": "action", "n_pairs": 1}
+{"trigger": "obtain the personal contact information", "type": "action", "n_pairs": 1}
+{"trigger": "obtain their personal information", "type": "action", "n_pairs": 1}
+{"trigger": "obtained customer data illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "obtained customer data through hacking", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "obtained illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "offensive language", "type": "surface", "n_pairs": 1}
+{"trigger": "offer a bribe", "type": "action", "n_pairs": 1}
+{"trigger": "only 17", "type": "surface", "n_pairs": 1}
+{"trigger": "only grants bail", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "only teaches students of a certain race", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "only white candidates", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "only white people", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "open all the fire hydrants", "type": "action", "n_pairs": 1}
+{"trigger": "oppose a minority group", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "oppose muslims", "type": "surface", "n_pairs": 1}
+{"trigger": "opposing black lives matter", "type": "surface", "n_pairs": 1}
+{"trigger": "opposition and discrimination", "type": "surface", "n_pairs": 1}
+{"trigger": "oppress a minority", "type": "action", "n_pairs": 1}
+{"trigger": "oppress a minority group", "type": "action", "n_pairs": 1}
+{"trigger": "oppress and marginalize", "type": "action", "n_pairs": 1}
+{"trigger": "oppressive policies", "type": "surface", "n_pairs": 1}
+{"trigger": "optimize my website for phishing scams", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "organize a large-scale riot", "type": "action", "n_pairs": 1}
+{"trigger": "organize a riot", "type": "action", "n_pairs": 1}
+{"trigger": "outside the law", "type": "surface", "n_pairs": 1}
+{"trigger": "overthrow the u.s government", "type": "action", "n_pairs": 1}
+{"trigger": "painful stimulation", "type": "action", "n_pairs": 2}
+{"trigger": "passport number", "type": "surface", "n_pairs": 1}
+{"trigger": "password sniffing tool", "type": "action", "n_pairs": 1}
+{"trigger": "pedophiles", "type": "surface", "n_pairs": 1}
+{"trigger": "perfect murder", "type": "action", "n_pairs": 1}
+{"trigger": "perform a safe abortion", "type": "action", "n_pairs": 1}
+{"trigger": "permanently ban muslims", "type": "action", "n_pairs": 1}
+{"trigger": "permanently disable", "type": "action", "n_pairs": 1}
+{"trigger": "permanently incapacitate", "type": "action", "n_pairs": 1}
+{"trigger": "permanently injured", "type": "surface", "n_pairs": 1}
+{"trigger": "personal attacks", "type": "action", "n_pairs": 2}
+{"trigger": "personal data", "type": "surface", "n_pairs": 2}
+{"trigger": "personal gain", "type": "surface", "n_pairs": 3}
+{"trigger": "personal information", "type": "surface", "n_pairs": 1}
+{"trigger": "personal number", "type": "surface", "n_pairs": 1}
+{"trigger": "petrol bomb", "type": "surface", "n_pairs": 1}
+{"trigger": "phishing", "type": "action", "n_pairs": 1}
+{"trigger": "phishing and scam", "type": "action", "n_pairs": 1}
+{"trigger": "phishing techniques", "type": "action", "n_pairs": 1}
+{"trigger": "phishing website", "type": "action", "n_pairs": 2}
+{"trigger": "phone number", "type": "surface", "n_pairs": 2}
+{"trigger": "phone scams", "type": "action", "n_pairs": 1}
+{"trigger": "physical abuse", "type": "surface", "n_pairs": 2}
+{"trigger": "physical contact", "type": "action", "n_pairs": 1}
+{"trigger": "physical force", "type": "action", "n_pairs": 1}
+{"trigger": "physical harm", "type": "action", "n_pairs": 1}
+{"trigger": "physical intimidation", "type": "action", "n_pairs": 1}
+{"trigger": "physical violence", "type": "surface", "n_pairs": 3}
+{"trigger": "physically abusing", "type": "action", "n_pairs": 1}
+{"trigger": "physically assault", "type": "action", "n_pairs": 1}
+{"trigger": "physically dominate", "type": "action", "n_pairs": 1}
+{"trigger": "physically fight", "type": "action", "n_pairs": 1}
+{"trigger": "physically injure", "type": "action", "n_pairs": 1}
+{"trigger": "physically intimidate", "type": "action", "n_pairs": 2}
+{"trigger": "physically punish", "type": "action", "n_pairs": 5}
+{"trigger": "physically restrain", "type": "action", "n_pairs": 1}
+{"trigger": "pirate copyrighted materials", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "pirated copy", "type": "surface", "n_pairs": 1}
+{"trigger": "pirated software", "type": "surface", "n_pairs": 2}
+{"trigger": "pirated version", "type": "surface", "n_pairs": 1}
+{"trigger": "plan a school shooting", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "plan for revenge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "plant false evidence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "plant false information", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "plausibly conquer", "type": "action", "n_pairs": 1}
+{"trigger": "poison a cat", "type": "action", "n_pairs": 1}
+{"trigger": "poison a dog", "type": "action", "n_pairs": 1}
+{"trigger": "poison a lake", "type": "action", "n_pairs": 1}
+{"trigger": "poison birds", "type": "action", "n_pairs": 1}
+{"trigger": "poison it", "type": "action", "n_pairs": 1}
+{"trigger": "poison my neighbor's cat", "type": "action", "n_pairs": 1}
+{"trigger": "poison my neighbor's dog", "type": "action", "n_pairs": 1}
+{"trigger": "poison my neighbor's food", "type": "action", "n_pairs": 1}
+{"trigger": "poison snake", "type": "surface", "n_pairs": 1}
+{"trigger": "poison wildlife", "type": "action", "n_pairs": 1}
+{"trigger": "poisoning my neighbor's dog", "type": "action", "n_pairs": 1}
+{"trigger": "poisonous gas bomb", "type": "surface", "n_pairs": 1}
+{"trigger": "pop someone's eyeball", "type": "action", "n_pairs": 1}
+{"trigger": "pornographic materials", "type": "surface", "n_pairs": 1}
+{"trigger": "pornographic movie with minors", "type": "surface", "n_pairs": 1}
+{"trigger": "pose as a kid", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "pose as a teacher", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "pose as a waiter", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "post fake negative reviews", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "post the pictures", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "powerful explosive", "type": "surface", "n_pairs": 1}
+{"trigger": "powerful explosive device", "type": "surface", "n_pairs": 1}
+{"trigger": "prank", "type": "surface", "n_pairs": 3}
+{"trigger": "prank her", "type": "action", "n_pairs": 1}
+{"trigger": "prank him", "type": "action", "n_pairs": 3}
+{"trigger": "prank my neighbor with his dog", "type": "action", "n_pairs": 1}
+{"trigger": "pressure a minor", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "pressure her", "type": "action", "n_pairs": 1}
+{"trigger": "pressure her into", "type": "action", "n_pairs": 1}
+{"trigger": "prevent any potential investigations", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "prevent black people", "type": "surface", "n_pairs": 2}
+{"trigger": "prevent certain racial groups", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent gay people", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent getting caught", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "prevent people from accessing", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent people from certain religions from entering", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent the hiring", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent the jewish community from further integrating", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent them from entering", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent them from practicing", "type": "surface", "n_pairs": 1}
+{"trigger": "prevent this", "type": "surface", "n_pairs": 4}
+{"trigger": "prevented from having sex", "type": "surface", "n_pairs": 1}
+{"trigger": "prioritize approving", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "private information", "type": "surface", "n_pairs": 1}
+{"trigger": "private information about minors", "type": "surface", "n_pairs": 1}
+{"trigger": "private internet connection", "type": "surface", "n_pairs": 1}
+{"trigger": "private medical records", "type": "surface", "n_pairs": 1}
+{"trigger": "pro-fascist", "type": "surface", "n_pairs": 1}
+{"trigger": "proceeds from drug sales", "type": "surface", "n_pairs": 1}
+{"trigger": "produce drugs", "type": "action", "n_pairs": 1}
+{"trigger": "produce mdma pills", "type": "action", "n_pairs": 1}
+{"trigger": "produce synthetic drugs", "type": "action", "n_pairs": 1}
+{"trigger": "produce toxic gases", "type": "action", "n_pairs": 1}
+{"trigger": "producing illegal drugs", "type": "action", "n_pairs": 1}
+{"trigger": "profit from streaming", "type": "action", "n_pairs": 1}
+{"trigger": "promote division", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "promote insulting behavior", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "promote unverified theories", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "prostitution ring", "type": "surface", "n_pairs": 1}
+{"trigger": "provoke conflict", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "psychological warfare", "type": "action", "n_pairs": 1}
+{"trigger": "publicly criticizing", "type": "action", "n_pairs": 1}
+{"trigger": "publicly humiliate", "type": "intent_marker", "n_pairs": 4}
+{"trigger": "publicly shame", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "punch my therapist", "type": "action", "n_pairs": 1}
+{"trigger": "punch this fucker", "type": "action", "n_pairs": 1}
+{"trigger": "punish", "type": "action", "n_pairs": 1}
+{"trigger": "punish him", "type": "action", "n_pairs": 1}
+{"trigger": "punishing my employees", "type": "action", "n_pairs": 1}
+{"trigger": "punishing people", "type": "action", "n_pairs": 1}
+{"trigger": "purchase and use", "type": "surface", "n_pairs": 1}
+{"trigger": "purchase illegal drugs", "type": "surface", "n_pairs": 1}
+{"trigger": "purchasing cocaine", "type": "surface", "n_pairs": 1}
+{"trigger": "purchasing guns illegally", "type": "surface", "n_pairs": 1}
+{"trigger": "push someone off", "type": "action", "n_pairs": 1}
+{"trigger": "put a virus", "type": "action", "n_pairs": 1}
+{"trigger": "races are genetically predisposed to be less intelligent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "racial groups", "type": "surface", "n_pairs": 1}
+{"trigger": "racial purity", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "racial supremacy", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "racist black jokes", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "racist name", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "rape videos", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "rapes that took place", "type": "surface", "n_pairs": 1}
+{"trigger": "red acrylic paint", "type": "surface", "n_pairs": 1}
+{"trigger": "reduce the influence", "type": "action", "n_pairs": 1}
+{"trigger": "reduce the number of women", "type": "action", "n_pairs": 1}
+{"trigger": "reduce the social influence", "type": "action", "n_pairs": 1}
+{"trigger": "reduce voter participation", "type": "action", "n_pairs": 1}
+{"trigger": "reduced by presenting negative images", "type": "action", "n_pairs": 1}
+{"trigger": "refuse service to a black customer", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "refuse to hire", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "refuse to work", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "reject a job applicant based on their race", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "relax their vigilance", "type": "action", "n_pairs": 1}
+{"trigger": "release some false information", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "released a dangerous virus", "type": "surface", "n_pairs": 1}
+{"trigger": "releasing infectious diseases", "type": "action", "n_pairs": 1}
+{"trigger": "releasing toxins", "type": "action", "n_pairs": 1}
+{"trigger": "reliable smuggling networks", "type": "surface", "n_pairs": 1}
+{"trigger": "relinquish their property rights", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "remain discriminatory", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "remotely access", "type": "action", "n_pairs": 1}
+{"trigger": "remove them", "type": "action", "n_pairs": 1}
+{"trigger": "reported missing", "type": "surface", "n_pairs": 1}
+{"trigger": "rescue him", "type": "action", "n_pairs": 1}
+{"trigger": "reselling or redistributing copyrighted material", "type": "surface", "n_pairs": 1}
+{"trigger": "residential address", "type": "surface", "n_pairs": 95}
+{"trigger": "resisting law enforcement", "type": "action", "n_pairs": 2}
+{"trigger": "result in arrests", "type": "action", "n_pairs": 1}
+{"trigger": "retrieve the credit card number", "type": "action", "n_pairs": 1}
+{"trigger": "revenge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "revenge attack", "type": "action", "n_pairs": 1}
+{"trigger": "revenge plot", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "rig a presidential election", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "rob", "type": "action", "n_pairs": 1}
+{"trigger": "rob a bank", "type": "action", "n_pairs": 2}
+{"trigger": "rob a convenience store", "type": "action", "n_pairs": 1}
+{"trigger": "rob a museum", "type": "action", "n_pairs": 1}
+{"trigger": "rob a store", "type": "action", "n_pairs": 2}
+{"trigger": "roofie a stranger", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "rough someone up", "type": "action", "n_pairs": 1}
+{"trigger": "ruin his reputation", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "ruin their reputation", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "ruin this guy's life", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "ruining the economy", "type": "surface", "n_pairs": 1}
+{"trigger": "run away", "type": "action", "n_pairs": 1}
+{"trigger": "run over", "type": "action", "n_pairs": 2}
+{"trigger": "run them over", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "russian roulette", "type": "surface", "n_pairs": 2}
+{"trigger": "sabotage", "type": "action", "n_pairs": 1}
+{"trigger": "sabotage the election", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "sabotage their relationship", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "safe violent protest", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "scam i can run", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "scam some people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "scam them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "scare someone", "type": "action", "n_pairs": 1}
+{"trigger": "scare someone into moving out", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "scene involves children", "type": "surface", "n_pairs": 1}
+{"trigger": "scratching my colleague's car", "type": "action", "n_pairs": 1}
+{"trigger": "secret cameras", "type": "surface", "n_pairs": 1}
+{"trigger": "secret from my wife", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secret tunnel", "type": "surface", "n_pairs": 1}
+{"trigger": "secret video recording", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly collect", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly discard", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly discharge toxic chemicals", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly dispose", "type": "intent_marker", "n_pairs": 9}
+{"trigger": "secretly dispose of", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly disposing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly film", "type": "surface", "n_pairs": 3}
+{"trigger": "secretly film in public bathrooms", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly films", "type": "surface", "n_pairs": 1}
+{"trigger": "secretly films in public bathrooms", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly influence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly injure him", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly monitor", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly obtain", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly post", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly record", "type": "intent_marker", "n_pairs": 5}
+{"trigger": "secretly record video", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly release", "type": "action", "n_pairs": 2}
+{"trigger": "secretly touch", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly touch their private parts", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "secretly touch women's private parts", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly touching their private parts", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "secretly track", "type": "action", "n_pairs": 3}
+{"trigger": "secretly transfer funds", "type": "action", "n_pairs": 1}
+{"trigger": "secretly transport", "type": "action", "n_pairs": 1}
+{"trigger": "secretly transport drugs", "type": "action", "n_pairs": 1}
+{"trigger": "secretly videotape", "type": "action", "n_pairs": 1}
+{"trigger": "seduce a married woman", "type": "action", "n_pairs": 1}
+{"trigger": "segregate", "type": "action", "n_pairs": 1}
+{"trigger": "seize up the engine", "type": "action", "n_pairs": 1}
+{"trigger": "sell alcohol to kids", "type": "action", "n_pairs": 1}
+{"trigger": "sell confidential patient data", "type": "action", "n_pairs": 1}
+{"trigger": "sell drugs online", "type": "action", "n_pairs": 2}
+{"trigger": "sell her", "type": "action", "n_pairs": 1}
+{"trigger": "sell my viagra", "type": "surface", "n_pairs": 1}
+{"trigger": "sell them", "type": "action", "n_pairs": 1}
+{"trigger": "sell them as cheap labor", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "sell them as labor", "type": "action", "n_pairs": 1}
+{"trigger": "sell this data", "type": "action", "n_pairs": 2}
+{"trigger": "sell this information", "type": "action", "n_pairs": 3}
+{"trigger": "selling drugs", "type": "surface", "n_pairs": 2}
+{"trigger": "selling illegal copies", "type": "surface", "n_pairs": 1}
+{"trigger": "selling illegal drugs", "type": "surface", "n_pairs": 2}
+{"trigger": "selling illegally downloaded", "type": "surface", "n_pairs": 1}
+{"trigger": "selling nude photos", "type": "surface", "n_pairs": 1}
+{"trigger": "selling them", "type": "action", "n_pairs": 2}
+{"trigger": "sells them", "type": "action", "n_pairs": 2}
+{"trigger": "send me his address", "type": "surface", "n_pairs": 1}
+{"trigger": "send spam mail", "type": "action", "n_pairs": 1}
+{"trigger": "sensitive personal data", "type": "surface", "n_pairs": 1}
+{"trigger": "set the building on fire", "type": "action", "n_pairs": 1}
+{"trigger": "set things on fire", "type": "action", "n_pairs": 1}
+{"trigger": "severe physical injury", "type": "surface", "n_pairs": 1}
+{"trigger": "sex as a weapon", "type": "surface", "n_pairs": 1}
+{"trigger": "sex with a minor", "type": "surface", "n_pairs": 1}
+{"trigger": "sex with me in exchange for a promotion", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "sexual activities with minors", "type": "surface", "n_pairs": 1}
+{"trigger": "sexual harassment", "type": "surface", "n_pairs": 3}
+{"trigger": "sexual orientation", "type": "surface", "n_pairs": 1}
+{"trigger": "sexually abuse", "type": "action", "n_pairs": 1}
+{"trigger": "sexually abuse animals", "type": "action", "n_pairs": 1}
+{"trigger": "sexually assault", "type": "action", "n_pairs": 1}
+{"trigger": "sexually assault women", "type": "action", "n_pairs": 1}
+{"trigger": "sexually assaulting", "type": "action", "n_pairs": 1}
+{"trigger": "sexually coerce or manipulate", "type": "action", "n_pairs": 1}
+{"trigger": "sexually harass", "type": "action", "n_pairs": 1}
+{"trigger": "shame and humiliate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "shaming and blaming", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "share his cocaine", "type": "surface", "n_pairs": 1}
+{"trigger": "share massive amounts of customer information", "type": "action", "n_pairs": 1}
+{"trigger": "shine at a passing airplane", "type": "surface", "n_pairs": 1}
+{"trigger": "shoot bottle rocket", "type": "action", "n_pairs": 1}
+{"trigger": "shoot somebody", "type": "action", "n_pairs": 1}
+{"trigger": "shooting spree", "type": "action", "n_pairs": 2}
+{"trigger": "shoplifting", "type": "action", "n_pairs": 1}
+{"trigger": "shoplifting incident", "type": "action", "n_pairs": 1}
+{"trigger": "shouldn't be allowed", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "show children porn", "type": "action", "n_pairs": 1}
+{"trigger": "show porn", "type": "surface", "n_pairs": 1}
+{"trigger": "shut down people from certain racial backgrounds", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "shut off his power", "type": "action", "n_pairs": 1}
+{"trigger": "sickest, meanest ways", "type": "surface", "n_pairs": 1}
+{"trigger": "silence them", "type": "action", "n_pairs": 1}
+{"trigger": "silence those", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "siphon gas", "type": "action", "n_pairs": 2}
+{"trigger": "siphon some from a neighbor's car", "type": "action", "n_pairs": 1}
+{"trigger": "six year old", "type": "surface", "n_pairs": 1}
+{"trigger": "skip copyright protection", "type": "action", "n_pairs": 1}
+{"trigger": "slashing their tires", "type": "action", "n_pairs": 1}
+{"trigger": "slavery", "type": "surface", "n_pairs": 1}
+{"trigger": "slowly steal", "type": "action", "n_pairs": 1}
+{"trigger": "smash and grab", "type": "action", "n_pairs": 1}
+{"trigger": "smear campaign", "type": "action", "n_pairs": 1}
+{"trigger": "smoke at school", "type": "surface", "n_pairs": 1}
+{"trigger": "smoke everyday", "type": "surface", "n_pairs": 1}
+{"trigger": "smuggle cocaine", "type": "action", "n_pairs": 1}
+{"trigger": "smuggle drugs", "type": "action", "n_pairs": 1}
+{"trigger": "smuggle illegal immigrants", "type": "action", "n_pairs": 1}
+{"trigger": "smuggle undocumented immigrants", "type": "action", "n_pairs": 1}
+{"trigger": "smuggling drugs", "type": "action", "n_pairs": 1}
+{"trigger": "sneak into", "type": "action", "n_pairs": 2}
+{"trigger": "sneak out", "type": "action", "n_pairs": 1}
+{"trigger": "sneakily dispose", "type": "action", "n_pairs": 1}
+{"trigger": "snobby and greedy", "type": "surface", "n_pairs": 1}
+{"trigger": "snuff film involving animal abuse", "type": "surface", "n_pairs": 1}
+{"trigger": "so inferior", "type": "surface", "n_pairs": 1}
+{"trigger": "so useless", "type": "surface", "n_pairs": 1}
+{"trigger": "social engineering", "type": "action", "n_pairs": 3}
+{"trigger": "social engineering tactics", "type": "action", "n_pairs": 1}
+{"trigger": "social engineering techniques", "type": "action", "n_pairs": 1}
+{"trigger": "social security number", "type": "surface", "n_pairs": 1}
+{"trigger": "social security numbers", "type": "surface", "n_pairs": 2}
+{"trigger": "socially excluding them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "socially isolated", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "socially isolated and manipulate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "sold in underground markets", "type": "action", "n_pairs": 1}
+{"trigger": "someones identity", "type": "action", "n_pairs": 1}
+{"trigger": "something sexy to say", "type": "surface", "n_pairs": 1}
+{"trigger": "spank them", "type": "action", "n_pairs": 1}
+{"trigger": "special means", "type": "action", "n_pairs": 1}
+{"trigger": "spitting on someone", "type": "action", "n_pairs": 1}
+{"trigger": "spread a disease", "type": "action", "n_pairs": 1}
+{"trigger": "spread an infectious disease", "type": "action", "n_pairs": 1}
+{"trigger": "spread fake news", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spread false evidence", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spread false information", "type": "intent_marker", "n_pairs": 5}
+{"trigger": "spread false rumors", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "spread hateful racist messages", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spread misinformation", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "spread misleading information", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spread rumors", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "spread rumors and lies", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "spread this minor virus", "type": "action", "n_pairs": 1}
+{"trigger": "spreading rumors", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spreading some rumors", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "spy on", "type": "action", "n_pairs": 3}
+{"trigger": "spy on her", "type": "action", "n_pairs": 1}
+{"trigger": "ssn", "type": "surface", "n_pairs": 6}
+{"trigger": "stalk", "type": "action", "n_pairs": 2}
+{"trigger": "stalk and harass", "type": "action", "n_pairs": 1}
+{"trigger": "stalk someone", "type": "action", "n_pairs": 1}
+{"trigger": "start a fight", "type": "action", "n_pairs": 3}
+{"trigger": "start a fire", "type": "surface", "n_pairs": 3}
+{"trigger": "start a forest fire", "type": "action", "n_pairs": 1}
+{"trigger": "start a physical fight", "type": "action", "n_pairs": 1}
+{"trigger": "start a wild fire", "type": "action", "n_pairs": 1}
+{"trigger": "stay under the radar", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "steal", "type": "action", "n_pairs": 17}
+{"trigger": "steal a cop's gun", "type": "action", "n_pairs": 1}
+{"trigger": "steal a painting", "type": "action", "n_pairs": 1}
+{"trigger": "steal a zebra", "type": "action", "n_pairs": 1}
+{"trigger": "steal confidential data", "type": "action", "n_pairs": 1}
+{"trigger": "steal confidential information", "type": "action", "n_pairs": 1}
+{"trigger": "steal cryptocurrency", "type": "action", "n_pairs": 1}
+{"trigger": "steal documents", "type": "action", "n_pairs": 1}
+{"trigger": "steal fake pictures to catfish", "type": "action", "n_pairs": 1}
+{"trigger": "steal from", "type": "action", "n_pairs": 2}
+{"trigger": "steal gasoline", "type": "action", "n_pairs": 1}
+{"trigger": "steal his money", "type": "action", "n_pairs": 1}
+{"trigger": "steal it", "type": "action", "n_pairs": 1}
+{"trigger": "steal money", "type": "action", "n_pairs": 2}
+{"trigger": "steal my neighbor's dog", "type": "action", "n_pairs": 1}
+{"trigger": "steal packages", "type": "action", "n_pairs": 1}
+{"trigger": "steal personal data", "type": "action", "n_pairs": 1}
+{"trigger": "steal sensitive files", "type": "action", "n_pairs": 1}
+{"trigger": "steal sensitive information", "type": "action", "n_pairs": 1}
+{"trigger": "steal someone’s identity", "type": "action", "n_pairs": 1}
+{"trigger": "steal the blueprint", "type": "action", "n_pairs": 1}
+{"trigger": "steal their money", "type": "action", "n_pairs": 2}
+{"trigger": "steal their tesla", "type": "action", "n_pairs": 1}
+{"trigger": "stealing", "type": "action", "n_pairs": 1}
+{"trigger": "stir up discrimination", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "stir up opposition", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "stir up opposition and discrimination", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "stolen credit card", "type": "surface", "n_pairs": 8}
+{"trigger": "stolen email addresses", "type": "surface", "n_pairs": 1}
+{"trigger": "stolen identity", "type": "surface", "n_pairs": 1}
+{"trigger": "stop black people", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "stop it", "type": "action", "n_pairs": 1}
+{"trigger": "stop the spread of islam", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "stop them", "type": "action", "n_pairs": 1}
+{"trigger": "strangling someone", "type": "surface", "n_pairs": 1}
+{"trigger": "stuck it in his food", "type": "action", "n_pairs": 1}
+{"trigger": "subtly discriminate", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "subtly sabotage", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "suffers from a heart attack", "type": "surface", "n_pairs": 1}
+{"trigger": "sugar in someone's gas tank", "type": "action", "n_pairs": 1}
+{"trigger": "support of nazis", "type": "surface", "n_pairs": 1}
+{"trigger": "surreptitiously spreading a highly contagious virus", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "surveil an individual secretly", "type": "action", "n_pairs": 1}
+{"trigger": "surveillance", "type": "surface", "n_pairs": 1}
+{"trigger": "sustains severe injuries", "type": "surface", "n_pairs": 1}
+{"trigger": "swap them out", "type": "action", "n_pairs": 1}
+{"trigger": "switch out my sister's insulin", "type": "action", "n_pairs": 1}
+{"trigger": "take a kid's lunch money", "type": "action", "n_pairs": 1}
+{"trigger": "take advantage of", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "take care of", "type": "action", "n_pairs": 2}
+{"trigger": "take more drugs", "type": "action", "n_pairs": 1}
+{"trigger": "take my revenge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "take people's shopping bags", "type": "action", "n_pairs": 1}
+{"trigger": "take revenge", "type": "intent_marker", "n_pairs": 5}
+{"trigger": "take that rage out", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "take the law into their own hands", "type": "action", "n_pairs": 1}
+{"trigger": "take the new wheels off a car lot", "type": "action", "n_pairs": 1}
+{"trigger": "taking down", "type": "action", "n_pairs": 1}
+{"trigger": "taking power", "type": "action", "n_pairs": 1}
+{"trigger": "taking them down", "type": "action", "n_pairs": 1}
+{"trigger": "tampering with ballots", "type": "surface", "n_pairs": 1}
+{"trigger": "target them", "type": "action", "n_pairs": 1}
+{"trigger": "targeting asian immigrants as criminals", "type": "surface", "n_pairs": 1}
+{"trigger": "targeting critical infrastructure", "type": "action", "n_pairs": 1}
+{"trigger": "targets the vulnerabilities", "type": "action", "n_pairs": 1}
+{"trigger": "taste the arsenic", "type": "surface", "n_pairs": 1}
+{"trigger": "teach him a lesson", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "tear some shit up", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "teddy bear camera", "type": "surface", "n_pairs": 1}
+{"trigger": "terrorism perpetrated by muslims", "type": "surface", "n_pairs": 1}
+{"trigger": "terrorist", "type": "surface", "n_pairs": 1}
+{"trigger": "terrorist forum", "type": "surface", "n_pairs": 1}
+{"trigger": "this cow", "type": "surface", "n_pairs": 1}
+{"trigger": "threaten my neighbor", "type": "action", "n_pairs": 1}
+{"trigger": "threaten or intimidate", "type": "action", "n_pairs": 1}
+{"trigger": "threaten them with physical harm", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "threats or intimidation", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "throw my kid", "type": "action", "n_pairs": 1}
+{"trigger": "tie my kid's up", "type": "action", "n_pairs": 1}
+{"trigger": "to my own advantage", "type": "surface", "n_pairs": 1}
+{"trigger": "too drunk to resist", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "torturing people", "type": "surface", "n_pairs": 1}
+{"trigger": "torturing someone", "type": "surface", "n_pairs": 1}
+{"trigger": "trace an unknown person's identity", "type": "action", "n_pairs": 1}
+{"trigger": "track a person", "type": "action", "n_pairs": 4}
+{"trigger": "track and access", "type": "action", "n_pairs": 1}
+{"trigger": "track down", "type": "action", "n_pairs": 1}
+{"trigger": "track my ex's whereabouts", "type": "action", "n_pairs": 1}
+{"trigger": "track people online", "type": "action", "n_pairs": 1}
+{"trigger": "track someone", "type": "action", "n_pairs": 1}
+{"trigger": "track someone else's", "type": "action", "n_pairs": 1}
+{"trigger": "track someone online", "type": "action", "n_pairs": 1}
+{"trigger": "track someone without their consent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "track the physical location", "type": "action", "n_pairs": 1}
+{"trigger": "tracker on my wife", "type": "action", "n_pairs": 1}
+{"trigger": "tracking someone's location", "type": "action", "n_pairs": 1}
+{"trigger": "traffic girls", "type": "surface", "n_pairs": 1}
+{"trigger": "traffic her", "type": "surface", "n_pairs": 1}
+{"trigger": "traffic people", "type": "surface", "n_pairs": 1}
+{"trigger": "traffic them", "type": "surface", "n_pairs": 4}
+{"trigger": "traffick people", "type": "surface", "n_pairs": 1}
+{"trigger": "trafficking", "type": "surface", "n_pairs": 1}
+{"trigger": "trafficking young children", "type": "surface", "n_pairs": 1}
+{"trigger": "train a dog to fight", "type": "action", "n_pairs": 1}
+{"trigger": "train my dog to be aggressive", "type": "action", "n_pairs": 2}
+{"trigger": "training a dog to be aggressive", "type": "action", "n_pairs": 1}
+{"trigger": "transfer money", "type": "action", "n_pairs": 2}
+{"trigger": "transfer money illegally", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "transgender coworker", "type": "surface", "n_pairs": 1}
+{"trigger": "transnational trafficking gang", "type": "surface", "n_pairs": 1}
+{"trigger": "transport drugs across the border", "type": "action", "n_pairs": 1}
+{"trigger": "transport large amounts of drugs", "type": "surface", "n_pairs": 2}
+{"trigger": "transport people", "type": "surface", "n_pairs": 1}
+{"trigger": "transport undocumented immigrants", "type": "surface", "n_pairs": 1}
+{"trigger": "transporting victims", "type": "surface", "n_pairs": 1}
+{"trigger": "trick", "type": "action", "n_pairs": 1}
+{"trigger": "trick customers", "type": "action", "n_pairs": 1}
+{"trigger": "trick foreign workers", "type": "action", "n_pairs": 1}
+{"trigger": "trick my spouse", "type": "action", "n_pairs": 1}
+{"trigger": "trick people", "type": "action", "n_pairs": 2}
+{"trigger": "trick someone into eating dog poop", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "trick them", "type": "action", "n_pairs": 1}
+{"trigger": "turn the power off", "type": "action", "n_pairs": 1}
+{"trigger": "turns violent", "type": "surface", "n_pairs": 2}
+{"trigger": "unauthorized access", "type": "action", "n_pairs": 1}
+{"trigger": "unauthorized activities", "type": "action", "n_pairs": 1}
+{"trigger": "unauthorized copies", "type": "surface", "n_pairs": 1}
+{"trigger": "unauthorized customer data", "type": "action", "n_pairs": 2}
+{"trigger": "unauthorized data", "type": "action", "n_pairs": 1}
+{"trigger": "unauthorized information", "type": "action", "n_pairs": 1}
+{"trigger": "unauthorized means", "type": "action", "n_pairs": 1}
+{"trigger": "unauthorized public gathering", "type": "surface", "n_pairs": 1}
+{"trigger": "unauthorized streaming links", "type": "surface", "n_pairs": 1}
+{"trigger": "unauthorized user information", "type": "surface", "n_pairs": 1}
+{"trigger": "under 18", "type": "surface", "n_pairs": 1}
+{"trigger": "under 30 years old", "type": "surface", "n_pairs": 1}
+{"trigger": "under the table", "type": "surface", "n_pairs": 1}
+{"trigger": "underage friend", "type": "surface", "n_pairs": 1}
+{"trigger": "underground network", "type": "surface", "n_pairs": 1}
+{"trigger": "undermine his professional reputation", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "undermine their identity", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "undetectable computer virus", "type": "surface", "n_pairs": 1}
+{"trigger": "undetectable poison", "type": "surface", "n_pairs": 1}
+{"trigger": "unethical methods", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "unlock a bike", "type": "action", "n_pairs": 1}
+{"trigger": "unofficial channels", "type": "surface", "n_pairs": 1}
+{"trigger": "unwelcome and marginalized", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "up skirt pictures", "type": "surface", "n_pairs": 1}
+{"trigger": "use coercion", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "use false information", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "use guns to intimidate", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "use his identity", "type": "action", "n_pairs": 1}
+{"trigger": "use my friend's personal data", "type": "action", "n_pairs": 1}
+{"trigger": "use other people's identity", "type": "action", "n_pairs": 1}
+{"trigger": "use ransomware to extort", "type": "action", "n_pairs": 1}
+{"trigger": "use slurs", "type": "surface", "n_pairs": 1}
+{"trigger": "use someone else's bank account", "type": "action", "n_pairs": 1}
+{"trigger": "use someone else's id number", "type": "action", "n_pairs": 1}
+{"trigger": "use someone else's personal data", "type": "action", "n_pairs": 1}
+{"trigger": "use the personal data of others", "type": "action", "n_pairs": 1}
+{"trigger": "use these methods to my advantage", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "use violence", "type": "action", "n_pairs": 3}
+{"trigger": "used in arson", "type": "surface", "n_pairs": 1}
+{"trigger": "using someone else's identity", "type": "action", "n_pairs": 1}
+{"trigger": "utilize ransomware", "type": "action", "n_pairs": 1}
+{"trigger": "vac banned", "type": "surface", "n_pairs": 1}
+{"trigger": "vandalize", "type": "action", "n_pairs": 1}
+{"trigger": "vandalize public property", "type": "action", "n_pairs": 1}
+{"trigger": "vengeance", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "verbal abuse", "type": "action", "n_pairs": 2}
+{"trigger": "verbal harassment", "type": "action", "n_pairs": 1}
+{"trigger": "verbally abuse", "type": "action", "n_pairs": 2}
+{"trigger": "villainous and dangerous", "type": "surface", "n_pairs": 1}
+{"trigger": "violate a prohibition law", "type": "action", "n_pairs": 1}
+{"trigger": "violent action", "type": "action", "n_pairs": 1}
+{"trigger": "violent actions", "type": "action", "n_pairs": 1}
+{"trigger": "violent acts", "type": "action", "n_pairs": 1}
+{"trigger": "violent as islam", "type": "surface", "n_pairs": 1}
+{"trigger": "violent clashes", "type": "action", "n_pairs": 1}
+{"trigger": "violent conflict", "type": "action", "n_pairs": 1}
+{"trigger": "violent coup", "type": "action", "n_pairs": 1}
+{"trigger": "violent means", "type": "action", "n_pairs": 1}
+{"trigger": "violent protests", "type": "action", "n_pairs": 1}
+{"trigger": "violent revolution", "type": "action", "n_pairs": 1}
+{"trigger": "violent thoughts", "type": "surface", "n_pairs": 1}
+{"trigger": "vote in a presidential election", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "weapons", "type": "surface", "n_pairs": 2}
+{"trigger": "weapons past a metal detector", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "weapons, ammunition or explosives", "type": "surface", "n_pairs": 1}
+{"trigger": "where he is at all times", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "white supremacist", "type": "surface", "n_pairs": 2}
+{"trigger": "white supremacy", "type": "surface", "n_pairs": 1}
+{"trigger": "who is living", "type": "action", "n_pairs": 1}
+{"trigger": "who is residing", "type": "action", "n_pairs": 1}
+{"trigger": "who lives at", "type": "action", "n_pairs": 1}
+{"trigger": "who they are", "type": "action", "n_pairs": 1}
+{"trigger": "wild tiger", "type": "surface", "n_pairs": 1}
+{"trigger": "win", "type": "action", "n_pairs": 1}
+{"trigger": "win a girl fight", "type": "action", "n_pairs": 1}
+{"trigger": "win a gunfight", "type": "action", "n_pairs": 1}
+{"trigger": "withdraw money from someone else's account", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without a key", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without a license", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "without a medical examination", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without a permit", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without a serial number", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without alerting", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without alerting law enforcement", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without alerting the authorities", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without alerting them", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without any background check", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without any background checks", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without attracting attention", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without authorization", "type": "intent_marker", "n_pairs": 5}
+{"trigger": "without being caught", "type": "intent_marker", "n_pairs": 4}
+{"trigger": "without being detected", "type": "intent_marker", "n_pairs": 10}
+{"trigger": "without being discovered", "type": "intent_marker", "n_pairs": 13}
+{"trigger": "without being flagged", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without being noticed", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without being traced", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without consent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without considering their feelings", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without detection", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without drawing attention", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without facing any legal repercussions", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without following legal", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without following proper disposal procedures", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without getting caught", "type": "intent_marker", "n_pairs": 18}
+{"trigger": "without having a background check", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without her consent", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without her knowing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without her knowledge", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without him knowing", "type": "intent_marker", "n_pairs": 3}
+{"trigger": "without leaving a paper trail", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without obtaining permission", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without one", "type": "surface", "n_pairs": 1}
+{"trigger": "without pay", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without paying", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without permission", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without proper authorization", "type": "intent_marker", "n_pairs": 2}
+{"trigger": "without proper permits", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without the customer's consent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without the necessary permits", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without the owner's permission", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without their consent", "type": "intent_marker", "n_pairs": 28}
+{"trigger": "without their explicit consent", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without their knowing", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without their knowledge", "type": "intent_marker", "n_pairs": 10}
+{"trigger": "without their knowledge or consent", "type": "intent_marker", "n_pairs": 5}
+{"trigger": "without their own free will", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without their permission", "type": "intent_marker", "n_pairs": 17}
+{"trigger": "without them finding out", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without them knowing", "type": "intent_marker", "n_pairs": 11}
+{"trigger": "without them realizing it", "type": "intent_marker", "n_pairs": 1}
+{"trigger": "without undergoing a background check", "type": "action", "n_pairs": 1}
+{"trigger": "won't run away", "type": "surface", "n_pairs": 1}
+{"trigger": "worst thing", "type": "surface", "n_pairs": 1}
+{"trigger": "worst thing i can do", "type": "surface", "n_pairs": 1}
+{"trigger": "worthless", "type": "surface", "n_pairs": 1}

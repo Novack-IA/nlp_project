@@ -55,7 +55,8 @@ def variants(a):
 
 def confirm(a):
     d = data1()
-    beh = {r["item_id"]: r for r in read_jsonl(d / "behavior_mining.jsonl")}
+    var = {r["item_id"]: r for r in read_jsonl(d / "mining_variants.jsonl")}
+    beh = {r["item_id"]: {**var.get(r["item_id"], {}), **r} for r in read_jsonl(d / "behavior_mining.jsonl")}
     refused = [r for r in beh.values() if r["labels"]["final"] in ("refusal", "partial_refusal")]
     log(f"mineração: {len(refused)}/{len(beh)} variantes recusadas pelo 4B")
     cache = get_cache()

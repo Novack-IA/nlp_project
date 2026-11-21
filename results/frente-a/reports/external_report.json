@@ -1,0 +1,27 @@
+{
+ "xstest": {
+  "n": 450,
+  "labels": {
+   "benign": 250,
+   "harmful": 200
+  },
+  "cos_gt_0.9": 0,
+  "cos_gt_0.8": 13
+ },
+ "orbench_hard": {
+  "n": 1319,
+  "labels": {
+   "benign": 1319
+  },
+  "cos_gt_0.9": 0,
+  "cos_gt_0.8": 111
+ },
+ "falsereject": {
+  "n": 1187,
+  "labels": {
+   "benign": 1187
+  },
+  "cos_gt_0.9": 0,
+  "cos_gt_0.8": 4
+ }
+}

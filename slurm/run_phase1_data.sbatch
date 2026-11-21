@@ -124,6 +124,9 @@ wait $EXT; say "externos rc=$?"
 # mineração adversarial (A-P5): variantes agora; respostas do 4B vêm do job de modelo
 [ -f $D/mining_variants.jsonl ] || step PY t5_mining variants --gen-url $(U $P_JUDGE) || say "variantes falharam"
 
+# controle de qualidade do 2×2 (t2c_qc), se ainda não rodou
+if [ -f $O/cells_2x2.jsonl ] && ! head -1 $O/cells_2x2.jsonl | grep -q '"qc_pass"'; then step PY t2c_qc --judge-url $(U $P_JUDGE) || say "qc falhou"; fi
+
 # rotulagem do comportamento do 4B (o job de modelo escreve behavior_raw_<set>.jsonl)
 for s in pairs external cells mining; do
   [ "$s" = cells ] && [ ! -f $D/CELLS_DONE ] && continue
@@ -131,5 +134,7 @@ for s in pairs external cells mining; do
   until [ -f $D/behavior_raw_$s.jsonl ]; do sleep 60; done
   [ -f $D/behavior_$s.jsonl ] || step PY t4_behavior label --set $s "${LBL[@]}" || say "rótulo $s falhou"
 done
-[ -f $D/behavior_mining.jsonl ] && { [ -f $O/hard_benign_mined.jsonl ] || step PY t5_mining confirm "${LBL[@]}"; }
+[ -f $D/behavior_mining.jsonl ] && { [ -f $O/hard_benign_mined.jsonl ] || step PY t5_mining confirm "${LBL[@]}" || say "confirmação falhou"; }
+# servidores ficam no ar enquanto existir $D/KEEP_SERVERS (passos extras via slurm/attach.sh)
+while [ -f $D/KEEP_SERVERS ]; do sleep 120; done
 say "fim do job de dados"

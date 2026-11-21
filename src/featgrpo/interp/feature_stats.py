@@ -49,19 +49,37 @@ OUT_DIR = REPO / "results" / "frente-c"
 DOMAINS = ("bias", "cyber", "privacy", "violence")
 SUBCONJUNTOS = ("qc_grammatical", "qc_pass_lenient", "qc_pass", "todos")
 SUBCONJUNTO_PRINCIPAL = "qc_grammatical"   # DESVIOS 2026-11-21 (sugestão da frente A); os outros são robustez
+# DESVIOS 2026-11-21 (Davi, PR #8; Gustavo, PR #11): o principal é qc_grammatical AND validator_pass; o filtro do
+# validador vale em todos os subconjuntos menos `todos`. `validado=False` é robustez (o qc_grammatical sem ele).
 
 
-def grupos_do_subconjunto(nome: str, path: Path | None = None) -> set[str] | None:
-    """Grupos do 2×2 que passam no QC da frente A (`qc_grammatical`, `qc_pass_lenient`, `qc_pass`).
-    `todos` devolve None (sem filtro)."""
+def caminho_cells(path: Path | None = None) -> Path:
+    from featgrpo.interp.data import PHASE1
+    return Path(path) if path is not None else PHASE1 / "cells_2x2.jsonl"
+
+
+def grupos_do_subconjunto(nome: str, path: Path | None = None, validado: bool = True) -> set[str] | None:
+    """Grupos do 2×2 que passam no QC da frente A (`qc_grammatical`, `qc_pass_lenient`, `qc_pass`) e, com
+    `validado=True`, também no validador estrutural da frente D (`validator_pass`). `todos` devolve None."""
     if nome == "todos":
         return None
     if nome not in SUBCONJUNTOS:
         raise ValueError(f"subconjunto desconhecido: {nome}")
-    from featgrpo.interp.data import PHASE1
-    path = path or PHASE1 / "cells_2x2.jsonl"
-    with open(path, encoding="utf-8") as f:
-        return {g["group_id"] for g in map(json.loads, filter(str.strip, f)) if g.get(nome)}
+    with open(caminho_cells(path), encoding="utf-8") as f:
+        grupos = [g for g in map(json.loads, filter(str.strip, f))]
+    if validado and not all("validator_pass" in g for g in grupos):
+        raise SystemExit(f"{caminho_cells(path)} não tem a marca `validator_pass` (PR #11 da frente A). "
+                         "Atualize o master ou passe --cells-jsonl com o arquivo anotado.")
+    return {g["group_id"] for g in grupos if g.get(nome) and (g.get("validator_pass") or not validado)}
+
+
+def sha256_arquivo(path: Path) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""):
+            h.update(b)
+    return h.hexdigest()
 
 
 @dataclass(frozen=True)
@@ -770,16 +788,23 @@ def main(argv=None) -> int:
     ap.add_argument("--conjunto-controles", default="controls",
                     help="conjunto do cache com os controles trig_only/neutral_only (C3)")
     ap.add_argument("--subconjunto", choices=SUBCONJUNTOS, default=SUBCONJUNTO_PRINCIPAL,
-                    help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical, os outros são robustez")
+                    help="grupos do 2×2 pelo QC da frente A; o principal é qc_grammatical (com o validador), "
+                         "os outros são robustez")
+    ap.add_argument("--sem-validador", action="store_true",
+                    help="não exige validator_pass (robustez; o principal exige, DESVIOS 2026-11-21)")
     args = ap.parse_args(argv)
     regras = Regras()
-    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL
+    principal_run = args.subconjunto == SUBCONJUNTO_PRINCIPAL and not args.sem_validador
     if args.out_dir is None:
-        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{args.subconjunto}"
+        nome = args.subconjunto + ("_sem_validador" if args.sem_validador else "")
+        args.out_dir = OUT_DIR if (principal_run or args.modo == "provisorio") else OUT_DIR / f"robustez_{nome}"
 
     meta = {"script": "src/featgrpo/interp/feature_stats.py", "args": {k: str(v) for k, v in vars(args).items()},
             "regras": asdict(regras), "git_commit": git_commit(),
             "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    if args.modo == "2x2":
+        cp = caminho_cells(args.cells_jsonl)
+        meta["cells_jsonl"] = {"caminho": str(cp), "sha256": sha256_arquivo(cp)}
     manifest = Path(args.root) / "MANIFEST.json"
     if manifest.exists():
         meta["cache_manifest"] = json.loads(manifest.read_text(encoding="utf-8"))
@@ -810,8 +835,10 @@ def main(argv=None) -> int:
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
                   regras, conjunto=args.conjunto, principal_forcada=forcada,
                   conjunto_controles=args.conjunto_controles, textos=textos,
-                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl),
-                  subconjunto=args.subconjunto)
+                  grupos_permitidos=grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
+                                                          validado=not args.sem_validador),
+                  subconjunto=args.subconjunto + ("" if args.subconjunto == "todos" or args.sem_validador
+                                                  else "+validator_pass"))
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

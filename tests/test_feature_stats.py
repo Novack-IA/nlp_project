@@ -439,13 +439,20 @@ def test_subconjunto_pequeno_fica_inconclusivo(cache, tmp_path):
 
 def test_grupos_do_subconjunto(tmp_path):
     p = tmp_path / "cells.jsonl"
-    p.write_text("\n".join(json.dumps({"group_id": f"g{i}", "qc_grammatical": i % 2 == 0, "qc_pass": i == 0})
+    p.write_text("\n".join(json.dumps({"group_id": f"g{i}", "qc_grammatical": i % 2 == 0, "qc_pass": i == 0,
+                                       "validator_pass": i != 2})
                            for i in range(6)), encoding="utf-8")
-    assert fs.grupos_do_subconjunto("qc_grammatical", p) == {"g0", "g2", "g4"}
+    assert fs.grupos_do_subconjunto("qc_grammatical", p) == {"g0", "g4"}                  # g2 reprovado
+    assert fs.grupos_do_subconjunto("qc_grammatical", p, validado=False) == {"g0", "g2", "g4"}
     assert fs.grupos_do_subconjunto("qc_pass", p) == {"g0"}
     assert fs.grupos_do_subconjunto("todos", p) is None
     with pytest.raises(ValueError):
         fs.grupos_do_subconjunto("outro", p)
+    sem_marca = tmp_path / "antigo.jsonl"
+    sem_marca.write_text(json.dumps({"group_id": "g0", "qc_grammatical": True}), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        fs.grupos_do_subconjunto("qc_grammatical", sem_marca)
+    assert fs.grupos_do_subconjunto("qc_grammatical", sem_marca, validado=False) == {"g0"}
 
 
 def test_provisorio_md(tmp_path):

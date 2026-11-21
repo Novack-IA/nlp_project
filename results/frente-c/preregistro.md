@@ -202,3 +202,21 @@ Escrito em 2026-11-21, antes de qualquer cache do 2×2 (original ou em estilo co
 - **Confirmação:** nenhum `test` de 2×2 é aberto antes de o conjunto principal estar definido. Até lá, o 2×2 atual roda só na descoberta. Depois, a confirmação é aberta uma vez, no principal, como na seção 3.
 
 **2. IC do controle `trig_only` (C3, item 1).** O d continua sendo o dos pares de frases (seção 5). Muda só o IC 95%: ele passa a vir de um bootstrap **por grupo do 2×2**, em que cada sorteio pega um grupo inteiro com as suas frases (1.000 reamostras, semente 0). As 3 frases de um grupo usam o mesmo gatilho e o mesmo termo neutro, então não são independentes. Sortear frases soltas estreitaria o IC (até √3 vezes, quando as frases são quase iguais) e facilitaria passar no critério de equivalência. O bootstrap por frase, a versão original, é reportado como sensibilidade. O critério continua o mesmo: atende se mais da metade das S_intent tiver o IC dentro de ±0,2.
+
+## Adendo 3: conjunto principal final
+
+Escrito em 2026-11-21, com o cache do 2×2 já recebido e conferido, mas **antes de calcular qualquer efeito**. Os números abaixo usam só o texto e o índice do cache.
+
+**Principal: `qc_grammatical AND validator_pass`** (`DESVIOS.md`, 2026-11-21). O `validator_pass` é a marca do validador estrutural da frente D, anotada pela frente A no `cells_2x2.jsonl` (PR #11). Até esse PR entrar no `master`, rodamos com uma cópia do arquivo anotado (`--cells-jsonl`), cujo sha256 fica gravado no `c1_c3.json`.
+
+| Subconjunto | Grupos | Descoberta (`fim_pedido` / `pre_resposta`) | `test` com gatilho inédito (`fim_pedido` / `pre_resposta`) | Papel |
+|---|---|---|---|---|
+| `qc_grammatical` + validador | 1.697 | 1.288 / 1.455 | 137 / 155 | **principal** |
+| `qc_grammatical` sem validador | 1.723 | 1.306 / 1.479 | 138 / 156 | robustez |
+| `qc_pass_lenient` + validador | 593 | 451 / 509 | 42 / 51 | robustez |
+| todos | 1.825 | 1.375 / 1.568 | 145 / 165 | robustez |
+
+- **`fim_pedido`:** no principal, 199 grupos (11,7%) têm o último token diferente entre as células e saem só dessa posição. Fica abaixo dos 20% (seção 1, regra 1).
+- **Pisos (seção 4):** atendidos no principal. Por domínio: privacy 434, bias 428, cyber 427, violence 408. No `qc_pass_lenient`, o `test` com gatilho inédito no `fim_pedido` fica abaixo de 50, então ali vale o `test` inteiro (seção 3).
+- **Caminho (b):** não virou o principal, porque reprovou em tamanho e estilo (`DESVIOS.md`). Entra como robustez.
+- **C2(b):** a frente C vota a favor da proposta do Davi (PR #8), em que o C2(b) passa a ser só o XSTest e o gatilho inédito e o domínio inédito ficam como descrição. A troca no texto da seção 5 e a entrada no `DESVIOS.md` ficam com a frente D, depois da votação do grupo.

@@ -9,7 +9,7 @@
 | `c1_c3.json` | Resumo por SAE: as 8 combinações na descoberta, a principal, o C1, a replicação, o top-20, a análise por domínio, o controle de estilo e o controle `trig_only` do C3 (IC por grupo; o IC por frase como sensibilidade). | idem; o caminho (b) usa `--conjunto <nome no cache> --cells-jsonl datasets/phase1/cells_2x2_style.jsonl` |
 | `provisorio_*.csv` / `provisorio_{sae}.json` | Modo provisório nos pares originais (diagnóstico, fora do veredito), com o controle de estilo. | `... feature_stats --modo provisorio` |
 | `provisorio.md` | O mesmo, legível: resumo das 8 combinações e o top-20 de cada lado com o rótulo do Neuronpedia. | `... autointerp provisorio` |
-| `robustez_<subconjunto>/` | O C1–C3 nos subconjuntos de robustez do QC (`qc_pass_lenient`, `todos`), na combinação principal. O principal é `qc_grammatical` (`DESVIOS.md`, 2026-11-21). | `... feature_stats --subconjunto <nome>` |
+| `robustez_<subconjunto>/` | O C1–C3 nos subconjuntos de robustez (`qc_pass_lenient`, `todos`, `qc_grammatical_sem_validador`), na combinação principal. O principal é `qc_grammatical AND validator_pass` (`DESVIOS.md`, 2026-11-21; adendo 3 do pré-registro). | `... feature_stats --subconjunto <nome> [--sem-validador]` |
 | `sanidade_sae.json` | Teste de sanidade do SAE (C-U3), só com pedidos escritos à mão e exemplos públicos do Neuronpedia: chat template, convenção de camada (resid_post L = `hidden_states[L+1]`, confere com o Neuronpedia com erro < 1%) e qualidade de reconstrução nas duas posições principais. | `python -m featgrpo.interp.sanidade_sae` numa 4090 (LAB150) |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente C. | — |
 

@@ -36,7 +36,9 @@ else ON_RAID=0; fi
 read -r -a GPU <<< "${CUDA_VISIBLE_DEVICES//,/ }"
 [ ${#GPU[@]} -ge 2 ] || { say "precisa de 2 GPUs"; exit 1; }
 BASE=$((20000 + (SLURM_JOB_ID % 2000) * 10))
-P_JUDGE=$BASE; P_QG=$((BASE+1)); P_WG=$((BASE+2)); P_EMB=$((BASE+3)); P_GEN=$((BASE+4))
+freeport() { local p=$1; while (echo > /dev/tcp/127.0.0.1/$p) 2>/dev/null || ss -ltn 2>/dev/null | grep -q ":$p "; do p=$((p+97)); done; echo $p; }
+P_JUDGE=$(freeport $BASE); P_QG=$(freeport $((BASE+1))); P_WG=$(freeport $((BASE+2))); P_EMB=$(freeport $((BASE+3))); P_GEN=$((BASE+4))
+echo "[portas] juiz=$P_JUDGE qg=$P_QG wg=$P_WG emb=$P_EMB" >&2
 U() { echo "http://127.0.0.1:$1"; }
 JUDGE=RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic; QG=Qwen/Qwen3Guard-Gen-8B; WG=allenai/wildguard
 EMB=Qwen/Qwen3-Embedding-0.6B; GEN=$JUDGE   # gerador = juiz (internet lenta: sem gemma-4-31B)

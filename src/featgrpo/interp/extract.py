@@ -488,13 +488,22 @@ def main() -> None:
     items = load_set(args.set, args.limit)
     print(f"{args.set}: {len(items)} itens")
     model, tok = load_model()
-    saes = {w: {L: load_sae(L, w) for L in args.layers} for w in args.widths}
-    dense, latents, index = extract(model, tok, items, args.layers, args.batch_size, saes)
+    # Uma camada por vez: os 4 SAEs de 262k em float32 (~5,4 GB cada) não cabem junto com o
+    # modelo numa GPU de 24 GB. O forward é o mesmo em cada passada, então o resultado não muda.
+    dense, latents, index = {}, {w: {} for w in args.widths}, None
+    for L in args.layers:
+        saes_L = {w: {L: load_sae(L, w)} for w in args.widths}
+        d, lat, index = extract(model, tok, items, [L], args.batch_size, saes_L)
+        dense.update(d)
+        for w in args.widths:
+            latents[w].update(lat[w])
+        del saes_L, lat
+        torch.cuda.empty_cache()
     root = Path(args.out_root)
     written = save_cache(root, args.set, dense, latents, index)
     mf = update_manifest(root, args.set, written, {
         **vars(args), "sae_ids": {w: {L: f"{SAE_REPO}/resid_post/{sae_id(L, w)}"
-                                      for L in args.layers} for w in saes}})
+                                      for L in args.layers} for w in args.widths}})
     if any("slots_aligned" in r for r in index):
         na = sum(not r.get("slots_aligned", True) for r in index)
         msg = f"lacunas sem alinhamento: {na}"

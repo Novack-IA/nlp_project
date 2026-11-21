@@ -376,6 +376,28 @@ def test_avaliacao_cega():
         autointerp.avaliar(fred.assign(rotulo="talvez"), davi, chave)
 
 
+def test_avaliacao_varios_avaliadores():
+    import pandas as pd
+    from featgrpo.interp import autointerp
+    chave = pd.DataFrame({"ficha": [f"F{i}" for i in range(5)], "classe": ["S_intent"] * 5})
+    llm = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual"] * 4 + ["lexical"]})
+    fred = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual"] * 3 + ["lexical"] * 2})
+    r = autointerp.avaliar_varios({"llm": llm}, chave, principal="llm")
+    assert r["fracao_S_intent_conceitual"]["llm"] == 0.8 and r["atende"] is True and r["pares"] == {}
+    r2 = autointerp.avaliar_varios({"llm": llm, "frederico": fred}, chave, principal="llm")
+    assert r2["fracao_S_intent_conceitual_para_todos"] == 0.6 and r2["pares"]["llm×frederico"]["concordancia_bruta"] == 0.8
+
+
+def test_fichas_sem_nome_da_celula(cache, run_desc):
+    from featgrpo.interp import autointerp, cache_io
+    rows = cache_io.load_index(cache, "cells2x2")
+    z = cache_io.load_latents(cache, "cells2x2", 22, "inst_last", "16k")
+    textos = {(r["group_id"], r["cell"]): "um pedido" for r in rows}
+    itens = autointerp.top_itens_2x2(z, rows, [0, 1], textos)
+    assert itens[0] and not any(c in s for s in itens[0] for c in ("harm_", "ben_"))
+    assert any("harm_" in s or "ben_" in s for s in autointerp.top_itens_2x2(z, rows, [0], textos, mostrar_celula=True)[0])
+
+
 def test_figura_di_dl(run_desc, tmp_path):
     import pandas as pd
     from featgrpo.interp import figuras

@@ -14,6 +14,8 @@
 | `provisorio_*.csv` / `provisorio_{sae}.json` | Modo provisório nos pares originais (diagnóstico, fora do veredito), com o controle de estilo. | `... feature_stats --modo provisorio` |
 | `provisorio.md` | O mesmo, legível: resumo das 8 combinações e o top-20 de cada lado com o rótulo do Neuronpedia. | `... autointerp provisorio` |
 | `robustez_<subconjunto>/` | O C1–C3 nos subconjuntos de robustez (`qc_pass_lenient`, `todos`, `qc_grammatical_sem_validador`), na combinação principal. O principal é `qc_grammatical AND validator_pass` (`DESVIOS.md`, 2026-11-21; adendo 3 do pré-registro). | `... feature_stats --subconjunto <nome> [--sem-validador]` |
+| `fichas_cegas.csv` | As 20 fichas do C3 (top-20 de S_intent), em ordem aleatória, sem classe e sem o nome da célula. A chave fica em `artifacts/frente-c/fichas_chave.csv`. | `... autointerp montar --cells <cells_2x2.jsonl>` |
+| `avaliacao_llm_prompt.md` / `rotulos_llm.csv` | O prompt do avaliador LLM (as fichas e as definições do pré-registro) e os rótulos dele, com uma justificativa por ficha (`DESVIOS.md`, 2026-11-21). | LLM em contexto novo; o resultado vai para `c1_c3.json` com `... autointerp avaliar --llm results/frente-c/rotulos_llm.csv` |
 | `sanidade_sae.json` | Teste de sanidade do SAE (C-U3), só com pedidos escritos à mão e exemplos públicos do Neuronpedia: chat template, convenção de camada (resid_post L = `hidden_states[L+1]`, confere com o Neuronpedia com erro < 1%) e qualidade de reconstrução nas duas posições principais. | `python -m featgrpo.interp.sanidade_sae` numa 4090 (LAB150) |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente C. | — |
 

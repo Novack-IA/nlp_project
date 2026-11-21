@@ -7,7 +7,7 @@
       "sae": "16k",
       "camadas": "[9, 17, 22, 29]",
       "posicoes": "['inst_last', 'post_last']",
-      "abrir_confirmacao": "False",
+      "abrir_confirmacao": "True",
       "out_dir": "/Users/fredrelvas/Documents/bia/6-periodo/nlp/nlp_project/results/frente-c",
       "conjunto": "cells2x2",
       "cells_jsonl": "artifacts/frente-c/cells_2x2_pr11.jsonl",
@@ -33,8 +33,8 @@
       "top": 20,
       "bloco": 16384
     },
-    "git_commit": "e871b4d36a63b692ba131a552e88176de29a67cc",
-    "gerado_em": "2026-11-21T20:20:15+00:00",
+    "git_commit": "27b567bbbd2d6012ce5c69d1b89094df03694d3e",
+    "gerado_em": "2026-11-21T21:18:31+00:00",
     "cells_jsonl": {
       "caminho": "artifacts/frente-c/cells_2x2_pr11.jsonl",
       "sha256": "da6cebd6d825ac1707bf6509403507e503c2570e0f290f2716bac16f1c5b8022"
@@ -689,11 +689,23 @@
       "forcada_pelo_16k": false
     },
     "C1": {
-      "status": "aguardando_confirmacao",
-      "S_intent": 48
+      "status": "atende",
+      "S_intent": 48,
+      "fracao_replica": 1.0,
+      "recorte": "inedito",
+      "baixo_poder": false
     },
-    "confirmacao_aberta": false,
-    "replicacao_S_intent": null,
+    "confirmacao_aberta": true,
+    "replicacao_S_intent": {
+      "n_grupos_confirmacao": 242,
+      "n_gatilho_inedito": 155,
+      "n_gatilho_visto": 87,
+      "recorte_usado": "inedito",
+      "baixo_poder": false,
+      "n_features": 48,
+      "n_replicam": 48,
+      "fracao_replica": 1.0
+    },
     "C3_controle_trig_only": {
       "n_pares_controle": 5091,
       "excluidos": {
@@ -2442,7 +2454,7 @@
       "sae": "262k",
       "camadas": "[9, 17, 22, 29]",
       "posicoes": "['inst_last', 'post_last']",
-      "abrir_confirmacao": "False",
+      "abrir_confirmacao": "True",
       "out_dir": "/Users/fredrelvas/Documents/bia/6-periodo/nlp/nlp_project/results/frente-c",
       "conjunto": "cells2x2",
       "cells_jsonl": "artifacts/frente-c/cells_2x2_pr11.jsonl",
@@ -2468,8 +2480,8 @@
       "top": 20,
       "bloco": 16384
     },
-    "git_commit": "e871b4d36a63b692ba131a552e88176de29a67cc",
-    "gerado_em": "2026-11-21T20:21:36+00:00",
+    "git_commit": "27b567bbbd2d6012ce5c69d1b89094df03694d3e",
+    "gerado_em": "2026-11-21T21:18:36+00:00",
     "cells_jsonl": {
       "caminho": "artifacts/frente-c/cells_2x2_pr11.jsonl",
       "sha256": "da6cebd6d825ac1707bf6509403507e503c2570e0f290f2716bac16f1c5b8022"
@@ -3124,11 +3136,23 @@
       "forcada_pelo_16k": true
     },
     "C1": {
-      "status": "aguardando_confirmacao",
-      "S_intent": 60
+      "status": "atende",
+      "S_intent": 60,
+      "fracao_replica": 1.0,
+      "recorte": "inedito",
+      "baixo_poder": false
     },
-    "confirmacao_aberta": false,
-    "replicacao_S_intent": null,
+    "confirmacao_aberta": true,
+    "replicacao_S_intent": {
+      "n_grupos_confirmacao": 242,
+      "n_gatilho_inedito": 155,
+      "n_gatilho_visto": 87,
+      "recorte_usado": "inedito",
+      "baixo_poder": false,
+      "n_features": 60,
+      "n_replicam": 60,
+      "fracao_replica": 1.0
+    },
     "C3_controle_trig_only": {
       "n_pares_controle": 5091,
       "excluidos": {
@@ -5216,5 +5240,17 @@
         }
       ]
     }
+  },
+  "C3_avaliacao_cega": {
+    "n_fichas": 20,
+    "n_S_intent": 20,
+    "avaliador_principal": "llm",
+    "fracao_S_intent_conceitual": {
+      "llm": 0.95
+    },
+    "fracao_S_intent_conceitual_para_todos": 0.95,
+    "atende": true,
+    "limiar": 0.6,
+    "pares": {}
   }
 }

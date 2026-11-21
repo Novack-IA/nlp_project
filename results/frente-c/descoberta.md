@@ -1,6 +1,6 @@
-# C1 no 2×2: o que a descoberta mostra
+# C1 no 2×2: resultados
 
-> Só a descoberta (train + val). A confirmação (`test`) ainda não foi aberta, e o C1 só fecha depois dela. Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit e871b4d, conjunto `qc_grammatical+validator_pass`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, não verdade.
+> Descoberta (train + val) e confirmação (`test`, aberta uma vez, na combinação principal). Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit 27b567b, conjunto `qc_grammatical+validator_pass`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, não verdade.
 
 ## Em resumo
 
@@ -9,6 +9,8 @@
 3. **Não existe feature "da palavra".** 0 S_lex e 0 S_mixed nas 8 combinações. A troca do gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito na maioria dos grupos.
 4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em 90% delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de 9% do tamanho do efeito de intenção.
 5. **As features de intenção mais fortes ficam fora de S_intent** (exploratório). São 23 com efeito de intenção grande e esse vazamento pequeno do gatilho, que passa da margem de ±0,2 da regra. Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia.
+6. **Elas se confirmam em dados novos.** No `test` com gatilho inédito (155 grupos), 48 de 48 replicam (mesmo sinal, \|d_I\| ≥ 0,3): **C1 atende**. No 262k, 60 de 60: **C4a atende**.
+7. **Lidas às cegas, quase todas são conceituais.** 19 de 20 fichas do top-20 foram julgadas conceituais por um LLM em contexto novo (mínimo 60%): **C3 atende** (conferência humana pendente).
 
 **Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no pre_resposta, mas a palavra ainda dá um empurrão pequeno na mesma direção. Se esse empurrão explica o over-refusal é a pergunta do C4b/c (frente D) e do C5 (frente B).
 
@@ -71,6 +73,17 @@ Sem rótulo = o Neuronpedia não tem explicação para a feature.
 | [567](https://www.neuronpedia.org/gemma-3-4b-it/29-gemmascope-2-res-16k/567) | 1,88 | 0,27 | sincerely / heartfelt / goodbye |
 
 3 das 8 têm rótulo de recusa. O maior d_I aqui é 3,39, contra 1,79 da S_intent mais forte. O d_L delas é o vazamento do gatilho (item 4 do resumo). No CSV aparecem como "irrelevante", porque a regra do pré-registro não as classifica.
+
+## Confirmação (`test` com gatilho inédito)
+
+| Medida | Valor |
+|---|---|
+| S_intent que replicam | 48 de 48 |
+| d_I no test ÷ d_I na descoberta (mediana) | 1,03 |
+| Menor \|d_I\| no test | 0,45 |
+| \|d_L\| no test (mediana) | 0,09 |
+
+O efeito de intenção no `test` tem o mesmo tamanho que na descoberta, e o efeito do gatilho continua pequeno.
 
 ---
 

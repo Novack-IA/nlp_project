@@ -97,14 +97,17 @@ def textos_2x2(path: Path = PHASE1 / "cells_2x2.jsonl") -> dict[tuple[str, str],
     return out
 
 
-def top_itens_2x2(z: sp.csr_matrix, rows: list[dict], feats: list[int], textos: dict, k: int = 10) -> dict[int, list[str]]:
-    """Para cada feature, os k itens do 2×2 (só descoberta) com maior ativação, com a célula."""
+def top_itens_2x2(z: sp.csr_matrix, rows: list[dict], feats: list[int], textos: dict, k: int = 10,
+                  mostrar_celula: bool = False) -> dict[int, list[str]]:
+    """Para cada feature, os k itens do 2×2 (só descoberta) com maior ativação. Sem o nome da célula por padrão,
+    porque ele diria ao avaliador se o pedido é nocivo (DESVIOS 2026-11-21)."""
     keep = [i for i, r in enumerate(rows) if r.get("cell") and r.get("split") in DISCOVERY]
     sub = z[keep][:, feats].toarray()
     out = {}
     for j, f in enumerate(feats):
         order = [i for i in np.argsort(-sub[:, j])[:k] if sub[i, j] > 0]
-        out[f] = [f"{rows[keep[i]]['cell']}: {_limpa(textos.get((rows[keep[i]]['group_id'], rows[keep[i]]['cell']), '(texto não encontrado)'))}"
+        out[f] = [(f"{rows[keep[i]]['cell']}: " if mostrar_celula else "")
+                  + f"{_limpa(textos.get((rows[keep[i]]['group_id'], rows[keep[i]]['cell']), '(texto não encontrado)'))}"
                   f" (ativação {sub[i, j]:.1f})" for i in order]
     return out
 
@@ -132,6 +135,32 @@ def montar_fichas(resumo_sae: dict, sae: str, z: sp.csr_matrix, rows: list[dict]
                       "posicao": pos, "sae": sae,
                       "neuronpedia": NP_PAGE.format(model=NP_MODEL, source=np_source(layer, sae), index=f)})
     return pd.DataFrame(fichas), pd.DataFrame(chave)
+
+
+def avaliar_varios(avaliadores: dict[str, pd.DataFrame], chave: pd.DataFrame, principal: str,
+                   limiar: float = 0.60) -> dict:
+    """C3, item 2, com qualquer número de avaliadores (DESVIOS 2026-11-21: primeiro um LLM, depois a conferência
+    humana). O critério usa o avaliador `principal`; reportamos também a fração conceitual para todos e o κ de
+    Cohen de cada par."""
+    from itertools import combinations
+    from sklearn.metrics import cohen_kappa_score
+    df = chave.copy()
+    for nome, rot in avaliadores.items():
+        df = df.merge(rot[["ficha", "rotulo"]].rename(columns={"rotulo": nome}), on="ficha")
+        df[nome] = df[nome].astype(str).str.strip().str.lower()
+        invalidos = sorted(set(df[nome]) - set(ROTULOS))
+        if invalidos:
+            raise ValueError(f"rótulos inválidos de {nome}: {invalidos} (use {ROTULOS})")
+    si = df[df["classe"] == "S_intent"]
+    por = {nome: float((si[nome] == "conceitual").mean()) if len(si) else None for nome in avaliadores}
+    todos = float(si[list(avaliadores)].eq("conceitual").all(axis=1).mean()) if len(si) else None
+    pares = {f"{a}×{b}": {"kappa_cohen": float(cohen_kappa_score(df[a], df[b])) if df[a].nunique() + df[b].nunique() > 2
+                          else None, "concordancia_bruta": float((df[a] == df[b]).mean())}
+             for a, b in combinations(avaliadores, 2)}
+    frac = por[principal]
+    return {"n_fichas": len(df), "n_S_intent": len(si), "avaliador_principal": principal,
+            "fracao_S_intent_conceitual": por, "fracao_S_intent_conceitual_para_todos": todos,
+            "atende": None if frac is None else frac >= limiar, "limiar": limiar, "pares": pares}
 
 
 def avaliar(fred: pd.DataFrame, davi: pd.DataFrame, chave: pd.DataFrame, limiar: float = 0.60) -> dict:
@@ -272,10 +301,14 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         fora = df[(df["d_I"].abs() >= 0.5) & (df["q_I"] < 0.01) & (df["classe"] != "S_intent")]
         fora = fora.reindex(fora["d_I"].abs().sort_values(ascending=False).index)
 
+    rep, rep262 = r.get("replicacao_S_intent") or {}, (c1.get("262k") or {}).get("replicacao_S_intent") or {}
+    aberta = bool(r.get("confirmacao_aberta")) and bool(rep)
     linhas = [
-        "# C1 no 2×2: o que a descoberta mostra",
+        "# C1 no 2×2: resultados" if aberta else "# C1 no 2×2: o que a descoberta mostra",
         "",
-        "> Só a descoberta (train + val). A confirmação (`test`) ainda não foi aberta, e o C1 só fecha depois dela. "
+        ("> Descoberta (train + val) e confirmação (`test`, aberta uma vez, na combinação principal). "
+         if aberta else "> Só a descoberta (train + val). A confirmação (`test`) ainda não foi aberta, e o C1 só fecha depois dela. ")
+        + 
         f"Gerado por `python -m featgrpo.interp.autointerp descoberta` (commit {str(r.get('git_commit') or '')[:7]}, "
         f"conjunto `{r['subconjunto']}`). Os rótulos são explicações automáticas do Neuronpedia: ponto de partida, "
         "não verdade.",
@@ -303,6 +336,21 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         linhas.append(f"5. **As features de intenção mais fortes ficam fora de S_intent** (exploratório). São {len(fora)} "
                       "com efeito de intenção grande e esse vazamento pequeno do gatilho, que passa da margem de ±0,2 da "
                       f"regra. Entre as 8 mais fortes, {n_rec} têm rótulo de recusa no Neuronpedia.")
+    if aberta:
+        c1v, c4v = r.get("C1") or {}, (c1.get("262k") or {}).get("C1") or {}
+        linhas.append(
+            f"6. **Elas se confirmam em dados novos.** No `test` com gatilho inédito ({rep.get('n_gatilho_inedito')} grupos), "
+            f"{rep.get('n_replicam')} de {rep.get('n_features')} replicam (mesmo sinal, \\|d_I\\| ≥ 0,3): "
+            f"**C1 {c1v.get('status', '—')}**. No 262k, {rep262.get('n_replicam', '—')} de {rep262.get('n_features', '—')}: "
+            f"**C4a {c4v.get('status', '—')}**.")
+    cega = c1.get("C3_avaliacao_cega") or {}
+    if cega:
+        pr = cega["avaliador_principal"]
+        n_c = round(cega["fracao_S_intent_conceitual"][pr] * cega["n_S_intent"])
+        quem = "um LLM em contexto novo" if pr == "llm" else pr
+        linhas.append(f"7. **Lidas às cegas, quase todas são conceituais.** {n_c} de {cega['n_S_intent']} fichas do top-20 "
+                      f"foram julgadas conceituais por {quem} (mínimo 60%): **C3 {'atende' if cega['atende'] else 'não atende'}**"
+                      + (" (conferência humana pendente)." if pr == "llm" and len(cega["fracao_S_intent_conceitual"]) == 1 else "."))
     tot_pos = {q: sum(c["S_intent"] for c in combos if c["posicao"] == q) for q in ("inst_last", "post_last")}
     onde = max(tot_pos, key=tot_pos.get)
     leitura = (f"**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no "
@@ -358,6 +406,19 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         linhas += ["", f"{n_rec} das 8 têm rótulo de recusa. O maior d_I aqui é {_n(float(fora['d_I'].abs().max()))}, "
                    f"contra {_n(d_si)} da S_intent mais forte. O d_L delas é o vazamento do gatilho (item 4 do resumo). "
                    "No CSV aparecem como \"irrelevante\", porque a regra do pré-registro não as classifica.", ""]
+
+    if aberta and df is not None and "d_I_test_inedito" in df.columns:
+        si = df[df["classe"] == "S_intent"]
+        tt = si["d_I_test_inedito"]
+        linhas += ["## Confirmação (`test` com gatilho inédito)", "",
+                   "| Medida | Valor |", "|---|---|",
+                   f"| S_intent que replicam | {rep.get('n_replicam')} de {rep.get('n_features')} |",
+                   f"| d_I no test ÷ d_I na descoberta (mediana) | {_n(float((tt / si['d_I']).median()))} |",
+                   f"| Menor \\|d_I\\| no test | {_n(float(tt.abs().min()))} |",
+                   f"| \\|d_L\\| no test (mediana) | {_n(float(si['d_L_test_inedito'].abs().median()))} |", "",
+                   "O efeito de intenção no `test` tem o mesmo tamanho que na descoberta, e o efeito do gatilho continua "
+                   "pequeno." if float((tt / si["d_I"]).median()) >= 0.8 else
+                   "O efeito de intenção no `test` é menor que na descoberta.", ""]
 
     # anexo
     linhas += ["---", "", "## Anexo", ""]
@@ -415,8 +476,9 @@ def main(argv=None) -> int:
     m.add_argument("--out-dir", type=Path, default=OUT_DIR)
     m.add_argument("--chave-dir", type=Path, default=KEY_DIR)
     a = sub.add_parser("avaliar")
-    a.add_argument("--frederico", type=Path, required=True)
-    a.add_argument("--davi", type=Path, required=True)
+    a.add_argument("--llm", type=Path, default=None, help="rótulos do avaliador LLM (o principal; DESVIOS 2026-11-21)")
+    a.add_argument("--frederico", type=Path, default=None)
+    a.add_argument("--davi", type=Path, default=None)
     a.add_argument("--chave", type=Path, default=KEY_DIR / "fichas_chave.csv")
     a.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args(argv)
@@ -450,7 +512,11 @@ def main(argv=None) -> int:
         print(f"{len(fichas)} fichas em {args.out_dir / 'fichas_cegas.csv'}; chave em {args.chave_dir / 'fichas_chave.csv'}")
         return 0
 
-    res = avaliar(pd.read_csv(args.frederico), pd.read_csv(args.davi), pd.read_csv(args.chave))
+    avaliadores = {nome: pd.read_csv(caminho) for nome, caminho in
+                   (("llm", args.llm), ("frederico", args.frederico), ("davi", args.davi)) if caminho is not None}
+    if not avaliadores:
+        raise SystemExit("passe pelo menos um avaliador (--llm, --frederico, --davi)")
+    res = avaliar_varios(avaliadores, pd.read_csv(args.chave), principal=next(iter(avaliadores)))
     path = args.out_dir / "c1_c3.json"
     resumo = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     resumo["C3_avaliacao_cega"] = res

@@ -106,23 +106,30 @@ D=$REPO/$D1; O=$REPO/datasets/phase1
 EXT=$!
 [ -f $O/trigger_types.jsonl ] || step PY t1_types --judge-url $(U $P_JUDGE) || exit 1
 CELLS=(--gen-url $(U $P_JUDGE) "${LBL[@]}")
-step PY t2_cells "${CELLS[@]}" --tag dry --n 50 || exit 1
-Y=$(CRUN $DV/bin/python -c "import json;print(json.load(open('$D/cells_dry_report.json'))['yield'])")
-say "rendimento da rodada seca: $Y"
+DRY=${DRY_TAG:-dry_v2}
+step PY t2_cells "${CELLS[@]}" --tag $DRY --n 50 || exit 1
+Y=$(CRUN $DV/bin/python -c "import json;print(json.load(open('$D/cells_${DRY}_report.json'))['yield'])")
+say "rendimento da rodada seca ($DRY): $Y"
 if CRUN $DV/bin/python -c "import sys;sys.exit(0 if $Y >= 0.40 else 1)"; then
   touch $D/GATE_DRY_OK
   [ -f $O/cells_2x2.jsonl ] || step PY t2_cells "${CELLS[@]}" --tag full || exit 1
+  say "rendimento do 2×2 completo: $(CRUN $DV/bin/python -c "import json;r=json.load(open('$D/cells_full_report.json'));print(r['ok'], r['yield'])")"
   step PY t3_controls_external controls || exit 1
   touch $D/CELLS_DONE
 else
-  touch $D/GATE_DRY_FAIL; say "GATE: rendimento < 40% — 2×2 completo NÃO disparado (plano B)"
+  say "GATE: rendimento < 40% — 2×2 completo NÃO disparado (plano B)"
 fi
 wait $EXT; say "externos rc=$?"
 
+# mineração adversarial (A-P5): variantes agora; respostas do 4B vêm do job de modelo
+[ -f $D/mining_variants.jsonl ] || step PY t5_mining variants --gen-url $(U $P_JUDGE) || say "variantes falharam"
+
 # rotulagem do comportamento do 4B (o job de modelo escreve behavior_raw_<set>.jsonl)
-for s in pairs external cells; do
+for s in pairs external cells mining; do
   [ "$s" = cells ] && [ ! -f $D/CELLS_DONE ] && continue
+  [ "$s" = mining ] && [ ! -f $D/mining_variants.jsonl ] && continue
   until [ -f $D/behavior_raw_$s.jsonl ]; do sleep 60; done
   [ -f $D/behavior_$s.jsonl ] || step PY t4_behavior label --set $s "${LBL[@]}" || say "rótulo $s falhou"
 done
+[ -f $D/behavior_mining.jsonl ] && { [ -f $O/hard_benign_mined.jsonl ] || step PY t5_mining confirm "${LBL[@]}"; }
 say "fim do job de dados"

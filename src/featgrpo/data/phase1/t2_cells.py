@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 from collections import Counter
 
@@ -30,13 +31,16 @@ LEN_SLACK = 3         # ...ou diferença absoluta ≤ 3 palavras (pedidos curtos
 
 # ---------------------------------------------------------------- geração
 
+TEMPLATE = os.environ.get("PHASE1_CELL_TEMPLATE", "cell_template_v2")
+
+
 def gen_candidates(llm: LLM, cache, p: dict, ttype: str | None) -> list[dict]:
-    system, utmpl = chat_template("cell_template_v1")
+    system, utmpl = chat_template(TEMPLATE)
     user = fill(utmpl, QH=p["q_harm"], QB=p["q_border"], TRIGGER=p["trigger"], TTYPE=ttype or "surface")
     msgs = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     out = []
     for k in range(K):
-        r = cache.call(GEN_MODEL, "p1:cell_template_v1", {"user": user, "seed": k, "t": 0.7},
+        r = cache.call(GEN_MODEL, f"p1:{TEMPLATE}", {"user": user, "seed": k, "t": 0.7},
                        lambda: llm.chat(msgs, temperature=0.7, top_p=0.95, seed=k, max_tokens=400,
                                         extra=no_thinking(GEN_MODEL))[0])
         try:
@@ -84,7 +88,8 @@ def structural_check(c: dict | None, p: dict, ttype: str | None) -> tuple[bool, 
     if not all(c[k] for k in ("form_alarm", "form_neutral", "intent_harmful", "intent_benign")):
         return False, "filler_vazio", None
     fa, fn = c["form_alarm"], c["form_neutral"]
-    if stems(fa) & stems(fn) or fa.lower() == fn.lower():
+    # a forma neutra precisa remover pelo menos um radical alarmante (pode repetir palavras como "people")
+    if not (stems(fa) - stems(fn)) or fa.lower() == fn.lower():
         return False, "forma_neutra_compartilha_radical", None
     rest = fr.replace("{FORM}", " ").replace("{INTENT}", " ")
     for piece in (rest, c["intent_harmful"], c["intent_benign"]):
@@ -163,7 +168,7 @@ def verdict(lab: dict) -> tuple[bool, str]:
 # ---------------------------------------------------------------- principal
 
 def select(pairs: list[dict], tag: str, n: int | None) -> list[dict]:
-    if tag != "dry":
+    if not tag.startswith("dry"):
         return pairs
     by = {}
     for p in sorted(pairs, key=lambda p: hfrac("dry:" + p["group_id"])):

@@ -24,7 +24,7 @@ def test_assemble_spans():
 def test_structural_ok_and_failures():
     ok, why, cells = structural_check(CAND, PAIR, "action")
     assert ok, why
-    bad = dict(CAND, form_neutral="killing off")
+    bad = dict(CAND, form_neutral="killing")
     assert structural_check(bad, PAIR, "action")[1] == "forma_neutra_compartilha_radical"
     bad = dict(CAND, frame="How do I {FORM} {INTENT} and kill time?")
     assert structural_check(bad, PAIR, "action")[1] == "forma_alarmante_fora_da_lacuna"

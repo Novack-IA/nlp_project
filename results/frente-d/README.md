@@ -7,6 +7,7 @@
 | `probes.json` + `probes_auroc_por_camada.png` | Probes densos no 2×2 (3 subconjuntos) e nos pares | `PYTHONPATH=src python -m featgrpo.interp.probes` |
 | `c2_c4_L29_post_last_{16k,262k}.json` | Matriz C2, C2(a/b/c), recortes C4b/c, na combinação principal da frente C | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer 29 --pos post_last --sae 16k --out …` |
 | `c2b_controle_aleatorio.json` + `.py` | Controle do C2(b): features aleatórias e denso no XSTest | `PYTHONPATH=src python results/frente-d/c2b_controle_aleatorio.py 16k 262k` (listas em `artifacts/_downloads/listas_c`) |
+| `fig_c2_matriz.png`, `fig_c2b_xstest.png`, `c2_secundaria.json` | Figuras do C2 para o paper e C2 por domínio e por tipo de gatilho | `PYTHONPATH=src python results/frente-d/c2_secundaria.py` |
 | `c3_rotulos_davi.csv` | 2º avaliador da leitura cega do C3 (Claude; ver `DESVIOS.md`) | — |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente D | — |
 
@@ -71,6 +72,26 @@ Listas da frente C (`frente-c-features`, commit `b299ef4`): 48 S_intent no 16k e
 - **C2(c) indefinido**: sem S_lex, não há o lado lexical da dissociação.
 - **C4(b/c)**: o C2(a) e o C2(b) se mantêm nos dois recortes, nos dois SAEs. Os 211 grupos do (b) são os do conjunto principal; o recorte inteiro tem 247. O C1 nos recortes é da frente C: (c) atende, (b) inconclusivo por falta de poder.
 - O controle aleatório no XSTest foi acrescentado **depois** de ver o C2 (`DESVIOS.md`); a regra e o "atende" não mudam.
+
+### 3.1 Figuras e análise secundária (não decidem)
+
+![Matriz do C2](fig_c2_matriz.png)
+
+![Queda no XSTest](fig_c2b_xstest.png)
+
+**C2 por domínio e por tipo de gatilho** (`c2_secundaria.json`). Mesmo classificador L1, treinado no `train` do conjunto principal, AUROC de intenção no `test` (todos os gatilhos, 4 células). A tabela mostra o 16k; o 262k dá o mesmo quadro.
+
+| Recorte | Grupos | S_intent | Aleatório (mediana de 20) | TF-IDF |
+|---|---|---|---|---|
+| bias | 63 | 0,994 | 0,998 | 0,993 |
+| cyber | 62 | 0,996 | 0,988 | 0,998 |
+| privacy | 67 | 0,996 | 0,990 | 1,000 |
+| violence | 50 | 0,988 | 0,996 | 0,998 |
+| gatilho `action` | 110 | 0,995 | 0,988 | 0,998 |
+| gatilho `intent_marker` | 67 | 0,998 | 0,998 | 0,998 |
+| gatilho `surface` | 65 | 0,985 | 0,996 | 0,994 |
+
+**Leitura:** não há domínio nem tipo de gatilho em que o C2 dependa. Tudo fica entre 0,985 e 1,000, e a S_intent não se separa do aleatório nem do TF-IDF em nenhum recorte. Isso confirma, por recorte, o que a seção 3 mostrou no conjunto inteiro.
 
 ## 4. Probes densos no 2×2 (âncora densa do veredito)
 

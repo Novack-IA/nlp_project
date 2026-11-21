@@ -29,8 +29,13 @@ _TOK = re.compile(r"[A-Za-z0-9']+")
 def locate(text: str, trigger: str) -> tuple[int, int] | None:
     """Span (char) do gatilho no texto: literal (sem caixa) ou a menor janela de palavras que cobre os radicais."""
     i = text.lower().find(trigger.lower())
-    if i >= 0:
-        return i, i + len(trigger)
+    if i >= 0:   # estende até a borda da palavra: "term" em "terms" troca a palavra inteira (frente D, PR #8)
+        a, b = i, i + len(trigger)
+        while a > 0 and text[a - 1].isalnum():
+            a -= 1
+        while b < len(text) and text[b].isalnum():
+            b += 1
+        return a, b
     want = stems(trigger)
     if not want:
         return None

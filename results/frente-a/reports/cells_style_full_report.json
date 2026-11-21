@@ -1,0 +1,129 @@
+{
+ "tag": "style_full",
+ "design": "swap_style",
+ "params": {
+  "prompt": "style_v2",
+  "style_k": 5,
+  "max_words": 50,
+  "len_ratio": 1.6,
+  "len_diff": 6
+ },
+ "groups": 2428,
+ "ok": 996,
+ "yield": 0.4102141680395387,
+ "ok_by_candidate": {
+  "s0w0": 754,
+  "s3w0": 47,
+  "s1w0": 100,
+  "s2w0": 57,
+  "s1w1": 3,
+  "s4w0": 23,
+  "s0w1": 5,
+  "s0w2": 2,
+  "s1w2": 3,
+  "s2w2": 1,
+  "s2w1": 1
+ },
+ "by_domain": {
+  "bias": {
+   "n": 578,
+   "ok": 262
+  },
+  "cyber": {
+   "n": 606,
+   "ok": 246
+  },
+  "privacy": {
+   "n": 633,
+   "ok": 276
+  },
+  "violence": {
+   "n": 611,
+   "ok": 212
+  }
+ },
+ "by_trigger_type": {
+  "action": {
+   "n": 1116,
+   "ok": 459
+  },
+  "intent_marker": {
+   "n": 615,
+   "ok": 265
+  },
+  "surface": {
+   "n": 697,
+   "ok": 272
+  }
+ },
+ "split_ok": {
+  "train": 697,
+  "val": 155,
+  "test": 144
+ },
+ "failure_reasons_all_tries": {
+  "estilo/tamanho_entre_linhas": 5003,
+  "estilo/gatilho_literal": 1125,
+  "rotulo/mudou_pedido:harm_row": 343,
+  "estrutura/gatilho_presente_sem_gatilho": 319,
+  "estilo/tamanho_absoluto": 197,
+  "rotulo/intencao:ben_trig": 141,
+  "rotulo/intencao:harm_notrig": 138,
+  "rotulo/nao_natural:ben_trig": 99,
+  "rotulo/mudou_pedido:ben_vs_orig": 73,
+  "estrutura/neutro_repete_o_gatilho": 71,
+  "estilo/mais_de_uma_frase": 67,
+  "rotulo/mudou_pedido:ben_row": 67,
+  "rotulo/intencao:harm_trig": 57,
+  "rotulo/mudou_pedido:harm_vs_orig": 56,
+  "rotulo/nao_natural:harm_notrig": 49,
+  "estrutura/tamanho": 38,
+  "rotulo/nao_natural:ben_notrig": 25,
+  "rotulo/intencao:ben_notrig": 23,
+  "rotulo/nao_natural:harm_trig": 22,
+  "estrutura/json_invalido": 4
+ },
+ "len_diff_words_between_rows": {
+  "0": 24,
+  "1": 55,
+  "2": 63,
+  "3": 67,
+  "4": 68,
+  "5": 58,
+  "6": 82,
+  "7": 81,
+  "8": 104,
+  "9": 84,
+  "10": 83,
+  "11": 72,
+  "12": 53,
+  "13": 44,
+  "14": 21,
+  "15": 20,
+  "16": 9,
+  "17": 7,
+  "18": 1
+ },
+ "run": {
+  "gen": {
+   "calls": 12674,
+   "prompt_tokens": 5428949,
+   "completion_tokens": 622377
+  },
+  "judge": {
+   "calls": 1478,
+   "prompt_tokens": 910568,
+   "completion_tokens": 264391
+  },
+  "qg": {
+   "calls": 5431,
+   "prompt_tokens": 1777209,
+   "completion_tokens": 52156
+  },
+  "wg": {
+   "calls": 5431,
+   "prompt_tokens": 807364,
+   "completion_tokens": 130344
+  }
+ }
+}

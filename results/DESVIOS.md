@@ -28,3 +28,25 @@ Formato: data · quem · o que mudou · por quê · se foi decidido antes ou dep
 - 2026-11-21 · Frederico (C) · **Caminho (b): resultado da regra.** O 2×2 em estilo comum saiu com 968 grupos no `qc_grammatical` (958 com o validador) e AUROC só de estilo 0,80. Falha nas condições 1 (≥ 1.200) e 2 (≤ 0,70), então o **2×2 atual continua principal**, e o (b) entra como robustez na combinação principal dele quando o cache chegar. **Transparência sobre os horários:** o commit com o resultado do (b) (d6c9e03, 16:19) é anterior ao nosso registro (73d81f7, 17:05). Ele chegou a esta máquina às 17:04, por um `pull`, e não tinha sido lido quando o registro foi escrito. De todo modo, a condição de tamanho é a que o próprio Gustavo propôs às 14:06 (7bc25a5), e ela sozinha já reprova o (b), qualquer que seja o limiar de AUROC.
 - 2026-11-21 · Frederico (C) · **C3, avaliação cega: primeiro um LLM, depois a conferência humana** (provisório). As 20 fichas do top-20 de S_intent são rotuladas por um LLM em contexto novo (Claude Opus 5.5, `claude-opus-5-5`). Ele recebe só as fichas e as definições do pré-registro, sem a classe, os d ou os resultados. O critério (≥ 60% das S_intent conceituais) é calculado nos rótulos dele. Depois, Frederico e Davi conferem as mesmas fichas, e reportamos a concordância de cada um com o LLM (κ). Nas fichas, os itens do 2×2 aparecem **sem o nome da célula**, que diria se o pedido é nocivo. Não há fichas de S_lex, porque não houve S_lex. A conferência do Frederico não é cega: ele já tinha visto os rótulos do Neuronpedia e os d dessas features (`descoberta.md`) · o prazo de segunda não comporta duas rodadas humanas antes da escrita · decidido **depois** da confirmação do C1 e **antes** de qualquer rótulo do C3.
 - 2026-11-21 · Frederico (C), a pedido do Davi (D) · **Pré-registro da frente C, seção 5, regra 3: C2(b) só com o XSTest.** A regra "≥ 2 das 3 generalizações" foi trocada pela proposta do Davi no PR #8: S_intent perde no XSTest no máximo metade da AUROC que o TF-IDF perde (razão ≤ 0,5 e limite superior do IC 95% < 1). Gatilho inédito e leave-one-domain-out ficam como descrição. O texto antigo continua no pré-registro, riscado · no 2×2 real, o TF-IDF quase não cai com gatilho inédito (0,003) nem com domínio inédito (0,014), então "≥ 2 das 3" falharia por construção, quaisquer que fossem as features · decidido com base só no baseline TF-IDF, que é o mesmo em `val` e `test`, e **antes** de qualquer classificador de S_intent no 2×2.
+- 2026-11-21 · Gustavo (A) · **Caminho (b), versão escolhida depois do smoke** (4 rodadas de 40 grupos fora do test; relatórios em `results/frente-a/reports/cells_style_smoke*_report.json`):
+  - prompt `style_v2`, que mantém o contexto que torna Q⁰ benigno;
+  - tamanho entre as linhas casado (razão ≤ 1,6 ou diferença ≤ 6 palavras);
+  - até 50 palavras e 5 reescritas por grupo.
+
+  Resultados do smoke:
+  - **v2:** rendimento ~40%; o classificador só de estilo cai de 0,77–0,85 (mesmos grupos, original) para 0,61, e para 0,51 sem os atributos de tamanho;
+  - **v3**, sem casar o tamanho: rende 70%, mas o estilo continua em 0,84. Foi descartada porque não remove o confundimento.
+
+  Consequência: o completo deve ficar em ~950 grupos, abaixo dos 1.200 do critério registrado acima. **O 2×2 em estilo comum entra como robustez do conjunto principal**, a menos que o time registre outra regra antes do cache dele.
+
+  Limitação conhecida: para casar o tamanho, o gerador às vezes acrescenta ao Q⁰ um contexto genérico que não estava no original ("for a history paper"). Os juízes aprovaram esses casos como o mesmo pedido.
+
+  · **antes** de qualquer ativação do 2×2.
+- 2026-11-21 · Gustavo (A), a pedido do Davi (D, PR #8) · **Validador da frente D anotado nos dois 2×2:** `validator_pass` e `validator_errors` em cada grupo, sem descartar nenhum.
+  - `cells_2x2.jsonl`: 1.794/1.825 aprovados; 26 dos reprovados estão no `qc_grammatical`.
+  - `cells_2x2_style.jsonl`: 984/996 aprovados; 10 no `qc_grammatical`.
+  - Quase todos os reprovados têm a troca feita no meio de uma palavra flexionada ("derogatory term**ss**"), porque o `locate` do `t2b_swap` cortava o gatilho literal dentro da palavra. **Correção na origem:** o span agora vai até a borda da palavra; vale para gerações futuras, e as atuais só ficam marcadas.
+  - **Proposta, a confirmar pela frente C:** o conjunto principal passa a ser `qc_grammatical AND validator_pass` (1.697 grupos no 2×2 atual; 958 no de estilo comum).
+  - Não muda o `qc_grammatical`, que continua sendo o rótulo do juiz.
+
+  · **antes** de qualquer análise de ativação do 2×2. O cache do 2×2 já existe, mas só o índice precisa levar a marca nova.

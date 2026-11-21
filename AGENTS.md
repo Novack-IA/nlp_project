@@ -82,21 +82,21 @@ artifacts/acts/gemma-3-4b-it/MANIFEST.json                                      
 
 - Leia com `featgrpo.interp.cache_io` (`load_dense`, `load_latents`, `load_index`).
 - **Denso em float32, não float16:** o residual do Gemma 3 passa de 65.504 (máximo do fp16) a partir de ~L17; em fp16 saía `inf`. Detalhes em `results/frente-b/fatos_modelo.md`.
-- **Camadas:** L9, L17, L22, L29. **`sae`:** `16k` ou `262k` (Gemma Scope 2, `l0_medium`) ou `proprio`.
+- **Camadas:** L9, L17, L22, L29. **`sae`:** `16k` ou `262k` (Gemma Scope 2, `l0_medium`) ou `proprio` (SAE da frente A, só em L17/L22/L29; pesos em `artifacts/sae_proprio/`, sha256 conferido no carregamento).
 
 - **`conjunto`:** `pairs` (2.428 × {q_harm, q_border}), `final_resp` (respostas dos 500 grupos), `cells2x2`, `xstest`, `orbench_hard`, …
 - **`posicao`** (principais do C1, pelo pré-registro da frente C: `inst_last` e `post_last`):
   - `inst_last`: o último token do texto do usuário, logo antes de `<end_of_turn>`. No 2×2 é o mesmo token nas 4 células quando o molde termina em texto fixo; confira com `inst_last_token_id` no índice;
   - `trig`: média dos tokens do gatilho (pares originais e controles);
   - `slot_forma`: média dos tokens da lacuna de forma do 2×2 (o gatilho ou o termo neutro), a partir de `cells[*].slots.form` (formato da frente A) ou `cells[*].spans.forma`;
-  - `slot_intencao`: média dos tokens da lacuna de intenção do 2×2, a partir de `cells[*].slots.intent` ou `cells[*].spans.intencao`;
+  - `slot_intencao`: média dos tokens da lacuna de intenção do 2×2, a partir de `cells[*].slots.intent` ou `cells[*].spans.intencao`. **Não existe no plano B (swap)**, que só marca a lacuna de forma;
   - `post`: **média** dos tokens do sufixo `<end_of_turn>\n<start_of_turn>model\n` (pós-instrução);
   - `post_last`: só o **último** token desse sufixo (como em Arditi et al.);
   - `mean`: média dos tokens do pedido;
   - `resp_mean`: média dos tokens da resposta, em teacher forcing;
   - `resp_k8`: média dos 8 primeiros tokens da resposta.
 - **Variantes de latentes** (só nos `.npz`): `{posicao}` é o SAE aplicado ao vetor médio da posição. `{posicao}_tokmean` / `{posicao}_tokmax` é o SAE aplicado a cada token da posição, seguido de média ou máximo (para `post`, `mean`, `trig` e os slots). A média de muitos tokens sai da distribuição do SAE (L0 de `mean` ≈ 6–9 contra ≈ 50 por token); a frente C escolhe qual usar.
-- **`index`** tem, por linha: `item_id, group_id, item` (`q_harm`/`q_border`, `r0`…`r7`, a célula do 2×2 `harm_trig`… ou `trig_only`/`neutral_only`), `label, has_trigger` (2×2 e controles), `split, domain, subdomain, trigger, trigger_aligned, trigger_method` (`span` nos controles, que trazem o span da peça), `template_id` (controles; o par é `group_id` + `template_id`, com o `group_id` do 2×2), `slots_aligned` (2×2), `inst_last_token_id`, `n_tokens` e `n_prompt_tokens`.
+- **`index`** tem, por linha: `item_id, group_id, item` (`q_harm`/`q_border`, `r0`…`r7`, a célula do 2×2 `harm_trig`… ou `trig_only`/`neutral_only`), `label, has_trigger` (2×2 e controles), `split, domain, subdomain, trigger, trigger_aligned, trigger_method` (`span` nos controles e no 2×2 swap, em que `trig` lê a peça de forma da própria célula), `template_id` (controles; o par é `group_id` + `template_id`, com o `group_id` do 2×2), `slots_aligned`, `design` e as marcas de QC do grupo `qc_grammatical, qc_pass_lenient, qc_pass` (2×2), `inst_last_token_id`, `n_tokens` e `n_prompt_tokens`.
 - **Lotes:** padding à direita, com os itens de um mesmo `group_id` sempre no mesmo lote. Os tokens do prefixo comum às células de um grupo saem bit a bit iguais (por exemplo, `slot_forma` quando ela vem antes da lacuna de intenção).
 - Ativações por token (para exemplos de maior ativação) ficam com quem precisa delas (frente C). Não entram no cache compartilhado.
 - O cache denso é pequeno (~50 MB por camada × posição para os pares; ~1 GB com latentes 16k). Vai para a pasta compartilhada do time com a mesma árvore. `artifacts/` **nunca** vai para o git.

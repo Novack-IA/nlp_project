@@ -47,7 +47,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from featgrpo.interp.common import ACTS, LAYERS, MODEL_ID, SAE_REPO, get_layers, sae_id, set_seeds
+from featgrpo.interp.common import (ACTS, LAYERS, MODEL_ID, REPO, SAE_REPO, get_layers, sae_id,
+                                    set_seeds)
 
 POST_SUFFIX = "<end_of_turn>\n<start_of_turn>model\n"
 BASE_POSITIONS = ("inst_last", "post", "post_last", "mean")
@@ -155,6 +156,8 @@ def encode_item(tok, item: dict, trigger_key: str = "trigger") -> Encoded:
     pos["trig"] = _tokens_in_spans(offs, [(c0 + s, c0 + e) for s, e in spans])
     if item.get("spans"):                  # 2×2: posições das lacunas, relativas ao `text` original
         for k in ("forma", "intencao"):
+            if item["spans"].get(k) is None:   # plano B (swap): só a lacuna de forma
+                continue
             s, e = item["spans"][k]
             assert item["text"][s:e].strip(), (item.get("item_id"), k, "span vazio")
             pos[f"slot_{k}"] = _tokens_in_spans(offs, [(c0 + s - lead, c0 + e - lead)])
@@ -170,7 +173,8 @@ def encode_item(tok, item: dict, trigger_key: str = "trigger") -> Encoded:
         "inst_last_token_id": ids[pos["inst_last"][0]] if pos["inst_last"] else None,
     }
     if item.get("spans"):
-        meta["slots_aligned"] = bool(pos["slot_forma"]) and bool(pos["slot_intencao"])
+        meta["slots_aligned"] = all(bool(pos[f"slot_{k}"]) for k in ("forma", "intencao")
+                                    if item["spans"].get(k) is not None)
     return Encoded(ids, pos, meta)
 
 
@@ -334,7 +338,8 @@ def extract(model, tok, items: list[dict], layers: list[int] = LAYERS, batch_siz
     for it, e in zip(items, encs):
         row = {k: it.get(k) for k in ("item_id", "group_id", "item", "label", "has_trigger",
                                       "split", "domain", "subdomain", "trigger", "trigger_type",
-                                      "q_border_method", "template_id") if k in it}
+                                      "q_border_method", "template_id", "design",
+                                      "qc_grammatical", "qc_pass_lenient", "qc_pass") if k in it}
         row.update(e.meta)
         index.append(row)
     return dense, latents, index
@@ -432,6 +437,7 @@ def cells_items(groups: list[dict]) -> list[dict]:
             sl = c.get("spans") or c.get("slots") or {}
             spans = {"forma": sl.get("forma", sl.get("form")),
                      "intencao": sl.get("intencao", sl.get("intent"))}
+            swap = g.get("design") == "swap"
             out.append({
                 "item_id": f"{g['group_id']}:{cell}", "group_id": g["group_id"], "item": cell,
                 "label": int(cell.startswith("harm")), "has_trigger": int(cell.endswith("_trig")),
@@ -439,6 +445,10 @@ def cells_items(groups: list[dict]) -> list[dict]:
                 "trigger_type": g.get("trigger_type"), "split": g["split"], "domain": g["domain"],
                 "subdomain": g.get("subdomain"),
                 "q_border_method": (g.get("orig") or {}).get("q_border_method"),
+                "design": g.get("design"),
+                # swap: a peça de forma da célula (alarmante ou neutra) é a posição `trig`
+                "trig_span": spans["forma"] if swap else None,
+                **{k: g[k] for k in ("qc_grammatical", "qc_pass_lenient", "qc_pass") if k in g},
             })
     return out
 
@@ -476,14 +486,14 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", required=True, help="pairs | final_resp | <arquivo em datasets/phase1>")
     ap.add_argument("--layers", type=int, nargs="+", default=LAYERS)
-    ap.add_argument("--widths", nargs="*", default=["16k"], help="larguras do Gemma Scope 2")
+    ap.add_argument("--widths", nargs="*", default=["16k"], help="16k / 262k (Gemma Scope 2) e proprio (frente A, só L17/22/29)")
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--out-root", default=str(ACTS))
     args = ap.parse_args()
     set_seeds(0)
 
-    from featgrpo.interp.common import load_model, load_sae
+    from featgrpo.interp.common import load_model, load_sae, sae_available
 
     items = load_set(args.set, args.limit)
     print(f"{args.set}: {len(items)} itens")
@@ -492,18 +502,24 @@ def main() -> None:
     # modelo numa GPU de 24 GB. O forward é o mesmo em cada passada, então o resultado não muda.
     dense, latents, index = {}, {w: {} for w in args.widths}, None
     for L in args.layers:
-        saes_L = {w: {L: load_sae(L, w)} for w in args.widths}
+        saes_L = {w: {L: load_sae(L, w)} for w in args.widths if sae_available(L, w)}
         d, lat, index = extract(model, tok, items, [L], args.batch_size, saes_L)
         dense.update(d)
-        for w in args.widths:
+        for w in saes_L:
             latents[w].update(lat[w])
         del saes_L, lat
         torch.cuda.empty_cache()
     root = Path(args.out_root)
     written = save_cache(root, args.set, dense, latents, index)
+    try:                                       # caminho relativo ao repositório, sem o da máquina
+        out_root = str(root.resolve().relative_to(REPO))
+    except ValueError:
+        out_root = root.name
     mf = update_manifest(root, args.set, written, {
-        **vars(args), "sae_ids": {w: {L: f"{SAE_REPO}/resid_post/{sae_id(L, w)}"
-                                      for L in args.layers} for w in args.widths}})
+        **vars(args), "out_root": out_root, "sae_ids": {w: {L: (f"artifacts/sae_proprio/{sae_id(L, w)}" if w == "proprio"
+                                          else f"{SAE_REPO}/resid_post/{sae_id(L, w)}")
+                                      for L in args.layers if sae_available(L, w)}
+                                  for w in args.widths}})
     if any("slots_aligned" in r for r in index):
         na = sum(not r.get("slots_aligned", True) for r in index)
         msg = f"lacunas sem alinhamento: {na}"

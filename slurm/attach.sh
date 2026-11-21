@@ -15,4 +15,5 @@ export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home TMPDIR=$ST/tmp PYTHONUNBUFFERED=1
        PHASE0_CONFIG=configs/data/phase0_v5b.yaml PHASE0_CACHE=data/phase0_cache PHASE0_RAW=data/phase0_raw \
        PHASE0_DATA=data/phase0_v5b PHASE1_DATA=data/phase1
 cd $REPO
-exec apptainer exec --nv $BIND -B /home/$USER "$IMG" $ST/driver_venv/bin/python -m "$@"
+DV=$ST/driver_venv; [ -x /tmp/$USER/nlp/driver_venv/bin/python ] && DV=/tmp/$USER/nlp/driver_venv   # o do job (requirements em dia)
+exec apptainer exec --nv $BIND -B /home/$USER "$IMG" $DV/bin/python -m "$@"

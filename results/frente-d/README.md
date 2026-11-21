@@ -2,30 +2,69 @@
 
 | Arquivo | O que é | Gerado por |
 |---|---|---|
-| `baseline_lexical.json` | Baselines de texto (TF-IDF, só estilo, só gatilho) nos pares originais. As seções do 2×2 e do XSTest ficam "pendente" até a frente A entregar. | `PYTHONPATH=src python -m featgrpo.interp.baselines` |
-| `probes.json` + `probes_auroc_por_camada.png` | *(quando o cache da frente B existir)* Probes densos: intenção, generalização cruzada com ↔ sem gatilho, gatilho independente da intenção, cossenos entre direções. | `PYTHONPATH=src python -m featgrpo.interp.probes` |
-| `c2_c4.json` | *(quando existirem latentes e listas da frente C)* Matriz C2, C2(a/b/c), controles aleatório e denso, recortes C4b/c. | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer L --pos P --sae 16k` |
-| `PEDIDOS.md` | Pedidos de outras frentes para a frente D. | — |
+| `baseline_lexical.json` | Baselines de texto (TF-IDF, só estilo, só gatilho) nos pares originais, no **2×2 real** (3 subconjuntos) e no XSTest | `PYTHONPATH=src python -m featgrpo.interp.baselines` |
+| `validacao_2x2.json` | Validador da frente D sobre o `cells_2x2.jsonl` real (plano B): aprovados, motivos e a lista de grupos reprovados | `PYTHONPATH=src python -m featgrpo.data.phase1.validate_template datasets/phase1/cells_2x2.jsonl --report results/frente-d/validacao_2x2.json` |
+| `probes.json` + `probes_auroc_por_camada.png` | *(quando o cache da frente B estiver baixado)* Probes densos | `PYTHONPATH=src python -m featgrpo.interp.probes` |
+| `c2_c4.json` | *(quando existirem latentes do 2×2 e listas da frente C)* Matriz C2, C2(a/b/c), recortes C4b/c | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer L --pos P --sae 16k` |
+| `PEDIDOS.md` | Pedidos de outras frentes para a frente D | — |
 
-O validador do 2×2, usado pela frente A, é `PYTHONPATH=src python -m featgrpo.data.phase1.validate_template datasets/phase1/cells_2x2.jsonl --report results/frente-a/validacao_2x2.json`.
+Testes: `tests/test_validate_template.py`, `tests/test_probes_classifiers.py` e `tests/test_baselines.py` (35 testes, dados sintéticos).
 
-Todos os scripts foram testados com dados sintéticos, com sinais plantados de intenção e de gatilho: `tests/test_validate_template.py`, `tests/test_probes_classifiers.py` e `tests/test_baselines.py` (23 testes).
+---
 
-## `baseline_lexical.json` em uma leitura
+## 1. O 2×2 real (plano B) em uma leitura
 
-Os três classificadores são treinados só no `train`. O C é escolhido por validação cruzada agrupada por gatilho, e os ICs de 95% saem de bootstrap sobre grupos. Resultados no `test` (347 pares):
+Conjunto principal: `qc_grammatical` (1.723 grupos; `test` = 244), como no pré-registro da frente C. Os números abaixo são do `test`. Os do `qc_pass_lenient` e do conjunto completo dão o mesmo quadro (ver o JSON).
 
-| Classificador | AUROC | IC 95% | O que mostra |
+| Medida | AUROC | O que mostra |
+|---|---|---|
+| TF-IDF, intenção, **com** gatilho | 0,996 | Separa nocivo de benigno quase perfeitamente |
+| TF-IDF, intenção, **sem** gatilho | 0,997 | **Tirar o gatilho não muda nada** para o TF-IDF: as outras palavras do pedido bastam |
+| **Só estilo**, intenção (sem olhar o conteúdo) | **0,890** (IC 0,862–0,915) | No plano B, `harm_trig` e `ben_trig` são os pedidos originais. O contraste de intenção **herda a diferença de estilo PKU × gerador** |
+| TF-IDF, presença do gatilho | 0,767 | A forma alarmante × neutra é variada demais para um classificador de palavras decorar |
+| TF-IDF dos pares aplicado ao XSTest | 0,710 (IC 0,663–0,756) | Fora da distribuição, o classificador de palavras cai bastante |
+
+**A metade TF-IDF do C2(b).** É quanto o TF-IDF cai em cada generalização. Onde ele cai ≤ 0,02, aquela generalização fica **indefinida**, sejam quais forem as features.
+
+| Generalização | Queda do TF-IDF (`test`) | Queda (`val`) | Define o C2(b)? |
 |---|---|---|---|
-| TF-IDF (palavras + caracteres) | **0,995** | 0,991–0,998 | Só pelas palavras, nocivo e benigno se separam quase perfeitamente nos pares originais. |
-| **Só estilo** (tamanho, pontuação, forma da pergunta) | **0,881** | 0,860–0,903 | Sem olhar o conteúdo, só o "jeito" do texto já acerta 88%. É a confusão PKU × gerador. |
-| Só gatilho | 0,500 | — | O gatilho está nos dois lados (100% dos Q⁺ e 99,9% dos Q⁰), então sozinho não separa nada. Era o esperado. |
+| Gatilho inédito | 0,003 (IC −0,002–0,009) | 0,003 | **não** |
+| Leave-one-domain-out | 0,014 (IC 0,005–0,024) | 0,015 | **não** |
+| XSTest | **0,281** (IC 0,234–0,329) | 0,282 | sim |
 
-**Gatilho visto × inédito no treino** (133 e 214 pares do `test`): o TF-IDF dá 0,996 e 0,994. Nos pares originais, repetir o gatilho entre treino e teste **não infla** o baseline. Faz sentido: o gatilho aparece nos dois lados do par, então não serve para separá-los. O recorte continua necessário para as features e para o 2×2, onde o gatilho varia entre as células.
+**Consequência:** com a regra atual ("atende se ≥ 2 das 3"), **o C2(b) não pode ser atendido**, porque só uma das três generalizações é definida. Isso vale em `val` e em `test` e não depende das features. A regra precisa ser revista em grupo (proposta no PR).
 
-**Por domínio** (TF-IDF, `test`): bias 0,989, cyber 0,995, privacy 0,999, violence 0,997.
+## 2. Validador sobre o 2×2 real
 
-**Consequência para o projeto:**
-- Nos pares originais, qualquer método (SAE, probe denso) vai ter número alto. Isso não prova nada sobre intenção, porque palavras e estilo já resolvem. Esses resultados são **diagnóstico**, não evidência.
-- A régua de verdade é a queda do TF-IDF nas células do 2×2 (`cells_2x2.queda_auroc_tfidf`), calculada automaticamente quando `datasets/phase1/cells_2x2.jsonl` existir.
-- O estilo sozinho chegar a 0,88 reforça a necessidade de o 2×2 reescrever as 4 versões com o mesmo gerador, ou a partir da frase-molde (proposta no PR #1).
+Depois do ajuste para o plano B: **1.794 de 1.825 grupos aprovados (98,3%)**. A regra antiga aprovava 10,7%, e a diferença vinha de três erros do validador apontados pelo Gustavo.
+
+| Motivo | Grupos | O que é |
+|---|---|---|
+| `edicao_fora_da_forma` | 23 | **Erro real nos dados:** a troca foi feita no meio de uma palavra flexionada. Exemplos: "racist names" → "derogatory term**ss**", "cyberbullying" → "online abuse**ing**" |
+| `tamanho` | 8 | A versão sem gatilho é > 20% e > 3 palavras mais longa que a com gatilho |
+| `gatilho_presente` | 1 | A forma alarmante continua no texto sem gatilho |
+
+**26 dos 31 grupos reprovados estão no `qc_grammatical`.** O juiz de gramática deixou passar as palavras quebradas. A lista está em `validacao_2x2.json` → `falhas`.
+
+## 3. Probes densos nos pares (diagnóstico, não entra no veredito)
+
+Cache `pairs` da frente B (baixado da pasta compartilhada, 65/65 arquivos conferidos pelo sha256 do `MANIFEST.json`). Regressão logística L2 no residual completo, Q⁺ × Q⁰, C escolhido por GroupKFold por gatilho no `train`. AUROC no `test`:
+
+| Camada | `inst_last` | `post_last` | `post` | `mean` | `trig` |
+|---|---|---|---|---|---|
+| L9 | 0,999 | 0,999 | 0,999 | 1,000 | 0,991 |
+| L17 | 0,999 | 0,999 | 0,999 | 0,999 | 0,993 |
+| L22 | 0,996 | 0,999 | 0,998 | 0,999 | 0,987 |
+| L29 | 0,995 | 0,998 | 0,998 | 0,999 | 0,980 |
+
+Com gatilho inédito, os números são os mesmos (0,976–1,000). **Leitura:** o residual separa Q⁺ de Q⁰ quase perfeitamente em todas as camadas e posições, tanto quanto o TF-IDF (0,995). Nos pares originais, isso não distingue intenção de palavras ou estilo, então serve só para confirmar que o cache e o código funcionam. A âncora densa do veredito sai do 2×2 (`cells2x2`), quando o cache dele existir.
+
+## 4. Pares originais (diagnóstico, não entra no veredito)
+
+| Classificador (`test`, 347 pares) | AUROC | IC 95% |
+|---|---|---|
+| TF-IDF | 0,995 | 0,991–0,998 |
+| Só estilo | 0,881 | 0,860–0,903 |
+| Só gatilho | 0,500 | — |
+
+Gatilho visto × inédito: 0,996 × 0,994. Por domínio: bias 0,989, cyber 0,995, privacy 0,999, violence 0,997.

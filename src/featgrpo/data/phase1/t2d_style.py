@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from collections import Counter
 
@@ -29,6 +30,12 @@ from .t2_cells import CELLS, K, label_cells, verdict
 from .t2b_swap import build, gen_candidates, locate
 
 _SENT = re.compile(r"[.!?]\s+[A-Z]")
+# prompt e limites de tamanho por variável de ambiente (gravados no relatório)
+STYLE_PROMPT = os.environ.get("STYLE_PROMPT", "style_v1")
+MAX_WORDS = int(os.environ.get("STYLE_MAX_WORDS", "36"))
+LEN_RATIO = float(os.environ.get("STYLE_LEN_RATIO", "1.2"))
+LEN_DIFF = int(os.environ.get("STYLE_LEN_DIFF", "3"))
+STYLE_K = int(os.environ.get("STYLE_K", str(K)))   # reescritas tentadas por grupo
 
 
 def select_style(pairs: list[dict], tag: str, n: int | None) -> list[dict]:
@@ -44,12 +51,12 @@ def select_style(pairs: list[dict], tag: str, n: int | None) -> list[dict]:
 
 
 def style_candidate(llm: LLM, cache, p: dict, k: int) -> dict | None:
-    system, utmpl = chat_template("style_v1")
+    system, utmpl = chat_template(STYLE_PROMPT)
     user = fill(utmpl, QH=p["q_harm"], QB=p["q_border"], TRIGGER=p["trigger"])
     msgs = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     t = 0.0 if k == 0 else 0.7
-    r = cache.call(GEN_MODEL, "p1:style_v1", {"user": user, "seed": k, "t": t},
-                   lambda: llm.chat(msgs, temperature=t, top_p=0.95, seed=k, max_tokens=200,
+    r = cache.call(GEN_MODEL, f"p1:{STYLE_PROMPT}", {"user": user, "seed": k, "t": t},
+                   lambda: llm.chat(msgs, temperature=t, top_p=0.95, seed=k, max_tokens=300,
                                     extra=no_thinking(GEN_MODEL))[0])
     try:
         o = extract_json(r["text"])
@@ -71,10 +78,10 @@ def style_check(p: dict, s: dict | None) -> str:
             return f"nao_pergunta:{key}"
         if _SENT.search(q):
             return f"mais_de_uma_frase:{key}"
-        if not 6 <= n_words(q) <= 36:
+        if not 6 <= n_words(q) <= MAX_WORDS:
             return f"tamanho_absoluto:{key}"
     la, lb = n_words(s["q_harm"]), n_words(s["q_border"])
-    if not (max(la, lb) / min(la, lb) <= 1.2 or abs(la - lb) <= 3):
+    if not (max(la, lb) / min(la, lb) <= LEN_RATIO or abs(la - lb) <= LEN_DIFF):
         return "tamanho_entre_linhas"
     if s["q_harm"].strip().lower() == s["q_border"].strip().lower():
         return "iguais"
@@ -83,7 +90,7 @@ def style_check(p: dict, s: dict | None) -> str:
 
 def run_group(gen, qg, wg, jl, cache, p: dict) -> dict:
     tries = []
-    for ks in range(K):
+    for ks in range(STYLE_K):
         s = style_candidate(gen, cache, p, ks)
         why = style_check(p, s)
         if why:
@@ -156,7 +163,8 @@ def main():
         return head if head.startswith(("intencao", "mudou", "nao_natural")) else head.split(":")[0]
     fails = Counter(f"{t['stage']}/{key(t['reason'])}" for r in rows for t in r["tries"] if t["reason"])
     lens = [abs(n_words(r["cells"]["harm_trig"]["text"]) - n_words(r["cells"]["ben_trig"]["text"])) for r in ok]
-    rep = {"tag": a.tag, "design": "swap_style", "groups": len(rows), "ok": len(ok), "yield": len(ok) / max(1, len(rows)),
+    rep = {"tag": a.tag, "design": "swap_style",
+           "params": {"prompt": STYLE_PROMPT, "style_k": STYLE_K, "max_words": MAX_WORDS, "len_ratio": LEN_RATIO, "len_diff": LEN_DIFF}, "groups": len(rows), "ok": len(ok), "yield": len(ok) / max(1, len(rows)),
            "ok_by_candidate": dict(Counter(f"s{r['candidate']['style']}w{r['candidate']['swap']}" for r in ok)),
            "by_domain": {dm: {"n": sum(r["domain"] == dm for r in rows), "ok": sum(r["domain"] == dm for r in ok)}
                          for dm in sorted({r["domain"] for r in rows})},

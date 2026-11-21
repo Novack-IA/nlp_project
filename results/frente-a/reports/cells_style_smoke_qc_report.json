@@ -1,0 +1,36 @@
+{
+ "groups": 13,
+ "qc_pass": 2,
+ "errors": 0,
+ "qc_grammatical": 13,
+ "qc_pass_lenient": 6,
+ "grammatical_both": 13,
+ "drop_harm_dist": {
+  "-1": 1,
+  "0": 9,
+  "1": 1,
+  "2": 2
+ },
+ "drop_ben_dist": {
+  "0": 7,
+  "1": 2,
+  "2": 3,
+  "3": 1
+ },
+ "qc_pass_by_domain": {
+  "cyber": 1,
+  "privacy": 1
+ },
+ "qc_pass_by_split": {
+  "train": 2
+ },
+ "qc_pass_by_trigger_type": {
+  "action": 1,
+  "intent_marker": 1
+ },
+ "run": {
+  "calls": 13,
+  "prompt_tokens": 4477,
+  "completion_tokens": 1185
+ }
+}

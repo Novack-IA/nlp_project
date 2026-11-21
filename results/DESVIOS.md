@@ -22,3 +22,17 @@ Formato: data · quem · o que mudou · por quê · se foi decidido antes ou dep
 - 2026-11-21 · Frederico (C), por sugestão do Gustavo (A) · **Conjunto principal do C1–C3 = `qc_grammatical`** (1.723 grupos em que as duas versões sem gatilho são gramaticais). `qc_pass_lenient` (604) e o conjunto completo (1.825) entram como robustez, na mesma combinação principal; `qc_pass` (148) fica só como descrição, porque está abaixo dos pisos de poder (125 grupos na descoberta, 14 com gatilho inédito) · versões agramaticais existem só nas células sem gatilho e podem fabricar um efeito lexical falso · decidido **antes do cache do 2×2**.
 - 2026-11-21 · Gustavo (A) · **Correção da entrada do plano B:** a tarefa A1 previa que, no plano B, `harm_trig` e `ben_trig` fossem **reescritas num estilo comum** antes da troca do gatilho. O 2×2 entregue usou os pedidos **originais** (Q⁺ do PKU × Q⁰ gerado), então a linha nociva e a benigna diferem também em fonte e estilo (o classificador só de estilo separa as duas com AUROC 0,88 nos pares). A mitigação já registrada é o controle de estilo da frente C (análise secundária). Um subconjunto reescrito no estilo comum só entra se for registrado aqui antes do cache dele · registrado **antes do cache do 2×2**.
 - 2026-11-21 · Gustavo (A) · **Caminho (b): 2×2 com reescrita em estilo comum** (`t2d_style`, prompt `style_v1`). Q⁺ e Q⁰ são reescritos juntos pelo mesmo gerador: uma pergunta direta, mesma abertura e estrutura, tamanho parecido e o gatilho literal nos dois. Depois vêm a mesma troca do gatilho, os mesmos juízes (com cada linha comparada ao pedido **original** da Fase 0) e o mesmo QC. Saída em `datasets/phase1/cells_2x2_style.jsonl`, com os mesmos `group_id`. **Proposta para o veredito**, a confirmar pela frente C no pré-registro antes do cache: se o completo tiver ≥ 1.200 grupos e o classificador só de estilo cair de forma clara entre as linhas, o `qc_grammatical` do 2×2 em estilo comum vira o conjunto principal do C1–C3, e o 2×2 atual vira robustez. Caso contrário, nada muda · remove o confundimento fonte/estilo entre as linhas (pendência 1) · **antes** de qualquer ativação do 2×2.
+- 2026-11-21 · Gustavo (A) · **Caminho (b), versão escolhida depois do smoke** (4 rodadas de 40 grupos fora do test; relatórios em `results/frente-a/reports/cells_style_smoke*_report.json`):
+  - prompt `style_v2`, que mantém o contexto que torna Q⁰ benigno;
+  - tamanho entre as linhas casado (razão ≤ 1,6 ou diferença ≤ 6 palavras);
+  - até 50 palavras e 5 reescritas por grupo.
+
+  Resultados do smoke:
+  - **v2:** rendimento ~40%; o classificador só de estilo cai de 0,77–0,85 (mesmos grupos, original) para 0,61, e para 0,51 sem os atributos de tamanho;
+  - **v3**, sem casar o tamanho: rende 70%, mas o estilo continua em 0,84. Foi descartada porque não remove o confundimento.
+
+  Consequência: o completo deve ficar em ~950 grupos, abaixo dos 1.200 do critério registrado acima. **O 2×2 em estilo comum entra como robustez do conjunto principal**, a menos que o time registre outra regra antes do cache dele.
+
+  Limitação conhecida: para casar o tamanho, o gerador às vezes acrescenta ao Q⁰ um contexto genérico que não estava no original ("for a history paper"). Os juízes aprovaram esses casos como o mesmo pedido.
+
+  · **antes** de qualquer ativação do 2×2.

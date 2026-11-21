@@ -238,3 +238,26 @@ def test_group_batches_keep_groups_together():
         gs = {items[i].get("group_id") for i in b}
         for g in gs - {None}:
             assert all(items[i].get("group_id") != g for bb in batches if bb is not b for i in bb)
+
+
+def test_control_items_front_a_format_uses_file_span():
+    from featgrpo.interp.extract import control_items, encode_item
+    rows = [  # formato real do controls_trig_only.jsonl: uma linha por frase
+        {"item_id": "g_1:ctl2:trig", "group_id": "g_1", "template_id": 2, "kind": "trig",
+         "piece": "kill", "text": 'She wrote "kill" on the board.', "span": [11, 15],
+         "split": "train", "domain": "violence"},
+        {"item_id": "g_1:ctl2:neutral", "group_id": "g_1", "template_id": 2, "kind": "neutral",
+         "piece": "stop", "text": 'She wrote "stop" on the board.', "span": [11, 15],
+         "split": "train", "domain": "violence"},
+    ]
+    items = control_items(rows)
+    assert [(i["group_id"], i["template_id"], i["item"]) for i in items] == [
+        ("g_1", 2, "trig_only"), ("g_1", 2, "neutral_only")]
+    tok = _Tok()
+    for it in items:
+        e = encode_item(tok, it)
+        rendered = tok.apply_chat_template([{"content": it["text"]}])
+        offs = tok(rendered)["offset_mapping"]
+        assert "".join(rendered[offs[t][0]:offs[t][1]] for t in e.positions["trig"]).strip() == \
+            it["trigger"]
+        assert e.meta["trigger_method"] == "span"

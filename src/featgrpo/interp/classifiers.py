@@ -406,10 +406,13 @@ def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int
         xstest = (xstest[0][:, cols], xstest[1], xstest[2])
 
     res = {"principal": c2(Z, Xd, rows, s_int, s_lex, texts, n_boot, xstest=xstest)}
+    present = {r["group_id"] for r in rows}
     for name, groups in subsets(rows, meta).items():
+        groups = groups & present  # só os grupos do subconjunto analisado (o recorte inteiro tem mais)
         res[name] = {"n_grupos": len(groups)}
         if len({r["group_id"] for r in rows if r["split"] == "test" and r["group_id"] in groups}) >= 20:
-            res[name].update(c2(Z, None, rows, s_int, s_lex, texts, n_boot, groups=groups, n_random=0))
+            res[name].update(c2(Z, None, rows, s_int, s_lex, texts, n_boot, groups=groups, n_random=0,
+                                xstest=xstest))
     return {
         "descricao": "C2 e recortes C4b/c (frente D). Ver docstring de src/featgrpo/interp/classifiers.py.",
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),

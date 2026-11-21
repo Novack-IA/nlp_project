@@ -1,0 +1,41 @@
+{
+ "features": [
+  10809,
+  14613
+ ],
+ "classe": "S_intent",
+ "camada": 9,
+ "posicao": "inst_last",
+ "rotulo": "fim_pedido",
+ "sae": "16k",
+ "principal": false,
+ "ordenadas_por": "|d_I| decrescente",
+ "detalhe": [
+  {
+   "feature": 10809,
+   "d_I": 0.56526,
+   "d_L": 0.0883,
+   "d_X": 0.09723,
+   "d_I_ci_lo": 0.47936,
+   "d_I_ci_hi": 0.65795,
+   "d_L_ci_lo": -0.00473,
+   "d_L_ci_hi": 0.18057,
+   "q_I": 0.0,
+   "q_L": 0.62173,
+   "freq_ativacao": 0.42129
+  },
+  {
+   "feature": 14613,
+   "d_I": 0.5629,
+   "d_L": 0.04268,
+   "d_X": -0.01217,
+   "d_I_ci_lo": 0.486,
+   "d_I_ci_hi": 0.64133,
+   "d_L_ci_lo": -0.0502,
+   "d_L_ci_hi": 0.13602,
+   "q_I": 0.0,
+   "q_L": 0.68998,
+   "freq_ativacao": 0.32594
+  }
+ ]
+}

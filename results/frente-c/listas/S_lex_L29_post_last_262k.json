@@ -1,0 +1,11 @@
+{
+ "features": [],
+ "classe": "S_lex",
+ "camada": 29,
+ "posicao": "post_last",
+ "rotulo": "pre_resposta",
+ "sae": "262k",
+ "principal": true,
+ "ordenadas_por": "|d_L| decrescente",
+ "detalhe": []
+}

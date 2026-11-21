@@ -704,6 +704,52 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     return res
 
 
+def consistencia(e: np.ndarray) -> float:
+    """Norma do efeito médio ÷ média das normas por grupo: 1 = todos os grupos na mesma direção; ~0 = cada
+    grupo numa direção. Serve para o efeito por grupo (I_g ou L_g) no espaço denso."""
+    return float(np.linalg.norm(e.mean(axis=0)) / np.linalg.norm(e, axis=1).mean())
+
+
+def diagnostico_lexical(root: Path, sae: str, camadas, posicoes, conjunto: str = "cells2x2",
+                        grupos_permitidos: set[str] | None = None) -> list[dict]:
+    """Análise descritiva (não decide nada): por que o d entre grupos não acha S_lex. Compara, na descoberta,
+    o tamanho e a consistência do efeito de intenção e do efeito do gatilho no vetor denso, e conta quantas
+    features do SAE mudam de estado (ativa ↔ inativa) com a troca do gatilho em cada grupo."""
+    rows = cache_io.load_index(root, conjunto)
+    out = []
+    for layer in camadas:
+        for pos in posicoes:
+            g = montar_grupos(rows, pos)
+            if grupos_permitidos is not None:
+                g = g.subset(np.array([x in grupos_permitidos for x in g.gid], dtype=bool))
+            g = g.subset(np.isin(g.split, DISCOVERY))
+            n = len(g)
+            x = cache_io.load_dense(root, conjunto, layer, pos)[g.rows.reshape(-1)].astype(np.float64).reshape(n, 4, -1)
+            i_g = 0.5 * (x[:, 0] + x[:, 1] - x[:, 2] - x[:, 3])     # ordem de CELLS: ht, hn, bt, bn
+            l_g = 0.5 * (x[:, 0] + x[:, 2] - x[:, 1] - x[:, 3])
+            z = linhas(cache_io.load_latents(root, conjunto, layer, pos, sae), g).toarray().reshape(n, 4, -1) > 0
+            muda = np.concatenate([z[:, 0] != z[:, 1], z[:, 2] != z[:, 3]])   # troca do gatilho, nas duas linhas
+            ativas = np.concatenate([z[:, 0] | z[:, 1], z[:, 2] | z[:, 3]]).sum(axis=1)
+            # o gatilho empurra na direção da intenção? projeção de L_g no eixo da intenção média
+            u = i_g.mean(axis=0) / np.linalg.norm(i_g.mean(axis=0))
+            proj_l, proj_i = l_g @ u, i_g @ u
+            out.append({
+                "camada": layer, "posicao": pos, "rotulo": LABELS.get(pos, pos), "n_grupos_descoberta": n,
+                "norma_media_I": round(float(np.linalg.norm(i_g, axis=1).mean()), 1),
+                "norma_media_L": round(float(np.linalg.norm(l_g, axis=1).mean()), 1),
+                "consistencia_I": round(consistencia(i_g), 3), "consistencia_L": round(consistencia(l_g), 3),
+                "cos_L_medio_I_medio": round(float(l_g.mean(axis=0) @ u / np.linalg.norm(l_g.mean(axis=0))), 3),
+                "L_no_eixo_da_intencao_razao": round(float(proj_l.mean() / proj_i.mean()), 4),
+                "L_no_eixo_da_intencao_d": round(float(proj_l.mean() / proj_l.std(ddof=1)), 3),
+                "L_no_eixo_da_intencao_frac_grupos_positivos": round(float((proj_l > 0).mean()), 3),
+                "sae": sae,
+                "features_que_mudam_com_o_gatilho_mediana": float(np.median(muda.sum(axis=1))),
+                "features_ativas_mediana": float(np.median(ativas)),
+                "maior_fracao_de_grupos_em_que_uma_feature_muda": round(float(muda.mean(axis=0).max()), 3),
+            })
+    return out
+
+
 def _textos_pares_padrao() -> dict:
     from featgrpo.interp.data import load_pairs
     out = {}
@@ -772,7 +818,7 @@ def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regra
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Estatística por feature da frente C (ver docstring).")
     ap.add_argument("--root", type=Path, default=cache_io.DEFAULT_ROOT)
-    ap.add_argument("--modo", choices=["2x2", "provisorio"], default="2x2")
+    ap.add_argument("--modo", choices=["2x2", "provisorio", "diagnostico-lexical"], default="2x2")
     ap.add_argument("--sae", default="16k")
     ap.add_argument("--camadas", type=int, nargs="+", default=list(LAYERS))
     ap.add_argument("--posicoes", nargs="+", default=list(MAIN_POSITIONS))
@@ -802,9 +848,18 @@ def main(argv=None) -> int:
     meta = {"script": "src/featgrpo/interp/feature_stats.py", "args": {k: str(v) for k, v in vars(args).items()},
             "regras": asdict(regras), "git_commit": git_commit(),
             "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-    if args.modo == "2x2":
+    if args.modo != "provisorio":
         cp = caminho_cells(args.cells_jsonl)
         meta["cells_jsonl"] = {"caminho": str(cp), "sha256": sha256_arquivo(cp)}
+    if args.modo == "diagnostico-lexical":
+        res = diagnostico_lexical(args.root, args.sae, args.camadas, args.posicoes, args.conjunto,
+                                  grupos_do_subconjunto(args.subconjunto, args.cells_jsonl,
+                                                        validado=not args.sem_validador))
+        path = args.out_dir / f"diagnostico_lexical_{args.sae}.json"
+        path.write_text(json.dumps({**meta, "combinacoes": res}, ensure_ascii=False, indent=2,
+                                   default=_json_default), encoding="utf-8")
+        print(f"salvo em {path}")
+        return 0
     manifest = Path(args.root) / "MANIFEST.json"
     if manifest.exists():
         meta["cache_manifest"] = json.loads(manifest.read_text(encoding="utf-8"))

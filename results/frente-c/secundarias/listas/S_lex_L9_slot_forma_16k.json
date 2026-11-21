@@ -1,0 +1,11 @@
+{
+ "features": [],
+ "classe": "S_lex",
+ "camada": 9,
+ "posicao": "slot_forma",
+ "rotulo": "slot_forma",
+ "sae": "16k",
+ "principal": false,
+ "ordenadas_por": "|d_L| decrescente",
+ "detalhe": []
+}

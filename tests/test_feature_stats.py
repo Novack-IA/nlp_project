@@ -455,6 +455,44 @@ def test_grupos_do_subconjunto(tmp_path):
     assert fs.grupos_do_subconjunto("qc_grammatical", sem_marca, validado=False) == {"g0"}
 
 
+def test_diagnostico_lexical(tmp_path):
+    """Intenção numa direção fixa; gatilho numa direção diferente por grupo, mais um empurrão pequeno no eixo da
+    intenção. O diagnóstico deve achar a intenção consistente, o gatilho inconsistente e o empurrão positivo."""
+    rng = np.random.default_rng(3)
+    n, d = 300, 32
+    rows = [{"group_id": f"g{i}", "item": c, "split": "train", "domain": "bias", "trigger": f"t{i}",
+             "inst_last_token_id": 7} for i in range(n) for c in CELLS]
+    (tmp_path / "index").mkdir()
+    (tmp_path / "index" / "cells2x2.jsonl").write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+    eixo = np.zeros(d); eixo[0] = 1.0
+    x = np.zeros((n, 4, d))
+    for i in range(n):
+        base, lex = rng.normal(0, 1, d), rng.normal(0, 1, d) * 2.0 + 0.1 * eixo * 5
+        for ci, c in enumerate(CELLS):
+            h, t = int(c.startswith("harm")), int(c.endswith("_trig"))
+            x[i, ci] = base + 5 * eixo * h + lex * t + rng.normal(0, 0.1, d)
+    ldir = tmp_path / "resid_post" / "L22"; ldir.mkdir(parents=True)
+    np.save(ldir / "cells2x2__inst_last.npy", x.reshape(n * 4, d).astype(np.float32))
+    sp.save_npz(ldir / "cells2x2__inst_last__16k.npz", sp.csr_matrix(np.maximum(x.reshape(n * 4, d), 0).astype(np.float32)))
+    (r,) = fs.diagnostico_lexical(tmp_path, "16k", (22,), ("inst_last",))
+    assert r["n_grupos_descoberta"] == n
+    assert r["consistencia_I"] > 0.9 and r["consistencia_L"] < 0.3
+    assert r["cos_L_medio_I_medio"] > 0 and 0 < r["L_no_eixo_da_intencao_razao"] < 0.3
+    assert fs.consistencia(np.ones((5, 3))) == pytest.approx(1.0)
+
+
+def test_descoberta_md(run_desc):
+    from featgrpo.interp import autointerp
+    res, out = run_desc
+    fake = lambda layer, sae, f: {"explanations": [{"description": f"conceito {f}"}]}
+    md = autointerp.descoberta_md({"16k": res}, out, fetch=fake)
+    assert "# C1 no 2×2: o que a descoberta mostra" in md and "## Em resumo" in md
+    import re
+    assert re.search(r"\| L22 \| \*\*\d+\*\* \(principal\) \|", md) and "## Onde está o sinal" in md
+    assert "conceito " in md and "Só a descoberta" in md and "## Anexo" in md
+    assert autointerp.RECUSA.search("cannot fulfill requests") and not autointerp.RECUSA.search("illegal activities")
+
+
 def test_provisorio_md(tmp_path):
     import pandas as pd
     from featgrpo.interp import autointerp

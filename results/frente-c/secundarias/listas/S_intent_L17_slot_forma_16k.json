@@ -1,0 +1,41 @@
+{
+ "features": [
+  486,
+  2919
+ ],
+ "classe": "S_intent",
+ "camada": 17,
+ "posicao": "slot_forma",
+ "rotulo": "slot_forma",
+ "sae": "16k",
+ "principal": false,
+ "ordenadas_por": "|d_I| decrescente",
+ "detalhe": [
+  {
+   "feature": 486,
+   "d_I": 0.83344,
+   "d_L": -0.09532,
+   "d_X": -0.04192,
+   "d_I_ci_lo": 0.77746,
+   "d_I_ci_hi": 0.89557,
+   "d_L_ci_lo": -0.15155,
+   "d_L_ci_hi": -0.04622,
+   "q_I": 0.0,
+   "q_L": 0.00025,
+   "freq_ativacao": 1.0
+  },
+  {
+   "feature": 2919,
+   "d_I": -0.66238,
+   "d_L": -0.00782,
+   "d_X": 0.01432,
+   "d_I_ci_lo": -0.7026,
+   "d_I_ci_hi": -0.61999,
+   "d_L_ci_lo": -0.06031,
+   "d_L_ci_hi": 0.04135,
+   "q_I": 0.0,
+   "q_L": 0.66042,
+   "freq_ativacao": 0.3457
+  }
+ ]
+}

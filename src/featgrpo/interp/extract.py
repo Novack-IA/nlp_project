@@ -146,10 +146,14 @@ def encode_item(tok, item: dict, trigger_key: str = "trigger") -> Encoded:
     post = [t for t, (a, b) in enumerate(offs) if a >= s0 and b <= len(prompt) and b > a]
     pos["post"] = post
     pos["post_last"] = post[-1:]
-    spans, method = locate_trigger(text, item.get(trigger_key))
+    lead = len(item["text"]) - len(item["text"].lstrip())
+    if item.get("trig_span"):              # span de caractere dado pelo dataset (controles)
+        s, e = item["trig_span"]
+        spans, method = [(s - lead, e - lead)], "span"
+    else:
+        spans, method = locate_trigger(text, item.get(trigger_key))
     pos["trig"] = _tokens_in_spans(offs, [(c0 + s, c0 + e) for s, e in spans])
     if item.get("spans"):                  # 2×2: posições das lacunas, relativas ao `text` original
-        lead = len(item["text"]) - len(item["text"].lstrip())
         for k in ("forma", "intencao"):
             s, e = item["spans"][k]
             assert item["text"][s:e].strip(), (item.get("item_id"), k, "span vazio")
@@ -440,22 +444,31 @@ def cells_items(groups: list[dict]) -> list[dict]:
 
 
 def control_items(rows: list[dict]) -> list[dict]:
-    """controls_trig_only.jsonl -> itens `trig_only` / `neutral_only`; `trig` = a palavra da lacuna.
+    """controls_trig_only.jsonl -> itens `trig_only` / `neutral_only`; posição `trig` = a peça.
 
-    Se a linha trouxer `spans_trig`/`spans_neutral` (de render_cells), usa-os; senão, busca a palavra."""
+    Formato da frente A (uma linha por frase: `kind`, `group_id` do 2×2, `template_id`, `piece`,
+    `span`, `text`): mantém `group_id` e `template_id`, e a posição `trig` usa o `span` do arquivo.
+    O par é (`group_id`, `template_id`). O formato antigo (uma linha por par, `text_trig`/
+    `text_neutral`) continua aceito, com o gatilho localizado por busca."""
     out = []
+    kinds = {"trig": "trig_only", "neutral": "neutral_only"}
     for k, r in enumerate(rows):
+        if "kind" in r:
+            item = kinds[r["kind"]]
+            out.append({"item_id": r.get("item_id") or f"{r['group_id']}:ctl{r['template_id']}:{r['kind']}",
+                        "group_id": r["group_id"], "item": item,
+                        "has_trigger": int(item == "trig_only"), "text": r["text"],
+                        "trigger": r["piece"], "trig_span": r["span"],
+                        "template_id": r["template_id"], "split": r.get("split"),
+                        "domain": r.get("domain")})
+            continue
         gid = f"ctrl{k:05d}"
-        for item, text, word, sk in (("trig_only", r["text_trig"], r["trigger"], "spans_trig"),
-                                     ("neutral_only", r["text_neutral"], r["neutral_term"],
-                                      "spans_neutral")):
-            it = {"item_id": f"{gid}:{item}", "group_id": gid, "item": item,
-                  "has_trigger": int(item == "trig_only"), "text": text, "trigger": word,
-                  "template_id": r.get("template_id"), "split": r.get("split"),
-                  "domain": r.get("domain")}
-            if r.get(sk):
-                it["spans"] = {"forma": r[sk]["forma"], "intencao": r[sk].get("intencao", r[sk]["forma"])}
-            out.append(it)
+        for item, text, word in (("trig_only", r["text_trig"], r["trigger"]),
+                                 ("neutral_only", r["text_neutral"], r["neutral_term"])):
+            out.append({"item_id": f"{gid}:{item}", "group_id": gid, "item": item,
+                        "has_trigger": int(item == "trig_only"), "text": text, "trigger": word,
+                        "template_id": r.get("template_id"), "split": r.get("split"),
+                        "domain": r.get("domain")})
     return out
 
 
@@ -491,7 +504,8 @@ def main() -> None:
     if any("has_trigger" in r for r in index):   # 2×2 e controles: mesmo token no inst_last?
         by_g: dict = {}
         for r in index:
-            by_g.setdefault(r["group_id"], set()).add(r.get("inst_last_token_id"))
+            key = (r["group_id"], r.get("template_id"))   # controles: o par é grupo + molde
+            by_g.setdefault(key, set()).add(r.get("inst_last_token_id"))
         diff = sum(len(v) > 1 for v in by_g.values())
         msg += f"; grupos com inst_last diferente entre células: {diff}/{len(by_g)}"
     print(f"ok: {len(written)} arquivos em {root}; manifest {mf}; {msg}")

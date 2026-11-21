@@ -1,7 +1,7 @@
 {
   "descricao": "C2 e recortes C4b/c (frente D). Ver docstring de src/featgrpo/interp/classifiers.py.",
-  "gerado_em": "2026-11-21T22:04:16+00:00",
-  "commit": "1d7071ddc6195f299d916102e5d88e382ec4e90e",
+  "gerado_em": "2026-11-21T22:30:55+00:00",
+  "commit": "4945d44ab73e6f21c3fb2c90250736c2b658760a",
   "args": {
     "root": "artifacts\\acts\\gemma-3-4b-it",
     "layer": 29,
@@ -11,7 +11,7 @@
     "seed": 0,
     "subconjunto": "principal",
     "n_grupos": 1697,
-    "listas": "artifacts\\_downloads\\listas_c",
+    "listas": "C:\\Users\\Luiz\\Desktop\\trabalho\\nlp_project\\results\\frente-c\\listas",
     "n_random": 20,
     "min_freq": 0.05
   },
@@ -676,7 +676,7 @@
       }
     },
     "b_q0_retrieved": {
-      "n_grupos": 247,
+      "n_grupos": 211,
       "tamanhos": {
         "S_intent": 48,
         "S_lex": 0,
@@ -1106,12 +1106,20 @@
           "status": "indefinido: o TF-IDF não caiu nesta generalização"
         },
         "xstest": {
-          "status": "pendente: cache e textos do XSTest",
-          "atende": null
+          "n_dobras": 1,
+          "queda_features": 0.0528,
+          "queda_tfidf": 0.3183,
+          "razao": 0.1658,
+          "ic95": [
+            0.0758,
+            0.2666
+          ],
+          "atende": true,
+          "status": "atende"
         },
-        "n_atende": 0,
-        "n_definidas": 0,
-        "atende": null,
+        "n_atende": 1,
+        "n_definidas": 1,
+        "atende": true,
         "descritivas": [
           "gatilho_inedito",
           "leave_one_domain_out"
@@ -1559,12 +1567,20 @@
           "status": "não atende"
         },
         "xstest": {
-          "status": "pendente: cache e textos do XSTest",
-          "atende": null
+          "n_dobras": 1,
+          "queda_features": 0.0544,
+          "queda_tfidf": 0.2948,
+          "razao": 0.1846,
+          "ic95": [
+            0.1074,
+            0.2738
+          ],
+          "atende": true,
+          "status": "atende"
         },
-        "n_atende": 0,
-        "n_definidas": 1,
-        "atende": null,
+        "n_atende": 1,
+        "n_definidas": 2,
+        "atende": true,
         "descritivas": [
           "gatilho_inedito",
           "leave_one_domain_out"

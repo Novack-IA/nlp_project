@@ -61,15 +61,15 @@ Listas da frente C (`frente-c-features`, commit `b299ef4`): 48 S_intent no 16k e
 | **C2(b)**: queda no XSTest, S_intent (TF-IDF cai 0,278) | 0,030, **razão 0,11** (IC 0,05–0,17) | 0,018, **razão 0,06** (IC 0,03–0,11) |
 | Controle: mesma razão com features aleatórias (mediana de 20) | 0,11; **20/20 atendem** | 0,08; **20/20 atendem** |
 | Controle: probe denso | razão 0,11 | — |
-| C4(b): só Q⁰ *retrieved* (247 grupos), C2(a) | 0,979 / 0,992 | 0,969 / 0,973 |
-| C4(c): tamanho pareado (684 grupos), C2(a) | 0,986 / 0,991 | 0,999 / 0,996 |
+| C4(b): só Q⁰ *retrieved* (211 grupos), C2(a); C2(b) razão | 0,979 / 0,992; 0,17 (IC 0,08–0,27) | 0,969 / 0,973; −0,01 (IC −0,11–0,09) |
+| C4(c): tamanho pareado (684 grupos), C2(a); C2(b) razão | 0,986 / 0,991; 0,18 (IC 0,11–0,27) | 0,999 / 0,996; 0,16 (IC 0,09–0,24) |
 
 **Leitura:**
 - **O C2 atende pela regra pré-registrada**, nos dois SAEs: S_intent separa nocivo de benigno com e sem gatilho, e no XSTest perde ~10 vezes menos que o TF-IDF.
 - **Mas a S_intent não é melhor do que features sorteadas.** Dentro do 2×2, 48 features frequentes quaisquer acertam o mesmo (0,995). No XSTest, os 20 sorteios também perdem ~10 vezes menos que o TF-IDF, e o denso idem. Então a vantagem sobre o classificador de palavras é **da representação do modelo**, não da S_intent em particular.
 - **O que é específico da S_intent** vem da frente C, não daqui: ela é selecionada por ter efeito de intenção e *nenhum* efeito do gatilho (C1), não reage ao gatilho solto (C3) e quase não detecta o gatilho (0,54 aqui). O C2 mostra que essa seleção não custa nada em classificação, mas não mostra que ela é necessária.
 - **C2(c) indefinido**: sem S_lex, não há o lado lexical da dissociação.
-- **C4(b/c)**: o C2(a) se mantém nos dois recortes. O C2(b) dentro dos recortes não foi calculado.
+- **C4(b/c)**: o C2(a) e o C2(b) se mantêm nos dois recortes, nos dois SAEs. Os 211 grupos do (b) são os do conjunto principal; o recorte inteiro tem 247. O C1 nos recortes é da frente C: (c) atende, (b) inconclusivo por falta de poder.
 - O controle aleatório no XSTest foi acrescentado **depois** de ver o C2 (`DESVIOS.md`); a regra e o "atende" não mudam.
 
 ## 4. Probes densos no 2×2 (âncora densa do veredito)

@@ -11,7 +11,7 @@
 
 **Veredito: PARCIAL.**
 
-Existe um sinal de intenção nas features do SAE que não depende do gatilho: em L29, no último token antes da resposta, 48 features (60 no 262k) replicam 100% no `test` com gatilho inédito (C1), e um classificador só com elas perde no XSTest um décimo do que perde o TF-IDF (C2, razão 0,11). Faltam dois critérios como pré-registrados: o C3 pedia leitura cega de **duas pessoas**, e as duas leituras foram de LLMs; e o C4(b/c) está incompleto. Além disso, **features sorteadas do mesmo tamanho fazem o mesmo que a S_intent no C2** (20/20 atendem), e **não existe nenhuma feature de forma lexical** (S_lex vazia).
+Existe um sinal de intenção nas features do SAE que não depende do gatilho: em L29, no último token antes da resposta, 48 features (60 no 262k) replicam 100% no `test` com gatilho inédito (C1), e um classificador só com elas perde no XSTest um décimo do que perde o TF-IDF (C2, razão 0,11). Faltam dois critérios como pré-registrados: o C3 pedia leitura cega de **duas pessoas**, e as duas leituras foram de LLMs; e o C4(b) é inconclusivo por falta de grupos (211 com Q⁰ *retrieved*). Além disso, **features sorteadas do mesmo tamanho fazem o mesmo que a S_intent no C2** (20/20 atendem), e **não existe nenhuma feature de forma lexical** (S_lex vazia).
 
 **Como a regra foi aplicada:**
 
@@ -20,7 +20,7 @@ Existe um sinal de intenção nas features do SAE que não depende do gatilho: e
 | C1 | atende | 48 S_intent, 100% replicam |
 | C2 | atende | C2(a) 0,992 / 0,992; C2(b) razão 0,11 (IC 0,05–0,17). O C2(c) não decide |
 | C3 | **não atende como pré-registrado** | O controle `trig_only` atende (81%). A avaliação cega atinge o limiar (95% e 85%), mas foi feita por dois LLMs, e o pré-registro pede 2 pessoas |
-| C4 | **incompleto** | (a) atende (262k). (b) e (c): o C2(a) se mantém, mas o C1 e o C2(b) dentro dos recortes não foram calculados |
+| C4 | **não atende: (b) inconclusivo** | (a) atende (262k). (c) atende: C1 46/46 replicam, C2(a) e C2(b) atendem. (b) o C2 atende, mas o C1 é **inconclusivo por falta de poder** (182 grupos na descoberta, abaixo do piso de 260) |
 
 C1 + C2 atendidos, C3 e C4 não → **PARCIAL** ("C1 atendido, mais um ou dois de C2–C4").
 
@@ -49,8 +49,8 @@ Todos no `test`, recorte **gatilho inédito**, salvo indicação.
 | C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | 81% (39/48) | maioria | **sim** | `… 16k.C3_controle_trig_only` |
 | C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | LLM da frente C: 95% (19/20); 2º avaliador (Claude, pela frente D): 85% (17/20). Concordam em 18/20, κ = 0,46 | ≥ 60% para os dois | **sim, com ressalva** | `… C3_avaliacao_cega` e `results/frente-d/c3_rotulos_davi.csv`. **Os dois avaliadores cegos são LLMs**; o Davi conferiu depois e concordou com os 20 rótulos do 2º, sem estar cego (ver `DESVIOS.md`) |
 | C4(a) | C1 e C2 no 262k **ou** no SAE próprio | C1 no 262k: 60 features, 100% replicam. C2 no 262k: C2(a) 0,998 / 0,997; C2(b) razão 0,06 | atende | **sim** (com a mesma ressalva do controle) | `results/frente-c/c1_c3.json` → `262k.C1`; `results/frente-d/c2_c4_L29_post_last_262k.json` |
-| C4(b) | C2 só com Q⁰ original *retrieved* (247 grupos) | C2(a) 0,979 / 0,992 (16k) | atende | **C2(a) sim**; C2(b) no recorte não calculado; C1 no recorte: frente C | `… c2_c4_L29_post_last_16k.json` → `b_q0_retrieved` |
-| C4(c) | C2 com células de tamanho pareado (≤ 20%; 684 grupos) | C2(a) 0,986 / 0,991 (16k) | atende | **C2(a) sim**; C2(b) no recorte não calculado; C1 no recorte: frente C | `… c_tamanho_pareado` |
+| C4(b) | C1 e C2 só com Q⁰ original *retrieved* (211 grupos do conjunto principal) | C1: 15/15 replicam, mas a descoberta tem 182 grupos (< 260). C2(a) 0,979 / 0,992; C2(b) razão 0,17 (IC 0,08–0,27) no 16k, −0,01 (IC −0,11–0,09) no 262k | atende | **inconclusivo** (C1 sem poder; C2 atende) | `results/frente-c/c4_*/c1_c3.json` (frente C); `results/frente-d/c2_c4_L29_post_last_{16k,262k}.json` → `b_q0_retrieved` |
+| C4(c) | C1 e C2 com células de tamanho pareado (≤ 20%; 684 grupos) | C1: 46 S_intent, 46/46 replicam. C2(a) 0,986 / 0,991; C2(b) razão 0,18 (IC 0,11–0,27) no 16k, 0,16 no 262k | atende | **sim** | `results/frente-c/c4_*/c1_c3.json` (frente C); `… c_tamanho_pareado` |
 | C5 | Ablação de S_intent: queda na recusa a Q⁺ menos a de features aleatórias (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
 | C5 | Ablação de S_lex: queda nas recusas a Q⁰ alarmantes (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
 
@@ -96,11 +96,11 @@ _Preencher só neste caso. Ele é o desfecho mais provável, então vale escreve
 |---|---|
 | Pergunta | Resposta |
 |---|---|
-| Qual critério falhou? | **C3**, por procedimento: a avaliação cega foi feita por dois LLMs, não por duas pessoas (o resultado em si passa: 95% e 85%). **C4**, por estar incompleto: falta o C1 e o C2(b) nos recortes (b) e (c) |
+| Qual critério falhou? | **C3**, por procedimento: a avaliação cega foi feita por dois LLMs, não por duas pessoas (o resultado em si passa: 95% e 85%). **C4(b)**, por falta de poder: só há 211 grupos com Q⁰ *retrieved*, e a descoberta do C1 nesse recorte fica com 182, abaixo do piso de 260. O C2 atende no recorte |
 | Em qual recorte (camada, posição, SAE, domínio, tipo de gatilho)? | Nenhum recorte falhou com número. A combinação principal é L29 · `post_last`; o C1 vale nos 4 domínios e nos dois SAEs |
 | O probe denso também falha ali? | Não falha em nada: 0,97–1,00 em todas as camadas e posições |
 | O efeito existe só em alguns domínios ou tipos de gatilho? | Não: as 48 S_intent são gerais nos 4 domínios (frente C) |
-| O que seria preciso para virar SIM? | (1) duas pessoas lerem as 20 fichas às cegas, sem ver os rótulos dos LLMs, e ≥ 60% saírem conceituais para as duas; (2) o C1 e o C2(b) nos recortes (b) Q⁰ *retrieved* (247 grupos) e (c) tamanho pareado (684 grupos) |
+| O que seria preciso para virar SIM? | (1) duas pessoas lerem as 20 fichas às cegas, sem ver os rótulos dos LLMs, e ≥ 60% saírem conceituais para as duas; (2) ter poder no C4(b): ≥ 260 grupos com Q⁰ *retrieved* na descoberta, o que pede mais pedidos Q⁰ reais (hoje 211 no conjunto principal), trabalho da frente A |
 
 Frase de abertura: _"Encontramos um sinal de intenção nas features do SAE que não depende da forma lexical (C1, C2), mas não um sinal de forma lexical: nenhuma feature reage ao gatilho de modo consistente. A classificação de intenção, porém, não é exclusiva dessas features, e a avaliação humana e duas robustezes ficaram por fazer."_
 

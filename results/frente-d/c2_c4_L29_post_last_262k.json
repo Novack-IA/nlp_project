@@ -1,0 +1,1582 @@
+{
+  "descricao": "C2 e recortes C4b/c (frente D). Ver docstring de src/featgrpo/interp/classifiers.py.",
+  "gerado_em": "2026-11-21T22:08:51+00:00",
+  "commit": "1d7071ddc6195f299d916102e5d88e382ec4e90e",
+  "args": {
+    "root": "artifacts\\acts\\gemma-3-4b-it",
+    "layer": 29,
+    "pos": "post_last",
+    "sae": "262k",
+    "n_boot": 500,
+    "seed": 0,
+    "subconjunto": "principal",
+    "n_grupos": 1697,
+    "listas": "artifacts\\_downloads\\listas_c",
+    "n_random": 20,
+    "min_freq": 0.05
+  },
+  "resultados": {
+    "principal": {
+      "tamanhos": {
+        "S_intent": 60,
+        "S_lex": 0,
+        "pool_aleatorio": 198
+      },
+      "matriz": {
+        "S_intent": {
+          "l1": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 484,
+                "n_groups": 242,
+                "auroc": 0.9979,
+                "accuracy": 0.9793,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9959,
+                    0.9996
+                  ],
+                  "accuracy": [
+                    0.9669,
+                    0.9917
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 170,
+                "n_groups": 85,
+                "auroc": 0.9983,
+                "accuracy": 0.9882,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9948,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9706,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 314,
+                "n_groups": 157,
+                "auroc": 0.9976,
+                "accuracy": 0.9745,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9946,
+                    0.9995
+                  ],
+                  "accuracy": [
+                    0.9586,
+                    0.9904
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 484,
+                "n_groups": 242,
+                "auroc": 0.9968,
+                "accuracy": 0.969,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9941,
+                    0.9989
+                  ],
+                  "accuracy": [
+                    0.9545,
+                    0.9835
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 170,
+                "n_groups": 85,
+                "auroc": 0.997,
+                "accuracy": 0.9824,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9915,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9588,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 314,
+                "n_groups": 157,
+                "auroc": 0.9965,
+                "accuracy": 0.9618,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9932,
+                    0.9991
+                  ],
+                  "accuracy": [
+                    0.9427,
+                    0.9841
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 968,
+                "n_groups": 242,
+                "auroc": 0.5242,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.5868,
+                "ci95": {
+                  "auroc": [
+                    0.509,
+                    0.5404
+                  ],
+                  "accuracy": [
+                    0.4969,
+                    0.5031
+                  ],
+                  "paired_accuracy": [
+                    0.5207,
+                    0.6488
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 340,
+                "n_groups": 85,
+                "auroc": 0.52,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.5765,
+                "ci95": {
+                  "auroc": [
+                    0.4969,
+                    0.5432
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.5
+                  ],
+                  "paired_accuracy": [
+                    0.4706,
+                    0.6941
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 628,
+                "n_groups": 157,
+                "auroc": 0.5258,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.5924,
+                "ci95": {
+                  "auroc": [
+                    0.506,
+                    0.5485
+                  ],
+                  "accuracy": [
+                    0.4952,
+                    0.5048
+                  ],
+                  "paired_accuracy": [
+                    0.5223,
+                    0.6658
+                  ]
+                }
+              }
+            }
+          },
+          "media": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 484,
+                "n_groups": 242,
+                "auroc": 0.9918,
+                "accuracy": 0.7893,
+                "paired_accuracy": 0.9917,
+                "ci95": {
+                  "auroc": [
+                    0.9868,
+                    0.996
+                  ],
+                  "accuracy": [
+                    0.7583,
+                    0.8182
+                  ],
+                  "paired_accuracy": [
+                    0.9793,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 170,
+                "n_groups": 85,
+                "auroc": 0.9877,
+                "accuracy": 0.7647,
+                "paired_accuracy": 0.9882,
+                "ci95": {
+                  "auroc": [
+                    0.9745,
+                    0.9965
+                  ],
+                  "accuracy": [
+                    0.7176,
+                    0.8118
+                  ],
+                  "paired_accuracy": [
+                    0.9585,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 314,
+                "n_groups": 157,
+                "auroc": 0.9942,
+                "accuracy": 0.8025,
+                "paired_accuracy": 0.9936,
+                "ci95": {
+                  "auroc": [
+                    0.9896,
+                    0.998
+                  ],
+                  "accuracy": [
+                    0.758,
+                    0.8424
+                  ],
+                  "paired_accuracy": [
+                    0.9809,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 484,
+                "n_groups": 242,
+                "auroc": 0.9894,
+                "accuracy": 0.7727,
+                "paired_accuracy": 0.9876,
+                "ci95": {
+                  "auroc": [
+                    0.9825,
+                    0.9948
+                  ],
+                  "accuracy": [
+                    0.7448,
+                    0.8058
+                  ],
+                  "paired_accuracy": [
+                    0.9752,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 170,
+                "n_groups": 85,
+                "auroc": 0.9863,
+                "accuracy": 0.7471,
+                "paired_accuracy": 0.9882,
+                "ci95": {
+                  "auroc": [
+                    0.9711,
+                    0.995
+                  ],
+                  "accuracy": [
+                    0.6941,
+                    0.7941
+                  ],
+                  "paired_accuracy": [
+                    0.9585,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 314,
+                "n_groups": 157,
+                "auroc": 0.9912,
+                "accuracy": 0.7866,
+                "paired_accuracy": 0.9873,
+                "ci95": {
+                  "auroc": [
+                    0.9847,
+                    0.9975
+                  ],
+                  "accuracy": [
+                    0.742,
+                    0.828
+                  ],
+                  "paired_accuracy": [
+                    0.9745,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 968,
+                "n_groups": 242,
+                "auroc": 0.5134,
+                "accuracy": 0.5072,
+                "paired_accuracy": 0.5992,
+                "ci95": {
+                  "auroc": [
+                    0.5066,
+                    0.5191
+                  ],
+                  "accuracy": [
+                    0.4959,
+                    0.5196
+                  ],
+                  "paired_accuracy": [
+                    0.5413,
+                    0.6612
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 340,
+                "n_groups": 85,
+                "auroc": 0.512,
+                "accuracy": 0.5147,
+                "paired_accuracy": 0.6353,
+                "ci95": {
+                  "auroc": [
+                    0.5032,
+                    0.5228
+                  ],
+                  "accuracy": [
+                    0.4941,
+                    0.5368
+                  ],
+                  "paired_accuracy": [
+                    0.5412,
+                    0.7294
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 628,
+                "n_groups": 157,
+                "auroc": 0.514,
+                "accuracy": 0.5032,
+                "paired_accuracy": 0.5796,
+                "ci95": {
+                  "auroc": [
+                    0.5064,
+                    0.5216
+                  ],
+                  "accuracy": [
+                    0.4889,
+                    0.5175
+                  ],
+                  "paired_accuracy": [
+                    0.5032,
+                    0.6433
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "S_lex": null,
+        "aleatorio": {
+          "intencao_com_gatilho": 0.9942,
+          "intencao_sem_gatilho": 0.9935,
+          "gatilho_todas": 0.5302
+        },
+        "denso": {
+          "intencao_com_gatilho": {
+            "todos": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.9991,
+              "accuracy": 0.9793,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.998,
+                  0.9998
+                ],
+                "accuracy": [
+                  0.9669,
+                  0.9917
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            },
+            "gatilho_visto": {
+              "n_items": 170,
+              "n_groups": 85,
+              "auroc": 0.9997,
+              "accuracy": 0.9882,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9986,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9706,
+                  1.0
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            },
+            "gatilho_inedito": {
+              "n_items": 314,
+              "n_groups": 157,
+              "auroc": 0.9988,
+              "accuracy": 0.9745,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9973,
+                  0.9998
+                ],
+                "accuracy": [
+                  0.9586,
+                  0.9904
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "intencao_sem_gatilho": {
+            "todos": {
+              "n_items": 484,
+              "n_groups": 242,
+              "auroc": 0.999,
+              "accuracy": 0.9814,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9979,
+                  0.9997
+                ],
+                "accuracy": [
+                  0.969,
+                  0.9917
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            },
+            "gatilho_visto": {
+              "n_items": 170,
+              "n_groups": 85,
+              "auroc": 0.9999,
+              "accuracy": 0.9941,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9992,
+                  1.0
+                ],
+                "accuracy": [
+                  0.9824,
+                  1.0
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            },
+            "gatilho_inedito": {
+              "n_items": 314,
+              "n_groups": 157,
+              "auroc": 0.9983,
+              "accuracy": 0.9745,
+              "paired_accuracy": 1.0,
+              "ci95": {
+                "auroc": [
+                  0.9962,
+                  0.9997
+                ],
+                "accuracy": [
+                  0.9586,
+                  0.9904
+                ],
+                "paired_accuracy": [
+                  1.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          "gatilho_todas": {
+            "todos": {
+              "n_items": 968,
+              "n_groups": 242,
+              "auroc": 0.6562,
+              "accuracy": 0.6157,
+              "paired_accuracy": 0.8678,
+              "ci95": {
+                "auroc": [
+                  0.6331,
+                  0.6796
+                ],
+                "accuracy": [
+                  0.5909,
+                  0.64
+                ],
+                "paired_accuracy": [
+                  0.8223,
+                  0.9091
+                ]
+              }
+            },
+            "gatilho_visto": {
+              "n_items": 340,
+              "n_groups": 85,
+              "auroc": 0.6856,
+              "accuracy": 0.6324,
+              "paired_accuracy": 0.8706,
+              "ci95": {
+                "auroc": [
+                  0.6458,
+                  0.7298
+                ],
+                "accuracy": [
+                  0.5912,
+                  0.6692
+                ],
+                "paired_accuracy": [
+                  0.7882,
+                  0.9294
+                ]
+              }
+            },
+            "gatilho_inedito": {
+              "n_items": 628,
+              "n_groups": 157,
+              "auroc": 0.6421,
+              "accuracy": 0.6067,
+              "paired_accuracy": 0.8662,
+              "ci95": {
+                "auroc": [
+                  0.6197,
+                  0.6687
+                ],
+                "accuracy": [
+                  0.5828,
+                  0.6354
+                ],
+                "paired_accuracy": [
+                  0.8153,
+                  0.9142
+                ]
+              }
+            }
+          }
+        }
+      },
+      "C2a": {
+        "auroc_com_gatilho": 0.9976,
+        "auroc_sem_gatilho": 0.9965,
+        "atende": true
+      },
+      "C2b": {
+        "gatilho_inedito": {
+          "n_dobras": 1,
+          "queda_features": 0.0008,
+          "queda_tfidf": 0.0031,
+          "razao": null,
+          "ic95": null,
+          "atende": null,
+          "status": "indefinido: o TF-IDF não caiu nesta generalização"
+        },
+        "leave_one_domain_out": {
+          "n_dobras": 4,
+          "queda_features": -0.0001,
+          "queda_tfidf": 0.0149,
+          "razao": null,
+          "ic95": null,
+          "atende": null,
+          "status": "indefinido: o TF-IDF não caiu nesta generalização"
+        },
+        "xstest": {
+          "n_dobras": 1,
+          "queda_features": 0.0177,
+          "queda_tfidf": 0.2775,
+          "razao": 0.0638,
+          "ic95": [
+            0.0281,
+            0.111
+          ],
+          "atende": true,
+          "status": "atende"
+        },
+        "n_atende": 1,
+        "n_definidas": 1,
+        "atende": true,
+        "descritivas": [
+          "gatilho_inedito",
+          "leave_one_domain_out"
+        ],
+        "regra": "decidido só pelo XSTest: razão queda(S_intent)/queda(TF-IDF) ≤ 0,5 e IC sup. < 1; gatilho inédito e leave-one-domain-out são descrição (votado em 2026-11-21)"
+      },
+      "C2c_consistencia": {
+        "S_intent_gatilho": 0.5258,
+        "S_lex_gatilho": null,
+        "ok": null,
+        "nota": "indefinido: S_lex vazia (a frente C não achou feature lexical consistente)"
+      }
+    },
+    "b_q0_retrieved": {
+      "n_grupos": 247,
+      "tamanhos": {
+        "S_intent": 60,
+        "S_lex": 0,
+        "pool_aleatorio": 162
+      },
+      "matriz": {
+        "S_intent": {
+          "l1": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 58,
+                "n_groups": 29,
+                "auroc": 0.9762,
+                "accuracy": 0.931,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9334,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.8621,
+                    0.9828
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 14,
+                "n_groups": 7,
+                "auroc": 1.0,
+                "accuracy": 0.9286,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    1.0,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.7857,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 44,
+                "n_groups": 22,
+                "auroc": 0.969,
+                "accuracy": 0.9318,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9204,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.8636,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 58,
+                "n_groups": 29,
+                "auroc": 0.9655,
+                "accuracy": 0.8793,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9251,
+                    0.9929
+                  ],
+                  "accuracy": [
+                    0.7931,
+                    0.9483
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 14,
+                "n_groups": 7,
+                "auroc": 0.9592,
+                "accuracy": 0.7857,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.8776,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.6429,
+                    0.9286
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 44,
+                "n_groups": 22,
+                "auroc": 0.9731,
+                "accuracy": 0.9091,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9339,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.8182,
+                    0.9773
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 116,
+                "n_groups": 29,
+                "auroc": 0.4566,
+                "accuracy": 0.4828,
+                "paired_accuracy": 0.3103,
+                "ci95": {
+                  "auroc": [
+                    0.3841,
+                    0.5177
+                  ],
+                  "accuracy": [
+                    0.4397,
+                    0.5172
+                  ],
+                  "paired_accuracy": [
+                    0.1543,
+                    0.4828
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 28,
+                "n_groups": 7,
+                "auroc": 0.398,
+                "accuracy": 0.4286,
+                "paired_accuracy": 0.2857,
+                "ci95": {
+                  "auroc": [
+                    0.2524,
+                    0.5282
+                  ],
+                  "accuracy": [
+                    0.3384,
+                    0.5
+                  ],
+                  "paired_accuracy": [
+                    0.0,
+                    0.7143
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 88,
+                "n_groups": 22,
+                "auroc": 0.4866,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.3182,
+                "ci95": {
+                  "auroc": [
+                    0.4202,
+                    0.5442
+                  ],
+                  "accuracy": [
+                    0.4545,
+                    0.5455
+                  ],
+                  "paired_accuracy": [
+                    0.1364,
+                    0.5
+                  ]
+                }
+              }
+            }
+          },
+          "media": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 58,
+                "n_groups": 29,
+                "auroc": 0.9786,
+                "accuracy": 0.7759,
+                "paired_accuracy": 0.9655,
+                "ci95": {
+                  "auroc": [
+                    0.9292,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.6897,
+                    0.8621
+                  ],
+                  "paired_accuracy": [
+                    0.8966,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 14,
+                "n_groups": 7,
+                "auroc": 1.0,
+                "accuracy": 0.7143,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    1.0,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.5339,
+                    0.8571
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 44,
+                "n_groups": 22,
+                "auroc": 0.9649,
+                "accuracy": 0.7955,
+                "paired_accuracy": 0.9545,
+                "ci95": {
+                  "auroc": [
+                    0.8926,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.6818,
+                    0.8864
+                  ],
+                  "paired_accuracy": [
+                    0.8636,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 58,
+                "n_groups": 29,
+                "auroc": 0.9524,
+                "accuracy": 0.7414,
+                "paired_accuracy": 0.931,
+                "ci95": {
+                  "auroc": [
+                    0.89,
+                    0.9923
+                  ],
+                  "accuracy": [
+                    0.6379,
+                    0.8276
+                  ],
+                  "paired_accuracy": [
+                    0.8276,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 14,
+                "n_groups": 7,
+                "auroc": 1.0,
+                "accuracy": 0.6429,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    1.0,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.7857
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 44,
+                "n_groups": 22,
+                "auroc": 0.9545,
+                "accuracy": 0.7727,
+                "paired_accuracy": 0.9091,
+                "ci95": {
+                  "auroc": [
+                    0.8616,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.6591,
+                    0.8636
+                  ],
+                  "paired_accuracy": [
+                    0.7727,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 116,
+                "n_groups": 29,
+                "auroc": 0.56,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.6552,
+                "ci95": {
+                  "auroc": [
+                    0.5294,
+                    0.592
+                  ],
+                  "accuracy": [
+                    0.4655,
+                    0.5345
+                  ],
+                  "paired_accuracy": [
+                    0.4828,
+                    0.8276
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 28,
+                "n_groups": 7,
+                "auroc": 0.5663,
+                "accuracy": 0.5357,
+                "paired_accuracy": 0.7143,
+                "ci95": {
+                  "auroc": [
+                    0.4565,
+                    0.6429
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.6071
+                  ],
+                  "paired_accuracy": [
+                    0.2857,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 88,
+                "n_groups": 22,
+                "auroc": 0.5604,
+                "accuracy": 0.4886,
+                "paired_accuracy": 0.6364,
+                "ci95": {
+                  "auroc": [
+                    0.5225,
+                    0.6046
+                  ],
+                  "accuracy": [
+                    0.4545,
+                    0.5227
+                  ],
+                  "paired_accuracy": [
+                    0.4307,
+                    0.8182
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "S_lex": null
+      },
+      "C2a": {
+        "auroc_com_gatilho": 0.969,
+        "auroc_sem_gatilho": 0.9731,
+        "atende": true
+      },
+      "C2b": {
+        "gatilho_inedito": {
+          "n_dobras": 1,
+          "queda_features": 0.0106,
+          "queda_tfidf": -0.0004,
+          "razao": null,
+          "ic95": null,
+          "atende": null,
+          "status": "indefinido: o TF-IDF não caiu nesta generalização"
+        },
+        "leave_one_domain_out": {
+          "n_dobras": 4,
+          "queda_features": 0.0103,
+          "queda_tfidf": 0.0078,
+          "razao": null,
+          "ic95": null,
+          "atende": null,
+          "status": "indefinido: o TF-IDF não caiu nesta generalização"
+        },
+        "xstest": {
+          "status": "pendente: cache e textos do XSTest",
+          "atende": null
+        },
+        "n_atende": 0,
+        "n_definidas": 0,
+        "atende": null,
+        "descritivas": [
+          "gatilho_inedito",
+          "leave_one_domain_out"
+        ],
+        "regra": "decidido só pelo XSTest: razão queda(S_intent)/queda(TF-IDF) ≤ 0,5 e IC sup. < 1; gatilho inédito e leave-one-domain-out são descrição (votado em 2026-11-21)"
+      },
+      "C2c_consistencia": {
+        "S_intent_gatilho": 0.4866,
+        "S_lex_gatilho": null,
+        "ok": null,
+        "nota": "indefinido: S_lex vazia (a frente C não achou feature lexical consistente)"
+      }
+    },
+    "c_tamanho_pareado": {
+      "n_grupos": 684,
+      "tamanhos": {
+        "S_intent": 60,
+        "S_lex": 0,
+        "pool_aleatorio": 191
+      },
+      "matriz": {
+        "S_intent": {
+          "l1": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 204,
+                "n_groups": 102,
+                "auroc": 0.9981,
+                "accuracy": 0.9804,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9952,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9608,
+                    0.9951
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 84,
+                "n_groups": 42,
+                "auroc": 0.9977,
+                "accuracy": 0.9762,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9926,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9405,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 120,
+                "n_groups": 60,
+                "auroc": 0.9986,
+                "accuracy": 0.9833,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9954,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9583,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 204,
+                "n_groups": 102,
+                "auroc": 0.9984,
+                "accuracy": 0.9755,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9955,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.951,
+                    0.9951
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 84,
+                "n_groups": 42,
+                "auroc": 1.0,
+                "accuracy": 1.0,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    1.0,
+                    1.0
+                  ],
+                  "accuracy": [
+                    1.0,
+                    1.0
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 120,
+                "n_groups": 60,
+                "auroc": 0.9964,
+                "accuracy": 0.9583,
+                "paired_accuracy": 1.0,
+                "ci95": {
+                  "auroc": [
+                    0.9893,
+                    1.0
+                  ],
+                  "accuracy": [
+                    0.9206,
+                    0.9917
+                  ],
+                  "paired_accuracy": [
+                    1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 408,
+                "n_groups": 102,
+                "auroc": 0.5222,
+                "accuracy": 0.5025,
+                "paired_accuracy": 0.5882,
+                "ci95": {
+                  "auroc": [
+                    0.4978,
+                    0.5509
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.5074
+                  ],
+                  "paired_accuracy": [
+                    0.5,
+                    0.6863
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 168,
+                "n_groups": 42,
+                "auroc": 0.5489,
+                "accuracy": 0.506,
+                "paired_accuracy": 0.6429,
+                "ci95": {
+                  "auroc": [
+                    0.504,
+                    0.6014
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.5179
+                  ],
+                  "paired_accuracy": [
+                    0.4762,
+                    0.7857
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 240,
+                "n_groups": 60,
+                "auroc": 0.5081,
+                "accuracy": 0.5,
+                "paired_accuracy": 0.55,
+                "ci95": {
+                  "auroc": [
+                    0.4778,
+                    0.5424
+                  ],
+                  "accuracy": [
+                    0.5,
+                    0.5
+                  ],
+                  "paired_accuracy": [
+                    0.4413,
+                    0.6833
+                  ]
+                }
+              }
+            }
+          },
+          "media": {
+            "intencao_com_gatilho": {
+              "todos": {
+                "n_items": 204,
+                "n_groups": 102,
+                "auroc": 0.9899,
+                "accuracy": 0.799,
+                "paired_accuracy": 0.9804,
+                "ci95": {
+                  "auroc": [
+                    0.9796,
+                    0.9975
+                  ],
+                  "accuracy": [
+                    0.75,
+                    0.8431
+                  ],
+                  "paired_accuracy": [
+                    0.951,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 84,
+                "n_groups": 42,
+                "auroc": 0.9836,
+                "accuracy": 0.7857,
+                "paired_accuracy": 0.9762,
+                "ci95": {
+                  "auroc": [
+                    0.9603,
+                    0.9966
+                  ],
+                  "accuracy": [
+                    0.7143,
+                    0.869
+                  ],
+                  "paired_accuracy": [
+                    0.9286,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 120,
+                "n_groups": 60,
+                "auroc": 0.9939,
+                "accuracy": 0.8083,
+                "paired_accuracy": 0.9833,
+                "ci95": {
+                  "auroc": [
+                    0.9825,
+                    0.9997
+                  ],
+                  "accuracy": [
+                    0.7417,
+                    0.8667
+                  ],
+                  "paired_accuracy": [
+                    0.95,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "intencao_sem_gatilho": {
+              "todos": {
+                "n_items": 204,
+                "n_groups": 102,
+                "auroc": 0.9888,
+                "accuracy": 0.7745,
+                "paired_accuracy": 0.9706,
+                "ci95": {
+                  "auroc": [
+                    0.9754,
+                    0.9963
+                  ],
+                  "accuracy": [
+                    0.7255,
+                    0.8186
+                  ],
+                  "paired_accuracy": [
+                    0.9314,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 84,
+                "n_groups": 42,
+                "auroc": 0.9887,
+                "accuracy": 0.7381,
+                "paired_accuracy": 0.9762,
+                "ci95": {
+                  "auroc": [
+                    0.97,
+                    0.9992
+                  ],
+                  "accuracy": [
+                    0.6667,
+                    0.8158
+                  ],
+                  "paired_accuracy": [
+                    0.9286,
+                    1.0
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 120,
+                "n_groups": 60,
+                "auroc": 0.9883,
+                "accuracy": 0.8,
+                "paired_accuracy": 0.9667,
+                "ci95": {
+                  "auroc": [
+                    0.968,
+                    0.9997
+                  ],
+                  "accuracy": [
+                    0.7333,
+                    0.8627
+                  ],
+                  "paired_accuracy": [
+                    0.9167,
+                    1.0
+                  ]
+                }
+              }
+            },
+            "gatilho_todas": {
+              "todos": {
+                "n_items": 408,
+                "n_groups": 102,
+                "auroc": 0.5131,
+                "accuracy": 0.5123,
+                "paired_accuracy": 0.6275,
+                "ci95": {
+                  "auroc": [
+                    0.5049,
+                    0.5221
+                  ],
+                  "accuracy": [
+                    0.4951,
+                    0.5331
+                  ],
+                  "paired_accuracy": [
+                    0.5392,
+                    0.7157
+                  ]
+                }
+              },
+              "gatilho_visto": {
+                "n_items": 168,
+                "n_groups": 42,
+                "auroc": 0.5186,
+                "accuracy": 0.5238,
+                "paired_accuracy": 0.6905,
+                "ci95": {
+                  "auroc": [
+                    0.5038,
+                    0.537
+                  ],
+                  "accuracy": [
+                    0.494,
+                    0.5595
+                  ],
+                  "paired_accuracy": [
+                    0.5476,
+                    0.8333
+                  ]
+                }
+              },
+              "gatilho_inedito": {
+                "n_items": 240,
+                "n_groups": 60,
+                "auroc": 0.509,
+                "accuracy": 0.5042,
+                "paired_accuracy": 0.5833,
+                "ci95": {
+                  "auroc": [
+                    0.4975,
+                    0.5218
+                  ],
+                  "accuracy": [
+                    0.4875,
+                    0.5208
+                  ],
+                  "paired_accuracy": [
+                    0.4667,
+                    0.7
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "S_lex": null
+      },
+      "C2a": {
+        "auroc_com_gatilho": 0.9986,
+        "auroc_sem_gatilho": 0.9964,
+        "atende": true
+      },
+      "C2b": {
+        "gatilho_inedito": {
+          "n_dobras": 1,
+          "queda_features": 0.0013,
+          "queda_tfidf": 0.0099,
+          "razao": null,
+          "ic95": null,
+          "atende": null,
+          "status": "indefinido: o TF-IDF não caiu nesta generalização"
+        },
+        "leave_one_domain_out": {
+          "n_dobras": 4,
+          "queda_features": 0.0016,
+          "queda_tfidf": 0.0319,
+          "razao": 0.0495,
+          "ic95": [
+            -0.0593,
+            0.2561
+          ],
+          "atende": true,
+          "status": "atende"
+        },
+        "xstest": {
+          "status": "pendente: cache e textos do XSTest",
+          "atende": null
+        },
+        "n_atende": 1,
+        "n_definidas": 1,
+        "atende": null,
+        "descritivas": [
+          "gatilho_inedito",
+          "leave_one_domain_out"
+        ],
+        "regra": "decidido só pelo XSTest: razão queda(S_intent)/queda(TF-IDF) ≤ 0,5 e IC sup. < 1; gatilho inédito e leave-one-domain-out são descrição (votado em 2026-11-21)"
+      },
+      "C2c_consistencia": {
+        "S_intent_gatilho": 0.5081,
+        "S_lex_gatilho": null,
+        "ok": null,
+        "nota": "indefinido: S_lex vazia (a frente C não achou feature lexical consistente)"
+      }
+    }
+  }
+}

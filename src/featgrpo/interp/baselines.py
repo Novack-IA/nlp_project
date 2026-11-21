@@ -209,8 +209,18 @@ def load_cells_items() -> list[dict] | None:
     return out
 
 
+def _failed_groups() -> set[str]:
+    import json as _json
+    p = Path("results/frente-d/validacao_2x2.json")
+    return {f["group_id"] for f in _json.loads(p.read_text(encoding="utf-8"))["falhas"]} if p.exists() else set()
+
+
+_FAILED = _failed_groups()
+
 CELL_SUBSETS = {
-    "qc_grammatical": lambda c: c["qc_grammatical"],   # principal (pré-registro da frente C, adendo)
+    # principal: qc_grammatical sem os reprovados do validador (1.697 grupos; DESVIOS 2026-11-21)
+    "principal": lambda c: c["qc_grammatical"] and c["group_id"] not in _FAILED,
+    "qc_grammatical": lambda c: c["qc_grammatical"],   # robustez (era o principal antes do validador)
     "qc_pass_lenient": lambda c: c["qc_pass_lenient"],  # robustez
     "todos": lambda c: True,
 }
@@ -414,7 +424,7 @@ def run(n_boot: int = 1000) -> dict:
     if cells is None:
         results["cells_2x2"] = "pendente: datasets/phase1/cells_2x2.jsonl ainda não existe (entrega da frente A)"
     else:
-        results["cells_2x2"] = {"conjunto_principal": "qc_grammatical"}
+        results["cells_2x2"] = {"conjunto_principal": "principal (qc_grammatical sem os reprovados do validador)"}
         for name, keep in CELL_SUBSETS.items():
             sub = [c for c in cells if keep(c)]
             results["cells_2x2"][name] = cells_report(sub, xs, evaluate, C_tfidf, C_style, n_boot)

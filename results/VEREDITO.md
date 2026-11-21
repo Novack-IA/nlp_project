@@ -27,17 +27,19 @@ Todos no `test`, recorte **gatilho inédito**, salvo indicação.
 |---|---|---|---|---|---|
 | C1 | Nº de features em S_intent (L29 · `post_last`, 16k) | 48 | ≥ 5 | **sim** | `results/frente-c/c1_c3.json` (commit `b299ef4`) → `16k.C1.S_intent` |
 | C1 | Fração de S_intent que replica no `test` (\|d_I\| ≥ 0,3, mesmo sinal; 155 grupos com gatilho inédito) | 100% (48/48) | ≥ 70% | **sim** | `… 16k.replicacao_S_intent` |
-| C2(a) | AUROC de S_intent, intenção **com** gatilho | | ≥ 0,85 | | `results/frente-d/c2_c4.json` → `principal.C2a.auroc_com_gatilho` |
-| C2(a) | AUROC de S_intent, intenção **sem** gatilho | | ≥ 0,80 | | `… principal.C2a.auroc_sem_gatilho` |
-| **C2(b)** | **XSTest:** razão queda(S_intent)/queda(TF-IDF), IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.xstest`, `atende` |
+| C2(a) | AUROC de S_intent, intenção **com** gatilho (16k; 262k) | 0,992 (IC 0,985–0,997); 0,998 | ≥ 0,85 | **sim**, mas ver controle | `results/frente-d/c2_c4_L29_post_last_16k.json` → `principal.C2a` |
+| C2(a) | AUROC de S_intent, intenção **sem** gatilho (16k; 262k) | 0,992 (IC 0,984–0,997); 0,997 | ≥ 0,80 | **sim**, mas ver controle | idem |
+| C2(a), controle | Features aleatórias do mesmo tamanho (média de 20 sorteios), com / sem gatilho | 0,995 / 0,995 (16k); 0,994 / 0,994 (262k) | — | **S_intent não supera o aleatório** | `… principal.matriz.aleatorio` |
+| **C2(b)** | **XSTest:** razão queda(S_intent)/queda(TF-IDF), IC 95% (16k; 262k) | 0,030/0,278 = **0,11** (IC 0,05–0,17); **0,06** (IC 0,03–0,11) | ≤ 0,5 e IC sup. < 1 | **sim**, mas ver controle | `… principal.C2b.xstest` |
+| C2(b), controle | Mesma razão com features aleatórias do mesmo tamanho (mediana de 20) e com o denso | aleatório 0,11 (16k) e 0,08 (262k), **20/20 sorteios atendem**; denso 0,11 | — | **S_intent não supera o aleatório** | `results/frente-d/c2b_controle_aleatorio.json` (controle acrescentado depois do C2; ver `DESVIOS.md`) |
 | C2(b), descrição | Gatilho inédito: razão, IC 95% (TF-IDF cai 0,003, indefinida) | | não decide | | `… principal.C2b.gatilho_inedito` |
-| C2(b), descrição | Leave-one-domain-out: razão, IC 95% (TF-IDF cai 0,014, indefinida) | | não decide | | `… principal.C2b.leave_one_domain_out` |
+| C2(b), descrição | Leave-one-domain-out: razão, IC 95% (TF-IDF cai 0,015, indefinida) | | não decide | | `… principal.C2b.leave_one_domain_out` |
 | C2(c) | Consistência: S_intent no gatilho / S_lex no gatilho | | ≤ 0,65 / ≥ 0,85 | **indefinido**: S_lex vazia em todas as combinações (frente C); não decide | `… principal.C2c_consistencia` |
 | C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | 81% (39/48) | maioria | **sim** | `… 16k.C3_controle_trig_only` |
 | C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | LLM da frente C: 95% (19/20); 2º avaliador (Claude, pela frente D): 85% (17/20). Concordam em 18/20, κ = 0,46 | ≥ 60% para os dois | **sim, com ressalva** | `… C3_avaliacao_cega` e `results/frente-d/c3_rotulos_davi.csv`. **Os dois avaliadores cegos são LLMs**; o Davi conferiu depois e concordou com os 20 rótulos do 2º, sem estar cego (ver `DESVIOS.md`) |
-| C4(a) | C1 e C2 no 262k **ou** no SAE próprio | C1 no 262k: 60 features, 100% replicam. C2 no 262k: a rodar (frente D) | atende | **C1 sim; C2 pendente** | `… 262k.C1` e `c2_c4.json` do 262k |
-| C4(b) | C1 e C2 só com Q⁰ original *retrieved* | | atende | | `… c2_c4.json` → `b_q0_retrieved` |
-| C4(c) | C1 e C2 com células de tamanho pareado (≤ 20%) | | atende | | `… c2_c4.json` → `c_tamanho_pareado` |
+| C4(a) | C1 e C2 no 262k **ou** no SAE próprio | C1 no 262k: 60 features, 100% replicam. C2 no 262k: C2(a) 0,998 / 0,997; C2(b) razão 0,06 | atende | **sim** (com a mesma ressalva do controle) | `results/frente-c/c1_c3.json` → `262k.C1`; `results/frente-d/c2_c4_L29_post_last_262k.json` |
+| C4(b) | C2 só com Q⁰ original *retrieved* (247 grupos) | C2(a) 0,979 / 0,992 (16k) | atende | **C2(a) sim**; C2(b) no recorte não calculado; C1 no recorte: frente C | `… c2_c4_L29_post_last_16k.json` → `b_q0_retrieved` |
+| C4(c) | C2 com células de tamanho pareado (≤ 20%; 684 grupos) | C2(a) 0,986 / 0,991 (16k) | atende | **C2(a) sim**; C2(b) no recorte não calculado; C1 no recorte: frente C | `… c_tamanho_pareado` |
 | C5 | Ablação de S_intent: queda na recusa a Q⁺ menos a de features aleatórias (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
 | C5 | Ablação de S_lex: queda nas recusas a Q⁰ alarmantes (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
 
@@ -63,10 +65,10 @@ O probe linear no residual completo mostra **quanto da informação existe** ant
 | TF-IDF nos pares originais (`test`) | AUROC 0,995 (IC 0,991–0,998) | `results/frente-d/baseline_lexical.json` |
 | Só estilo nos pares originais (`test`) | AUROC 0,881 (IC 0,860–0,903) | idem |
 | Só gatilho nos pares originais (`test`) | AUROC 0,500 | idem |
-| TF-IDF no 2×2 (`qc_grammatical`), intenção com → sem gatilho | 0,996 → 0,997 (não cai) | `baseline_lexical.json` → `cells_2x2.qc_grammatical.treinado_no_2x2` |
-| **Só estilo no 2×2** (`qc_grammatical`), intenção | **0,890** (IC 0,862–0,915) | idem, `so_estilo` |
+| TF-IDF no 2×2 (conjunto principal, 1.697 grupos), intenção com → sem gatilho | 0,996 → 0,997 (não cai) | `baseline_lexical.json` → `cells_2x2.principal.treinado_no_2x2` |
+| **Só estilo no 2×2** (conjunto principal), intenção | **0,889** (IC 0,861–0,916) | idem, `so_estilo` |
 | TF-IDF no 2×2, presença do gatilho | 0,767 | idem, `gatilho_todas` |
-| Queda do TF-IDF: gatilho inédito / domínio inédito / XSTest | 0,003 / 0,014 / 0,281 | `… cells_2x2.qc_grammatical.regua_C2b_tfidf` |
+| Queda do TF-IDF: gatilho inédito / domínio inédito / XSTest | 0,003 / 0,015 / 0,280 | `… cells_2x2.principal.regua_C2b_tfidf` |
 | TF-IDF dos pares no XSTest | 0,710 (IC 0,663–0,756) | `baseline_lexical.json` → `xstest` |
 
 Nos pares originais, as palavras (0,995) e até o estilo (0,88) já separam nocivo de benigno. **No plano B do 2×2 continua igual:** as células com gatilho são os pedidos originais, o TF-IDF acerta 0,997 mesmo sem o gatilho e o estilo sozinho acerta 0,89. Qualquer sinal de intenção no 2×2 precisa ser lido contra essas duas réguas. Só no XSTest o classificador de palavras cai de fato.

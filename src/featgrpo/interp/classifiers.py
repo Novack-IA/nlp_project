@@ -298,7 +298,7 @@ def c2(Z, Xdense, rows, s_intent, s_lex, texts=None, n_boot=500, groups=None, n_
             out["matriz"][name] = None
             continue
         out["matriz"][name] = {k: task_matrix(Z[:, feats], rows, k, n_boot, groups) for k in ("l1", "media")}
-    if len(s_intent) and len(pool) >= len(s_intent):
+    if n_random and len(s_intent) and len(pool) >= len(s_intent):
         draws = []
         for _ in range(n_random):
             feats = rng.choice(pool, size=len(s_intent), replace=False)

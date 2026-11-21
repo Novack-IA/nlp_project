@@ -1,0 +1,19 @@
+{
+ "variants": 4856,
+ "refused_by_4b": 280,
+ "kept": 68,
+ "reasons": {
+  "intent=disputed,same=True": 41,
+  "ok": 68,
+  "intent=harmful,same=True": 127,
+  "intent=harmful,same=False": 39,
+  "intent=benign,same=False": 2,
+  "intent=disputed,same=False": 3
+ },
+ "by_domain": {
+  "bias": 9,
+  "cyber": 18,
+  "violence": 25,
+  "privacy": 16
+ }
+}

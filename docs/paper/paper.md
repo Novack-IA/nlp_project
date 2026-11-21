@@ -2,6 +2,27 @@
 
 > **Rascunho.** Esqueleto de 2026-11-20. As seções marcadas com _(a escrever: nome)_ têm dono em [`README.md`](README.md). Os números entram de `results/VEREDITO.md`.
 
+> **Nota provisória (2026-11-21): contexto para quem for escrever, inclusive LLMs.** O grupo aprovou as mudanças abaixo. Esta nota sai quando a estrutura estiver estável.
+>
+> - **Formato:** duas colunas (estilo ACL), com **no máximo 10 páginas**, sem contar as referências e os apêndices.
+> - **Estrutura:**
+>   - a seção "Ética" saiu: o texto dela virou o parágrafo **"Uso responsável dos dados"**, no fim da seção 3, com uma frase sobre uso duplo;
+>   - "Limitações" e "trabalhos futuros" viraram uma seção só (**6**);
+>   - entrou a seção **7. Conclusão**.
+> - **Detalhes vão para apêndices**, que não contam nas 10 páginas. Exemplo: Apêndice A, da frente C.
+> - **Orçamento por seção** (aproximado; uma página de duas colunas tem cerca de 800 palavras de texto):
+>
+> | Seção | Páginas | Palavras |
+> |---|---|---|
+> | Resumo + 1. Introdução | 1,2 | 900 |
+> | 2. Trabalhos relacionados | 0,8 | 650 |
+> | 3. Dados (com a figura 1) | 1,2 | 700 |
+> | 4. Métodos (4.2: ~650) | 2,3 | 1.700 |
+> | 5. Resultados (figuras 2 a 5) | 3,0 | 1.600 |
+> | 6. Limitações e trabalhos futuros | 0,8 | 600 |
+> | 7. Conclusão | 0,5 | 400 |
+> | **Total** | **~9,8** | **~6.500** |
+
 ## Resumo
 
 _(a escrever no fim: Davi.)_ Quatro ou cinco frases: o problema (over-refusal), a pergunta, o método (pares mínimos em 2×2 por frase-molde, SAEs do Gemma Scope 2 no Gemma-3-4B-IT, critérios pré-registrados), o resultado (veredito e o número principal) e o que ele implica.
@@ -45,6 +66,8 @@ _(a escrever: Gustavo.)_
 - Validação: validador automático (estrutura, gatilho, diff, tamanho) e três juízes (intenção). Rodada seca: sobrevivência e decisão molde × plano B. <!-- fonte: results/frente-a/rodada_seca.md -->
 - Números finais: grupos, por domínio e por tipo de gatilho. Controles `trig_only` e `neutral_only`. XSTest e OR-Bench-Hard como conjuntos externos.
 
+**Uso responsável dos dados.** O dataset contém pedidos e respostas nocivas, todos do PKU-SafeRLHF. Não geramos respostas nocivas. Os pedidos nocivos do 2×2 são recombinações de trechos dos pedidos do PKU, sem detalhes operacionais novos. Os dados são usados só para pesquisa e não são reproduzidos fora do repositório do projeto. Identificamos features ligadas à recusa, e a seção 4.4 as desliga para testar causalidade. Essa técnica tem uso duplo: a mesma intervenção que estuda o over-refusal poderia reduzir recusas legítimas. Por isso, o texto reporta só resultados agregados. _(Rascunho: revisar no grupo.)_
+
 ## 4. Métodos
 
 ### 4.1 Modelo, SAEs e extração
@@ -52,6 +75,170 @@ _(a escrever: Gustavo.)_
 _(a escrever: Caio.)_ Gemma-3-4B-IT congelado. Gemma Scope 2 `resid_post`, 16k e 262k, em 4 camadas (25/50/65/85%); SAE próprio BatchTopK como controle. Convenção `resid_post L = hidden_states[L+1]`. Posições: `post`, `post_last`, `mean`, `slot_forma`, `slot_intencao`. Qualidade dos SAEs nos nossos dados (variância explicada, ΔNLL, L0).
 
 ### 4.2 Estatística por feature
+
+**Desenho.** Cada grupo do 2×2 tem um pedido nocivo e um benigno com a mesma expressão-gatilho. Cada pedido aparece com o gatilho original e com o gatilho trocado por uma expressão neutra (seção 3.2). Para cada pedido, passamos pelo SAE o `resid_post` numa posição. Depois comparamos a ativação de cada feature entre as quatro células do grupo.
+
+**Efeitos.** a(h, t) é a ativação na célula de intenção h ∈ {nociva +, benigna 0} e gatilho t ∈ {presente 1, ausente 0}. Por grupo:
+
+- **intenção:** I_g = ½[a(+,1) + a(+,0) − a(0,1) − a(0,0)];
+- **gatilho:** L_g = ½[a(+,1) + a(0,1) − a(+,0) − a(0,0)];
+- **interação:** X_g = ½[a(+,1) − a(+,0) − a(0,1) + a(0,0)].
+
+O tamanho de efeito é o d pareado: a média entre grupos dividida pelo desvio-padrão. \|d\| = 0,2 é um efeito pequeno e 0,5, um efeito médio. d_I > 0 indica feature mais ativa nos pedidos nocivos. O IC 95% vem de um bootstrap sobre grupos. O p vem de um Wilcoxon pareado, com correção de Benjamini–Hochberg sobre features, camadas e posições.
+
+**Posições e dicionário.** Usamos as camadas 9, 17, 22 e 29 e duas posições. As duas têm o mesmo token nas quatro células e o pedido inteiro no contexto:
+
+- **fim_pedido:** o último token do texto do usuário;
+- **pre_resposta:** o último token do template, de onde sai a resposta.
+
+O SAE principal é o Gemma Scope 2 de 16k features (L0 *medium*); o de 262k serve de robustez (Apêndice A).
+
+**Classes.** Consideramos as features ativas em ≥ 5% dos pedidos de alguma célula.
+
+- **S_intent:** \|d_I\| ≥ 0,5, q_I < 0,01 e o IC 95% de d_L inteiro dentro de ±0,2. Esse teste de equivalência exige que o efeito do gatilho seja desprezível, e não só pequeno.
+- **S_lex:** o simétrico.
+- **S_mixed:** os dois efeitos grandes e significativos.
+
+**Descoberta e confirmação.** Os splits são por grupo. Todas as escolhas usam só `train` + `val`. A combinação principal é o par (camada, posição) com mais S_intent. A confirmação (`test`) foi aberta uma vez, nessa combinação, só nos grupos cujo gatilho não aparece no `train`. Replicar quer dizer manter o sinal com \|d_I\| ≥ 0,3.
+
+**Critérios pré-registrados.**
+
+- **C1:** ≥ 5 S_intent, das quais ≥ 70% replicam.
+- **C3:** duas condições.
+  1. Mais da metade das S_intent fica sem efeito (IC dentro de ±0,2) entre frases neutras com o gatilho (`trig_only`) e com a expressão neutra (`neutral_only`).
+  2. ≥ 60% das fichas do top-20 são rotuladas "conceitual" numa leitura cega.
+- **C4a:** o C1 vale também no SAE de 262k.
+
+**Análises secundárias.**
+
+- **Estilo:** no plano B, o pedido nocivo e o benigno vêm de fontes diferentes. Estimamos o efeito de intenção com estilo igual, por regressão de I_g em 14 atributos de estilo.
+- **Por categoria:** efeito por domínio e por tipo de gatilho.
+- **Filtros de qualidade:** robustez a três filtros alternativos.
+
+**Conjunto.** São 1.697 grupos que passam no QC de gramática e no validador estrutural: 1.455 na descoberta e 242 na confirmação, 155 deles com gatilho inédito. <!-- fonte: results/frente-c/preregistro.md, adendo 3 --> Os desvios do pré-registro estão em `results/DESVIOS.md`.
+
+### 4.3 Baselines, probes e dissociação dupla
+
+_(a escrever: Davi.)_
+
+- **Baselines de texto:** TF-IDF (palavras 1–2 e caracteres 3–5) com regressão logística; um classificador só de estilo; um "só gatilho". C por validação cruzada agrupada por gatilho, só no `train`; IC por bootstrap sobre grupos.
+- **Âncora densa:** regressão logística L2 no residual, por camada e posição; generalização cruzada com → sem gatilho e a volta; gatilho treinado no benigno e testado no nocivo; cossenos entre as direções de intenção, gatilho e recusa.
+- **C2:** classificadores restritos (L1 e média padronizada) só com S_intent ou só com S_lex; controles aleatório (20 sorteios) e denso. Critério principal relativo: em três generalizações em que um classificador de palavras falha (gatilho inédito, domínio inédito e XSTest), a queda de AUROC de S_intent é no máximo metade da queda do TF-IDF (limite superior do IC 95% da razão < 1), em pelo menos 2 das 3.
+- **Recortes C4:** Q⁰ *retrieved* e células de tamanho pareado.
+
+### 4.4 Intervenção
+
+_(a escrever: Caio.)_ Ablação de features com o erro de reconstrução somado de volta; controle com features aleatórias de frequência casada; rotulagem das respostas pelo juiz.
+
+### 4.5 Pré-registro
+
+Os limiares, os testes e as regras de análise foram commitados antes de qualquer dado de ativação (`results/frente-c/preregistro.md`). Os desvios estão em `results/DESVIOS.md`.
+
+## 5. Resultados
+
+_(a escrever: todos, integrado pelo Davi, a partir de `results/VEREDITO.md`.)_ Ordem sugerida:
+
+1. **Existe um sinal de intenção? (C1).** Figura 2 (scatter d_I × d_L). Tamanho das classes por camada; replicação.
+2. **Ele se separa do lexical? (C2).** Figura 3 (matriz). Critério relativo ao TF-IDF.
+3. **Não é só uma palavra? (C3).** Controles `trig_only` e fichas.
+4. **É robusto? (C4).** Outro dicionário; recortes.
+5. **Âncora densa.** Figura 4. O que o residual sabe e o SAE não.
+6. **Ele causa a recusa? (C5).** Figura 5.
+7. **Veredito.**
+
+### 5.1 Existe um sinal de intenção? (C1) · _texto da frente C_
+
+| Camada | fim_pedido | pre_resposta |
+|---|---|---|
+| L9 | 6 | 14 |
+| L17 | 7 | 36 |
+| L22 | 8 | 40 |
+| L29 | 6 | **48** |
+
+*Tabela.* Número de S_intent por combinação (SAE 16k, descoberta). <!-- fonte: results/frente-c/c1_c3.json → 16k.combinacoes_descoberta -->
+
+**Onde está o sinal.** O sinal de intenção está no pre_resposta e cresce com a profundidade. A combinação principal é L29 · pre_resposta, com 48 S_intent.
+
+**Nenhuma feature reage só ao gatilho.** Não há S_lex nem S_mixed em nenhuma combinação; o maior \|d_L\| é 0,40 (Figura 2). <!-- fonte: results/frente-c/feature_classes_L*_16k.csv -->
+
+![Figura 2](figuras/fig2_dI_dL.png)
+
+*Figura 2.* d_I × d_L de cada feature ativa (SAE 16k, descoberta). Linhas: fim_pedido e pre_resposta. Colunas: camadas. Faixa cinza: \|d\| < 0,2; tracejado: \|d\| = 0,5. Muitas features reagem à intenção; nenhuma, ao gatilho.
+
+**O sinal se confirma.** No `test` com gatilho inédito (155 grupos), as 48 replicam: **C1 atende**. O efeito tem o mesmo tamanho da descoberta (razão mediana 1,03). <!-- fonte: results/frente-c/c1_c3.json → 16k.replicacao_S_intent -->
+
+**É robusto.**
+
+- Nos três filtros de qualidade alternativos saem 47, 45 e 22 S_intent, quase todas as mesmas.
+- As 48 sobrevivem ao controle de estilo (R² mediano do estilo: 0,07).
+- Valem nos 4 domínios e nos 3 tipos de gatilho.
+
+<!-- fonte: results/frente-c/robustez_*/; c1_c3.json → 16k.C1_controle_estilo, por_dominio, por_tipo_gatilho -->
+
+### 5.3 O sinal não é lexical? (C3) · _texto da frente C_
+
+- **Gatilho solto:** 81% das S_intent (39 de 48) não reagem: **atende**. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
+- **Leitura cega:** 19 de 20 fichas são conceituais, **atende**. Do lado nocivo, as features falam de ilegalidade e dano; do lado benigno, de propósito legítimo (estudo, ficção). A leitura foi feita por um LLM; a conferência humana está pendente. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
+- **Ressalva:** sem S_lex, o controle positivo do C3 não pode ser verificado.
+
+### 5.4 Vale em outro dicionário? (C4a) · _texto da frente C_
+
+No SAE de 262k, a mesma combinação tem 60 S_intent, e as 60 replicam no `test`: o C1 vale no 262k. <!-- fonte: results/frente-c/c1_c3.json → 262k.C1 --> O C2 no 262k é da frente D.
+
+### 5.x Análises exploratórias · _texto da frente C; fora do pré-registro; detalhes no Apêndice A.2_
+
+- **Não há feature "da palavra".** Cada gatilho mexe em features diferentes: no próprio token do gatilho, nenhuma feature muda em mais de 30% dos grupos. A checagem de sanidade pré-registrada (efeito lexical forte nesse token) não passa: o maior \|d_L\| é 0,44.
+- **O gatilho empurra na direção de "nocivo".** No pre_resposta (L17–L29), de 83% a 91% das features com efeito de intenção grande têm d_L com o mesmo sinal de d_I, com cerca de 1/10 do tamanho.
+- **As features de intenção mais fortes ficam fora de S_intent.** São 23, entre elas features de recusa, com d_I de até 3,39. Ficam fora porque esse empurrão faz o IC de d_L passar de ±0,2.
+
+<!-- fonte: results/frente-c/diagnostico_lexical_16k.json; listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
+
+## 6. Limitações e trabalhos futuros
+
+_(a escrever: Davi, revisado por todos.)_ Partir da seção "Limitações" de `results/VEREDITO.md`.
+
+**Notas da frente C, para o Davi integrar:**
+
+- O d entre grupos não detecta efeitos lexicais específicos de cada gatilho. "Não há S_lex" quer dizer "não há feature lexical comum a muitos gatilhos".
+- No plano B, a linha nociva vem do PKU e a benigna é gerada. O controle de estilo é um ajuste estatístico, não estilo igualado. Do lado benigno, várias S_intent acendem em pedidos com moldura legítima (tese, ficção), que pode ser hábito do gerador.
+- A leitura cega do C3 foi feita primeiro por um LLM. Na conferência humana, o Frederico não está cego, porque já tinha visto os rótulos.
+- Cerca de 30% das features do top-20 não têm explicação no Neuronpedia.
+
+## 7. Conclusão
+
+_(a escrever: a definir no grupo.)_ Roteiro: a resposta à pergunta (o veredito e o número que mais pesa); o que ela diz sobre o over-refusal; os achados exploratórios da frente C (não há feature "da palavra", o gatilho empurra na direção de "nocivo", as features de recusa mais fortes ficam fora de S_intent) e o C5. Cerca de 400 palavras.
+
+## Referências
+
+_Do relatório da Fase 0 (§13), mais as quatro novas (Bills, Google DeepMind, Lieberum, Paulo et al. 2025), conferidas na fonte em 2026-11-20._
+
+- Arditi et al. (2024). *Refusal in Language Models Is Mediated by a Single Direction.*
+- Bills, S., Cammarata, N., Mossing, D., Tillman, H., Gao, L., Goh, G., Sutskever, I., Leike, J., Wu, J. & Saunders, W. (2023). *Language Models Can Explain Neurons in Language Models.* OpenAI. https://openai.com/index/language-models-can-explain-neurons-in-language-models/
+- Bricken et al. (2023). *Towards Monosemanticity.* Transformer Circuits.
+- Bussmann et al. (2024). *BatchTopK Sparse Autoencoders.*
+- Cui et al. (2025). *OR-Bench.*
+- Cunningham et al. (2023). *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* arXiv:2309.08600.
+- Elhage et al. (2022). *Toy Models of Superposition.* arXiv:2209.10652.
+- Gao et al. (2024). *Scaling and Evaluating Sparse Autoencoders.*
+- Google DeepMind (2025, 19 dez.). *Gemma Scope 2: Helping the AI Safety Community Deepen Understanding of Complex Language Model Behavior.* https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/ · pesos e documentação: https://ai.google.dev/gemma/docs/gemma_scope
+- Han et al. (2024). *WildGuard.*
+- Ji et al. (2025). *PKU-SafeRLHF.* ACL.
+- Karvonen et al. (2025). *SAEBench.*
+- Lieberum, T. et al. (2024). *Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2.* BlackboxNLP 2024, p. 278–300. arXiv:2408.05147.
+- O'Brien et al. (2025). *Steering Language Model Refusal with Sparse Autoencoders.*
+- Paulo, G., Mallen, A., Juang, C. & Belrose, N. (2025). *Automatically Interpreting Millions of Features in Large Language Models.* ICML 2025. arXiv:2410.13928.
+- Paulo & Belrose (2025). *Sparse Autoencoders Trained on the Same Data Learn Different Features.*
+- Qwen Team (2025). *Qwen3Guard.*
+- Rajamanoharan et al. (2024). *JumpReLU Sparse Autoencoders.*
+- Röttger et al. (2024). *XSTest.* NAACL.
+- Templeton et al. (2024). *Scaling Monosemanticity.* Transformer Circuits.
+- Zhang et al. (2025). *FalseReject.* arXiv:2505.08054.
+
+## Apêndice A. Estatística por feature (frente C): detalhes
+
+_Não conta nas 10 páginas. Texto completo da seção 4.2 e das análises exploratórias da seção 5._
+
+### A.1 Protocolo completo
 
 **O que medimos.** Para cada pedido, passamos pelo SAE o vetor do `resid_post` numa posição. Cada feature do SAE dá uma ativação ≥ 0. Comparamos essas ativações entre as quatro versões de um mesmo pedido.
 
@@ -110,85 +297,7 @@ As demais ficam sem classe.
 - o conjunto completo (1.825, com versões agramaticais);
 - o `qc_pass_lenient` (593): ao tirar o gatilho, o alarme percebido por um juiz não sobe em nenhum dos dois pedidos e cai em pelo menos um.
 
-### 4.3 Baselines, probes e dissociação dupla
-
-_(a escrever: Davi.)_
-
-- **Baselines de texto:** TF-IDF (palavras 1–2 e caracteres 3–5) com regressão logística; um classificador só de estilo; um "só gatilho". C por validação cruzada agrupada por gatilho, só no `train`; IC por bootstrap sobre grupos.
-- **Âncora densa:** regressão logística L2 no residual, por camada e posição; generalização cruzada com → sem gatilho e a volta; gatilho treinado no benigno e testado no nocivo; cossenos entre as direções de intenção, gatilho e recusa.
-- **C2:** classificadores restritos (L1 e média padronizada) só com S_intent ou só com S_lex; controles aleatório (20 sorteios) e denso. Critério principal relativo: em três generalizações em que um classificador de palavras falha (gatilho inédito, domínio inédito e XSTest), a queda de AUROC de S_intent é no máximo metade da queda do TF-IDF (limite superior do IC 95% da razão < 1), em pelo menos 2 das 3.
-- **Recortes C4:** Q⁰ *retrieved* e células de tamanho pareado.
-
-### 4.4 Intervenção
-
-_(a escrever: Caio.)_ Ablação de features com o erro de reconstrução somado de volta; controle com features aleatórias de frequência casada; rotulagem das respostas pelo juiz.
-
-### 4.5 Pré-registro
-
-Os limiares, os testes e as regras de análise foram commitados antes de qualquer dado de ativação (`results/frente-c/preregistro.md`). Os desvios estão em `results/DESVIOS.md`.
-
-## 5. Resultados
-
-_(a escrever: todos, integrado pelo Davi, a partir de `results/VEREDITO.md`.)_ Ordem sugerida:
-
-1. **Existe um sinal de intenção? (C1).** Figura 2 (scatter d_I × d_L). Tamanho das classes por camada; replicação.
-2. **Ele se separa do lexical? (C2).** Figura 3 (matriz). Critério relativo ao TF-IDF.
-3. **Não é só uma palavra? (C3).** Controles `trig_only` e fichas.
-4. **É robusto? (C4).** Outro dicionário; recortes.
-5. **Âncora densa.** Figura 4. O que o residual sabe e o SAE não.
-6. **Ele causa a recusa? (C5).** Figura 5.
-7. **Veredito.**
-
-### 5.1 Existe um sinal de intenção? (C1) · _texto da frente C_
-
-**Onde está.** Número de S_intent por combinação (SAE 16k, descoberta): <!-- fonte: results/frente-c/c1_c3.json → 16k.combinacoes_descoberta -->
-
-| Camada | fim_pedido | pre_resposta |
-|---|---|---|
-| L9 | 6 | 14 |
-| L17 | 7 | 36 |
-| L22 | 8 | 40 |
-| L29 | 6 | **48** |
-
-O sinal de intenção está no pre_resposta e cresce com a profundidade. A combinação principal é L29 · pre_resposta: 48 S_intent entre 294 features ativas.
-
-**Nenhuma feature reage só ao gatilho.** Não há S_lex nem S_mixed em nenhuma das 8 combinações. O maior \|d_L\| é 0,40, abaixo do limiar de 0,5 (Figura 2). <!-- fonte: results/frente-c/feature_classes_L*_16k.csv -->
-
-![Figura 2](figuras/fig2_dI_dL.png)
-
-*Figura 2.* Cada ponto é uma feature ativa. Eixo horizontal: d_I (efeito de intenção). Eixo vertical: d_L (efeito do gatilho). Linha de cima: fim_pedido; linha de baixo: pre_resposta; colunas: camadas. SAE 16k, descoberta. Faixa cinza: \|d\| < 0,2; tracejado: \|d\| = 0,5. Os pontos ficam colados ao eixo horizontal: muitas features reagem à intenção e nenhuma ao gatilho.
-
-**O sinal se confirma em dados novos.** O C1 exige ≥ 5 S_intent e ≥ 70% delas replicando. No `test` com gatilho inédito (155 grupos), as 48 replicam: **C1 atende**. O efeito tem o mesmo tamanho da descoberta (mediana de d_I no test ÷ d_I na descoberta: 1,03). O menor \|d_I\| no `test` é 0,45. <!-- fonte: results/frente-c/c1_c3.json → 16k.replicacao_S_intent; feature_classes_L29_post_last_16k.csv -->
-
-**É robusto ao filtro de qualidade.** Na mesma combinação, sai quase a mesma lista: <!-- fonte: results/frente-c/robustez_*/listas -->
-
-- sem o validador: 47 S_intent, todas também no principal;
-- conjunto completo: 45, todas também no principal;
-- `qc_pass_lenient`, com 1/3 dos grupos: 22, das quais 20 também no principal.
-
-**Não é estilo, domínio nem tipo de gatilho.** <!-- fonte: results/frente-c/c1_c3.json → 16k.C1_controle_estilo, por_dominio, por_tipo_gatilho -->
-
-- As 48 sobrevivem ao controle de estilo. O estilo explica pouco do efeito de intenção (R² mediano 0,07).
-- As 48 mantêm o sinal, com \|d_I\| ≥ 0,3, nos 4 domínios.
-- As 48 também o mantêm nos 3 tipos de gatilho. O efeito é menor com gatilhos de superfície (mediana de \|d_I\| 0,56) que com os de ação (0,71) e os marcadores de intenção (0,73).
-
-### 5.3 O sinal não é lexical? (C3) · _texto da frente C_
-
-- **Gatilho solto.** O C3 exige que mais da metade das S_intent não reaja ao gatilho fora de um pedido. 81% delas (39 de 48) têm o IC dentro de ±0,2: **atende**. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
-- **Leitura cega.** O C3 exige ≥ 60% de fichas conceituais. Foram 19 de 20: **atende**. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv -->
-  - Do lado nocivo, as fichas descrevem ilegalidade, dano grave e avisos de IA.
-  - Do lado benigno, descrevem pedidos com propósito legítimo: estudo, ficção, curiosidade.
-  - A única lexical acende em pedidos de endereço ou telefone.
-  - O avaliador marcou 6 fichas como ambíguas. A conferência humana está pendente.
-- **Ressalva.** O C3 previa também um controle positivo: as S_lex deveriam reagir ao gatilho solto. Ele não pode ser verificado, porque não há S_lex.
-
-### 5.4 Vale em outro dicionário? (C4a) · _texto da frente C_
-
-- O C4a exige que o C1 valha no SAE de 262k, na mesma combinação.
-- No 262k, L29 · pre_resposta também é a combinação com mais S_intent: 60. As 60 replicam no `test` com gatilho inédito: o C1 vale no 262k. <!-- fonte: results/frente-c/c1_c3.json → 262k.C1 -->
-- O C4(a) do veredito exige também o C2 no 262k, que é da frente D.
-
-### 5.x Análises exploratórias · _texto da frente C; fora do pré-registro_
+### A.2 Análises exploratórias, com as medidas
 
 **Por que não há S_lex.** <!-- fonte: results/frente-c/diagnostico_lexical_16k.json; secundarias/ -->
 
@@ -210,44 +319,3 @@ O sinal de intenção está no pre_resposta e cresce com a profundidade. A combi
 - Ficam fora porque esse empurrão do gatilho faz o IC de d_L passar de ±0,2.
 - Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia, como "cannot fulfill requests".
 - Leitura possível: a decisão de recusar segue principalmente a intenção, com uma contribuição pequena do gatilho. Se essa contribuição basta para causar over-refusal é a pergunta do C5 (seção 5.6).
-
-## 6. Limitações
-
-_(a escrever: Davi, revisado por todos.)_ Partir da seção "Limitações" de `results/VEREDITO.md`.
-
-**Notas da frente C, para o Davi integrar:**
-
-- O d entre grupos não detecta efeitos lexicais específicos de cada gatilho. "Não há S_lex" quer dizer "não há feature lexical comum a muitos gatilhos".
-- No plano B, a linha nociva vem do PKU e a benigna é gerada. O controle de estilo é um ajuste estatístico, não estilo igualado. Do lado benigno, várias S_intent acendem em pedidos com moldura legítima (tese, ficção), que pode ser hábito do gerador.
-- A leitura cega do C3 foi feita primeiro por um LLM. Na conferência humana, o Frederico não está cego, porque já tinha visto os rótulos.
-- Cerca de 30% das features do top-20 não têm explicação no Neuronpedia.
-
-## 7. Ética
-
-O dataset contém pedidos e respostas nocivas, todos do PKU-SafeRLHF. Não geramos respostas nocivas. Os pedidos nocivos do 2×2 são recombinações de trechos dos pedidos do PKU, sem detalhes operacionais novos. Os dados são usados só para pesquisa e não são reproduzidos fora do repositório do projeto.
-
-## Referências
-
-_Do relatório da Fase 0 (§13), mais as quatro novas (Bills, Google DeepMind, Lieberum, Paulo et al. 2025), conferidas na fonte em 2026-11-20._
-
-- Arditi et al. (2024). *Refusal in Language Models Is Mediated by a Single Direction.*
-- Bills, S., Cammarata, N., Mossing, D., Tillman, H., Gao, L., Goh, G., Sutskever, I., Leike, J., Wu, J. & Saunders, W. (2023). *Language Models Can Explain Neurons in Language Models.* OpenAI. https://openai.com/index/language-models-can-explain-neurons-in-language-models/
-- Bricken et al. (2023). *Towards Monosemanticity.* Transformer Circuits.
-- Bussmann et al. (2024). *BatchTopK Sparse Autoencoders.*
-- Cui et al. (2025). *OR-Bench.*
-- Cunningham et al. (2023). *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* arXiv:2309.08600.
-- Elhage et al. (2022). *Toy Models of Superposition.* arXiv:2209.10652.
-- Gao et al. (2024). *Scaling and Evaluating Sparse Autoencoders.*
-- Google DeepMind (2025, 19 dez.). *Gemma Scope 2: Helping the AI Safety Community Deepen Understanding of Complex Language Model Behavior.* https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/ · pesos e documentação: https://ai.google.dev/gemma/docs/gemma_scope
-- Han et al. (2024). *WildGuard.*
-- Ji et al. (2025). *PKU-SafeRLHF.* ACL.
-- Karvonen et al. (2025). *SAEBench.*
-- Lieberum, T. et al. (2024). *Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2.* BlackboxNLP 2024, p. 278–300. arXiv:2408.05147.
-- O'Brien et al. (2025). *Steering Language Model Refusal with Sparse Autoencoders.*
-- Paulo, G., Mallen, A., Juang, C. & Belrose, N. (2025). *Automatically Interpreting Millions of Features in Large Language Models.* ICML 2025. arXiv:2410.13928.
-- Paulo & Belrose (2025). *Sparse Autoencoders Trained on the Same Data Learn Different Features.*
-- Qwen Team (2025). *Qwen3Guard.*
-- Rajamanoharan et al. (2024). *JumpReLU Sparse Autoencoders.*
-- Röttger et al. (2024). *XSTest.* NAACL.
-- Templeton et al. (2024). *Scaling Monosemanticity.* Transformer Circuits.
-- Zhang et al. (2025). *FalseReject.* arXiv:2505.08054.

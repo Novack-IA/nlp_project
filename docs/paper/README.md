@@ -14,7 +14,9 @@
 | 4.3 Probes, baselines e C2 | Davi | `docs/tarefas/davi-frente-d.md` |
 | 4.4 Intervenção (C5) | Caio | `src/featgrpo/interp/intervene.py` |
 | 5. Resultados | todos, integrado pelo Davi | `results/VEREDITO.md` e os JSON de cada frente |
-| 6. Limitações e ética | Davi, revisado por todos | `results/VEREDITO.md`, `results/DESVIOS.md` |
+| 6. Limitações e trabalhos futuros | Davi, revisado por todos | `results/VEREDITO.md`, `results/DESVIOS.md` |
+| 7. Conclusão | a definir no grupo | `results/VEREDITO.md`; achados exploratórios em `results/frente-c/descoberta.md` |
+| Uso responsável dos dados (fim da seção 3) | Gustavo, revisado por todos | antiga seção de ética |
 
 ## Regras
 

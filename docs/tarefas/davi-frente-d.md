@@ -88,7 +88,7 @@ Se você recuperar o acesso à h1003, avise o time: o SAE próprio (A5) pode pas
    | XSTest | `train` do 2×2 | `test` do 2×2 | XSTest |
 
    - Em cada uma: queda = AUROC dentro − AUROC fora; razão = queda(S_intent)/queda(TF-IDF). **Atende** se razão ≤ 0,5 **e** o limite superior do IC 95% da razão (bootstrap sobre grupos) < 1. **Indefinida** se o TF-IDF cair ≤ 0,02.
-   - **O C2(b) atende se ≥ 2 das 3 atendem**; indefinida e pendente não contam.
+   - **O C2(b) é decidido só pelo XSTest** (votado em 2026-11-21, `results/DESVIOS.md`). As outras duas saem como descrição, porque no 2×2 real o TF-IDF cai ≤ 0,02 nelas. *(A regra antiga era "≥ 2 das 3", que não podia ser atendida.)*
    - Por que não "com → sem gatilho": no molde, as palavras da intenção não mudam entre essas células, então o TF-IDF quase não cai (emenda 3 do parecer da frente A). A queda "com → sem gatilho" continua reportada em `probes.json` e no baseline, como descrição.
 4. **Generalização:** S_intent treinado no 2×2 e aplicado ao XSTest.
 5. **Por domínio e por tipo de gatilho** (análise secundária).

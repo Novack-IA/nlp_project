@@ -1,6 +1,6 @@
 # Veredito da Fase 1
 
-> **Status:** esqueleto (2026-11-20). Os números entram quando cada frente publicar seus arquivos. **Os quatro revisam antes do merge final.**
+> **Status:** em preenchimento (2026-11-21). C1 e C3 vêm da frente C (commit `b299ef4` da `frente-c-features`); C2 e a âncora densa, da frente D. Os números entram quando cada frente publicar seus arquivos. **Os quatro revisam antes do merge final.**
 > Como preencher: cada linha da tabela aponta para o arquivo e o campo de onde o número sai. Copie o número como está e não arredonde além de 2 casas. Não mude limiares aqui; os limiares valem como estão em `docs/tarefas/00-visao-geral.md`, e mudanças vão para `results/DESVIOS.md`.
 
 ## A pergunta
@@ -25,18 +25,17 @@ Todos no `test`, recorte **gatilho inédito**, salvo indicação.
 
 | # | Critério | Valor | Limiar | Atende? | Fonte |
 |---|---|---|---|---|---|
-| C1 | Nº de features em S_intent (melhor camada) | | ≥ 5 | | `results/frente-c/c1_c3.json` |
-| C1 | Fração de S_intent que replica no `test` (\|d_I\| ≥ 0,3, mesmo sinal) | | ≥ 70% | | `results/frente-c/c1_c3.json` |
+| C1 | Nº de features em S_intent (L29 · `post_last`, 16k) | 48 | ≥ 5 | **sim** | `results/frente-c/c1_c3.json` (commit `b299ef4`) → `16k.C1.S_intent` |
+| C1 | Fração de S_intent que replica no `test` (\|d_I\| ≥ 0,3, mesmo sinal; 155 grupos com gatilho inédito) | 100% (48/48) | ≥ 70% | **sim** | `… 16k.replicacao_S_intent` |
 | C2(a) | AUROC de S_intent, intenção **com** gatilho | | ≥ 0,85 | | `results/frente-d/c2_c4.json` → `principal.C2a.auroc_com_gatilho` |
 | C2(a) | AUROC de S_intent, intenção **sem** gatilho | | ≥ 0,80 | | `… principal.C2a.auroc_sem_gatilho` |
-| C2(b).1 | Gatilho inédito: razão queda(S_intent)/queda(TF-IDF), IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.gatilho_inedito` |
-| C2(b).2 | Leave-one-domain-out: razão, IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.leave_one_domain_out` |
-| C2(b).3 | XSTest: razão, IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.xstest` |
-| **C2(b)** | Generalizações que atendem | | **≥ 2 de 3** | | `… principal.C2b.n_atende`, `atende` |
-| C2(c) | Consistência: S_intent no gatilho / S_lex no gatilho | | ≤ 0,65 / ≥ 0,85 | não decide | `… principal.C2c_consistencia` |
-| C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | | maioria | | `results/frente-c/c1_c3.json` |
-| C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | | ≥ 60% | | `results/frente-c/c1_c3.json` |
-| C4(a) | C1 e C2 no 262k **ou** no SAE próprio | | atende | | `results/frente-c/c1_c3.json` (robustez) |
+| **C2(b)** | **XSTest:** razão queda(S_intent)/queda(TF-IDF), IC 95% | | ≤ 0,5 e IC sup. < 1 | | `… principal.C2b.xstest`, `atende` |
+| C2(b), descrição | Gatilho inédito: razão, IC 95% (TF-IDF cai 0,003, indefinida) | | não decide | | `… principal.C2b.gatilho_inedito` |
+| C2(b), descrição | Leave-one-domain-out: razão, IC 95% (TF-IDF cai 0,014, indefinida) | | não decide | | `… principal.C2b.leave_one_domain_out` |
+| C2(c) | Consistência: S_intent no gatilho / S_lex no gatilho | | ≤ 0,65 / ≥ 0,85 | **indefinido**: S_lex vazia em todas as combinações (frente C); não decide | `… principal.C2c_consistencia` |
+| C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | 81% (39/48) | maioria | **sim** | `… 16k.C3_controle_trig_only` |
+| C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | LLM da frente C: 95% (19/20); 2º avaliador (Claude, pela frente D): 85% (17/20). Concordam em 18/20, κ = 0,46 | ≥ 60% para os dois | **sim, com ressalva** | `… C3_avaliacao_cega` e `results/frente-d/c3_rotulos_davi.csv`. **Os dois avaliadores cegos são LLMs**; o Davi conferiu depois e concordou com os 20 rótulos do 2º, sem estar cego (ver `DESVIOS.md`) |
+| C4(a) | C1 e C2 no 262k **ou** no SAE próprio | C1 no 262k: 60 features, 100% replicam. C2 no 262k: a rodar (frente D) | atende | **C1 sim; C2 pendente** | `… 262k.C1` e `c2_c4.json` do 262k |
 | C4(b) | C1 e C2 só com Q⁰ original *retrieved* | | atende | | `… c2_c4.json` → `b_q0_retrieved` |
 | C4(c) | C1 e C2 com células de tamanho pareado (≤ 20%) | | atende | | `… c2_c4.json` → `c_tamanho_pareado` |
 | C5 | Ablação de S_intent: queda na recusa a Q⁺ menos a de features aleatórias (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
@@ -48,10 +47,10 @@ O probe linear no residual completo mostra **quanto da informação existe** ant
 
 | Medida | Valor | Fonte |
 |---|---|---|
-| Probe de intenção treinado com gatilho, testado sem gatilho (melhor camada × posição) | | `results/frente-d/probes.json` → `cells2x2.L*/*.cruzado_trig_para_notrig` |
-| Probe de gatilho treinado no benigno, testado no nocivo | | `… gatilho_independe_intencao` |
-| Cosseno entre as direções de intenção e de gatilho | | `… direcoes.cos_intencao_gatilho` |
-| Cosseno entre a direção de intenção e a de recusa | | `… direcoes.cos_intencao_recusa` |
+| Probe de intenção treinado com gatilho, testado sem gatilho (L29 · `post_last`; faixa em todas as camadas × posições) | **0,998** (IC 0,996–1,000); faixa 0,966–1,000 em todas as combinações | `results/frente-d/probes.json` → `cells2x2.principal.L29/post_last.cruzado_trig_para_notrig` |
+| Probe de gatilho treinado no benigno, testado no nocivo (L29 · `post_last`; na posição do gatilho) | 0,59; 0,80 em `slot_forma` | `… gatilho_independe_intencao` |
+| Cosseno entre as direções de intenção e de gatilho | instável: muda de sinal entre camadas (−0,83 a 0,94); não interpretável | `… direcoes.cos_intencao_gatilho` |
+| Cosseno entre a direção de intenção e a de recusa | 0,98–1,00, **quase por construção** (as células com gatilho são os próprios pares) | `… direcoes.cos_intencao_recusa` |
 
 **Leitura obrigatória:**
 - Se o probe denso **também não** generalizar sem o gatilho, o limite está nos dados ou no modelo, não no SAE.

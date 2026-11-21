@@ -15,7 +15,8 @@ O que calcula (sempre no `test`, com o recorte `gatilho_inedito` como principal)
 - **C2(b), principal, relativo ao TF-IDF onde ele sofre** (emenda 3 da frente A): três generalizações,
   (1) gatilho inédito, (2) leave-one-domain-out e (3) XSTest. Em cada uma, razão = queda(S_intent) /
   queda(TF-IDF); **atende** se razão ≤ 0,5 e o limite superior do IC 95% < 1; **indefinido** se o
-  TF-IDF cair ≤ 0,02. O C2(b) atende se **≥ 2 das 3** atendem.
+  TF-IDF cair ≤ 0,02. **O C2(b) é decidido só pelo XSTest** (regra votada em 2026-11-21, ver
+  `results/DESVIOS.md`): no 2×2 real o TF-IDF não cai nas outras duas, que saem como descrição.
 - **C2(c), consistência:** S_intent no gatilho ≤ 0,65; S_lex no gatilho ≥ 0,85. Não decide nada.
 - **Recortes C4:** (b) Q⁰ original *retrieved*; (c) células com diferença ≤ 20% em tokens.
 
@@ -149,10 +150,11 @@ def _primary(m: dict, key: str):
 #     queda = AUROC(dentro da distribuição) − AUROC(fora)       (tarefa: intenção, as 4 células)
 #     razão = queda(S_intent) / queda(TF-IDF)
 #     atende  se razão ≤ 0,5 e limite superior do IC 95% < 1;  indefinido se queda(TF-IDF) ≤ 0,02
-# O C2(b) atende se **pelo menos 2 das 3** generalizações atendem (indefinido e pendente não contam).
+# O C2(b) é decidido **só pelo XSTest** (votado em 2026-11-21, DESVIOS). Gatilho inédito e
+# leave-one-domain-out continuam calculados, como descrição: no 2×2 real o TF-IDF cai ≤ 0,02 nelas.
 
 GENERALIZACOES = ("gatilho_inedito", "leave_one_domain_out", "xstest")
-MIN_ATENDE = 2
+DECIDE = "xstest"
 
 
 def relative_drop_folds(folds: list[dict], n_boot: int = 1000, seed: int = SEED) -> dict:
@@ -271,8 +273,10 @@ def c2b(Z, rows, texts: dict | None, n_boot, groups=None, xstest: tuple | None =
     n_def = sum(1 for k in GENERALIZACOES if res[k].get("atende") is not None)
     res["n_atende"] = n_ok
     res["n_definidas"] = n_def
-    res["atende"] = n_ok >= MIN_ATENDE
-    res["regra"] = "atende se ≥ 2 das 3 generalizações atendem (razão ≤ 0,5 e IC sup. < 1); indefinido/pendente não contam"
+    res["atende"] = res[DECIDE].get("atende")
+    res["descritivas"] = [k for k in GENERALIZACOES if k != DECIDE]
+    res["regra"] = ("decidido só pelo XSTest: razão queda(S_intent)/queda(TF-IDF) ≤ 0,5 e IC sup. < 1; "
+                    "gatilho inédito e leave-one-domain-out são descrição (votado em 2026-11-21)")
     return res
 
 
@@ -314,8 +318,11 @@ def c2(Z, Xdense, rows, s_intent, s_lex, texts=None, n_boot=500, groups=None, n_
     out["C2b"] = c2b(Z[:, s_intent], rows, texts, n_boot, groups, xs) if len(s_intent) else None
     g_int, g_lex = _primary(si, "gatilho_todas"), _primary(sl, "gatilho_todas")
     out["C2c_consistencia"] = {"S_intent_gatilho": g_int, "S_lex_gatilho": g_lex,
-                               "ok": bool(g_int is not None and g_lex is not None and g_int <= 0.65 and g_lex >= 0.85),
-                               "nota": "garantido em boa parte pela seleção das features; não decide o C2"}
+                               "ok": (None if not len(s_lex) else
+                                      bool(g_int is not None and g_lex is not None and g_int <= 0.65 and g_lex >= 0.85)),
+                               "nota": ("indefinido: S_lex vazia (a frente C não achou feature lexical consistente)"
+                                        if not len(s_lex) else
+                                        "garantido em boa parte pela seleção das features; não decide o C2")}
     return out
 
 
@@ -372,18 +379,31 @@ def load_xstest(root: Path, layer: int, pos: str, sae: str) -> tuple | None:
     return Zx, rows, [by_id[r["group_id"]]["text"] for r in rows]
 
 
-def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int = 500) -> dict:
+def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int = 500,
+        subset: str = "principal") -> dict:
+    from featgrpo.interp.probes import failed_groups, subset_mask
+
     rows = cache_io.load_index(root, "cells2x2")
-    keep = np.array([r["cell"] is not None for r in rows])
+    keep = np.array([r["cell"] is not None for r in rows]) & subset_mask(rows, subset, failed_groups())
     rows = [r for r, k in zip(rows, keep) if k]
-    Z = cache_io.load_latents(root, "cells2x2", layer, pos, sae)[keep].toarray().astype(np.float32)
+    Zs = cache_io.load_latents(root, "cells2x2", layer, pos, sae)[keep]
     dpath = cache_io.dense_path(root, "cells2x2", layer, pos)
     Xd = cache_io.load_dense(root, "cells2x2", layer, pos)[keep] if dpath.exists() else None
     tag = f"L{layer}_{pos}_{sae}"
     s_int = load_list(lists_dir / f"S_intent_{tag}.json")
     s_lex = load_list(lists_dir / f"S_lex_{tag}.json")
+    # Só as colunas usadas viram densas: o pool aleatório (freq ≥ MIN_FREQ no train) e as listas.
+    # No 262k, densificar tudo daria ~7 GB. O resultado é o mesmo, porque o c2 só olha essas colunas.
+    tr = np.array([r["split"] == "train" for r in rows])
+    freq = np.asarray((Zs[tr] > 0).mean(0)).ravel()
+    cols = np.array(sorted(set(np.flatnonzero(freq >= MIN_FREQ)) | set(s_int) | set(s_lex)), dtype=int)
+    pos_of = {c: i for i, c in enumerate(cols)}
+    Z = Zs[:, cols].toarray().astype(np.float32)
+    s_int, s_lex = [pos_of[c] for c in s_int], [pos_of[c] for c in s_lex]
     texts, meta = load_cells_texts()
     xstest = load_xstest(root, layer, pos, sae)
+    if xstest is not None:
+        xstest = (xstest[0][:, cols], xstest[1], xstest[2])
 
     res = {"principal": c2(Z, Xd, rows, s_int, s_lex, texts, n_boot, xstest=xstest)}
     for name, groups in subsets(rows, meta).items():
@@ -395,6 +415,7 @@ def run(root: Path, layer: int, pos: str, sae: str, lists_dir: Path, n_boot: int
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "commit": git_commit(),
         "args": {"root": str(root), "layer": layer, "pos": pos, "sae": sae, "n_boot": n_boot, "seed": SEED,
+                 "subconjunto": subset, "n_grupos": len({r["group_id"] for r in rows}),
                  "listas": str(lists_dir), "n_random": N_RANDOM, "min_freq": MIN_FREQ},
         "resultados": res,
     }
@@ -409,8 +430,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--lists", type=Path, default=REPO / "results" / "frente-c" / "listas")
     ap.add_argument("--out", type=Path, default=Path("results/frente-d/c2_c4.json"))
     ap.add_argument("--n-boot", type=int, default=500)
+    ap.add_argument("--subset", default="principal", choices=("principal", "qc_grammatical", "todos"))
     args = ap.parse_args(argv)
-    res = run(args.root, args.layer, args.pos, args.sae, args.lists, args.n_boot)
+    res = run(args.root, args.layer, args.pos, args.sae, args.lists, args.n_boot, args.subset)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(res, ensure_ascii=False, indent=2), encoding="utf-8")
     p = res["resultados"]["principal"]

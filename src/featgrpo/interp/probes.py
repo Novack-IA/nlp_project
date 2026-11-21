@@ -159,15 +159,41 @@ def pairs_experiment(X: np.ndarray, rows: list[dict], n_boot: int):
 
 # ---------------------------------------------------------------- execução
 
-def run(root: Path, n_boot: int = 500) -> dict:
+SUBSETS = ("principal", "qc_grammatical", "todos")
+VALIDATION_REPORT = Path("results/frente-d/validacao_2x2.json")
+
+
+def failed_groups(path: Path = VALIDATION_REPORT) -> set[str]:
+    """Grupos reprovados pelo validador da frente D (DESVIOS 2026-11-21)."""
+    if not Path(path).exists():
+        return set()
+    return {f["group_id"] for f in json.loads(Path(path).read_text(encoding="utf-8"))["falhas"]}
+
+
+def subset_mask(rows: list[dict], subset: str, failed: set[str]) -> np.ndarray:
+    """`principal` = qc_grammatical sem os reprovados; `qc_grammatical`; `todos`.
+    Sem o campo `qc_grammatical` no índice (cache sintético), todos os itens contam como gramaticais."""
+    if subset == "todos":
+        return np.ones(len(rows), bool)
+    gram = np.array([bool(r.get("qc_grammatical", True)) for r in rows])
+    if subset == "qc_grammatical":
+        return gram
+    if subset == "principal":
+        return gram & np.array([r["group_id"] not in failed for r in rows])
+    raise ValueError(f"subconjunto desconhecido: {subset}")
+
+
+def run(root: Path, n_boot: int = 500, subsets: tuple[str, ...] = ("principal",), with_pairs: bool = True,
+        positions: tuple[str, ...] | None = None) -> dict:
     root = Path(root)
-    res: dict = {"pairs": {}, "cells2x2": {}, "xstest": {}}
+    res: dict = {"pairs": {}, "cells2x2": {s: {} for s in subsets}, "xstest": {}}
+    failed = failed_groups()
     pair_rows = cache_io.load_index(root, "pairs") if (root / "index" / "pairs.jsonl").exists() else None
     cell_rows = cache_io.load_index(root, "cells2x2") if (root / "index" / "cells2x2.jsonl").exists() else None
     xs_rows = cache_io.load_index(root, "xstest") if (root / "index" / "xstest.jsonl").exists() else None
 
     refusal = {}
-    for L, pos in cache_io.available(root, "pairs") if pair_rows else []:
+    for L, pos in cache_io.available(root, "pairs") if pair_rows and with_pairs else []:
         X = cache_io.load_dense(root, "pairs", L, pos)
         rep, model = pairs_experiment(X, pair_rows, n_boot)
         res["pairs"][f"L{L}/{pos}"] = rep
@@ -179,19 +205,30 @@ def run(root: Path, n_boot: int = 500) -> dict:
             res["xstest"][f"L{L}/{pos}"] = report(model.predict_proba(Xx)[:, 1], yx, gx, n_boot)
 
     for L, pos in cache_io.available(root, "cells2x2") if cell_rows else []:
+        if positions and pos not in positions:
+            continue
         X = cache_io.load_dense(root, "cells2x2", L, pos)
+        if np.isnan(X).all(axis=1).mean() > 0.5:
+            # slot_intencao no plano B: a lacuna não existe e o cache grava NaN
+            for s in subsets:
+                res["cells2x2"][s][f"L{L}/{pos}"] = "sem dados: posição toda NaN neste desenho"
+            continue
         # direção de recusa vem dos pares na posição equivalente (slot_forma ↔ trig; slot_intencao não tem par)
         ref = refusal.get((L, {"slot_forma": "trig"}.get(pos, pos)))
-        res["cells2x2"][f"L{L}/{pos}"] = cells_experiments(X, cell_rows, n_boot, ref)
+        for s in subsets:
+            m = subset_mask(cell_rows, s, failed)
+            res["cells2x2"][s][f"L{L}/{pos}"] = cells_experiments(X[m], [r for r, k in zip(cell_rows, m) if k], n_boot, ref)
+        print(f"cells2x2 L{L}/{pos} feito", flush=True)
 
-    if not res["cells2x2"]:
+    if not any(res["cells2x2"].values()):
         res["cells2x2"] = "pendente: cache cells2x2 ainda não existe (frente B, depois de A1)"
     return {
         "descricao": "Probes densos (frente D, D3). Ver docstring de src/featgrpo/interp/probes.py.",
         "leitura": "O veredito usa cells2x2 (gatilho inédito). 'pairs' é diagnóstico: o estilo sozinho já separa os pares.",
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "commit": git_commit(),
-        "args": {"root": str(root), "n_boot": n_boot, "seed": SEED, "C_grid": list(C_GRID)},
+        "args": {"root": str(root), "n_boot": n_boot, "seed": SEED, "C_grid": list(C_GRID),
+                 "subconjuntos": list(subsets), "grupos_excluidos_no_principal": sorted(failed)},
         "resultados": res,
     }
 
@@ -204,6 +241,10 @@ def plot(res: dict, path: Path, tfidf_auroc: float | None = None) -> None:
 
     cells = res["resultados"]["cells2x2"]
     if not isinstance(cells, dict) or not cells:
+        return
+    cells = next(iter(cells.values()))  # o primeiro subconjunto (o principal)
+    cells = {k: v for k, v in cells.items() if isinstance(v, dict)}
+    if not cells:
         return
     positions = sorted({k.split("/")[1] for k in cells})
     fig, axes = plt.subplots(1, len(positions), figsize=(4 * len(positions), 3.2), sharey=True, squeeze=False)
@@ -236,8 +277,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path, default=Path("results/frente-d/probes.json"))
     ap.add_argument("--fig", type=Path, default=Path("results/frente-d/probes_auroc_por_camada.png"))
     ap.add_argument("--n-boot", type=int, default=500)
+    ap.add_argument("--subsets", nargs="+", default=["principal"], choices=SUBSETS)
+    ap.add_argument("--positions", nargs="+", default=None)
+    ap.add_argument("--no-pairs", action="store_true", help="não refaz os pares (a direção de recusa fica de fora)")
     args = ap.parse_args(argv)
-    res = run(args.root, n_boot=args.n_boot)
+    res = run(args.root, n_boot=args.n_boot, subsets=tuple(args.subsets), with_pairs=not args.no_pairs,
+              positions=tuple(args.positions) if args.positions else None)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(res, ensure_ascii=False, indent=2), encoding="utf-8")
     plot(res, args.fig)

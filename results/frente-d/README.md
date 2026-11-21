@@ -4,8 +4,9 @@
 |---|---|---|
 | `baseline_lexical.json` | Baselines de texto (TF-IDF, só estilo, só gatilho) nos pares originais, no **2×2 real** (3 subconjuntos) e no XSTest | `PYTHONPATH=src python -m featgrpo.interp.baselines` |
 | `validacao_2x2.json` | Validador da frente D sobre o `cells_2x2.jsonl` real (plano B): aprovados, motivos e a lista de grupos reprovados | `PYTHONPATH=src python -m featgrpo.data.phase1.validate_template datasets/phase1/cells_2x2.jsonl --report results/frente-d/validacao_2x2.json` |
-| `probes.json` + `probes_auroc_por_camada.png` | *(quando o cache da frente B estiver baixado)* Probes densos | `PYTHONPATH=src python -m featgrpo.interp.probes` |
-| `c2_c4.json` | *(quando existirem latentes do 2×2 e listas da frente C)* Matriz C2, C2(a/b/c), recortes C4b/c | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer L --pos P --sae 16k` |
+| `probes.json` + `probes_auroc_por_camada.png` | Probes densos no 2×2 (3 subconjuntos) e nos pares | `PYTHONPATH=src python -m featgrpo.interp.probes` |
+| `c2_c4_L29_post_last_{16k,262k}.json` | Matriz C2, C2(a/b/c), recortes C4b/c, na combinação principal da frente C | `PYTHONPATH=src python -m featgrpo.interp.classifiers --layer 29 --pos post_last --sae 16k --out …` |
+| `c3_rotulos_davi.csv` | 2º avaliador da leitura cega do C3 (Claude; ver `DESVIOS.md`) | — |
 | `PEDIDOS.md` | Pedidos de outras frentes para a frente D | — |
 
 Testes: `tests/test_validate_template.py`, `tests/test_probes_classifiers.py` e `tests/test_baselines.py` (35 testes, dados sintéticos).
@@ -32,7 +33,7 @@ Conjunto principal: `qc_grammatical` (1.723 grupos; `test` = 244), como no pré-
 | Leave-one-domain-out | 0,014 (IC 0,005–0,024) | 0,015 | **não** |
 | XSTest | **0,281** (IC 0,234–0,329) | 0,282 | sim |
 
-**Consequência:** com a regra atual ("atende se ≥ 2 das 3"), **o C2(b) não pode ser atendido**, porque só uma das três generalizações é definida. Isso vale em `val` e em `test` e não depende das features. A regra precisa ser revista em grupo (proposta no PR).
+**Consequência:** com a regra atual ("atende se ≥ 2 das 3"), **o C2(b) não pode ser atendido**, porque só uma das três generalizações é definida. Isso vale em `val` e em `test` e não depende das features. **Revisão votada em 2026-11-21:** o C2(b) passa a ser decidido só pelo XSTest (Davi, Frederico e Caio a favor), antes de existir o cache do XSTest.
 
 ## 2. Validador sobre o 2×2 real
 
@@ -46,7 +47,29 @@ Depois do ajuste para o plano B: **1.794 de 1.825 grupos aprovados (98,3%)**. A 
 
 **26 dos 31 grupos reprovados estão no `qc_grammatical`.** O juiz de gramática deixou passar as palavras quebradas. A lista está em `validacao_2x2.json` → `falhas`.
 
-## 3. Probes densos nos pares (diagnóstico, não entra no veredito)
+## 3. Probes densos no 2×2 (âncora densa do veredito)
+
+Cache `cells2x2` da frente B (137/137 arquivos conferidos pelo sha256 do `MANIFEST.json`). Conjunto principal: `qc_grammatical` sem os 26 grupos reprovados pelo validador (1.697 grupos; `DESVIOS.md`, 2026-11-21). Regressão logística L2 no residual completo, C escolhido por GroupKFold por gatilho no `train`. AUROC no `test`, recorte **gatilho inédito** (157 grupos):
+
+| Camada · posição | Intenção | Treina com gatilho → testa sem | Treina sem → testa com | Gatilho | Gatilho, treina no benigno → testa no nocivo |
+|---|---|---|---|---|---|
+| L9 · `post_last` | 0,999 | 0,998 | 0,999 | 0,69 | 0,66 |
+| L17 · `post_last` | 0,999 | 0,999 | 1,000 | 0,64 | 0,60 |
+| L22 · `post_last` | 0,999 | 0,999 | 0,999 | 0,62 | 0,61 |
+| **L29 · `post_last`** (combinação principal da frente C) | **0,998** | **0,998** | **0,999** | **0,64** | **0,59** |
+| L29 · `inst_last` | 0,988 | 0,987 | 0,989 | 0,61 | 0,59 |
+| L29 · `mean` | 1,000 | 1,000 | 1,000 | 0,70 | 0,65 |
+| L29 · `slot_forma` (no gatilho) | 0,971 | 0,966 | 0,968 | 0,83 | 0,80 |
+
+As outras combinações estão no JSON; todas ficam entre 0,97 e 1,00 na intenção. `qc_grammatical` inteiro e o conjunto completo dão os mesmos números (diferença ≤ 0,001). `slot_intencao` não tem dados no plano B (toda NaN).
+
+**Leitura:**
+- **A intenção está no residual e não depende do gatilho.** Um probe treinado só nas células com gatilho acerta 0,998 nas células sem gatilho, com gatilhos que ele nunca viu. Isso vale em todas as camadas.
+- **O gatilho quase não está no residual depois do pedido.** No último token, o probe de gatilho fica em 0,59–0,70. Só na própria posição do gatilho (`slot_forma`) ele chega a 0,83. Isso bate com a frente C não ter achado nenhuma S_lex.
+- **Cuidado: o probe denso não vence as réguas de texto.** O TF-IDF também acerta 0,997 sem o gatilho, e o estilo sozinho acerta 0,89 (seção 1). No plano B, o contraste de intenção é entre pedidos diferentes, então 0,998 diz que a informação existe, não que ela é "intenção" e não palavras. Quem separa isso é o XSTest (C2(b)).
+- **Cossenos entre direções:** intenção × recusa ≈ 0,99 em todas as camadas, mas é quase por construção: a direção de recusa vem dos pares (Q⁺ − Q⁰), e as células com gatilho são esses mesmos pares. O cosseno intenção × gatilho muda de sinal entre camadas e posições (−0,83 a 0,94), então não serve como medida; fica no JSON só como descrição.
+
+## 4. Probes densos nos pares (diagnóstico, não entra no veredito)
 
 Cache `pairs` da frente B (baixado da pasta compartilhada, 65/65 arquivos conferidos pelo sha256 do `MANIFEST.json`). Regressão logística L2 no residual completo, Q⁺ × Q⁰, C escolhido por GroupKFold por gatilho no `train`. AUROC no `test`:
 
@@ -59,7 +82,7 @@ Cache `pairs` da frente B (baixado da pasta compartilhada, 65/65 arquivos confer
 
 Com gatilho inédito, os números são os mesmos (0,976–1,000). **Leitura:** o residual separa Q⁺ de Q⁰ quase perfeitamente em todas as camadas e posições, tanto quanto o TF-IDF (0,995). Nos pares originais, isso não distingue intenção de palavras ou estilo, então serve só para confirmar que o cache e o código funcionam. A âncora densa do veredito sai do 2×2 (`cells2x2`), quando o cache dele existir.
 
-## 4. Pares originais (diagnóstico, não entra no veredito)
+## 5. Pares originais (diagnóstico, não entra no veredito)
 
 | Classificador (`test`, 347 pares) | AUROC | IC 95% |
 |---|---|---|

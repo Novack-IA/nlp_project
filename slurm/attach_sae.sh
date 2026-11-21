@@ -6,7 +6,7 @@ REPO=/home/user_gustavonovack/nlp_project; ST=/tmp/$USER/nlp; L=$1; shift
 OUT=$ST/artifacts/sae_proprio/gemma-3-4b-it_L${L}_btk16k; mkdir -p $OUT
 set -a; source $REPO/.env; set +a
 export HF_HUB_CACHE=$ST/hf HF_HOME=$ST/hf_home TMPDIR=$ST/tmp PYTHONUNBUFFERED=1 PYTHONPATH=$REPO/src \
-       HF_HUB_OFFLINE=1 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True APPTAINERENV_TRITON_LIBCUDA_PATH=/.singularity.d/libs
+       HF_HUB_OFFLINE=1 SAE_MODEL_PATH=$ST/models/google/gemma-3-4b-it PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True APPTAINERENV_TRITON_LIBCUDA_PATH=/.singularity.d/libs
 LOG=$REPO/slurm-logs/$SLURM_JOB_ID/sae_L$L.log
 apptainer exec --nv -B $ST/w:/w -B /home/$USER $ST/pytorch-2.8.0-cu128-devel.sif /w/out/judge_serve_venv/bin/python \
   -m featgrpo.interp.train_sae train --layer $L --out $OUT --corpus $ST/artifacts/sae_corpus "$@" >> $LOG 2>&1 \

@@ -68,16 +68,17 @@ fi
 # pesos do 4B e corpus: já no /raid (job dl-raid); fora da h1003, puxa pela rede interna
 if [ $ON_RAID = 1 ]; then export HF_HUB_CACHE=$R/nlp_artifacts/hf_cache
 else
-  m=models--google--gemma-3-4b-it
-  { raid_pull nlp_artifacts/hf_cache/$m $ST/hf/ --copy-unsafe-links && raid_pull nlp_artifacts/hf_cache/.ok_google--gemma-3-4b-it $ST/hf/; } || exit 1   # sempre (incremental; conserta links quebrados)
+  raid_pull "nlp_artifacts/hf_cache/models--google--gemma-3-4b-it/snapshots/*/" "$ST/models/$SUBJ/" -L || exit 1
   [ -f $CORPUS/train.jsonl ] || raid_pull nlp_artifacts/sae_corpus/ $CORPUS/ || exit 1
 fi
 [ -f $CORPUS/train.jsonl ] || { say "sem corpus"; exit 1; }
+SUBJP=$SUBJ; [ $ON_RAID = 0 ] && SUBJP=$ST/models/$SUBJ
+export SAE_MODEL_PATH=$SUBJP APPTAINERENV_SAE_MODEL_PATH=$SUBJP
 CORP=
 
 # GPU0: vLLM do 4B (fração menor, para dividir com o SAE L29)
 CUDA_VISIBLE_DEVICES=${GPU[0]} HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" \
-  /w/out/judge_serve_venv/bin/vllm serve $SUBJ --host 127.0.0.1 --port $P_SUBJ --gpu-memory-utilization 0.40 \
+  /w/out/judge_serve_venv/bin/vllm serve $SUBJP --served-model-name $SUBJ --host 127.0.0.1 --port $P_SUBJ --gpu-memory-utilization 0.28 \
   --max-model-len 4096 --max-num-seqs 128 --limit-mm-per-prompt '{"image": 0}' > $LOGD/vllm_subj.log 2>&1 &
 echo $! > $RUN/pg_subj
 until curl -sf $(U $P_SUBJ)/health >/dev/null; do

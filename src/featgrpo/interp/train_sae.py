@@ -26,6 +26,7 @@ import torch
 import torch.nn.functional as F
 
 MODEL = "google/gemma-3-4b-it"
+MODEL_PATH = os.environ.get("SAE_MODEL_PATH", MODEL)   # caminho local do snapshot, se houver
 
 
 def log(*a):
@@ -40,12 +41,12 @@ class _Stop(Exception):
 
 def load_model(device):
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(MODEL)
+    tok = AutoTokenizer.from_pretrained(MODEL_PATH)
     try:
-        model = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.bfloat16)
+        model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, dtype=torch.bfloat16)
     except Exception:
         from transformers import AutoModelForImageTextToText
-        model = AutoModelForImageTextToText.from_pretrained(MODEL, dtype=torch.bfloat16)
+        model = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=torch.bfloat16)
     model.to(device).eval()
     cfg = model.config
     n = getattr(getattr(cfg, "text_config", cfg), "num_hidden_layers")

@@ -68,22 +68,23 @@ fi
 PY() { CRUN $DV/bin/python -m "featgrpo.data.phase1.$1" "${@:2}"; }
 CRUN $DV/bin/python -m pytest -q $REPO/tests/test_phase1.py || { say "testes da fase 1 falharam"; exit 1; }
 
-if [ $ON_RAID = 0 ]; then   # pesos vêm do /raid do h1003 (rede interna), não da internet
-  for m in $EMB $JUDGE $QG $WG; do d=models--${m//\//--}
-    { raid_pull nlp_artifacts/hf_cache/$d $HFC/ --copy-unsafe-links && raid_pull nlp_artifacts/hf_cache/.ok_${m//\//--} $HFC/; } || exit 1
+# pesos: fora da h1003, copia só o snapshot de cada modelo do /raid (arquivos reais, -L) para $ST/models/<id>
+# e serve pelo caminho (--served-model-name mantém o id). Na h1003, usa o cache HF do /raid direto.
+MP() { if [ $ON_RAID = 1 ]; then echo "$1"; else echo "$ST/models/$1"; fi; }
+if [ $ON_RAID = 0 ]; then
+  for m in $EMB $JUDGE $QG $WG; do
+    say "puxando $m"
+    raid_pull "nlp_artifacts/hf_cache/models--${m//\//--}/snapshots/*/" "$ST/models/$m/" -L || exit 1
   done
 fi
-( CRUN $DV/bin/python -m featgrpo.data.phase0.download_models $EMB $JUDGE $QG $WG ) > $LOGD/download.log 2>&1 &
-DL_PID=$!
-wait_model() { local mk=$HF_HUB_CACHE/.ok_${1//\//--}
-  until [ -f $mk ]; do kill -0 $DL_PID 2>/dev/null || [ -f $mk ] || { say "download de $1 falhou"; return 1; }; sleep 15; done; }
+wait_model() { return 0; }
 serve() {  # nome modelo porta idx-gpus util max_len [args...]
   local name=$1 model=$2 port=$3 gi=$4 util=$5 len=$6; shift 6
   local devs="" i; for i in ${gi//,/ }; do devs+="${devs:+,}${GPU[$i]}"; done
   wait_model "$model" || return 1
   say "serve $name ($model) gpus=$devs util=$util"
   CUDA_VISIBLE_DEVICES=$devs HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WB:/w $XB -B /home/$USER "$IMG" \
-    /w/out/judge_serve_venv/bin/vllm serve "$model" --host 127.0.0.1 --port $port \
+    /w/out/judge_serve_venv/bin/vllm serve "$(MP $model)" --served-model-name "$model" --host 127.0.0.1 --port $port \
     --gpu-memory-utilization $util --max-model-len $len "$@" > $LOGD/vllm_$name.log 2>&1 &
   local pid=$!; echo $pid > $RUN/pg_$name
   until curl -sf $(U $port)/health >/dev/null; do

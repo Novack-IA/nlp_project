@@ -64,10 +64,13 @@ O probe linear no residual completo mostra **quanto da informação existe** ant
 | TF-IDF nos pares originais (`test`) | AUROC 0,995 (IC 0,991–0,998) | `results/frente-d/baseline_lexical.json` |
 | Só estilo nos pares originais (`test`) | AUROC 0,881 (IC 0,860–0,903) | idem |
 | Só gatilho nos pares originais (`test`) | AUROC 0,500 | idem |
-| TF-IDF no 2×2: com gatilho → sem gatilho (queda) | | `baseline_lexical.json` → `cells_2x2.queda_auroc_tfidf` |
-| TF-IDF no XSTest | | `baseline_lexical.json` → `xstest` |
+| TF-IDF no 2×2 (`qc_grammatical`), intenção com → sem gatilho | 0,996 → 0,997 (não cai) | `baseline_lexical.json` → `cells_2x2.qc_grammatical.treinado_no_2x2` |
+| **Só estilo no 2×2** (`qc_grammatical`), intenção | **0,890** (IC 0,862–0,915) | idem, `so_estilo` |
+| TF-IDF no 2×2, presença do gatilho | 0,767 | idem, `gatilho_todas` |
+| Queda do TF-IDF: gatilho inédito / domínio inédito / XSTest | 0,003 / 0,014 / 0,281 | `… cells_2x2.qc_grammatical.regua_C2b_tfidf` |
+| TF-IDF dos pares no XSTest | 0,710 (IC 0,663–0,756) | `baseline_lexical.json` → `xstest` |
 
-Nos pares originais, as palavras (0,995) e até o estilo (0,88) já separam nocivo de benigno. Por isso esses números são diagnóstico e o veredito usa o 2×2.
+Nos pares originais, as palavras (0,995) e até o estilo (0,88) já separam nocivo de benigno. **No plano B do 2×2 continua igual:** as células com gatilho são os pedidos originais, o TF-IDF acerta 0,997 mesmo sem o gatilho e o estilo sozinho acerta 0,89. Qualquer sinal de intenção no 2×2 precisa ser lido contra essas duas réguas. Só no XSTest o classificador de palavras cai de fato.
 
 ## Interpretação
 

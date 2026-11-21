@@ -54,3 +54,33 @@ Elas são do Gemma-4-12B. O 4B erra alguns tokens delas com confiança extrema (
 - **A variação de um pedido para outro é reconstruída pior: 55–89%, caindo com a profundidade.** O token é sempre o mesmo ("?", "." ou "\n"), então a maior parte do vetor é comum a todos os pedidos, e o SAE acerta essa parte. A diferença entre pedidos é pequena, e **11–45% dela fica no erro do SAE**. Parte do sinal de intenção pode, portanto, não aparecer em nenhuma feature. Isso entra nas limitações do C1. Também é um motivo para comparar com os probes densos (frente D), que usam o vetor inteiro. O 262k reduz um pouco essa perda (+0,01–0,09).
 - **O L0 fica perto do nominal (~50–65), salvo `post_last` em L9 (~30).** Diferente da média de vários tokens, um token só está na distribuição do SAE.
 - **Zerar `inst_last` em L22 e L29 não muda a resposta (ΔNLL 0,000–0,003), enquanto zerar `post_last` muda (0,23–0,26).** Nas camadas tardias, a informação de `inst_last` já foi lida pelos tokens seguintes. Isso combina com a divisão do pré-registro: o pedido fica no fim da instrução e a decisão em `post_last`. **Para a C5:** intervir só em `inst_last` deve ter efeito apenas em L9/L17; em L22/L29, intervir em `post_last` ou no sufixo inteiro.
+
+## SAE próprio da frente A (L17/L22/L29)
+
+> - BatchTopK, 16k features, k = 64, treinado pela frente A (`results/frente-a/sae_proprio.md`). Carregado de `params.safetensors`, com sha256 conferido.
+> - Mesmo protocolo das tabelas acima: os mesmos 1.200 pedidos e as mesmas 300 respostas do próprio 4B (19.188 tokens). Commit `7b11650`.
+> - Arquivos: `qualidade_saes_proprio.csv` (todos os tokens) e `qualidade_saes_proprio_posicoes.csv` (só `inst_last` e `post_last`).
+
+**Em todos os tokens:**
+
+| L | FVE (próprio / GS 16k) | L0 | Sem ativar | ΔNLL (próprio / GS 16k) | KL (próprio / GS 16k) | Recuperado (próprio / GS 16k) |
+|---|---|---|---|---|---|---|
+| 17 | 0,975 / 0,955 | 51 | 29,8% | 1,00 / 0,35 | 0,99 / 0,30 | 96,8% / 98,9% |
+| 22 | 0,943 / 0,909 | 49 | 19,1% | 0,55 / 0,20 | 0,56 / 0,18 | 96,4% / 98,7% |
+| 29 | 0,898 / 0,843 | 48 | 2,0% | 0,43 / 0,15 | 0,43 / 0,13 | 98,7% / 99,6% |
+
+**Nas duas posições principais:**
+
+| L | Posição | cos(x, rec) | FVE entre itens (próprio / GS 16k) | L0 | ΔNLL (próprio / GS 16k) |
+|---|---|---|---|---|---|
+| 17 | inst_last | 0,999 | 0,81 / 0,67 | 63 | 0,001 / 0,001 |
+| 17 | post_last | 1,000 | 0,83 / 0,62 | 32 | 0,003 / 0,005 |
+| 22 | inst_last | 0,997 | 0,73 / 0,59 | 64 | 0,000 / 0,000 |
+| 22 | post_last | 0,999 | 0,79 / 0,58 | 37 | 0,002 / 0,002 |
+| 29 | inst_last | 0,993 | 0,69 / 0,56 | 57 | 0,000 / 0,000 |
+| 29 | post_last | 0,996 | 0,77 / 0,55 | 41 | 0,001 / 0,007 |
+
+**Leitura:**
+- **O SAE próprio reconstrói o vetor melhor, mas preserva pior o comportamento do modelo.** O FVE é maior nas três camadas (+0,02 a +0,06), mas o ΔNLL com o splice em todos os tokens é 2,5 a 3 vezes o do Gemma Scope, e a fração recuperada cai de ~99% para 96–99%. Uma explicação provável é que o treino só minimiza o erro de reconstrução: o erro que sobra fica em direções que o modelo usa mais adiante. Para a C5, isso reforça somar o erro de volta (x' = x − dec(f) + dec(f')).
+- **Nas posições principais, ele preserva bem mais a variação entre pedidos.** O FVE entre itens sobe de 0,55–0,67 para 0,69–0,83. A perda que limitava o C1 no Gemma Scope (33–45% da diferença entre pedidos no erro, nessas camadas) cai para 17–31%. O splice de um token continua inofensivo (ΔNLL ≤ 0,003). Isso faz do SAE próprio uma robustez útil para o C1: se o Gemma Scope achar poucas S_intent e o SAE próprio achar mais, o limite era o SAE, não o modelo.
+- **Uso do dicionário:** em L17, 30% das features nunca acendem nos nossos pedidos; em L29, só 2%.

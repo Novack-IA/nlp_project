@@ -95,6 +95,8 @@ O efeito de intenção no `test` tem o mesmo tamanho que na descoberta, e o efei
 - sem o validador: 47 (47)
 - conjunto completo: 45 (45)
 - `qc_pass_lenient` (1/3 dos grupos): 22 (20)
+- C4(c), células de tamanho pareado: 46 (41); replicam 46 de 46; C1 atende
+- C4(b), Q⁰ *retrieved*: 15 (13); replicam 15 de 15; C1 inconclusivo (182 grupos na descoberta (< 260))
 
 **B. Controle `trig_only` (C3).** 5091 pares de frases em 1697 grupos; IC por grupo: 81% das S_intent sem efeito; IC por frase (sensibilidade): 81%. Sem S_lex, o controle positivo (S_lex reagem ao gatilho solto) não pode ser verificado.
 

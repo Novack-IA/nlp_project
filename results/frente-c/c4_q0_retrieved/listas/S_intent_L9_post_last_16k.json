@@ -1,0 +1,27 @@
+{
+ "features": [
+  492
+ ],
+ "classe": "S_intent",
+ "camada": 9,
+ "posicao": "post_last",
+ "rotulo": "pre_resposta",
+ "sae": "16k",
+ "principal": false,
+ "ordenadas_por": "|d_I| decrescente",
+ "detalhe": [
+  {
+   "feature": 492,
+   "d_I": -0.79669,
+   "d_L": 0.07378,
+   "d_X": -0.03369,
+   "d_I_ci_lo": -0.98349,
+   "d_I_ci_hi": -0.62499,
+   "d_L_ci_lo": -0.07579,
+   "d_L_ci_hi": 0.19774,
+   "q_I": 0.0,
+   "q_L": 0.82475,
+   "freq_ativacao": 0.62637
+  }
+ ]
+}

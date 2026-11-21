@@ -441,6 +441,16 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
     for nome, s in rob.items():
         if s is not None:
             linhas.append(f"- {nomes[nome]}: {len(s)} ({len(s & base)})")
+    for rc, rot in (("tamanho_pareado", "C4(c), células de tamanho pareado"), ("q0_retrieved", "C4(b), Q⁰ *retrieved*")):
+        cp = out_dir / f"c4_{rc}" / "c1_c3.json"
+        s = _lista(out_dir / f"c4_{rc}", "S_intent", L, pos, "16k")
+        if cp.exists() and s is not None:
+            rr = json.loads(cp.read_text(encoding="utf-8"))["16k"]
+            rep_c = rr.get("replicacao_S_intent") or {}
+            st = (rr.get("C1") or {}).get("status", "—")
+            motivo = (rr.get("C1") or {}).get("motivo")
+            linhas.append(f"- {rot}: {len(s)} ({len(s & base)}); replicam {rep_c.get('n_replicam', '—')} de "
+                          f"{rep_c.get('n_features', '—')}; C1 {st}" + (f" ({motivo})" if motivo else ""))
     linhas.append("")
     if t.get("status") == "ok":
         ts = r.get("C3_controle_trig_only_sensibilidade_reamostragem_frase") or {}

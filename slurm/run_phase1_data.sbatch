@@ -26,7 +26,8 @@ say "job $SLURM_JOB_ID em $(hostname), GPUs=$CUDA_VISIBLE_DEVICES"
 REPO=/home/user_gustavonovack/nlp_project
 ST=/tmp/$USER/nlp
 D1=data/phase1
-LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; mkdir -p $LOGD $ST/w/out $ST/hf $ST/home $ST/cache $ST/tmp $ST/run $REPO/$D1
+LOGD=$REPO/slurm-logs/$SLURM_JOB_ID; RUN=$ST/run/$SLURM_JOB_ID   # pids por job: o trap não mata servidores de outro job
+mkdir -p $LOGD $ST/w/out $ST/hf $ST/home $ST/cache $ST/tmp $RUN $REPO/$D1
 IMG=$ST/pytorch-2.8.0-cu128-devel.sif; WB=$ST/w; XB=""
 R=/raid/user_gustavonovack
 if [ "$(hostname -s)" = dgx-H100-03 ]; then
@@ -40,7 +41,7 @@ U() { echo "http://127.0.0.1:$1"; }
 JUDGE=RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic; QG=Qwen/Qwen3Guard-Gen-8B; WG=allenai/wildguard
 EMB=Qwen/Qwen3-Embedding-0.6B; GEN=$JUDGE   # gerador = juiz (internet lenta: sem gemma-4-31B)
 
-trap 'say "saindo; derrubando servidores"; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
+trap 'say "saindo; derrubando servidores"; for f in $RUN/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $RUN/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
 
 source $REPO/slurm/lib/raid.sh
 if [ $ON_RAID = 0 ] && [ ! -f $IMG ]; then say "puxando imagem do raid"; raid_pull images/pytorch-2.8.0-cu128-devel.sif $ST/ --size-only || exit 1; fi
@@ -84,7 +85,7 @@ serve() {  # nome modelo porta idx-gpus util max_len [args...]
   CUDA_VISIBLE_DEVICES=$devs HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WB:/w $XB -B /home/$USER "$IMG" \
     /w/out/judge_serve_venv/bin/vllm serve "$model" --host 127.0.0.1 --port $port \
     --gpu-memory-utilization $util --max-model-len $len "$@" > $LOGD/vllm_$name.log 2>&1 &
-  local pid=$!; echo $pid > $ST/run/pg_$name
+  local pid=$!; echo $pid > $RUN/pg_$name
   until curl -sf $(U $port)/health >/dev/null; do
     sleep 10; kill -0 $pid 2>/dev/null || { say "vLLM $name morreu"; tail -20 $LOGD/vllm_$name.log >&2; return 1; }
   done

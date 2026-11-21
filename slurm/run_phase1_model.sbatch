@@ -29,7 +29,8 @@ else
   ON_RAID=0; ST=/tmp/$USER/nlp; IMG=$ST/pytorch-2.8.0-cu128-devel.sif; WBIND=$ST/w; XB=""
   SAE=$ST/artifacts/sae_proprio; CORPUS=$ST/artifacts/sae_corpus
 fi
-mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $ST/run $ST/w/out $SAE $CORPUS
+RUN=$ST/run/$SLURM_JOB_ID   # pids por job: o trap não mata servidores de outro job
+mkdir -p $ST/hf $ST/hf_home $ST/cache $ST/tmp $RUN $ST/w/out $SAE $CORPUS
 source $REPO/slurm/lib/raid.sh
 if [ $ON_RAID = 0 ]; then   # imagem e venv do vLLM do /raid do h1003 (o /tmp dos nós é limpo)
   [ -f $IMG ] || raid_pull images/pytorch-2.8.0-cu128-devel.sif $ST/ --size-only || exit 1
@@ -43,7 +44,7 @@ P_SUBJ=$((21000 + (SLURM_JOB_ID % 2000) * 10))
 U() { echo "http://127.0.0.1:$1"; }
 SUBJ=google/gemma-3-4b-it
 
-trap 'say "saindo"; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $ST/run/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
+trap 'say "saindo"; for f in $RUN/pg_*; do [ -f "$f" ] && kill -TERM -- -$(cat $f) 2>/dev/null; done; sleep 5; for f in $RUN/pg_*; do [ -f "$f" ] && kill -KILL -- -$(cat $f) 2>/dev/null; rm -f $f; done; jobs -p | xargs -r kill 2>/dev/null' EXIT
 
 set -a; source $REPO/.env; set +a
 unset SSL_CERT_FILE REQUESTS_CA_BUNDLE CURL_CA_BUNDLE
@@ -78,9 +79,9 @@ CORP=
 CUDA_VISIBLE_DEVICES=${GPU[0]} HF_HUB_OFFLINE=1 setsid apptainer exec --nv -B $WBIND:/w -B /home/$USER $XB "$IMG" \
   /w/out/judge_serve_venv/bin/vllm serve $SUBJ --host 127.0.0.1 --port $P_SUBJ --gpu-memory-utilization 0.40 \
   --max-model-len 4096 --max-num-seqs 128 --limit-mm-per-prompt '{"image": 0}' > $LOGD/vllm_subj.log 2>&1 &
-echo $! > $ST/run/pg_subj
+echo $! > $RUN/pg_subj
 until curl -sf $(U $P_SUBJ)/health >/dev/null; do
-  sleep 10; kill -0 $(cat $ST/run/pg_subj) 2>/dev/null || { say "vLLM 4B morreu"; tail -30 $LOGD/vllm_subj.log >&2; exit 1; }
+  sleep 10; kill -0 $(cat $RUN/pg_subj) 2>/dev/null || { say "vLLM 4B morreu"; tail -30 $LOGD/vllm_subj.log >&2; exit 1; }
 done
 say "4B pronto"
 
@@ -102,7 +103,7 @@ say "corpus: $(cat $CORPUS/report.json | tr -d '\n ')"
 train() {  # gpu-idx camada  (todos na mesma GPU: buffer menor)
   local gi=$1 L=$2 out=$SAE/gemma-3-4b-it_L${2}_btk16k
   mkdir -p $out
-  [ -f $out/DONE ] || CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae train --layer $L --out $out --corpus $CORPUS --buffer 400000 \
+  [ -f $out/DONE ] || CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae train --layer $L --out $out --corpus $CORPUS --buffer 400000 --seqs 16 \
       > $LOGD/sae_L$L.log 2>&1 || { say "SAE L$L falhou"; tail -30 $LOGD/sae_L$L.log >&2; return 1; }
   CUDA_VISIBLE_DEVICES=${GPU[$gi]} CRUN $VPY -m featgrpo.interp.train_sae eval --layer $L --out $out --corpus $CORPUS \
       --ref-gemmascope resid_post/layer_${L}_width_16k_l0_medium,resid_post/layer_${L}_width_16k_l0_small \
@@ -113,7 +114,7 @@ train() {  # gpu-idx camada  (todos na mesma GPU: buffer menor)
 train 0 22 & T22=$!
 train 0 17 & T17=$!
 wait $BEH; say "comportamento rc=$?"
-kill -TERM -- -$(cat $ST/run/pg_subj) 2>/dev/null; rm -f $ST/run/pg_subj; say "vLLM do 4B parado"
+kill -TERM -- -$(cat $RUN/pg_subj) 2>/dev/null; rm -f $RUN/pg_subj; say "vLLM do 4B parado"
 train 0 29 & T29=$!
 wait $T22 $T17 $T29
 say "fim do job de modelo"

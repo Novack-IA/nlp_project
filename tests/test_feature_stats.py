@@ -79,6 +79,23 @@ def cache(tmp_path_factory):
                     z = b + b_i * h * on + b_l * t + rng.normal(0, 0.7, N_GROUPS)
                     Z[ci::4, f] = np.maximum(z, 0)
             sp.save_npz(ldir / f"cells2x2__{pos}__16k.npz", sp.csr_matrix(Z))
+
+    # controles trig_only / neutral_only na combinação principal: lexicais e mistas reagem ao gatilho solto,
+    # as de intenção não
+    # formato real da frente A: 3 frases-molde por grupo do 2×2, `kind` = trig/neutral
+    n_g, n_t = 100, 3
+    nc = n_g * n_t
+    crows = [{"group_id": f"g{gi}", "template_id": t, "kind": kd, "item_id": f"g{gi}:ctl{t}:{kd}",
+              "inst_last_token_id": 236761}
+             for gi in range(n_g) for t in range(n_t) for kd in ("trig", "neutral")]
+    (root / "index" / "controles.jsonl").write_text("\n".join(json.dumps(r) for r in crows), encoding="utf-8")
+    zc = np.zeros((nc * 2, NF), dtype=np.float32)
+    for f in range(NF):
+        b = np.repeat(rng.normal(-0.3, 1.0, n_g), n_t)          # frases do mesmo grupo compartilham a base
+        for k, t in ((0, 1), (1, 0)):
+            shift = 1.5 * t if (f in LEX or f in MIXED) else 0.0
+            zc[k::2, f] = np.maximum(b + shift + rng.normal(0, 0.7, nc), 0)
+    sp.save_npz(root / "resid_post" / "L22" / "controles__inst_last__16k.npz", sp.csr_matrix(zc))
     return root
 
 
@@ -241,3 +258,118 @@ def test_regra_antiga_e_mais_frouxa(run_desc):
     res, _ = run_desc
     for c in res["combinacoes_descoberta"]:
         assert c["S_intent_regra_antiga"] >= c["S_intent"]
+
+
+# ---------------------------------------------------------------- C3: controle, fichas cegas e figura
+
+def test_controle_trig_only(run_desc):
+    c = run_desc[0]["C3_controle_trig_only"]
+    assert c["status"] == "ok" and c["n_pares_controle"] == 300
+    assert c["S_intent"]["atende"] and c["S_intent"]["fracao_sem_efeito"] > 0.5
+    assert c["S_lex"]["fracao_que_reage"] == 1.0
+
+
+def test_controle_unidade_grupo(cache, run_desc):
+    from featgrpo.interp import cache_io
+    _, out = run_desc
+    import pandas as pd
+    df = pd.read_csv(out / "feature_classes_L22_inst_last_16k.csv")
+    z = cache_io.load_latents(cache, "controles", 22, "inst_last", "16k")
+    rows = cache_io.load_index(cache, "controles")
+    si, sl = (df.loc[df["classe"] == c, "feature"].to_numpy() for c in ("S_intent", "S_lex"))
+    frase = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="frase")
+    grupo = fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="grupo")
+    assert frase["n_pares_controle"] == 300 and grupo["n_unidades"] == 100
+    assert grupo["S_lex"]["fracao_que_reage"] == 1.0
+    with pytest.raises(ValueError):
+        fs.controle_trig_only(z, rows, "inst_last", si, sl, fs.Regras(), unidade="outra")
+
+
+def test_controle_ausente_fica_registrado(cache, tmp_path):
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     conjunto_controles="nao_existe")
+    assert res["C3_controle_trig_only"]["status"].startswith("sem cache")
+
+
+def _fake_np(layer, sae, index):
+    return {"explanations": [{"description": f"conceito {index}"}],
+            "activations": [{"tokens": ["<bos>", "How", " to", " kill", "?"], "values": [0, 0, 1, 9, 2]}],
+            "pos_str": ["kill", "stop"]}
+
+
+def test_fichas_cegas(cache, run_desc):
+    from featgrpo.interp import autointerp, cache_io
+    res, _ = run_desc
+    rows = cache_io.load_index(cache, "cells2x2")
+    z = cache_io.load_latents(cache, "cells2x2", 22, "inst_last", "16k")
+    textos = {(r["group_id"], r["cell"]): f"texto {r['group_id']} {r['cell']}" for r in rows}
+    fichas, chave = autointerp.montar_fichas(res, "16k", z, rows, textos, fetch=_fake_np)
+    n = len(res["top20"]["S_intent"]) + len(res["top20"]["S_lex"])
+    assert len(fichas) == len(chave) == n
+    # cegas: nada nas fichas revela a classe ou o d
+    assert not {"classe", "feature", "d_I", "d_L"} & set(fichas.columns)
+    assert not fichas.astype(str).apply(lambda c: c.str.contains("S_intent|S_lex")).any().any()
+    # ordem aleatória, mas reprodutível
+    _, chave2 = autointerp.montar_fichas(res, "16k", z, rows, textos, fetch=_fake_np)
+    assert chave["feature"].tolist() == chave2["feature"].tolist()
+    assert chave["classe"].tolist() != sorted(chave["classe"].tolist(), reverse=True)
+    # os itens do 2×2 vêm só da descoberta
+    test_groups = {r["group_id"] for r in rows if r["split"] == "test"}
+    itens = "\n".join(fichas["itens_2x2_com_maior_ativacao"])
+    assert itens and not any(f"texto {g} " in itens for g in test_groups)
+    assert "[[ kill]]" in fichas["exemplos_neuronpedia"].iloc[0]
+
+
+def test_avaliacao_cega():
+    import pandas as pd
+    from featgrpo.interp import autointerp
+    chave = pd.DataFrame({"ficha": [f"F{i}" for i in range(6)], "classe": ["S_intent"] * 4 + ["S_lex"] * 2})
+    fred = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual"] * 3 + ["lexical"] * 3})
+    davi = pd.DataFrame({"ficha": chave["ficha"], "rotulo": ["conceitual", "conceitual", "lexical", "lexical", "lexical", "lexical"]})
+    r = autointerp.avaliar(fred, davi, chave)
+    assert r["fracao_S_intent_conceitual_pelos_dois"] == 0.5 and r["atende"] is False
+    assert r["concordancia_bruta"] == 5 / 6 and 0 < r["kappa_cohen"] < 1
+    with pytest.raises(ValueError):
+        autointerp.avaliar(fred.assign(rotulo="talvez"), davi, chave)
+
+
+def test_figura_di_dl(run_desc, tmp_path):
+    import pandas as pd
+    from featgrpo.interp import figuras
+    _, out = run_desc
+    tabelas = {(L, p): pd.read_csv(out / f"feature_classes_L{L}_{p}_16k.csv") for L in (9, 22) for p in fs.MAIN_POSITIONS}
+    png = figuras.scatter_di_dl(tabelas, tmp_path / "fig.png", "16k", principal=(22, "inst_last"))
+    assert png.stat().st_size > 20_000 and png.with_suffix(".pdf").exists()
+
+
+# ---------------------------------------------------------------- caminho (c): controle de estilo
+
+def test_controle_estilo_separa_estilo_de_intencao():
+    rng = np.random.default_rng(3)
+    n = 800
+    ds = np.column_stack([rng.normal(1.0, 1.0, n), rng.normal(0.5, 1.0, n)])   # o nocivo tende a ser "mais longo"
+    i_estilo = 1.2 * ds[:, 0] + rng.normal(0, 0.5, n)        # efeito que vem só da diferença de estilo
+    i_intencao = 0.8 + rng.normal(0, 1.0, n)                   # efeito que existe com estilo igual
+    i = np.column_stack([i_estilo, i_intencao])
+    d = fs.cohen_d(i)
+    assert np.all(np.abs(d) >= 0.5)                            # as duas passariam como S_intent pelo d
+    resumo, df = fs.controle_estilo(i, ds, d, fs.Regras())
+    assert df["sobrevive_estilo"].tolist() == [False, True]
+    assert df["r2_estilo"].iloc[0] > 0.5 and df["r2_estilo"].iloc[1] < 0.05
+    assert resumo["n_sobrevivem"] == 1 and resumo["atributos_de_estilo_usados"] == 2
+
+
+def test_controle_estilo_no_fluxo_2x2(cache, tmp_path):
+    from featgrpo.interp import cache_io
+    rows = cache_io.load_index(cache, "cells2x2")
+    rng = np.random.default_rng(4)
+    textos = {(r["group_id"], r["cell"]): "word " * int(rng.integers(5, 30)) + ("?" if rng.random() < 0.8 else ".")
+              for r in rows}
+    res = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     textos=textos)
+    e = res["C1_controle_estilo"]
+    assert e["status"] == "ok" and e["n_features"] == res["combinacoes_descoberta"][0]["S_intent"]
+    assert e["fracao_sobrevive"] >= 0.8                        # as plantadas são de intenção, não de estilo
+    sem = fs.run_2x2(cache, "16k", (22,), ("inst_last",), tmp_path, abrir_confirmacao=False, regras=fs.Regras(),
+                     textos={})
+    assert sem["C1_controle_estilo"]["status"].startswith("sem textos")

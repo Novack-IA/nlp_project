@@ -126,7 +126,7 @@ def montar_grupos(index_rows: list[dict], posicao: str, items=CELLS) -> Grupos:
         excl["fim_pedido_token_verificado"] = not sem_token_id
     return Grupos(
         gid=np.array([g for g, _ in keep], dtype=object),
-        split=np.array([r["split"] for r in first], dtype=object),
+        split=np.array([r.get("split") for r in first], dtype=object),
         domain=np.array([r.get("domain") for r in first], dtype=object),
         trig_norm=np.array([r.get("trig_norm", "") for r in first], dtype=object),
         rows=np.array([idx for _, idx in keep], dtype=np.int64).reshape(-1, len(items)),
@@ -357,6 +357,119 @@ def replicar(sub_conf: sp.csr_matrix, g_conf: Grupos, feats: np.ndarray, d_i_des
     return resumo, df
 
 
+CONTROL_ITEMS = ("trig_only", "neutral_only")
+_KIND = {"trig": "trig_only", "neutral": "neutral_only", "trig_only": "trig_only", "neutral_only": "neutral_only"}
+
+
+def normalizar_controles(rows: list[dict]) -> list[dict]:
+    """Aceita o formato da frente A (`kind` = trig/neutral, `group_id` do 2×2, `template_id` 0–2) e o
+    formato curto (`item` = trig_only/neutral_only, `group_id` do par). Devolve cópias com `item` e
+    `group_id` = identificador do par de frases, e `grupo_2x2` = grupo de origem."""
+    out = []
+    for r in rows:
+        r2 = dict(r)
+        r2["item"] = _KIND.get(r.get("item")) or _KIND.get(r.get("kind")) or r.get("item")
+        origem = r.get("group_id")
+        if r.get("template_id") is not None:
+            r2["group_id"] = f"{origem}:ctl{r['template_id']}"
+        r2["grupo_2x2"] = origem
+        out.append(r2)
+    return out
+
+
+def controle_trig_only(z_ctrl: sp.csr_matrix, rows_ctrl: list[dict], posicao: str, feats_int: np.ndarray,
+                       feats_lex: np.ndarray, regras: Regras, unidade: str = "frase") -> dict:
+    """C3, item 1 (pré-registro, seção 5): d de a(trig_only) − a(neutral_only), pareado por frase de controle,
+    na mesma posição da combinação principal. Atende se mais da metade das S_intent tiver o IC 95% desse d
+    dentro de ±0,2. Para S_lex espera-se o contrário (o controle funciona se elas reagem).
+
+    `unidade="frase"` (pré-registrado): cada par de frases é uma unidade. `unidade="grupo"` (alternativa,
+    não pré-registrada): média das frases de controle de cada grupo do 2×2 antes do d; usar só se a
+    mudança for registrada em results/DESVIOS.md.
+    """
+    feats_int, feats_lex = np.asarray(feats_int, dtype=int), np.asarray(feats_lex, dtype=int)
+    rows_ctrl = normalizar_controles(rows_ctrl)
+    g = montar_grupos(rows_ctrl, posicao, items=CONTROL_ITEMS)
+    n, k = len(g), len(feats_int)
+    feats = np.concatenate([feats_int, feats_lex])
+    base = {"n_pares_controle": n, "excluidos": g.excluidos, "posicao": posicao, "unidade": unidade}
+    if n < 2 or len(feats) == 0:
+        return {**base, "status": "sem dados suficientes"}
+    a = linhas(z_ctrl, g)[:, feats].toarray().astype(np.float64).reshape(n, 2, len(feats)).transpose(1, 0, 2)
+    e = a[0] - a[1]
+    if unidade == "grupo":
+        origem = np.array([rows_ctrl[i]["grupo_2x2"] for i in g.rows[:, 0]], dtype=object)
+        _, inv = np.unique(origem, return_inverse=True)
+        soma = np.zeros((inv.max() + 1, e.shape[1]))
+        np.add.at(soma, inv, e)
+        e = soma / np.bincount(inv)[:, None]
+        base["n_unidades"] = int(e.shape[0])
+    elif unidade != "frase":
+        raise ValueError(f"unidade desconhecida: {unidade}")
+    d = cohen_d(e)
+    lo, hi = ic_d(e, pesos_bootstrap(e.shape[0], regras.n_boot, regras.seed))
+    m = regras.margem_eq
+    sem_efeito = (lo > -m) & (hi < m)
+    frac_int = float(sem_efeito[:k].mean()) if k else None
+    frac_lex = float((~sem_efeito[k:]).mean()) if len(feats_lex) else None
+    detalhe = [{"feature": int(f), "classe": "S_intent" if j < k else "S_lex", "d": round(float(d[j]), 4),
+                "ic_lo": round(float(lo[j]), 4), "ic_hi": round(float(hi[j]), 4), "sem_efeito": bool(sem_efeito[j])}
+               for j, f in enumerate(feats)]
+    return {**base, "status": "ok",
+            "S_intent": {"n": k, "fracao_sem_efeito": frac_int,
+                         "atende": None if frac_int is None else frac_int > 0.5},
+            "S_lex": {"n": int(len(feats_lex)), "fracao_que_reage": frac_lex},
+            "features": detalhe}
+
+
+def estilo(textos: list[str]) -> np.ndarray:
+    """Os 14 atributos de estilo do classificador "só estilo" da frente D (`baselines.style_features`)."""
+    from featgrpo.interp.baselines import style_features
+    return style_features(textos)
+
+
+def controle_estilo(i_g: np.ndarray, ds: np.ndarray, d_desc: np.ndarray, regras: Regras) -> tuple[dict, pd.DataFrame]:
+    """Análise secundária (caminho c): o efeito de intenção sobrevive quando o estilo é igual?
+
+    Para cada feature, regressão por grupo I_g = α + β·Δs_g + ε, com Δs_g = estilo(nocivo) − estilo(benigno)
+    (14 atributos, divididos pelo desvio mas **sem centrar**, para que α seja o I esperado com Δs = 0, isto é,
+    com estilo igual nas duas linhas). d_I ajustado = α / desvio dos resíduos. A feature "sobrevive" se o
+    d_I ajustado mantém o sinal do d_I da descoberta com |d| >= regras.rep_d (o limiar da replicação).
+    """
+    n = i_g.shape[0]
+    ds = np.asarray(ds, dtype=np.float64)
+    sd = ds.std(axis=0, ddof=1)
+    ok = sd > 0
+    z = ds[:, ok] / sd[ok]
+    x = np.column_stack([np.ones(n), z])
+    beta, *_ = np.linalg.lstsq(x, i_g, rcond=None)
+    resid = i_g - x @ beta
+    dof = max(n - x.shape[1], 1)
+    sd_res = np.sqrt((resid ** 2).sum(axis=0) / dof)
+    d_adj = np.divide(beta[0], sd_res, out=np.zeros_like(beta[0]), where=sd_res > 0)
+    var_i = i_g.var(axis=0)
+    r2 = np.where(var_i > 0, 1 - resid.var(axis=0) / np.where(var_i > 0, var_i, 1), 0.0)
+    sobrevive = (np.sign(d_adj) == np.sign(d_desc)) & (np.abs(d_adj) >= regras.rep_d)
+    df = pd.DataFrame({"d_I": d_desc, "d_I_ajustado_estilo": d_adj, "r2_estilo": r2, "sobrevive_estilo": sobrevive})
+    resumo = {"n_grupos": n, "atributos_de_estilo_usados": int(ok.sum()),
+              "diferenca_media_de_estilo_padronizada": [round(float(v), 3) for v in (ds[:, ok].mean(0) / sd[ok])],
+              "n_features": int(len(d_desc)), "n_sobrevivem": int(sobrevive.sum()),
+              "fracao_sobrevive": float(sobrevive.mean()) if len(d_desc) else None,
+              "r2_mediano": float(np.median(r2)) if len(d_desc) else None}
+    return resumo, df
+
+
+def delta_estilo_2x2(g: Grupos, textos: dict[tuple[str, str], str]) -> np.ndarray | None:
+    """Δs_g = ½[(s(harm_trig) − s(ben_trig)) + (s(harm_notrig) − s(ben_notrig))], no mesmo formato de I_g."""
+    s = {}
+    for c in CELLS:
+        tx = [textos.get((gid, c)) for gid in g.gid]
+        if any(t is None for t in tx):
+            return None
+        s[c] = estilo(tx)
+    return 0.5 * ((s["harm_trig"] - s["ben_trig"]) + (s["harm_notrig"] - s["ben_notrig"]))
+
+
 def veredito_c1(resumo: pd.DataFrame, principal, rep: dict | None, regras: Regras) -> dict:
     if principal is None:
         return {"status": "inconclusivo", "motivo": f"nenhuma combinação com >= {regras.piso_descoberta} grupos na descoberta"}
@@ -404,8 +517,20 @@ def _feats_json(df: pd.DataFrame, col: str) -> list[dict]:
             for r in d.to_dict("records")]
 
 
+def _efeito_i(sub: sp.csr_matrix, n: int, k_cells: int, feats: np.ndarray) -> np.ndarray:
+    """I_g (2×2) ou a(Q⁺) − a(Q⁰) (pares) só para as features `feats`."""
+    a = sub[:, feats].toarray().astype(np.float64).reshape(n, k_cells, len(feats)).transpose(1, 0, 2)
+    return efeitos(a)[0] if k_cells == 4 else a[0] - a[1]
+
+
+def _textos_2x2_padrao() -> dict:
+    from featgrpo.interp.autointerp import textos_2x2
+    return textos_2x2()
+
+
 def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confirmacao: bool,
-            regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None) -> dict:
+            regras: Regras, conjunto: str = "cells2x2", principal_forcada: tuple[int, str] | None = None,
+            conjunto_controles: str = "controles", textos: dict | None = None) -> dict:
     rows = cache_io.load_index(root, conjunto)
     train_trigs = {r["trig_norm"] for r in rows if r.get("split") == "train"}
     tabelas, n_desc, excluidos, grupos = {}, {}, {}, {}
@@ -423,12 +548,25 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     principal = principal_forcada or escolher_principal(resumo)
 
     dominio_df, rep, rep_df = None, None, None
+    estilo_res = {"status": "sem combinação principal"}
     if principal is not None and principal in tabelas:
         df_p, g_p = tabelas[principal], grupos[principal]
         Z = cache_io.load_latents(root, conjunto, principal[0], principal[1], sae)
         desc = g_p.subset(np.isin(g_p.split, DISCOVERY))
         s_int = df_p[df_p["classe"] == "S_intent"]
         dominio_df = por_dominio(linhas(Z, desc), desc, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(), regras)
+        estilo_res = {"status": "sem textos do 2×2 (datasets/phase1/cells_2x2.jsonl)"}
+        tx = textos if textos is not None else _textos_2x2_padrao()
+        if len(s_int) == 0:
+            estilo_res = {"status": "sem S_intent"}
+        elif tx:
+            ds = delta_estilo_2x2(desc, tx)
+            if ds is not None:
+                feats_si = s_int["feature"].to_numpy()
+                resumo_e, df_e = controle_estilo(_efeito_i(linhas(Z, desc), len(desc), 4, feats_si), ds,
+                                                 s_int["d_I"].to_numpy(), regras)
+                estilo_res = {"status": "ok", **resumo_e,
+                              "features": df_e.assign(feature=feats_si).round(4).to_dict("records")}
         if abrir_confirmacao:
             conf = g_p.subset(np.isin(g_p.split, CONFIRMATION))
             sub_conf = linhas(Z, conf)
@@ -436,6 +574,17 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
             _, rep_df = replicar(sub_conf, conf, sel["feature"].to_numpy(), sel["d_I"].to_numpy(), train_trigs, regras)
             rep, _ = replicar(sub_conf, conf, s_int["feature"].to_numpy(), s_int["d_I"].to_numpy(), train_trigs, regras)
     c1 = veredito_c1(resumo, principal, rep, regras) if principal in tabelas or principal is None else None
+
+    controle = {"status": "sem combinação principal"}
+    if principal is not None and principal in tabelas:
+        controle = {"status": f"sem cache de controles ('{conjunto_controles}') para esta combinação"}
+        if cache_io.latents_path(root, conjunto_controles, principal[0], principal[1], sae).exists():
+            df_p = tabelas[principal]
+            controle = controle_trig_only(
+                cache_io.load_latents(root, conjunto_controles, principal[0], principal[1], sae),
+                cache_io.load_index(root, conjunto_controles), principal[1],
+                df_p.loc[df_p["classe"] == "S_intent", "feature"].to_numpy(),
+                df_p.loc[df_p["classe"] == "S_lex", "feature"].to_numpy(), regras)
 
     # ---- saídas
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -468,6 +617,8 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
         "C1": c1,
         "confirmacao_aberta": bool(abrir_confirmacao),
         "replicacao_S_intent": rep,
+        "C3_controle_trig_only": controle,
+        "C1_controle_estilo": estilo_res,
     }
     if principal is not None and principal in tabelas:
         df_p = tabelas[principal]
@@ -486,10 +637,21 @@ def run_2x2(root: Path, sae: str, camadas, posicoes, out_dir: Path, abrir_confir
     return res
 
 
-def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regras: Regras) -> dict:
-    """Pares originais (diagnóstico, fora do veredito): intenção = a(Q⁺) − a(Q⁰), só na descoberta."""
+def _textos_pares_padrao() -> dict:
+    from featgrpo.interp.data import load_pairs
+    out = {}
+    for p in load_pairs():
+        out[(p["group_id"], "q_harm")], out[(p["group_id"], "q_border")] = p["q_harm"], p["q_border"]
+    return out
+
+
+def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regras: Regras,
+                   textos: dict | None = None) -> dict:
+    """Pares originais (diagnóstico, fora do veredito): intenção = a(Q⁺) − a(Q⁰), só na descoberta.
+    Inclui o controle de estilo (caminho c) nas features com |d| >= 0,5 e q < 0,01."""
     rows = cache_io.load_index(root, "pairs")
-    tabelas, n_desc = {}, {}
+    tx = textos if textos is not None else _textos_pares_padrao()
+    tabelas, n_desc, subs = {}, {}, {}
     for layer in camadas:
         for pos in posicoes:
             Z = cache_io.load_latents(root, "pairs", layer, pos, sae)
@@ -512,6 +674,7 @@ def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regra
                                             "d_int": d, "d_int_ci_lo": lo, "d_int_ci_hi": hi, "p_int": p}))
             tabelas[(layer, pos)] = pd.concat(partes, ignore_index=True)
             n_desc[(layer, pos)] = n
+            subs[(layer, pos)] = (sub, desc)
     bh_familia(tabelas, efeitos_=("int",))
     out_dir.mkdir(parents=True, exist_ok=True)
     res = {"aviso": "Pares originais: diagnóstico, fora do veredito. Só o estilo já separa Q⁺ de Q⁰ com AUROC 0,88.",
@@ -521,10 +684,21 @@ def run_provisorio(root: Path, sae: str, camadas, posicoes, out_dir: Path, regra
         df[df["ativa"]].to_csv(out_dir / f"provisorio_{t}.csv", index=False, float_format="%.5g")
         sig = df[(df["q_int"] < regras.q_max) & (df["d_int"].abs() >= regras.d_min)]
         top = lambda s: [int(f) for f in s.reindex(s["d_int"].abs().sort_values(ascending=False).index)["feature"].head(regras.top)]
+        estilo_res = {"status": "sem features com efeito grande"}
+        sub, desc = subs[(layer, pos)]
+        textos_h = [tx.get((gid, "q_harm")) for gid in desc.gid]
+        textos_b = [tx.get((gid, "q_border")) for gid in desc.gid]
+        if len(sig) and all(textos_h) and all(textos_b):
+            feats = sig["feature"].to_numpy()
+            resumo_e, _ = controle_estilo(_efeito_i(sub, len(desc), 2, feats), estilo(textos_h) - estilo(textos_b),
+                                          sig["d_int"].to_numpy(), regras)
+            estilo_res = {"status": "ok", **{k: v for k, v in resumo_e.items()
+                                             if k != "diferenca_media_de_estilo_padronizada"}}
         res["combinacoes"].append({"camada": layer, "posicao": pos, "rotulo": LABELS.get(pos, pos),
                                    "n_grupos_descoberta": n_desc[(layer, pos)], "n_sig_d05": len(sig),
                                    "top20_mais_ativas_em_Q_harm": top(sig[sig["d_int"] > 0]),
-                                   "top20_mais_ativas_em_Q_border": top(sig[sig["d_int"] < 0])})
+                                   "top20_mais_ativas_em_Q_border": top(sig[sig["d_int"] < 0]),
+                                   "controle_estilo": estilo_res})
     return res
 
 
@@ -538,6 +712,8 @@ def main(argv=None) -> int:
     ap.add_argument("--abrir-confirmacao", action="store_true",
                     help="abre o split test na combinação principal (uma vez, no fim)")
     ap.add_argument("--out-dir", type=Path, default=OUT_DIR)
+    ap.add_argument("--conjunto-controles", default="controles",
+                    help="conjunto do cache com os controles trig_only/neutral_only (C3)")
     args = ap.parse_args(argv)
     regras = Regras()
 
@@ -564,7 +740,7 @@ def main(argv=None) -> int:
             raise SystemExit("C4a usa a combinação principal do 16k: rode o 16k antes (pré-registro, seção 5).")
         forcada = (int(p16["camada"]), p16["posicao"])
     res = run_2x2(args.root, args.sae, args.camadas, args.posicoes, args.out_dir, args.abrir_confirmacao,
-                  regras, principal_forcada=forcada)
+                  regras, principal_forcada=forcada, conjunto_controles=args.conjunto_controles)
     summary[args.sae] = {**meta, **res}
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
     print(f"salvo em {summary_path}\nprincipal: {res['principal']}\nC1: {res['C1']}")

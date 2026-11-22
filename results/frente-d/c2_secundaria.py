@@ -113,7 +113,6 @@ def figuras(c2: dict, ctl: dict) -> None:
         ax.tick_params(length=0)
         for s in ax.spines.values():
             s.set_visible(False)
-    fig.suptitle("Matriz do C2: AUROC no test com gatilho inédito (L29 · pré-resposta)", fontsize=10, x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(OUT / "fig_c2_matriz.png", dpi=200)
     plt.close(fig)
@@ -152,11 +151,51 @@ def figuras(c2: dict, ctl: dict) -> None:
     fig.savefig(OUT / "fig_c2b_xstest.png", dpi=200)
     plt.close(fig)
 
+    # Figura 4: âncora densa por camada (uma coluna do artigo)
+    probes = json.loads((OUT / "probes.json").read_text(encoding="utf-8"))["resultados"]["cells2x2"]["principal"]
+    tfidf = json.loads((OUT / "baseline_lexical.json").read_text(encoding="utf-8"))["resultados"]["cells_2x2"]["principal"]
+    tf_sem = tfidf["treinado_no_2x2"]["intencao_sem_gatilho"]["tfidf"]["auroc"]
+    layers = [9, 17, 22, 29]
+    auc = lambda pos, key: [probes[f"L{l}/{pos}"][key]["test"]["gatilho_inedito"]["auroc"] for l in layers]  # noqa: E731
+    fig, ax = plt.subplots(figsize=(3.3, 2.5))
+    series = [(auc("post_last", "cruzado_trig_para_notrig"), "intenção, com → sem gatilho", "#0d366b", "o"),
+              (auc("slot_forma", "gatilho_independe_intencao"), "gatilho, na posição do gatilho", "#3987e5", "s"),
+              (auc("post_last", "gatilho_independe_intencao"), "gatilho, antes da resposta", "#86b6ef", "D")]
+    for ys, label, color, mk in series:
+        ax.plot(layers, ys, color=color, lw=2, marker=mk, ms=6, label=label)
+    ax.axhline(tf_sem, color="#c0392b", lw=1.2, ls=(0, (3, 3)))
+    ax.text(29.4, tf_sem - 0.035, "TF-IDF", color="#c0392b", fontsize=8, ha="right")
+    ax.axhline(0.5, color=muted, lw=0.8)
+    ax.set_xticks(layers)
+    ax.set_ylim(0.45, 1.03)
+    ax.set_xlabel("camada")
+    ax.set_ylabel("AUROC (test, gatilho inédito)")
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:.1f}".replace(".", ",")))
+    ax.grid(axis="y", color=grid, lw=0.6)
+    ax.set_axisbelow(True)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.legend(frameon=False, fontsize=7, loc="center right", bbox_to_anchor=(1.0, 0.42))
+    fig.tight_layout()
+    fig.savefig(OUT / "fig_probes_camadas.png", dpi=200)
+    plt.close(fig)
+
+
+def copiar_para_paper() -> None:
+    """Regra do docs/paper/README.md: figuras do paper são copiadas pelo script que as gera."""
+    import shutil
+    dst = Path("docs/paper/figuras")
+    dst.mkdir(parents=True, exist_ok=True)
+    for name, novo in (("fig_c2_matriz.png", "fig3_c2_matriz.png"), ("fig_probes_camadas.png", "fig4_probes.png"),
+                       ("fig_c2b_xstest.png", "fig6_c2b_xstest.png")):
+        shutil.copy(OUT / name, dst / novo)
+
 
 def main() -> None:
     c2 = {s: json.loads((OUT / f"c2_c4_L29_post_last_{s}.json").read_text(encoding="utf-8")) for s in ("16k", "262k")}
     ctl = json.loads((OUT / "c2b_controle_aleatorio.json").read_text(encoding="utf-8"))
     figuras(c2, ctl)
+    copiar_para_paper()
     res = {"descricao": "C2 por domínio e por tipo de gatilho (análise secundária, não decide). test do conjunto principal, intenção nas 4 células.",
            "camada": L, "posicao": POS}
     for sae in ("16k", "262k"):

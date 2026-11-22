@@ -31,6 +31,7 @@
 |---|---|---|---|
 | 1 | O desenho 2×2 por frase-molde (diagrama) | Davi | à mão, a partir do exemplo do `00-visao-geral.md` |
 | 2 | **Scatter d_I × d_L** de todas as features, por camada, com as classes coloridas. É a figura central | Frederico | `results/frente-c/` |
-| 3 | Matriz C2 (heatmap): S_intent, S_lex, aleatório, denso × intenção com/sem gatilho, gatilho | Davi | `results/frente-d/c2_c4.json` |
-| 4 | AUROC do probe denso por camada, com o TF-IDF tracejado | Davi | `results/frente-d/probes_auroc_por_camada.png` |
+| 3 | Matriz C2 (heatmap): S_intent, S_lex, aleatório, denso × intenção com/sem gatilho, gatilho | Davi | `docs/paper/figuras/fig3_c2_matriz.png`, gerada por `results/frente-d/c2_secundaria.py` |
+| 4 | AUROC do probe denso por camada, com o TF-IDF tracejado | Davi | `docs/paper/figuras/fig4_probes.png`, gerada por `results/frente-d/c2_secundaria.py` |
 | 5 | Efeito causal da ablação (C5) | Caio | `results/frente-b/c5_ablacao.json` |
+| 6 | Queda no XSTest: S_intent × features sorteadas × denso × TF-IDF (C2b) | Davi | `docs/paper/figuras/fig6_c2b_xstest.png`, gerada por `results/frente-d/c2_secundaria.py` |

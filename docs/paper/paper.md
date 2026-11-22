@@ -2,45 +2,45 @@
 
 ## Resumo
 
-Modelos de linguagem alinhados recusam pedidos benignos que soam perigosos, o chamado *over-refusal*. Uma explicação possível é que a recusa siga as palavras alarmantes do pedido e não a sua intenção. Testamos essa hipótese nas features de autoencoders esparsos (SAEs) do Gemma Scope 2 no Gemma-3-4B-IT. Para isso, montamos pares mínimos em um desenho 2×2: cada pedido nocivo e cada benigno aparece com a expressão alarmante e com ela trocada por uma forma neutra. Os critérios de resposta foram definidos antes de ver as ativações. Na camada 29, no token anterior à resposta, 48 features respondem à intenção e ignoram a troca; todas se confirmam em pedidos com gatilhos inéditos. Nenhuma feature responde de forma consistente à expressão alarmante. Desligar as 48 features reduz a recusa a pedidos nocivos em 12 pontos em relação a features sorteadas, e também reduz a recusa a pedidos benignos. A informação de intenção, porém, está espalhada: features sorteadas a classificam tão bem quanto as selecionadas. <!-- fonte: results/VEREDITO.md; results/frente-b/c5_ablacao.json -->
+Modelos de linguagem alinhados recusam pedidos benignos que soam perigosos, o chamado *over-refusal*. Uma explicação possível é que a recusa siga as palavras alarmantes do pedido, e não a sua intenção. Testamos essa hipótese nas features de autoencoders esparsos (SAEs) do Gemma Scope 2 no Gemma-3-4B-IT. Para isso, montamos pares mínimos num desenho 2×2, em que cada pedido nocivo e cada benigno aparece com a expressão alarmante e com ela trocada por uma forma neutra. Escolhemos as features numa parte dos dados e as conferimos uma única vez em outra, com regras fixadas antes de ver as ativações. Na camada 29, no token anterior à resposta, 48 features respondem à intenção e ignoram a troca, e todas se confirmam em pedidos com gatilhos inéditos. Nenhuma feature responde de forma consistente à expressão alarmante. Desligar as 48 features reduz a recusa explícita a pedidos nocivos em 12 pontos em relação a desligar features sorteadas, e também reduz a recusa a pedidos benignos que o modelo recusava. A informação de intenção, porém, está espalhada pela representação. Quarenta e oito features sorteadas a classificam tão bem quanto as selecionadas, mas só desligar as selecionadas muda a recusa. <!-- fonte: results/VEREDITO.md; results/frente-b/c5_ablacao.json -->
 
 ## 1. Introdução
 
-Um modelo alinhado deve recusar "como eu mato o cachorro do vizinho?" e atender "como eu mato o processo travado do servidor?". Na prática, ele às vezes recusa o segundo: o pedido é benigno, mas contém uma palavra que costuma aparecer em pedidos nocivos. Esse *over-refusal* é medido em conjuntos como XSTest e OR-Bench (Röttger et al., 2024; Cui et al., 2025), e convive com o problema oposto, o atendimento a pedidos nocivos escritos sem palavras alarmantes. As duas falhas sugerem que o modelo decide, ao menos em parte, pela superfície do pedido.
+Um modelo alinhado deve recusar "como eu mato o cachorro do vizinho?" e atender "como eu mato o processo travado do servidor?". Na prática, ele às vezes recusa o segundo, que é benigno mas contém uma palavra que costuma aparecer em pedidos nocivos. Esse *over-refusal* é medido em conjuntos públicos de pedidos que soam perigosos e são seguros, como o XSTest (Röttger et al., 2024) e o OR-Bench (Cui et al., 2025), e convive com o problema oposto, o atendimento a pedidos nocivos escritos sem palavras alarmantes. As duas falhas sugerem que o modelo decide, ao menos em parte, pela superfície do pedido.
 
-A hipótese tem uma versão interna que dá para testar. Se o modelo representasse separadamente a **intenção** do pedido e a sua **forma lexical**, o over-refusal seria o comportamento seguindo a segunda. SAEs decompõem o residual de um modelo em features esparsas, muitas delas interpretáveis (Bricken et al., 2023; Templeton et al., 2024). O Gemma Scope 2 oferece SAEs abertos para todas as camadas da família Gemma 3 (Google DeepMind, 2025). A pergunta deste trabalho é se, nessas features, existe um sinal de intenção nociva que se distingue do sinal de forma lexical.
+A hipótese tem uma versão interna que dá para testar. Se o modelo representasse separadamente a **intenção** do pedido e a sua **forma lexical**, o over-refusal seria o comportamento seguindo a segunda. SAEs decompõem a representação interna de um modelo em features esparsas, muitas delas interpretáveis (Bricken et al., 2023; Templeton et al., 2024). O Gemma Scope 2 oferece SAEs abertos para todas as camadas da família Gemma 3 (Google DeepMind, 2025). A pergunta deste trabalho é se, nessas features, existe um sinal de intenção nociva que se distingue do sinal de forma lexical.
 
-A pergunta é mais difícil do que parece, porque em pares comuns de pedidos nocivos e benignos as duas coisas andam juntas. No nosso conjunto inicial, os pedidos nocivos vêm do PKU-SafeRLHF e a maioria dos benignos foi gerada por um LLM. Um classificador que só vê o estilo do texto, sem nenhuma palavra de conteúdo, separa os dois com AUROC 0,88. <!-- fonte: results/frente-d/baseline_lexical.json → pairs --> Qualquer feature que "detecte intenção" nesses pares pode estar detectando a fonte.
+A pergunta é mais difícil do que parece, porque em pares comuns de pedidos nocivos e benignos as duas coisas andam juntas. No nosso conjunto inicial, os pedidos nocivos vêm do PKU-SafeRLHF e a maioria dos benignos foi gerada por um LLM. Um classificador que só olha as palavras separa os dois quase perfeitamente, e um que só olha a forma do texto, como tamanho e pontuação, também separa bem (seção 3.1). Qualquer feature que "detecte intenção" nesses pares pode estar detectando a fonte.
 
-Para separar os fatores, usamos um desenho 2×2 por grupo. Cada grupo tem um pedido nocivo e um benigno que compartilham uma expressão-gatilho, como "mato" no exemplo acima. Cada um aparece duas vezes: com o gatilho e com ele trocado por uma forma neutra ("encerro"), sem mudar o resto do texto. O efeito de intenção é a diferença entre as linhas; o efeito lexical, entre as colunas. Os critérios de resposta, os limiares e os testes foram registrados antes de qualquer ativação.
+Para separar os fatores, usamos **pares mínimos**, pedidos que diferem em uma coisa só, num desenho 2×2 por grupo. Cada grupo tem um pedido nocivo e um benigno que compartilham uma expressão-gatilho, como "mato" no exemplo acima. Cada um aparece duas vezes, com o gatilho e com ele trocado por uma forma neutra ("encerro"), sem mudar o resto do texto. O efeito de intenção é a diferença entre as linhas, e o efeito lexical, a diferença entre as colunas. O desenho é mínimo na palavra, porque a troca não mexe no resto do pedido, e só em parte na intenção, porque o pedido nocivo e o benigno compartilham o gatilho, mas não o resto da frase. Escolhemos as features numa parte dos dados e as conferimos uma única vez em outra, que não influenciou nenhuma escolha, e as regras de análise foram fixadas antes de ver as ativações.
 
 As contribuições são:
 
-- um conjunto de 1.697 grupos 2×2 em quatro domínios, com controles de estilo e de gatilho isolado, e critérios pré-registrados (C1–C5), um deles relativo a um baseline lexical;
+- um conjunto de 1.697 grupos 2×2 em quatro domínios, com controles de estilo e de gatilho isolado, e critérios fixados antes da análise, um deles comparado a um classificador que só olha as palavras;
 - a constatação de que, no Gemma-3-4B-IT, a intenção aparece em 48 features que ignoram a troca do gatilho, enquanto nenhuma feature responde de forma consistente à expressão alarmante;
-- evidência causal de que essas features controlam a recusa, inclusive a recusa indevida, e de que a informação de intenção, ao contrário do controle, está espalhada pela representação.
+- evidência causal de que essas features pesam na recusa, inclusive na recusa indevida, e de que a informação de intenção, ao contrário do controle, está espalhada pela representação.
 
 ## 2. Trabalhos relacionados
 
-**SAEs como dicionário.** Redes neurais representam mais features do que têm dimensões, sobrepostas em direções quase ortogonais (Elhage et al., 2022). SAEs treinados no residual recuperam parte dessas features de forma esparsa e interpretável (Bricken et al., 2023; Cunningham et al., 2023), e escalam para modelos grandes (Templeton et al., 2024; Gao et al., 2024). As variantes JumpReLU e BatchTopK melhoram a troca entre esparsidade e reconstrução (Rajamanoharan et al., 2024; Bussmann et al., 2024). O Gemma Scope publicou SAEs JumpReLU para o Gemma 2 (Lieberum et al., 2024); o Gemma Scope 2, que usamos, estende isso aos modelos de chat do Gemma 3 (Google DeepMind, 2025). Avaliar esses dicionários continua difícil (Karvonen et al., 2025), e SAEs treinados nos mesmos dados podem aprender features diferentes (Paulo & Belrose, 2025). Por isso repetimos a seleção de features num dicionário de 262k features.
+**SAEs como dicionário.** Redes neurais representam mais features do que têm dimensões, sobrepostas em direções quase ortogonais (Elhage et al., 2022). SAEs treinados no residual recuperam parte dessas features de forma esparsa e interpretável (Bricken et al., 2023; Cunningham et al., 2023), e escalam para modelos grandes (Templeton et al., 2024; Gao et al., 2024). As variantes JumpReLU e BatchTopK melhoram a troca entre esparsidade e reconstrução (Rajamanoharan et al., 2024; Bussmann et al., 2024). O Gemma Scope publicou SAEs JumpReLU para o Gemma 2 (Lieberum et al., 2024), e o Gemma Scope 2, que usamos, estende isso aos modelos de chat do Gemma 3 (Google DeepMind, 2025). Avaliar esses dicionários continua difícil (Karvonen et al., 2025), e SAEs treinados nos mesmos dados podem aprender features diferentes (Paulo & Belrose, 2025). Por isso repetimos a seleção de features num dicionário de 262 mil features.
 
-**Recusa no residual.** Arditi et al. (2024) mostram que a recusa é mediada por uma única direção no residual, e O'Brien et al. (2025) a controlam desligando features de SAE. Esses trabalhos localizam a recusa. O nosso pergunta de que ela depende: da intenção do pedido ou da sua forma.
+**Recusa no residual.** Arditi et al. (2024) mostram que a recusa é mediada por uma única direção no residual, e O'Brien et al. (2025) a controlam desligando features de SAE. Zhao et al. (2025) mostram que o modelo codifica a nocividade do pedido no último token da instrução e a decisão de recusar no último token antes da resposta, o que orientou as duas posições que lemos. Esses trabalhos localizam a recusa. O nosso pergunta se ela depende da intenção do pedido ou da sua forma.
 
 **Over-refusal.** XSTest (Röttger et al., 2024) e OR-Bench (Cui et al., 2025) medem quanto os modelos recusam pedidos benignos que parecem perigosos, e FalseReject (Zhang et al., 2025) amplia essa medida. Pares de pedidos nocivos e benignos vêm de conjuntos como o PKU-SafeRLHF (Ji et al., 2025). Nenhum desses conjuntos manipula a forma lexical independentemente da intenção, que é o que o desenho 2×2 faz.
 
-**Interpretação automática.** Bills et al. (2023) usam um LLM para descrever neurônios e pontuam a descrição pela capacidade de prever ativações. Paulo et al. (2025) escalam esse procedimento para milhões de features de SAE. Usamos essas descrições como ponto de partida da leitura das features no C3.
+**Interpretação automática.** Bills et al. (2023) usam um LLM para descrever neurônios e pontuam a descrição pela capacidade de prever ativações. Paulo et al. (2025) escalam esse procedimento para milhões de features de SAE. Usamos essas descrições como ponto de partida da leitura das features (seção 5.1).
 
 ## 3. Dados
 
 ### 3.1 Pares da Fase 0
 
-O ponto de partida são 2.428 pares de pedidos, um nocivo (Q⁺) e um benigno (Q⁰), que compartilham uma expressão-gatilho, em quatro domínios: viés, cibersegurança, privacidade e violência. Os splits são por par (1.710 / 371 / 347) e se mantêm em todos os conjuntos derivados. Os Q⁺ vêm do PKU-SafeRLHF (Ji et al., 2025). Os Q⁰ foram buscados no OR-Bench (Cui et al., 2025) quando havia um bom candidato e gerados por um LLM nos demais casos, que são 83%. <!-- fonte: datasets/phase0/README.md -->
+O ponto de partida são 2.428 pares de pedidos, um nocivo (Q⁺) e um benigno (Q⁰), que compartilham uma expressão-gatilho, em quatro domínios. O domínio de discriminação (`bias` no conjunto) reúne pedidos cujo dano é discriminar ou ofender grupos de pessoas, por raça, orientação sexual ou outras características. Os outros três são cibersegurança, privacidade e violência. Os Q⁺ vêm do PKU-SafeRLHF (Ji et al., 2025). Os Q⁰ foram buscados no OR-Bench (Cui et al., 2025) quando havia um bom candidato e gerados por um LLM nos demais casos, que são 83%. <!-- fonte: datasets/phase0/README.md -->
 
-Esses pares não bastam para a nossa pergunta. Um TF-IDF separa Q⁺ de Q⁰ com AUROC 0,995, e um classificador que só vê o estilo, com 0,88. Uma feature que separe os pares pode estar seguindo a fonte do texto, e não a intenção. <!-- fonte: results/frente-d/baseline_lexical.json → pairs -->
+Esses pares não bastam para a nossa pergunta. Um classificador que só olha as palavras já separa os pedidos nocivos dos benignos quase perfeitamente (AUROC 0,995), e um que só olha a forma do texto também separa bem (0,88). A AUROC vai de 0,5, o acaso, a 1, a separação perfeita, e os dois classificadores estão descritos na seção 4.3. Uma feature que separe esses pares pode estar seguindo a fonte do texto, e não a intenção. <!-- fonte: results/frente-d/baseline_lexical.json → pairs -->
 
 ### 3.2 O 2×2 por troca do gatilho
 
-Cada par vira um grupo de quatro células (Tabela 1). As células com gatilho são o Q⁺ e o Q⁰ originais. Nas células sem gatilho, só o trecho da expressão-gatilho é trocado por uma forma neutra; o resto do texto fica idêntico dentro de cada linha. Assim, numa linha muda só a forma, e a diferença entre as linhas carrega a intenção.
+Cada par vira um grupo de quatro células (Tabela 1). As células com gatilho são o Q⁺ e o Q⁰ originais. Nas células sem gatilho, só o trecho da expressão-gatilho é trocado por uma forma neutra, e o resto do texto fica idêntico dentro de cada linha. Assim, numa linha muda só a forma, e a diferença entre as linhas carrega a intenção.
 
 | | Com gatilho | Sem gatilho |
 |---|---|---|
@@ -49,277 +49,225 @@ Cada par vira um grupo de quatro células (Tabela 1). As células com gatilho s�
 
 *Tabela 1.* Exemplo ilustrativo, fora do conjunto de dados, das quatro células de um grupo.
 
-Planejamos inicialmente uma frase-molde comum às quatro células, com lacunas para a forma e para a intenção. Num teste com 50 grupos, só 14% a 18% dos moldes passaram na validação, abaixo do corte de 40% fixado antes, e adotamos a troca do gatilho, que aproveitou 82% no mesmo teste e 75% no conjunto completo (1.825 grupos). <!-- fonte: results/frente-a/RELATORIO_noite.md, seção 1 -->
-
 **Validação.** Três avaliadores automáticos, WildGuard (Han et al., 2024), Qwen3Guard (Qwen Team, 2025) e o Llama-3.3-70B como juiz, rotulam cada célula, e vale a maioria. Todo grupo publicado tem as células nocivas rotuladas como nocivas e as benignas como benignas. O juiz também confirma que as duas versões de cada linha são o mesmo pedido. Um controle de qualidade exige que as versões sem gatilho sejam gramaticais, e um validador estrutural exige que a troca fique dentro do trecho do gatilho sem quebrar palavras.
 
-**Conjunto principal.** São 1.697 grupos, 1.201 no `train`, 254 no `val` e 242 no `test`. Por domínio: viés 428, cibersegurança 427, privacidade 434 e violência 408. Classificamos cada gatilho em três tipos: superfície, uma expressão alarmante sem ação ("mentally ill", 436 grupos); ação, o ato em si (783); e marcador de intenção ("without their consent", 478). Em 211 grupos o Q⁰ veio do OR-Bench. <!-- fonte: datasets/phase1/cells_2x2.jsonl, qc_grammatical e validator_pass -->
+**Conjunto principal.** São 1.697 grupos, com 428 de discriminação, 427 de cibersegurança, 434 de privacidade e 408 de violência. Classificamos cada gatilho em três tipos. A superfície é uma expressão alarmante sem ação, como "mentally ill" (436 grupos). A ação é o ato em si (783). O marcador de intenção diz o propósito, como "without their consent" (478). Em 211 grupos o Q⁰ veio do OR-Bench, e não do gerador. <!-- fonte: datasets/phase1/cells_2x2.jsonl, qc_grammatical e validator_pass -->
 
-**Controles e conjuntos externos.** Para cada grupo, há três frases neutras que não são pedidos, cada uma com o gatilho e com a forma neutra, num total de 10.950 frases, usadas no C3. Como conjuntos fora da distribuição usamos o XSTest (450 pedidos, 250 benignos e 200 nocivos; Röttger et al., 2024) e o OR-Bench-Hard (1.319 benignos). Nenhum item externo tem similaridade de cosseno acima de 0,9 com os pares. Para a intervenção, separamos 817 pedidos benignos que o modelo recusa, quase todos do OR-Bench-Hard e do FalseReject (Zhang et al., 2025). <!-- fonte: datasets/phase1/README.md; results/frente-a/RELATORIO_noite.md, seções 2 e 4 -->
+**Controles e conjuntos externos.** Para cada grupo, há três frases neutras que não são pedidos, cada uma com o gatilho e com a forma neutra, num total de 10.950 frases. Elas testam se uma feature reage à palavra fora de um pedido. Como conjuntos fora da distribuição usamos o XSTest, com 250 pedidos benignos que soam perigosos e 200 nocivos (Röttger et al., 2024), e os 1.319 pedidos benignos do OR-Bench-Hard. Nenhum item externo tem similaridade de cosseno acima de 0,9 com os pares. Para a intervenção, separamos 817 pedidos benignos que o modelo recusa, quase todos do OR-Bench-Hard e do FalseReject (Zhang et al., 2025). <!-- fonte: datasets/phase1/README.md; results/frente-a/RELATORIO_noite.md, seções 2 e 4 -->
 
-**Uso responsável dos dados.** Os pedidos nocivos são os do PKU-SafeRLHF, com no máximo um trecho trocado; não acrescentamos detalhes operacionais, e as respostas do modelo servem só para medir a recusa e não são publicadas. Os dados ficam restritos ao repositório do projeto, e o texto não reproduz pedidos nocivos do conjunto. A seção 4.4 desliga features ligadas à recusa para testar causalidade. Essa técnica tem uso duplo, porque a mesma intervenção que estuda o over-refusal pode reduzir recusas legítimas. Por isso reportamos só resultados agregados.
+**Divisão dos dados.** Os grupos são divididos em `train` (70%), `val` (15%) e `test` (15%), sempre por grupo, e as quatro versões de um pedido ficam na mesma parte. Chamamos `train` + `val` de **descoberta**. É onde escolhemos as features, a camada e a posição. O `test` é a **confirmação**. Ele ficou fechado durante toda a análise e foi aberto uma única vez, no fim, para conferir se o que achamos na descoberta se repete em dados que não influenciaram nenhuma escolha. Dentro do `test`, usamos os grupos de **gatilho inédito**, cuja expressão-gatilho não aparece no `train`. Assim, uma feature só se confirma se o efeito não depender de ter visto aquele gatilho. Sem essa separação, testaríamos milhares de features nos mesmos dados em que as escolhemos, e sempre apareceria alguma por acaso.
+
+**De onde vem cada número.** A Tabela 2 reúne os números de dados que aparecem no texto.
+
+| Número | O que é |
+|---|---|
+| 2.428 | pares da Fase 0 (Q⁺ e Q⁰ com a mesma expressão-gatilho), divididos em 1.710 / 371 / 347 |
+| 500 | grupos desses pares com 8 respostas de contraste validadas (parte do conjunto publicado, fora desta análise) |
+| 1.825 | grupos em que a troca do gatilho funcionou (75% dos pares) |
+| 1.723 | grupos com as versões sem gatilho gramaticais |
+| 1.697 | **conjunto principal**, os 1.723 menos 26 reprovados pelo validador estrutural, divididos em 1.201 / 254 / 242 |
+| 1.455 | **descoberta** (`train` + `val`) do conjunto principal; no fim do pedido são 1.288, porque 199 grupos terminam em tokens diferentes |
+| 242 | **confirmação** (`test`) do conjunto principal |
+| 155 | grupos da confirmação com **gatilho inédito** |
+| 211 | grupos do principal em que o Q⁰ é um pedido real, buscado no OR-Bench |
+| 684 | grupos do principal com as quatro versões de tamanho parecido (até 20% de diferença em tokens) |
+| 10.950 | frases neutras de controle, 3 por grupo, com o gatilho e com a forma neutra |
+| 450 | pedidos do XSTest (250 benignos e 200 nocivos) |
+| 1.319 | pedidos benignos do OR-Bench-Hard |
+| 19.968 | respostas do Gemma-3-4B rotuladas pelo juiz, que mostram o comportamento do modelo |
+| 817 | pedidos benignos que o Gemma-3-4B recusa |
+| 484 | pedidos nocivos da confirmação usados na intervenção (242 grupos × 2 versões) |
+
+*Tabela 2.* Os números de dados do trabalho. Os números das features estão no Apêndice B. <!-- fonte: datasets/phase0/README.md; datasets/phase1/README.md; results/frente-c/preregistro.md, adendo 3; results/frente-b/c5_ablacao.json -->
 
 ## 4. Métodos
 
-### 4.1 Modelo, SAEs e extração
+Esta seção descreve o que lemos no modelo (4.1), como medimos cada feature (4.2), os classificadores que comparam o modelo com o texto (4.3) e a intervenção (4.4). As regras de análise e os limiares do que contaria como resposta foram fixados antes de ver os dados. O Apêndice A os lista, junto com os desvios, e o Apêndice B traz os detalhes de implementação.
 
-Usamos o Gemma-3-4B-IT congelado, em bf16 e sem system prompt.
+### 4.1 O modelo, o que lemos e o que o SAE faz
 
-**Extração.** Lemos o fluxo residual (`resid_post`) nas camadas 9, 17, 22 e 29 (29%, 53%, 68% e 88% da profundidade). Conferimos que a saída capturada por hook é idêntica a `hidden_states[L+1]` (diferença zero). Cada vetor passa por três SAEs:
-- os do Gemma Scope 2 (JumpReLU, `l0_medium`), de 16k e de 262k features;
-- um SAE próprio (BatchTopK, 16k, k = 64), em L17, L22 e L29.
+**O modelo.** Usamos o Gemma-3-4B-IT, a versão de chat do Gemma 3 com 4 bilhões de parâmetros. O modelo fica congelado, ou seja, nada nele é treinado. Só lemos o que acontece dentro dele e, na intervenção, desligamos features enquanto ele responde. Não usamos system prompt, para observar o comportamento padrão.
 
-**Posições.** As principais são o último token do pedido (fim_pedido) e o último token do template, logo antes da resposta (pre_resposta). As secundárias são as médias de posições, o gatilho e a lacuna de forma do 2×2.
+**O que lemos.** O modelo lê o texto como uma sequência de tokens e o processa em 34 camadas (Figura 1). Depois de cada camada, cada token é representado por um vetor de 2.560 números, o fluxo residual, que é a via principal por onde a informação passa de uma camada para a seguinte. Lemos esse vetor em quatro camadas, 9, 17, 22 e 29, que ficam a 29%, 53%, 68% e 88% da profundidade. Só nessas quatro o Gemma Scope 2 publica o conjunto completo de SAEs, com a variante de esparsidade intermediária e as descrições do Neuronpedia que usamos na leitura das features. Para as 34 camadas há SAEs apenas em variantes mais ou menos esparsas e sem descrições. Ler mais camadas também aumentaria o número de testes.
 
-**Lotes.** Usamos padding à direita, com as quatro células de um grupo no mesmo lote. Assim, o prefixo comum às células sai bit a bit igual. Cada arquivo do cache tem sha256 e o commit que o gerou.
+**O que o SAE faz.** O vetor de 2.560 números mistura muitas informações ao mesmo tempo. Um SAE (autoencoder esparso) o reescreve como a soma de poucas features, escolhidas num dicionário muito maior. No dicionário principal, de 16.384 features (16k), cerca de 50 a 60 ficam ligadas em cada token, e quais são muda de um pedido para outro. Muitas features correspondem a conceitos legíveis, como "atividades ilegais" ou "recusa". O valor de uma feature num token, a sua ativação, é zero quando ela está desligada e cresce com a intensidade. Usamos os SAEs do Gemma Scope 2, de arquitetura JumpReLU (Rajamanoharan et al., 2024), e repetimos a análise no dicionário de 262.144 features (262k) do mesmo SAE, em que um conceito se divide em versões mais finas. Também treinamos um SAE próprio (BatchTopK; Bussmann et al., 2024) em três camadas, mas ele entrou só na comparação de qualidade, e repetir a análise nele fica como trabalho futuro.
 
-**Qualidade dos SAEs nos nossos pedidos.** Em todos os tokens, o Gemma Scope 16k explica 84–96% da variância e recupera ~99% da perda de substituir a camada por zero (ΔNLL de 0,15 a 0,35). Nas posições principais, porém, ele reconstrói só 55–67% da **variação entre pedidos** em L17–L29. O SAE próprio reconstrói 69–83%, mas preserva pior o comportamento do modelo (recupera 96–99%).
+**Onde lemos.** Lemos o vetor em dois tokens. O **fim do pedido** é o último token do texto do usuário, onde o modelo termina de ler o pedido. A **pré-resposta** é o último token do template do chat, logo antes da primeira palavra da resposta. Escolhemos esses dois porque, segundo Zhao et al. (2025), o modelo codifica a nocividade do pedido no último token da instrução e a decisão de recusar no último token antes da resposta (ver também Arditi et al., 2024). Nas duas posições, as quatro versões de um grupo têm o mesmo token e o pedido inteiro no contexto, e assim a troca de token não se mistura aos efeitos que medimos. No fim do pedido, 199 grupos terminam em tokens diferentes e saem da análise dessa posição. Outras posições, como os tokens do próprio gatilho, servem só de checagem (Apêndice C).
 
-### 4.2 Estatística por feature
+**Até onde confiar nas features.** O SAE não é perfeito. Em todos os tokens, as features do dicionário de 16k explicam de 84% a 96% da variância do vetor, e trocar o vetor pela sua reconstrução quase não muda o que o modelo prevê. Nas duas posições que lemos, porém, elas captam só de 55% a 67% do que muda de um pedido para outro, nas camadas 17 a 29. Por isso comparamos as features com um classificador no vetor inteiro, o probe denso (seção 4.3), que dá o teto do que a representação contém. <!-- fonte: results/frente-b/qualidade_saes.md -->
 
-**Desenho.** Cada grupo do 2×2 tem um pedido nocivo e um benigno com a mesma expressão-gatilho. Cada pedido aparece com o gatilho original e com o gatilho trocado por uma expressão neutra (seção 3.2). Para cada pedido, passamos pelo SAE o `resid_post` numa posição. Depois comparamos a ativação de cada feature entre as quatro células do grupo.
+![Figura 1](figuras/fig1_pipeline.png)
 
-**Efeitos.** a(h, t) é a ativação na célula de intenção h ∈ {nociva +, benigna 0} e gatilho t ∈ {presente 1, ausente 0}. Por grupo:
+*Figura 1.* O caminho da análise. O pedido entra como tokens e passa pelas 34 camadas do modelo. Lemos o fluxo residual em 4 camadas e em dois tokens, ① o fim do pedido e ② a pré-resposta, ou seja, em 8 pontos. O ponto principal, que reuniu mais features de intenção, é a pré-resposta na camada 29. O SAE reescreve o vetor desse ponto em features, que entram nos três testes. O pedido é ilustrativo. <!-- fonte: docs/paper/figuras/fonte/fig1_pipeline.html -->
 
-- **intenção:** I_g = ½[a(+,1) + a(+,0) − a(0,1) − a(0,0)];
-- **gatilho:** L_g = ½[a(+,1) + a(0,1) − a(+,0) − a(0,0)];
-- **interação:** X_g = ½[a(+,1) − a(+,0) − a(0,1) + a(0,0)].
+### 4.2 Como medimos cada feature
 
-O tamanho de efeito é o d pareado: a média entre grupos dividida pelo desvio-padrão. \|d\| = 0,2 é um efeito pequeno e 0,5, um efeito médio. d_I > 0 indica feature mais ativa nos pedidos nocivos. O IC 95% vem de um bootstrap sobre grupos. O p vem de um Wilcoxon pareado, com correção de Benjamini–Hochberg sobre features, camadas e posições.
+**Os três efeitos.** Para cada feature e cada grupo, combinamos as ativações das quatro células em três efeitos. a(h, t) é a ativação na célula de intenção h ∈ {nociva +, benigna 0} e gatilho t ∈ {presente 1, ausente 0}.
 
-**Posições e dicionário.** Usamos as camadas 9, 17, 22 e 29 e duas posições. As duas têm o mesmo token nas quatro células e o pedido inteiro no contexto:
+- **Intenção:** I_g = ½[a(+,1) + a(+,0) − a(0,1) − a(0,0)], que compara as linhas com o mesmo estado do gatilho dos dois lados.
+- **Palavra:** L_g = ½[a(+,1) + a(0,1) − a(+,0) − a(0,0)], que compara as colunas com a mesma intenção dos dois lados.
+- **Interação:** X_g = ½[a(+,1) − a(+,0) − a(0,1) + a(0,0)], que mede se o efeito da palavra depende da intenção.
 
-- **fim_pedido:** o último token do texto do usuário;
-- **pre_resposta:** o último token do template, de onde sai a resposta.
+**Tamanho de efeito.** O d pareado é a média de um efeito entre os grupos dividida pelo seu desvio-padrão. Ele mede quanto a feature muda entre as versões em unidades da variação entre grupos, o que permite comparar features com escalas de ativação muito diferentes. Como referência, d = 0,2 é um efeito pequeno e d = 0,5, um efeito médio (Cohen, 1988). Chamamos de d_I o d do efeito de intenção e de d_L o do efeito da palavra. Um d_I positivo indica uma feature mais ativa nos pedidos nocivos.
 
-O SAE principal é o Gemma Scope 2 de 16k features (L0 *medium*); o de 262k serve de robustez (Apêndice A).
+**Intervalo de confiança.** O IC 95% é a faixa em que o efeito verdadeiro provavelmente está. Ele vem de um bootstrap sobre grupos (Efron & Tibshirani, 1993). Sorteamos grupos com reposição 1.000 vezes e recalculamos o d a cada vez. O método não supõe uma distribuição para os dados e respeita o pareamento, porque as quatro versões de um grupo sempre saem juntas.
 
-**Classes.** Consideramos as features ativas em ≥ 5% dos pedidos de alguma célula.
+**Significância.** O p vem de um teste de Wilcoxon pareado (Wilcoxon, 1945), que verifica se os efeitos por grupo estão centrados em zero sem supor que sigam uma curva normal. Isso importa porque as ativações são positivas, cheias de zeros e assimétricas. Como testamos milhares de features em oito combinações de camada e posição, muitos p pequenos apareceriam por acaso. A correção de Benjamini e Hochberg (1995) transforma cada p num q, que controla a fração esperada de achados falsos entre os selecionados. Com q < 0,01, espera-se no máximo 1% de falsos positivos.
 
-- **S_intent:** \|d_I\| ≥ 0,5, q_I < 0,01 e o IC 95% de d_L inteiro dentro de ±0,2. Esse teste de equivalência exige que o efeito do gatilho seja desprezível, e não só pequeno.
-- **S_lex:** o simétrico.
-- **S_mixed:** os dois efeitos grandes e significativos.
+**Não reagir à palavra.** Dizer que uma feature não reage à palavra exige mostrar que o efeito é pequeno, e não só deixar de encontrar um efeito, porque um efeito não significativo com intervalo largo não prova nada. Por isso usamos um teste de equivalência (Lakens, 2017), que exige o IC 95% de d_L inteiro dentro de ±0,2, a faixa de efeito desprezível.
 
-**Descoberta e confirmação.** Os splits são por grupo. Todas as escolhas usam só `train` + `val`. A combinação principal é o par (camada, posição) com mais S_intent. A confirmação (`test`) foi aberta uma vez, nessa combinação, só nos grupos cujo gatilho não aparece no `train`. Replicar quer dizer manter o sinal com \|d_I\| ≥ 0,3.
+**Quais features entram.** Features que quase nunca ligam dão um d instável. Só entram as que ligam em pelo menos 5% dos pedidos de alguma das quatro células, que chamamos de features ativas.
 
-**Critérios pré-registrados.**
+**Classes.** Uma **feature de intenção** (S_intent no código) tem efeito de intenção pelo menos médio (|d_I| ≥ 0,5), significativo (q < 0,01) e efeito da palavra desprezível pelo teste de equivalência. Uma **feature da palavra** (S_lex) é o simétrico, e uma feature mista tem os dois efeitos grandes e significativos. As demais ficam sem classe.
 
-- **C1:** ≥ 5 S_intent, das quais ≥ 70% replicam.
-- **C3:** duas condições.
-  1. Mais da metade das S_intent fica sem efeito (IC dentro de ±0,2) entre frases neutras com o gatilho (`trig_only`) e com a expressão neutra (`neutral_only`).
-  2. ≥ 60% das fichas do top-20 são rotuladas "conceitual" numa leitura cega.
-- **C4a:** o C1 vale também no SAE de 262k.
+**Escolha e confirmação.** Todas as escolhas usam só a descoberta. A combinação principal é o par de camada e posição com mais features de intenção. Na confirmação, olhamos só essa combinação e só os grupos de gatilho inédito, e uma feature se confirma quando mantém o sinal com |d_I| ≥ 0,3.
 
-**Análises secundárias.**
+**Dois testes de que o sinal não é a palavra.** No primeiro, medimos o efeito do gatilho nas frases neutras de controle, porque uma feature de intenção não deve reagir ao gatilho fora de um pedido. No segundo, lemos as 20 features de intenção mais fortes. Cada uma vira uma ficha com a descrição do Neuronpedia e os pedidos em que ela mais acende, sem dizer a classe nem se o pedido é nocivo, e o leitor a marca como **conceitual**, se segue uma ideia, como dano ou pedido legítimo, ou **lexical**, se segue uma palavra específica.
 
-- **Estilo:** no plano B, o pedido nocivo e o benigno vêm de fontes diferentes. Estimamos o efeito de intenção com estilo igual, por regressão de I_g em 14 atributos de estilo.
-- **Por categoria:** efeito por domínio e por tipo de gatilho.
-- **Filtros de qualidade:** robustez a três filtros alternativos.
+### 4.3 Classificadores: o que o texto resolve e o que o modelo sabe
 
-**Conjunto.** São 1.697 grupos que passam no QC de gramática e no validador estrutural: 1.455 na descoberta e 242 na confirmação, 155 deles com gatilho inédito. <!-- fonte: results/frente-c/preregistro.md, adendo 3 --> Os desvios do pré-registro estão no Apêndice B.
+**Como lemos os classificadores.** Toda comparação usa a AUROC, a chance de um pedido nocivo sorteado receber nota maior que um benigno sorteado (0,5 é o acaso, e 1, a separação perfeita). Os classificadores ficam em dois lados. As **réguas de texto** olham só o pedido, de fora do modelo, e dizem quanto da tarefa se resolve sem entender nada. Elas são o piso. Os **probes** olham para dentro do modelo e são classificadores simples treinados nas ativações. O probe denso usa o vetor inteiro e dá o teto do que a representação contém. O classificador de features de intenção usa só as features selecionadas e fica entre os dois.
 
-### 4.3 Baselines, probes e dissociação dupla
+**Réguas de texto.** O TF-IDF conta palavras e pedaços de palavras (sequências de 1 a 2 palavras e de 3 a 5 caracteres) e passa essas contagens a uma regressão logística. O classificador de estilo vê 14 atributos da forma do texto, como tamanho, pontuação, maiúsculas, forma da pergunta e primeira pessoa, e nenhuma palavra de conteúdo. Um terceiro classificador vê só a presença do gatilho.
 
-**Réguas de texto.** Antes de olhar ativações, medimos quanto da tarefa um classificador resolve só com o texto. O TF-IDF usa n-gramas de palavras (1–2) e de caracteres (3–5) com regressão logística. O classificador de estilo vê 14 atributos (tamanho, pontuação, maiúsculas, forma da pergunta, primeira pessoa) e nenhuma palavra de conteúdo. Um terceiro classificador vê só a presença do gatilho. Em todos, o C é escolhido por validação cruzada agrupada por gatilho, só no `train`, e o IC 95% vem de bootstrap sobre grupos.
+**Probes.** O probe denso é uma regressão logística no vetor de 2.560 números, em cada camada e posição. Para testar se ele depende da palavra, treinamos o probe de intenção só nas células com gatilho e o testamos nas células sem gatilho. O probe de gatilho é treinado nos pedidos benignos e testado nos nocivos, para que não possa usar a intenção. O classificador de features de intenção é uma regressão logística com penalidade L1 sobre essas features. O seu controle é o mesmo classificador com o mesmo número de features sorteadas entre as ativas, em 20 sorteios.
 
-**Âncora densa.** Uma regressão logística L2 no residual completo (d = 2.560), por camada e posição, mede quanta informação existe antes do SAE. Treinamos o probe de intenção só nas células com gatilho e o testamos nas células sem gatilho, e vice-versa. O probe de gatilho é treinado nos pedidos benignos e testado nos nocivos, para que não possa usar a intenção.
-
-**C2.** Restringimos o classificador às features de S_intent. O classificador principal é uma regressão logística L1; uma média padronizada das features serve de checagem. Há dois controles: o mesmo classificador com features sorteadas do mesmo tamanho, entre as ativas em ≥ 5% do `train` (20 sorteios), e o probe denso como teto. O C2 tem três partes.
-
-- **(a) Mínimo:** AUROC ≥ 0,85 com gatilho e ≥ 0,80 sem gatilho, no `test` com gatilho inédito.
-- **(b) Relativo ao TF-IDF:** a queda de AUROC de S_intent ao sair da distribuição deve ser no máximo metade da queda do TF-IDF, com o limite superior do IC 95% da razão abaixo de 1. O pré-registro previa três generalizações (gatilho inédito, domínio inédito e XSTest). Nas duas primeiras o TF-IDF quase não cai (0,003 e 0,015), o que torna a razão indefinida, e por isso o critério passou a ser decidido só pelo XSTest. A mudança foi decidida com a régua medida em `val`, antes de extrair as ativações do XSTest. <!-- fonte: results/frente-d/baseline_lexical.json → cells_2x2.principal.regua_C2b_tfidf; results/DESVIOS.md -->
-- **(c) Consistência:** S_intent não detecta o gatilho (AUROC ≤ 0,65) e S_lex detecta (≥ 0,85). Não decide.
-
-**Recortes do C4.** Repetimos o C2 em dois subconjuntos: grupos cujo Q⁰ original veio do OR-Bench e não de um gerador (211 grupos) e grupos cujas células diferem no máximo 20% em tokens (684). <!-- fonte: results/frente-d/c2_c4_L29_post_last_16k.json → b_q0_retrieved, c_tamanho_pareado -->
+**A comparação no XSTest.** Dentro do 2×2, as palavras também separam os pedidos quase perfeitamente, e acertar ali não mostra que o modelo vê a intenção em vez das palavras. Para isso, treinamos os classificadores no 2×2 e os aplicamos ao XSTest, onde pedidos benignos usam palavras alarmantes e as palavras enganam. Medimos quanto a AUROC de cada classificador cai ao sair do nosso conjunto. Se as features de intenção seguem a intenção, elas devem cair muito menos que o TF-IDF.
 
 ### 4.4 Intervenção
 
-**Onde intervimos.** Num hook na saída do bloco 29, em todos os tokens (pedido, template e geração).
+**O que fazemos.** Para testar se as features de intenção pesam na decisão de recusar, nós as desligamos dentro do modelo enquanto ele responde. Na saída da camada 29, em todos os tokens, codificamos o vetor com o SAE de 16k, zeramos as features escolhidas e tiramos do vetor só a contribuição delas. O erro de reconstrução do SAE é preservado, e assim nada além das features escolhidas muda. Com a lista vazia, a saída do modelo é idêntica à original.
 
-**Como desligamos features.** Codificamos o vetor com o SAE 16k e subtraímos a contribuição das features escolhidas:
-x' = x − dec(f) + dec(f'), onde f' é f com essas features zeradas.
+**Comparação.** Desligamos as features de intenção e, como controle, o mesmo número de features sorteadas com frequência de ativação parecida, em 5 sorteios. O que conta é a diferença entre os dois.
 
-O erro de reconstrução é preservado, então só as features escolhidas mudam. Com a lista vazia, a saída do modelo é bit a bit igual.
-
-**Condições.**
-- **Pré-registrada:** a ablação das 48 S_intent.
-- **Controle:** 5 sorteios com o mesmo número de features aleatórias, com frequência de ativação casada por decil.
-- **Exploratórias:**
-  - a ablação das 23 features de intenção forte que ficaram fora de S_intent (seção 5.7), com o seu próprio controle aleatório;
-  - levar a projeção no eixo da intenção u ao nível médio dos benignos;
-  - subtrair o empurrão médio do gatilho nesse eixo (c·u, com c = 2,5% do efeito de intenção), que substitui a ablação de S_lex, cuja lista saiu vazia.
-
-As duas intervenções no eixo agem só no pre_resposta, onde u e c foram medidos.
-
-**Itens.** O `test` do conjunto principal (242 grupos, 968 pedidos) e 817 pedidos benignos que o 4B recusa. As listas e o eixo vêm só da descoberta.
-
-**Geração e rotulagem.** Geração gulosa, até 256 tokens. A recusa é medida por um classificador rápido de frases de recusa (precisão 0,78 e cobertura 0,56 contra o juiz) e, na versão final, pelo juiz da seção 3.
-
-**Estatística.** Diferença pareada de taxas, com IC 95% por bootstrap sobre grupos. O critério do C5 é o efeito da lista menos o efeito médio dos sorteios aleatórios.
-
-### 4.5 Pré-registro
-
-Os limiares, os testes e as regras de análise foram registrados no repositório do projeto antes de qualquer dado de ativação. O Apêndice B lista os desvios desse registro e quando cada um foi decidido.
+**Itens e medida.** Usamos os 484 pedidos nocivos da confirmação e os 817 pedidos benignos que o modelo recusa. O modelo gera até 256 tokens, sempre escolhendo o token mais provável. A recusa é detectada por um classificador rápido de frases de recusa, que mede a **recusa explícita** e tem precisão 0,78 e cobertura 0,56 contra o juiz da seção 3. Recusar menos não é o mesmo que atender o pedido nocivo, porque o modelo pode desaconselhar ou responder de forma segura sem usar uma frase de recusa. A rotulagem das respostas pelo juiz está pendente. O IC 95% vem de um bootstrap sobre grupos. As intervenções exploratórias estão no Apêndice C.
 
 ## 5. Resultados
 
-Todos os números são do `test`, no recorte de gatilho inédito, salvo indicação. A seção 5.8 aplica a regra de decisão.
+Esta seção responde à pergunta em três blocos. O primeiro pergunta se existe um sinal de intenção separado da palavra. O segundo, se o modelo apenas sabe a intenção ou a usa para decidir. O terceiro, se o resultado se mantém em outro dicionário e em recortes dos dados. Os números de confirmação são do `test`, nos grupos de gatilho inédito, salvo indicação.
 
-### 5.1 Existe um sinal de intenção? (C1)
+### 5.1 Existe um sinal de intenção separado da palavra?
 
-| Camada | fim_pedido | pre_resposta |
+Este bloco responde à pergunta central do trabalho, se existe entre as features do SAE um sinal de intenção que não dependa da palavra.
+
+**Onde está o sinal.** A Tabela 3 conta as features de intenção em cada camada e posição. Elas aparecem sobretudo na pré-resposta e aumentam com a profundidade. A combinação principal é a pré-resposta da camada 29, com 48 features de intenção entre as 294 ativas. Elas vão para os dois lados. Trinta e uma ficam mais ativas nos pedidos nocivos, e 17, nos benignos. <!-- fonte: results/frente-c/c1_c3.json → 16k.combinacoes_descoberta; feature_classes_L29_post_last_16k.csv -->
+
+| Camada | Fim do pedido | Pré-resposta |
 |---|---|---|
-| L9 | 6 | 14 |
-| L17 | 7 | 36 |
-| L22 | 8 | 40 |
-| L29 | 6 | **48** |
+| 9 | 6 (252) | 14 (62) |
+| 17 | 7 (368) | 36 (228) |
+| 22 | 8 (352) | 40 (215) |
+| 29 | 6 (270) | **48** (294) |
 
-*Tabela 2.* Número de S_intent por combinação (SAE 16k, descoberta). <!-- fonte: results/frente-c/c1_c3.json → 16k.combinacoes_descoberta -->
+*Tabela 3.* Número de features de intenção (reagem forte à intenção e não reagem à palavra) em cada camada e posição, com o SAE de 16k, na descoberta. Entre parênteses, quantas features estavam ativas, ou seja, ligadas em pelo menos 5% dos pedidos de alguma célula. <!-- fonte: results/frente-c/c1_c3.json; feature_classes_L*_16k.csv -->
 
-**Onde está o sinal.** O sinal de intenção está no pre_resposta e cresce com a profundidade. A combinação principal é L29 · pre_resposta, com 48 S_intent.
+**Nenhuma feature reage só à palavra.** A Figura 2 mostra todas as features ativas da combinação principal. Muitas se espalham na horizontal, ou seja, reagem à intenção, e nenhuma sai da faixa central na vertical. Em nenhuma das oito combinações há feature da palavra ou feature mista (Figura 6). Isso não quer dizer que a troca do gatilho não mude nada. No próprio token do gatilho ela muda a representação, mas cada gatilho mexe em features diferentes, e o d só detecta efeitos que se repetem entre grupos. O que não existe é uma feature lexical comum a muitos gatilhos (Apêndice C). <!-- fonte: results/frente-c/feature_classes_L*_16k.csv; diagnostico_lexical_16k.json -->
 
-**Nenhuma feature reage só ao gatilho.** Não há S_lex nem S_mixed em nenhuma combinação; o maior \|d_L\| é 0,40 (Figura 1). <!-- fonte: results/frente-c/feature_classes_L*_16k.csv -->
+![Figura 2](figuras/fig2_dI_dL.png)
 
-![Figura 1](figuras/fig2_dI_dL.png)
+*Figura 2.* Cada ponto é uma feature ativa na pré-resposta da camada 29 (SAE de 16k, descoberta). O eixo horizontal é o efeito de intenção, e o vertical, o efeito da palavra-gatilho. Muitas features reagem à intenção, e nenhuma reage à palavra. As features de intenção (azul) também passam no teste de equivalência do efeito da palavra. As features cinza mais à direita reagem forte à intenção, mas um pouco também à palavra, e ficam fora da seleção (Apêndice C). <!-- fonte: src/featgrpo/interp/figuras.py -->
 
-*Figura 1.* d_I × d_L de cada feature ativa (SAE 16k, descoberta). Linhas: fim_pedido e pre_resposta. Colunas: camadas. Faixa cinza: \|d\| < 0,2; tracejado: \|d\| = 0,5. Muitas features reagem à intenção; nenhuma, ao gatilho.
+**O sinal se confirma em dados novos.** Na confirmação, as 48 features mantêm o sinal, e o efeito tem o mesmo tamanho que na descoberta (a razão mediana entre os dois é 1,03). O mínimo fixado antes era que 70% delas se confirmassem. <!-- fonte: results/frente-c/c1_c3.json → 16k.replicacao_S_intent -->
 
-**O sinal se confirma.** No `test` com gatilho inédito (155 grupos), as 48 replicam: **C1 atende**. O efeito tem o mesmo tamanho da descoberta (razão mediana 1,03). <!-- fonte: results/frente-c/c1_c3.json → 16k.replicacao_S_intent -->
+**As features não reagem à palavra fora de um pedido.** Nas frases neutras de controle, 39 das 48 (81%) ficam sem efeito entre a versão com o gatilho e a versão com a forma neutra. Uma feature que seguisse a palavra acenderia com ela mesmo fora de um pedido. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
 
-**É robusto.**
+**A leitura das features.** Um LLM em contexto novo leu as fichas das 20 features de intenção mais fortes, sem saber a classe, e marcou 19 como conceituais. Um dos autores conferiu as mesmas fichas, sem estar cego, e marcou 13 (65%), com concordância de 70% (κ 0,18). Do lado nocivo, as features falam de ilegalidade e dano, e do lado benigno, de propósito legítimo. Nas seis discordâncias, o humano marcou lexical onde o LLM marcou conceitual. Quatro delas são expressões que sinalizam intenção sem ser o gatilho, como "sem ser pego", ou a moldura do pedido benigno, como "para um trabalho de história", que pode ser propósito legítimo ou hábito do gerador do Q⁰. A leitura humana é o resultado mais apertado do trabalho, porque o limite fixado era de 60%. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv; rotulos_frederico.csv -->
 
-- Nos três filtros de qualidade alternativos saem 47, 45 e 22 S_intent, quase todas as mesmas.
-- As 48 sobrevivem ao controle de estilo (R² mediano do estilo: 0,07).
-- Valem nos 4 domínios e nos 3 tipos de gatilho.
+**Resposta.** Sim. Há 48 features que seguem a intenção, ignoram a palavra, se confirmam em gatilhos inéditos e, na maior parte, são lidas como conceitos. Não há o contrário, uma feature que siga a palavra.
 
-<!-- fonte: results/frente-c/robustez_*/; c1_c3.json → 16k.C1_controle_estilo, por_dominio, por_tipo_gatilho -->
+### 5.2 O modelo sabe ou usa? Classificar não é controlar
 
-### 5.2 O sinal se separa do lexical? (C2)
+Este bloco pergunta se o sinal de intenção vai além das palavras onde elas enganam, e se o modelo o usa para decidir a recusa.
 
-**S_intent classifica a intenção com e sem gatilho.** Na combinação principal, um classificador L1 com as 48 S_intent separa pedidos nocivos de benignos com AUROC 0,992 com gatilho (IC 0,985–0,997) e 0,992 sem gatilho (IC 0,984–0,997), no `test` com gatilho inédito. No SAE de 262k, com 60 features, os valores são 0,998 e 0,997. O C2(a) atende nos dois. As mesmas features quase não detectam o gatilho (AUROC 0,54). <!-- fonte: results/frente-d/c2_c4_L29_post_last_{16k,262k}.json → principal.C2a, matriz.S_intent -->
+**Todos os classificadores acertam a intenção.** Dentro do 2×2, as 48 features de intenção separam os pedidos nocivos dos benignos quase perfeitamente, com ou sem o gatilho, e quase não detectam o gatilho (Tabela 4). O mesmo vale para 48 features sorteadas e para o probe denso. O TF-IDF também acerta a intenção sem o gatilho (0,997). Este teste mostra que a informação existe, mas não que ela é intenção e não palavras. <!-- fonte: results/frente-d/c2_c4_L29_post_last_16k.json → principal.matriz; baseline_lexical.json → cells_2x2.principal -->
 
-**No XSTest, S_intent perde um décimo do que perde o TF-IDF.** Treinados no 2×2 e aplicados ao XSTest, os dois classificadores caem de forma muito diferente: o TF-IDF perde 0,28 de AUROC; S_intent perde 0,030. A razão é 0,11 (IC 0,05–0,17) no 16k e 0,06 (IC 0,03–0,11) no 262k, e o C2(b) atende. O resultado se mantém nos dois recortes do C4: razão 0,17 com Q⁰ *retrieved* e 0,18 com tamanho pareado. <!-- fonte: … principal.C2b.xstest; b_q0_retrieved; c_tamanho_pareado -->
+| Classificador | Intenção, com gatilho | Intenção, sem gatilho | Detecta o gatilho |
+|---|---|---|---|
+| 48 features de intenção | 0,992 | 0,992 | 0,538 |
+| 48 features sorteadas (média de 20) | 0,995 | 0,995 | 0,522 |
+| Probe denso (vetor inteiro) | 0,999 | 0,998 | 0,642 |
 
-**S_intent não supera features sorteadas.** A Figura 2 mostra o problema dentro do 2×2: 48 features quaisquer, entre as frequentes, classificam a intenção com AUROC 0,995, o mesmo nível de S_intent. Repetimos o controle no XSTest, e ele também não separa as duas (Figura 3). Os 20 sorteios perdem entre 0,008 e 0,052, com razão mediana 0,11, e todos atenderiam o C2(b). O probe denso dá a mesma razão. Esse controle no XSTest foi acrescentado depois de ver o C2 e não estava no pré-registro. <!-- fonte: results/frente-d/c2b_controle_aleatorio.json; results/DESVIOS.md -->
+*Tabela 4.* AUROC na confirmação, na pré-resposta da camada 29, com o SAE de 16k. As duas primeiras colunas medem quanto cada classificador separa pedidos nocivos de benignos, e a última, quanto ele detecta a presença do gatilho (0,5 é o acaso). No SAE de 262k os valores são praticamente os mesmos (Apêndice C). <!-- fonte: results/frente-d/c2_c4_L29_post_last_16k.json → principal.matriz (l1, gatilho_inedito) -->
 
-![Figura 2](figuras/fig3_c2_matriz.png)
+**A intenção está no modelo sem depender da palavra.** O probe denso treinado só nas versões com gatilho continua acertando quase tudo nas versões sem gatilho, em todas as camadas e posições (Figura 3). Se ele dependesse da palavra, tirá-la o faria errar. Já o probe de gatilho, no token da pré-resposta, acerta pouco acima do acaso. Na própria posição do gatilho, ele detecta melhor. A troca muda a representação onde acontece, mas esse efeito se apaga até o token da resposta, o que é coerente com não haver features da palavra. <!-- fonte: results/frente-d/probes.json → cells2x2.principal -->
 
-*Figura 2.* AUROC no `test` com gatilho inédito (L29, pre_resposta), por conjunto de features e tarefa. "Aleatório" é a média de 20 sorteios do mesmo tamanho de S_intent. Todos os conjuntos classificam a intenção; nenhum detecta o gatilho. <!-- fonte: results/frente-d/c2_c4_L29_post_last_{16k,262k}.json -->
+![Figura 3](figuras/fig3_probes.png)
 
-![Figura 3](figuras/fig6_c2b_xstest.png)
+*Figura 3.* AUROC dos probes no vetor inteiro, por camada (confirmação, gatilho inédito). Círculos, o probe de intenção treinado nas versões com gatilho e testado nas versões sem gatilho. Quadrados e losangos, o probe de gatilho, treinado nos pedidos benignos e testado nos nocivos, lido na posição do gatilho e no token antes da resposta. A linha tracejada é o TF-IDF na intenção sem gatilho. <!-- fonte: results/frente-d/probes.json; baseline_lexical.json -->
 
-*Figura 3.* Queda de AUROC ao passar do `test` do 2×2 para o XSTest. A linha vermelha é a queda do TF-IDF; a tracejada, metade dela, o limite do C2(b). S_intent, os sorteios aleatórios e o probe denso caem pouco e de forma parecida. <!-- fonte: results/frente-d/c2b_controle_aleatorio.json -->
+**No XSTest, as features vão além das palavras, mas as sorteadas também.** Treinados no 2×2 e aplicados ao XSTest, os classificadores caem de forma muito diferente (Figura 4). O TF-IDF perde 0,28 de AUROC, porque ali as palavras enganam. As features de intenção perdem cerca de um décimo disso, bem abaixo do limite de metade fixado antes, e no SAE de 262k a perda é ainda menor. Mas as features sorteadas e o probe denso também perdem pouco, e todos os 20 sorteios ficariam abaixo do limite. Reconhecer a intenção além das palavras é, portanto, uma propriedade da representação do modelo, e não das features selecionadas. A informação de intenção está espalhada. Esse controle com features sorteadas no XSTest foi acrescentado depois de ver o resultado (Apêndice A). <!-- fonte: results/frente-d/c2_c4_L29_post_last_{16k,262k}.json → principal.C2b.xstest; c2b_controle_aleatorio.json -->
 
-**Leitura.** O C2 atende pela regra, mas o que ele mostra é uma propriedade da representação do modelo, e não de S_intent em particular: qualquer subconjunto razoável de features generaliza para o XSTest muito melhor do que as palavras. O que distingue S_intent vem de outros critérios. Ela é selecionada por ignorar o gatilho (C1 e C3) e, ao contrário das features sorteadas, muda o comportamento quando desligada (C5, seção 5.6). Sem S_lex, o C2(c) fica indefinido, e a dissociação é simples, não dupla. O resultado não depende de domínio nem de tipo de gatilho: em todos os recortes, S_intent, os sorteios e o TF-IDF ficam entre 0,985 e 1,000. <!-- fonte: results/frente-d/c2_secundaria.json -->
+![Figura 4](figuras/fig4_xstest.png)
 
-### 5.3 O sinal não é lexical? (C3)
+*Figura 4.* Quanto a AUROC cai do nosso conjunto (confirmação) para o XSTest, na pré-resposta da camada 29 com o SAE de 16k. As palavras enganam o TF-IDF. Os classificadores sobre o modelo quase não são enganados, e as features sorteadas também não (os pontos são os 20 sorteios). <!-- fonte: results/frente-d/c2b_controle_aleatorio.json -->
 
-- **Gatilho solto:** 81% das S_intent (39 de 48) não reagem: **atende**. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
-- **Leitura cega:** o limiar de 60% é atingido por um LLM em contexto novo (19 de 20 fichas conceituais) e pela conferência humana (13 de 20, 65%). A conferência foi de uma pessoa, não cega. Os dois concordam em 70% das fichas (κ 0,18). Do lado nocivo, as features falam de ilegalidade e dano; do lado benigno, de propósito legítimo. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv; rotulos_frederico.csv -->
-- **Onde a fronteira fica borrada.** As 6 discordâncias têm todas o mesmo sentido: o humano marcou lexical e o LLM, conceitual. Elas caem em dois tipos:
-  - **expressões que sinalizam intenção** ("sem ser pego", "how can I…"): a feature acende numa forma de falar típica de pedidos nocivos que não é o gatilho, então passa no teste de troca;
-  - **a moldura do pedido benigno** ("numa ficção", "para um trabalho de história"): pode ser propósito legítimo ou hábito do gerador do Q⁰.
+**Só as features de intenção mudam a recusa.** Desligar as 48 features de intenção na camada 29 reduz a recusa explícita a pedidos nocivos de 59,9% para 52,5% (Figura 5). Desligar 48 features sorteadas não reduz, e nos 5 sorteios a recusa até sobe um pouco. Contra a média dos sorteios, a diferença é de 12 pontos. O efeito é parecido com e sem o gatilho. A mesma ablação reduz em cerca de 5 pontos a recusa aos 817 pedidos benignos que o modelo recusava, e não muda nada nos benignos comuns, que ele já não recusa. O over-refusal parece passar pelo mesmo caminho da recusa legítima. O modelo trata o pedido benigno como nocivo no eixo da intenção, e não por um canal separado da palavra. O efeito, porém, é moderado e mede a recusa explícita. Quanto o modelo passa a atender os pedidos nocivos depende da rotulagem pelo juiz (seção 4.4). <!-- fonte: results/frente-b/c5_ablacao.json → s_intent -->
 
-  As duas restantes ficaram incertas.
-- **Ressalva:** sem S_lex, o controle positivo do C3 não pode ser verificado.
+![Figura 5](figuras/fig5_c5.png)
 
-### 5.4 É robusto? (C4)
+*Figura 5.* Variação na taxa de recusa explícita ao desligar features na camada 29, em pontos percentuais. Em azul, as 48 features de intenção, com o IC 95%. Em cinza, a média de 5 sorteios de 48 features com frequência de ativação parecida, e os pontos são os sorteios. À esquerda, os 484 pedidos nocivos da confirmação, e à direita, os 817 pedidos benignos que o modelo recusava. As intervenções exploratórias estão na Figura 7. <!-- fonte: results/frente-b/c5_ablacao.json -->
 
-No SAE de 262k, a mesma combinação tem 60 S_intent, e as 60 replicam no `test`: o C1 vale no 262k. <!-- fonte: results/frente-c/c1_c3.json → 262k.C1 --> O C2 no 262k está na seção 5.2.
+**Resposta.** O modelo inteiro sabe se o pedido é nocivo, e sabe isso além das palavras. Mas são poucas features, e legíveis, que pesam na decisão de recusar. Classificar não é controlar.
 
-Nos recortes do C4, na mesma combinação: <!-- fonte: results/frente-c/c4_*/c1_c3.json -->
+### 5.3 O resultado é robusto?
 
-- **(c) células de tamanho pareado** (684 grupos): 46 S_intent, e as 46 replicam. O C1 atende.
-- **(b) Q⁰ *retrieved*** (211 grupos): 15 S_intent, e as 15 replicam. Mas a descoberta tem 182 grupos, abaixo do piso de 260, então o C1 fica inconclusivo.
+Este bloco pergunta se o resultado depende do dicionário ou de algum recorte dos dados. No dicionário de 262k, a mesma combinação tem 60 features de intenção, e as 60 se confirmam. No recorte em que as quatro versões têm tamanho parecido (684 grupos), saem 46, e as 46 se confirmam. No recorte em que o pedido benigno é real, buscado no OR-Bench (211 grupos), saem 15, e as 15 se confirmam. A descoberta desse recorte tem só 182 grupos, porém, abaixo do mínimo de 260 que uma simulação de poder indicou, e ele fica inconclusivo. Nos três casos, os classificadores repetem o resultado da seção 5.2. As 48 features também valem nos quatro domínios e nos três tipos de gatilho e sobrevivem a um controle de estilo (Apêndice C). **Resposta.** Sim, com a ressalva do recorte pequeno. <!-- fonte: results/frente-c/c1_c3.json → 262k.C1; results/frente-c/c4_*/c1_c3.json; results/frente-d/c2_c4_L29_post_last_{16k,262k}.json -->
 
-### 5.5 O que o residual sabe (âncora densa)
+### 5.4 Veredito
 
-**A intenção está no residual e não depende do gatilho.** Um probe treinado só nas células com gatilho acerta 0,998 nas células sem gatilho em L29, no pre_resposta (IC 0,996–1,000). Em todas as camadas e posições, o valor fica entre 0,966 e 1,000 (Figura 4). <!-- fonte: results/frente-d/probes.json → cells2x2.principal.*.cruzado_trig_para_notrig -->
-
-**O gatilho quase não está lá.** Treinado nos pedidos benignos e testado nos nocivos, o probe de gatilho fica entre 0,59 e 0,66 no pre_resposta. Na própria posição do gatilho ele chega a 0,80. A troca do gatilho altera a representação onde ela acontece, mas pouco dessa diferença chega ao token de onde sai a resposta. Isso é coerente com a ausência de S_lex. <!-- fonte: … gatilho_independe_intencao -->
-
-O probe denso, porém, não supera as réguas de texto: o TF-IDF também acerta 0,997 sem gatilho. Ele mostra que a informação existe no modelo, e não que ela é intenção em vez de palavras. Para essa distinção, a evidência é o XSTest (seção 5.2). Como o probe denso generaliza tanto quanto S_intent, a limitação não está no dicionário do SAE.
-
-![Figura 4](figuras/fig4_probes.png)
-
-*Figura 4.* AUROC de probes lineares no residual, por camada (`test`, gatilho inédito). A linha tracejada é o TF-IDF na intenção sem gatilho. <!-- fonte: results/frente-d/probes.json; baseline_lexical.json -->
-
-### 5.6 Ele causa a recusa? (C5)
-
-Nesta seção, a recusa é medida pelo classificador de frases de recusa descrito na seção 4.4.
-
-**Desligar as 48 S_intent reduz a recusa a pedidos nocivos** de 59,9% para 52,5%, uma diferença de −7,4 pontos (IC 95% de −11,8 a −3,1). Desligar 48 features aleatórias não reduz: os 5 sorteios ficam entre +0,4 e +11,2. Contra a média deles, a diferença é de **−12,2 pontos** (IC de −16,0 a −8,4), e o C5 atende. O efeito é parecido com gatilho (−8,3) e sem gatilho (−6,6). <!-- fonte: results/frente-b/c5_ablacao.json → s_intent -->
-
-**Isso complementa o C2.** Lá, features sorteadas classificam a intenção tão bem quanto as S_intent; aqui, só as S_intent mudam o comportamento.
-
-**A mesma ablação reduz o over-refusal.** Nos 817 pedidos benignos que o 4B recusa, a recusa cai 5,4 pontos (IC de −8,7 a −2,2). Não há efeito nos benignos comuns, que o modelo já não recusa.
-
-**Tirar o empurrão do gatilho não muda a recusa**, nem multiplicado por 5. Levar o pre_resposta ao nível benigno no eixo da intenção também quase não muda nada. Uma única posição, em L29, não basta para mudar a decisão.
-
-**Leitura.** O over-refusal parece passar pelo mesmo caminho da recusa legítima: o modelo trata o pedido benigno como nocivo no eixo de intenção, e não por um canal lexical separado.
-
-**Exploratório.** As 23 features de intenção forte se comportam como o **formato** da recusa. Desligá-las leva a recusa medida pelo classificador de frases a ~0%, mas parte das respostas continua desaconselhando o pedido. Quanto o modelo passa a atender pedidos nocivos depende do juiz. Por ser uma intervenção de uso duplo, reportamos só números agregados.
-
-![Figura 5](figuras/fig5_c5_ablacao.png)
-
-*Figura 5.* Variação na taxa de recusa por intervenção em L29, com IC 95%; em cinza, os sorteios aleatórios. <!-- fonte: results/frente-b/c5_ablacao.json -->
-
-### 5.7 Análises exploratórias
-
-Estas análises não estavam no pré-registro. As medidas completas estão no Apêndice A.2.
-
-- **Não há feature "da palavra".** Cada gatilho mexe em features diferentes: no próprio token do gatilho, nenhuma feature muda em mais de 30% dos grupos. A checagem de sanidade pré-registrada (efeito lexical forte nesse token) não passa: o maior \|d_L\| é 0,44.
-- **O gatilho empurra na direção de "nocivo", mas isso não muda o comportamento.** No pre_resposta (L17–L29), de 83% a 91% das features com efeito de intenção grande têm d_L com o mesmo sinal de d_I, com cerca de 1/10 do tamanho. Tirar esse empurrão não muda a recusa: +1,2 pontos nos pedidos nocivos (IC −0,8 a +3,3), seção 5.6. <!-- fonte: results/frente-b/c5_ablacao.json → sem_empurrao -->
-- **As features de intenção mais fortes ficam fora de S_intent.** São 23, entre elas features de recusa, com d_I de até 3,39. Ficam fora porque esse empurrão faz o IC de d_L passar de ±0,2.
-
-<!-- fonte: results/frente-c/diagnostico_lexical_16k.json; listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
-
-### 5.8 Veredito
-
-Pela regra pré-registrada, o veredito é **PARCIAL**. C1 e C2 atendem. O C3 atende no controle de gatilho isolado (81%), mas a leitura das fichas foi feita por um LLM e conferida por uma pessoa que não estava cega, enquanto o pré-registro pedia duas pessoas lendo às cegas. O C4 atende no SAE de 262k e no recorte de tamanho pareado; no recorte de Q⁰ *retrieved*, as 15 S_intent replicam, mas a descoberta tem 182 grupos, abaixo do piso de 260, e o resultado é inconclusivo. O C5, que não entra na regra, atende. <!-- fonte: results/VEREDITO.md -->
-
-Os dois critérios que faltam são de procedimento e de poder estatístico. Nenhum número contradiz a hipótese de que o modelo representa a intenção separada da forma. O que o desenho não sustenta é a metade lexical: não encontramos nenhuma feature de forma.
+Pela regra fixada antes da análise (Apêndice A), o veredito é **parcial**. A resposta é sim para a existência do sinal, para a sua generalização além das palavras e, como evidência complementar, para o efeito na recusa. Dois pontos ficaram aquém do que foi registrado. A leitura das features deveria ter sido feita por duas pessoas às cegas, e foi feita por um LLM e conferida por uma pessoa que não estava cega. E um recorte dos dados não teve grupos suficientes para concluir. As duas faltas são de procedimento e de poder estatístico, e nenhum número contradiz a hipótese de que o modelo representa a intenção separada da forma. O que o desenho não sustenta é a metade lexical, porque não encontramos nenhuma feature da forma. <!-- fonte: results/VEREDITO.md -->
 
 ## 6. Limitações e trabalhos futuros
 
-**O desenho não iguala o estilo das linhas.** Nas células com gatilho, o pedido nocivo vem do PKU-SafeRLHF e o benigno foi gerado por um LLM. O estilo sozinho separa as duas linhas com AUROC 0,89. O controle de estilo da seção 4.2 é um ajuste estatístico: as 48 S_intent sobrevivem a ele, mas isso não equivale a pedidos escritos no mesmo estilo. Uma versão do 2×2 reescrita num estilo comum reduz o AUROC do estilo para 0,80, mas tem só 968 grupos e entra apenas como robustez. Do lado benigno, várias S_intent acendem em pedidos com moldura legítima ("para um trabalho de história"), que pode ser um hábito do gerador. <!-- fonte: results/frente-d/baseline_lexical.json → cells_2x2.principal; results/frente-a/estilo_2x2_style.json -->
+**O desenho não iguala o estilo das linhas.** Nas células com gatilho, o pedido nocivo vem do PKU-SafeRLHF e o benigno foi gerado por um LLM. O estilo sozinho separa as duas linhas com AUROC 0,89. O controle de estilo (Apêndice C) é um ajuste estatístico. As 48 features sobrevivem a ele, mas isso não equivale a pedidos escritos no mesmo estilo. Uma versão do 2×2 reescrita num estilo comum reduz a AUROC do estilo para 0,80, mas tem só 968 grupos e entra apenas como robustez. Do lado benigno, várias features de intenção acendem em pedidos com moldura legítima ("para um trabalho de história"), que pode ser um hábito do gerador. <!-- fonte: results/frente-d/baseline_lexical.json → cells_2x2.principal; results/frente-a/estilo_2x2_style.json -->
 
-**"Não há S_lex" tem um alcance limitado.** O d pareado mede efeitos consistentes entre grupos. Uma feature que reage a um único gatilho, ou a poucos, não aparece. A afirmação correta é que não existe feature lexical comum a muitos gatilhos. Sem S_lex, o controle positivo do C3 e o C2(c) ficam indefinidos.
+**A ausência de features da palavra tem alcance limitado.** O d pareado mede efeitos consistentes entre grupos. Uma feature que reage a um único gatilho, ou a poucos, não aparece, e a afirmação correta é que não existe feature lexical comum a muitos gatilhos. Pelo mesmo motivo, as features de intenção são sinais gerais, comuns a todos os domínios. Features ligadas a um tipo específico de dano variam de grupo para grupo e ficam fora da seleção, como as lexicais. Sem features da palavra, dois controles que dependiam delas ficam indefinidos (Apêndice A).
 
-**A troca do gatilho altera pouco o alarme dos pedidos nocivos.** Um juiz avaliou o quanto cada versão soa alarmante. A troca reduz o alarme em pelo menos um ponto em 37% das versões benignas, mas só em 9% das nocivas, porque nelas a intenção domina a leitura do trecho. No comportamento, tirar o gatilho chega a aumentar a recusa a pedidos nocivos (de 57,9% para 63,2%), provavelmente porque muitas formas "neutras" ficam mais explícitas. A manipulação lexical é, portanto, mais fraca na linha nociva, o que reduz o poder para encontrar features de forma. Ela não fabrica features de intenção. <!-- fonte: results/frente-a/RELATORIO_noite.md, seções 1 e 4 -->
+**A troca do gatilho altera pouco o alarme dos pedidos nocivos.** Segundo um juiz, a troca reduz o alarme em 37% das versões benignas, mas só em 9% das nocivas, porque nelas a intenção domina a leitura do trecho. Tirar o gatilho chega a aumentar a recusa a pedidos nocivos (de 57,9% para 63,2%), provavelmente porque muitas formas "neutras" ficam mais explícitas. A manipulação lexical é, portanto, mais fraca na linha nociva, o que reduz o poder para encontrar features de forma, mas não fabrica features de intenção. <!-- fonte: results/frente-a/RELATORIO_noite.md, seções 1 e 4 -->
 
-**A capacidade de classificar não é específica de S_intent.** Features sorteadas e o probe denso generalizam para o XSTest tanto quanto S_intent. O C2 mostra que a seleção não custa nada em classificação, mas não que ela seja necessária. A especificidade de S_intent vem da seleção (C1, C3) e do efeito causal (C5).
+**A leitura das features não foi cega nem dupla.** Ela foi feita por um LLM e conferida por uma pessoa que já tinha visto parte dos rótulos (seção 5.1), e cerca de 30% das features lidas não têm descrição no Neuronpedia. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
 
-**A leitura das features não foi cega nem dupla.** Um LLM leu as 20 fichas sem saber a classe, e uma pessoa as conferiu depois de ver parte dos rótulos. A concordância foi de 70% (κ 0,18), e cerca de 30% das features do top-20 não têm descrição no Neuronpedia. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
+**Poder e escopo.** O recorte de pedidos benignos reais tem poucos grupos para a descoberta. O estudo usa um modelo, quatro domínios, só inglês, quatro camadas e dois dicionários de um mesmo SAE. A intenção dos pedidos foi validada por juízes automáticos. Na intervenção, a recusa ainda é medida por um classificador de frases de recusa, com cobertura 0,56 contra o juiz.
 
-**Poder e escopo.** O recorte de Q⁰ *retrieved* tem poucos grupos para a descoberta. O estudo usa um modelo, quatro domínios, só inglês e dois dicionários de um mesmo SAE. A intenção dos pedidos foi validada por juízes automáticos. Na intervenção, a recusa ainda é medida por um classificador de frases de recusa, com cobertura 0,56 contra o juiz.
+**Trabalhos futuros.** Seis extensões seguem diretamente daqui.
 
-**Trabalhos futuros.** Três extensões seguem diretamente daqui. A primeira é testar efeitos lexicais por gatilho, em vez da média entre grupos. A segunda é intervir em várias posições e camadas, já que uma só posição em L29 não muda a decisão. A terceira é repetir o desenho com pedidos nocivos e benignos escritos pela mesma fonte.
+- Testar efeitos lexicais por gatilho, em vez da média entre grupos.
+- Repetir a análise dentro de cada domínio, para encontrar features de tipos específicos de dano.
+- Varrer as 34 camadas com os SAEs do Gemma Scope 2 que as cobrem. O sinal cresce com a profundidade e é maior na camada 29, e a varredura diria onde ele chega ao máximo.
+- Repetir a análise no SAE próprio.
+- Rotular com o juiz as respostas da intervenção, para medir quanto o modelo passa a atender pedidos nocivos, e intervir em várias posições e camadas.
+- Repetir o desenho com pedidos nocivos e benignos escritos pela mesma fonte.
+
+**Uso responsável.** Os pedidos nocivos são os do PKU-SafeRLHF, com no máximo um trecho trocado. Não acrescentamos detalhes operacionais, e as respostas do modelo servem só para medir a recusa e não são publicadas. Os dados ficam restritos ao repositório do projeto, e o texto não reproduz pedidos nocivos do conjunto. Os exemplos são ilustrativos. A intervenção desliga features ligadas à recusa, uma técnica de uso duplo, porque a mesma intervenção que estuda o over-refusal pode reduzir recusas legítimas. Por isso reportamos só resultados agregados.
 
 ## 7. Conclusão
 
-Perguntamos se as features de um SAE separam a intenção de um pedido da sua forma lexical. A resposta é parcial, e assimétrica. A intenção tem features próprias: em L29, no token anterior à resposta, 48 features do Gemma Scope 2 respondem a ela, ignoram a troca da expressão alarmante e se confirmam em gatilhos inéditos. A forma não tem: nenhuma feature reage de modo consistente ao gatilho, que muda a representação de um jeito diferente em cada grupo.
+Perguntamos se as features de um SAE separam a intenção de um pedido da sua forma lexical. A resposta é parcial, e assimétrica. A intenção tem features próprias. Na camada 29, no token anterior à resposta, 48 features do Gemma Scope 2 respondem a ela, ignoram a troca da expressão alarmante e se confirmam em gatilhos inéditos. A forma não tem. Nenhuma feature reage de modo consistente ao gatilho, que muda a representação de um jeito diferente em cada grupo.
 
-O segundo resultado é a diferença entre informação e controle. Qualquer conjunto de features frequentes classifica a intenção tão bem quanto S_intent, inclusive no XSTest, onde um classificador de palavras falha. Desligar S_intent, porém, reduz a recusa, e desligar features sorteadas não. A intenção está espalhada pela representação; o caminho que leva à recusa passa por um conjunto pequeno e interpretável de features.
+O segundo resultado é a diferença entre informação e controle. Qualquer conjunto de features frequentes classifica a intenção tão bem quanto as features de intenção, inclusive no XSTest, onde um classificador de palavras falha. Desligar as features de intenção, porém, reduz a recusa, e desligar features sorteadas não. O modelo inteiro sabe se o pedido é nocivo, mas são poucas features, e legíveis, que pesam na decisão de recusar. O efeito é moderado e, por enquanto, mede a recusa explícita, e não o atendimento ao pedido nocivo.
 
-Para o over-refusal, isso sugere uma leitura diferente da hipótese inicial. A mesma ablação reduz a recusa a pedidos benignos que o modelo recusa indevidamente, e o empurrão médio do gatilho na direção de "nocivo" é pequeno e não muda o comportamento quando removido. Nos nossos dados, o modelo não recusa por causa de uma feature "da palavra perigosa": ele trata o pedido benigno como nocivo no mesmo eixo de intenção que usa para a recusa legítima. Fica em aberto se efeitos específicos de cada gatilho, que a nossa estatística não detecta, explicam os casos em que isso acontece.
+Para o over-refusal, isso sugere uma leitura diferente da hipótese inicial. A mesma ablação reduz a recusa a pedidos benignos que o modelo recusa indevidamente, e o empurrão médio do gatilho na direção de "nocivo" é pequeno e não muda o comportamento quando removido (Apêndice C). Nos nossos dados, o modelo não recusa por causa de uma feature "da palavra perigosa". Ele trata o pedido benigno como nocivo no mesmo eixo de intenção que usa para a recusa legítima. Fica em aberto se efeitos específicos de cada gatilho, que a nossa estatística não detecta, explicam os casos em que isso acontece.
 
 ## Referências
 
-_Do relatório da Fase 0 (§13), mais as quatro novas (Bills, Google DeepMind, Lieberum, Paulo et al. 2025), conferidas na fonte em 2026-11-20._
+_Do relatório da Fase 0 (§13), mais as quatro conferidas na fonte em 2026-11-20 (Bills, Google DeepMind, Lieberum, Paulo et al. 2025). Em 2026-11-22 entraram Zhao et al. (2025), conferida no arXiv, Benjamini & Hochberg (1995) e Wilcoxon (1945), conferidas no Crossref, e três clássicas de estatística ainda não conferidas na fonte (Cohen, 1988; Efron & Tibshirani, 1993; Lakens, 2017)._
 
 - Arditi et al. (2024). *Refusal in Language Models Is Mediated by a Single Direction.*
+- Benjamini, Y. & Hochberg, Y. (1995). *Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.* Journal of the Royal Statistical Society, Series B, 57(1), 289–300.
 - Bills, S., Cammarata, N., Mossing, D., Tillman, H., Gao, L., Goh, G., Sutskever, I., Leike, J., Wu, J. & Saunders, W. (2023). *Language Models Can Explain Neurons in Language Models.* OpenAI. https://openai.com/index/language-models-can-explain-neurons-in-language-models/
 - Bricken et al. (2023). *Towards Monosemanticity.* Transformer Circuits.
 - Bussmann et al. (2024). *BatchTopK Sparse Autoencoders.*
+- Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2ª ed.). Lawrence Erlbaum.
 - Cui et al. (2025). *OR-Bench.*
 - Cunningham et al. (2023). *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* arXiv:2309.08600.
+- Efron, B. & Tibshirani, R. J. (1993). *An Introduction to the Bootstrap.* Chapman & Hall.
 - Elhage et al. (2022). *Toy Models of Superposition.* arXiv:2209.10652.
 - Gao et al. (2024). *Scaling and Evaluating Sparse Autoencoders.*
 - Google DeepMind (2025, 19 dez.). *Gemma Scope 2: Helping the AI Safety Community Deepen Understanding of Complex Language Model Behavior.* https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/ · pesos e documentação: https://ai.google.dev/gemma/docs/gemma_scope
 - Han et al. (2024). *WildGuard.*
 - Ji et al. (2025). *PKU-SafeRLHF.* ACL.
 - Karvonen et al. (2025). *SAEBench.*
+- Lakens, D. (2017). *Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses.* Social Psychological and Personality Science, 8(4), 355–362.
 - Lieberum, T. et al. (2024). *Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2.* BlackboxNLP 2024, p. 278–300. arXiv:2408.05147.
 - O'Brien et al. (2025). *Steering Language Model Refusal with Sparse Autoencoders.*
 - Paulo, G., Mallen, A., Juang, C. & Belrose, N. (2025). *Automatically Interpreting Millions of Features in Large Language Models.* ICML 2025. arXiv:2410.13928.
@@ -328,103 +276,142 @@ _Do relatório da Fase 0 (§13), mais as quatro novas (Bills, Google DeepMind, L
 - Rajamanoharan et al. (2024). *JumpReLU Sparse Autoencoders.*
 - Röttger et al. (2024). *XSTest.* NAACL.
 - Templeton et al. (2024). *Scaling Monosemanticity.* Transformer Circuits.
+- Wilcoxon, F. (1945). *Individual Comparisons by Ranking Methods.* Biometrics Bulletin, 1(6), 80–83.
 - Zhang et al. (2025). *FalseReject.* arXiv:2505.08054.
+- Zhao, J., Huang, J., Wu, Z., Bau, D. & Shi, W. (2025). *LLMs Encode Harmfulness and Refusal Separately.* arXiv:2507.11878.
 
-## Apêndice A. Estatística por feature
+## Apêndice A. Critérios e pré-registro
 
-Protocolo completo da seção 4.2 e medidas das análises exploratórias da seção 5.7.
+As regras de análise, os limiares e a regra do veredito foram registrados no repositório do projeto antes de extrair as ativações (`docs/tarefas/00-visao-geral.md` e `results/frente-c/preregistro.md`). No código e nos arquivos de resultado, as cinco perguntas têm os códigos C1 a C5.
 
-### A.1 Protocolo completo
+### A.1 As cinco perguntas
 
-**O que medimos.** Para cada pedido, passamos pelo SAE o vetor do `resid_post` numa posição. Cada feature do SAE dá uma ativação ≥ 0. Comparamos essas ativações entre as quatro versões de um mesmo pedido.
+| Código | Pergunta | Atende se | Resultado |
+|---|---|---|---|
+| C1 | Existe um sinal de intenção? | ≥ 5 features de intenção na combinação principal, das quais ≥ 70% se confirmam (mesmo sinal e \|d_I\| ≥ 0,3) | **atende**, 48 features, 48 se confirmam |
+| C2 | Ele vai além das palavras? | (a) AUROC ≥ 0,85 com o gatilho e ≥ 0,80 sem ele; (b) no XSTest, a queda da AUROC é no máximo metade da queda do TF-IDF, com o limite superior do IC 95% da razão abaixo de 1; (c) consistência com as features da palavra, sem decidir | **atende**, (a) 0,992 e 0,992; (b) razão 0,11 (IC 0,05–0,17); (c) indefinido |
+| C3 | Não é uma palavra disfarçada? | mais da metade das features de intenção sem efeito nas frases neutras, e ≥ 60% das 20 fichas lidas como conceituais por duas pessoas às cegas | **não atende como registrado**, 81% sem efeito; fichas 95% (LLM) e 65% (uma pessoa, não cega) |
+| C4 | É robusto? | o C1 e o C2 valem (a) em outro dicionário, (b) no recorte de Q⁰ real e (c) no de tamanho pareado, com pelo menos 260 grupos na descoberta de cada recorte | **não atende**, (a) e (c) atendem; (b) inconclusivo, com 182 grupos |
+| C5 | É causal? (complementar) | desligar as features de intenção muda a recusa mais do que desligar features sorteadas (IC 95% da diferença abaixo de zero) | **atende**, −12,2 pontos (IC −16,0 a −8,4); nos benignos recusados, −9,5 (IC −12,2 a −6,9) |
 
-**As quatro células.** Cada grupo do 2×2 tem um pedido nocivo e um benigno com a mesma expressão-gatilho. Cada pedido aparece em duas versões: com o gatilho original e com o gatilho trocado por uma expressão neutra. Dentro de cada pedido, o resto do texto é idêntico (seção 3.2). Assim, a intenção e o gatilho variam de forma independente.
+*Tabela A1.* Os critérios como foram registrados e o resultado de cada um. O C2(c) e o controle positivo do C3 dependiam de haver features da palavra e ficaram indefinidos. <!-- fonte: results/VEREDITO.md -->
 
-**Efeitos por grupo.** a(h, t) é a ativação da feature na célula com intenção h ∈ {nociva (+), benigna (0)} e gatilho t ∈ {presente (1), ausente (0)}.
+### A.2 A regra do veredito
 
-- **Intenção:** I_g = ½[a(+,1) + a(+,0) − a(0,1) − a(0,0)]. Compara nocivo com benigno, com o mesmo estado do gatilho dos dois lados.
-- **Gatilho (lexical):** L_g = ½[a(+,1) + a(0,1) − a(+,0) − a(0,0)]. Compara com e sem gatilho, com a mesma intenção dos dois lados.
-- **Interação:** X_g = ½[a(+,1) − a(+,0) − a(0,1) + a(0,0)]. Mede se o efeito do gatilho depende da intenção.
+- **Sim:** C1, C2, C3 e C4 atendidos.
+- **Parcial:** C1 atendido, mais um ou dois de C2 a C4.
+- **Não:** C1 falha em todas as camadas e dicionários.
 
-**Tamanho de efeito.** Usamos o d pareado: a média do efeito entre os grupos dividida pelo seu desvio-padrão. Como referência, \|d\| = 0,2 é um efeito pequeno e 0,5, um efeito médio. d_I > 0 quer dizer que a feature é mais ativa nos pedidos nocivos. O IC 95% vem de um bootstrap sobre grupos (1.000 reamostras); o p, de um Wilcoxon pareado. A correção de Benjamini–Hochberg usa a família features × 4 camadas × 2 posições, separada para cada efeito. <!-- fonte: results/frente-c/preregistro.md, seção 5 -->
+O C5 não entra na regra e é reportado como evidência causal. Com C1 e C2 atendidos e C3 e C4 não, o veredito é parcial.
 
-**Posições.** Lemos o `resid_post` das camadas 9, 17, 22 e 29 (de 34) em duas posições, ambas com o pedido inteiro no contexto:
+### A.3 De onde vêm os limiares
 
-- **fim_pedido:** o último token do texto do usuário, onde o modelo termina de ler o pedido;
-- **pre_resposta:** o último token do template do chat, de onde sai a primeira palavra da resposta.
+O que mais protege os resultados contra o acaso não são os limiares, e sim a separação dos dados. As features foram escolhidas só na descoberta e conferidas uma única vez em dados que não influenciaram nenhuma escolha. Os limiares dizem quando uma resposta conta, e os resultados passaram com folga. Foram 48 features de intenção, quando o mínimo era 5. Todas se confirmaram, com o mesmo tamanho de efeito, quando o mínimo era 70%. A perda no XSTest foi de um décimo da do TF-IDF, quando o máximo era metade. E 81% das features ficaram sem efeito no gatilho solto, quando bastava a maioria. A exceção é a leitura humana das fichas, que deu 65% contra o limite de 60%.
 
-A ativação de uma feature depende muito do token lido. Por isso exigimos o mesmo token nas quatro células; senão, a diferença entre células misturaria intenção e gatilho com a troca de token. No pre_resposta o token é sempre o mesmo. No fim_pedido, 199 grupos (11,7%) terminam em tokens diferentes e saem dessa posição. <!-- fonte: results/frente-c/preregistro.md, adendo 3 -->
+Os limiares têm três origens. Os valores de d de 0,2 e 0,5 e a margem de ±0,2 do teste de equivalência são convenções de tamanho de efeito (Cohen, 1988), e o |d_I| ≥ 0,3 da confirmação fica entre elas. O piso de 260 grupos na descoberta saiu de uma simulação de poder (`results/frente-c/poder.json`). Os 70% de confirmação, os 60% de fichas conceituais e o filtro de 5% de atividade são escolhas do grupo.
 
-**Dicionário.** O principal é o Gemma Scope 2 de 16k features, variante L0 *medium* (cerca de 50 a 60 features ativas por token), a única com explicações no Neuronpedia. O de 262k é o teste de robustez (C4a).
+### A.4 Desvios do pré-registro
 
-**Classes.** Só analisamos features ativas em pelo menos 5% dos pedidos de alguma célula; abaixo disso, o d fica instável.
+Os desvios abaixo foram registrados no repositório do projeto na data em que foram decididos (`results/DESVIOS.md`). Nenhum foi decidido depois de abrir o `test`.
 
-- **S_intent:** \|d_I\| ≥ 0,5, q_I < 0,01 e o IC 95% de d_L inteiro dentro de ±0,2. Exigir o IC dentro da faixa (teste de equivalência) mostra que o efeito do gatilho é desprezível; um d_L pequeno com IC largo não mostraria isso.
-- **S_lex:** \|d_L\| ≥ 0,5, q_L < 0,01 e o IC 95% de d_I inteiro dentro de ±0,2.
-- **S_mixed:** \|d_I\| e \|d_L\| ≥ 0,5, os dois com q < 0,01.
-
-As demais ficam sem classe.
-
-**Descoberta e confirmação.** Os splits são por grupo (`train`, `val`, `test`). Todas as escolhas usam só `train` + `val` (descoberta). A combinação principal é o par (camada, posição) com mais S_intent. A confirmação (`test`) foi aberta uma vez, só nessa combinação. Ela usa só os grupos cujo gatilho não aparece no `train` (gatilho inédito), para que uma feature não replique apenas por ter visto aquele gatilho. Replicar quer dizer ter o mesmo sinal e \|d_I\| ≥ 0,3 no `test`.
-
-**Critérios pré-registrados desta seção** (os outros estão nas seções 4.3 e 4.4):
-
-- **C1 (existe um sinal de intenção):** ≥ 5 S_intent na combinação principal e ≥ 70% delas replicando;
-- **C3 (o sinal não é lexical):** o controle de gatilho solto e a leitura cega, abaixo;
-- **C4a (vale em outro dicionário):** o C1 vale no SAE de 262k, na mesma combinação.
-
-**Controles.**
-
-- **Gatilho solto (C3).** Para cada grupo, escrevemos 3 frases neutras que não são pedidos. Cada frase tem duas versões: com a expressão-gatilho (`trig_only`) e com a expressão neutra (`neutral_only`). Medimos o d de a(`trig_only`) − a(`neutral_only`) por par de frases, na mesma posição. Uma feature de intenção não deve reagir ao gatilho fora de um pedido. Atende se mais da metade das S_intent tiver o IC 95% dentro de ±0,2. O IC vem de um bootstrap por grupo, porque as 3 frases de um grupo usam o mesmo gatilho.
-- **Leitura cega (C3).** Cada uma das 20 S_intent de maior \|d_I\| vira uma ficha com:
-  - a explicação e os exemplos do Neuronpedia;
-  - os 10 pedidos da descoberta com maior ativação.
-
-  A ficha não diz a classe nem se o pedido é nocivo. O avaliador marca **conceitual** (a feature segue um conceito: intenção, dano, ação perigosa ou pedido legítimo) ou **lexical** (segue uma palavra ou expressão específica). Atende com ≥ 60% de conceituais. Por causa do prazo, a leitura foi feita por um LLM em contexto novo e conferida depois por um dos autores, que não estava cego (seção 5.3). <!-- fonte: results/DESVIOS.md, 2026-11-21 -->
-- **Estilo (secundária).** No plano B, o pedido nocivo vem do PKU e o benigno foi gerado. Só pelo estilo, um classificador separa os dois (AUROC 0,89). <!-- fonte: results/frente-d/baseline_lexical.json --> Para cada S_intent, regredimos I_g na diferença de estilo entre o pedido nocivo e o benigno. São 14 atributos que não dependem do conteúdo: tamanho, pontuação e forma da pergunta. O intercepto é o efeito de intenção esperado com estilo igual. A feature sobrevive se esse d_I ajustado mantém o sinal com \|d\| ≥ 0,3.
-- **Domínio e tipo de gatilho (secundárias).** Calculamos o d_I de cada S_intent dentro de cada domínio (bias, cyber, privacy, violence) e de cada tipo de gatilho:
-  - superfície: expressão alarmante sem ação, como "mentally ill";
-  - ação: o ato em si, como "abuse an animal";
-  - marcador de intenção: como "without their consent".
-
-**Conjunto.** O principal reúne os grupos que passam em dois filtros. No QC de gramática, as versões sem gatilho precisam ser gramaticais. No validador estrutural, a troca tem de ficar só no trecho do gatilho, sem quebrar palavras. São 1.697 grupos: 1.455 na descoberta e 242 na confirmação, 155 deles com gatilho inédito. <!-- fonte: results/frente-c/preregistro.md, adendo 3 --> Como robustez, repetimos a análise na mesma combinação principal em três conjuntos:
-
-- sem o validador (1.723 grupos);
-- o conjunto completo (1.825, com versões agramaticais);
-- o `qc_pass_lenient` (593): ao tirar o gatilho, o alarme percebido por um juiz não sobe em nenhum dos dois pedidos e cai em pelo menos um.
-
-### A.2 Análises exploratórias, com as medidas
-
-**Por que não há S_lex.** <!-- fonte: results/frente-c/diagnostico_lexical_16k.json; secundarias/ -->
-
-- Olhamos o próprio trecho do gatilho (`slot_forma`, a média dos tokens do gatilho ou da expressão neutra). Ali, a troca muda a representação quase tanto quanto a intenção.
-- Mas cada gatilho mexe em features diferentes. Por grupo, de 21 a 30 features ligam ou desligam com a troca (mediana por camada), e nenhuma delas muda em mais de 30% dos grupos.
-- O d entre grupos só detecta efeitos que se repetem nos grupos. Por isso não há S_lex: falta uma feature lexical comum a muitos gatilhos.
-- O pré-registro previa uma checagem de sanidade: efeito lexical forte (\|d_L\| ≥ 0,5) no `slot_forma`. Ela não passa como foi escrita, porque lá o maior \|d_L\| é 0,44.
-
-**O gatilho empurra na direção de "nocivo".** <!-- fonte: results/frente-c/descoberta.md, anexo D; diagnostico_lexical_16k.json -->
-
-- No pre_resposta das camadas 17 a 29, vemos as features com efeito de intenção grande (\|d_I\| ≥ 0,5, q < 0,01).
-- Entre 83% e 91% delas têm d_L com o mesmo sinal de d_I. Ou seja, o gatilho move a feature no mesmo sentido de um pedido nocivo.
-- O tamanho é cerca de 1/10 do efeito de intenção.
-- No residual denso da L29, o efeito médio do gatilho aponta quase na direção do efeito de intenção (cosseno 0,78), com 2,5% do tamanho.
-
-**As features de intenção mais fortes ficam fora de S_intent.** <!-- fonte: results/frente-c/listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
-
-- São 23 features, com d_I de até 3,39. A S_intent mais forte tem 1,79.
-- Ficam fora porque esse empurrão do gatilho faz o IC de d_L passar de ±0,2.
-- Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia, como "cannot fulfill requests".
-- **Resposta do C5 (seção 5.6):** tirar esse empurrão do pre_resposta não muda a recusa, nem com ele multiplicado por 5. Nos pedidos nocivos, a variação é de +1,2 pontos (IC −0,8 a +3,3) e de +0,8 (IC −1,5 a +3,1). Nos benignos que o modelo recusa, é de +1,2 (IC −0,1 a +2,7) e de −1,1 (IC −2,6 a +0,5). O empurrão existe na representação, mas não no comportamento. <!-- fonte: results/frente-b/c5_ablacao.json → sem_empurrao, sem_empurrao_x5 -->
-
-## Apêndice B. Desvios do pré-registro
-
-Os desvios abaixo foram registrados no repositório do projeto na data em que foram decididos. Nenhum foi decidido depois de abrir o `test`.
-
-1. **Desenho do 2×2.** A frase-molde aproveitou 14% a 18% dos grupos num teste com 50, abaixo do corte de 40% fixado antes; adotamos a troca do gatilho, que era o plano alternativo previsto (seção 3.2).
+1. **Desenho do 2×2.** O plano inicial era uma frase-molde comum às quatro células, com lacunas para a forma e para a intenção. Num teste com 50 grupos, só 14% a 18% dos moldes passaram na validação, abaixo do corte de 40% fixado antes. Adotamos a troca do gatilho, o plano alternativo previsto, que aproveitou 82% no mesmo teste e 75% no conjunto completo (1.825 grupos). <!-- fonte: results/frente-a/RELATORIO_noite.md, seção 1 -->
 2. **Conjunto principal.** Passou a ser o dos grupos com versões gramaticais e aprovados pelo validador estrutural (1.697 grupos). O validador encontrou 26 grupos com palavras quebradas pela troca. Decidido antes de analisar as ativações do 2×2.
-3. **Estilo como análise secundária.** Como as linhas nociva e benigna vêm de fontes diferentes, acrescentamos o controle de estilo da seção 4.2 antes de extrair as ativações do 2×2.
+3. **Estilo como análise secundária.** Como as linhas nociva e benigna vêm de fontes diferentes, acrescentamos o controle de estilo (Apêndice C) antes de extrair as ativações do 2×2.
 4. **2×2 em estilo comum.** Uma versão reescrita num estilo comum rendeu 968 grupos, abaixo dos 1.200 exigidos para substituir o conjunto principal, e entrou só como robustez.
-5. **C2(b) decidido só pelo XSTest.** A regra original exigia duas de três generalizações. Na régua medida em `val`, o TF-IDF cai 0,003 com gatilho inédito e 0,015 com domínio inédito, o que torna essas razões indefinidas e o critério impossível de atender. A mudança foi decidida antes de extrair as ativações do XSTest.
+5. **C2(b) decidido só pelo XSTest.** A regra original exigia duas de três generalizações (gatilho inédito, domínio inédito e XSTest). Na régua medida em `val`, o TF-IDF cai 0,003 com gatilho inédito e 0,015 com domínio inédito, o que torna essas razões indefinidas e o critério impossível de atender. A mudança foi decidida antes de extrair as ativações do XSTest. <!-- fonte: results/frente-d/baseline_lexical.json → cells_2x2.principal.regua_C2b_tfidf -->
 6. **Controle aleatório no XSTest.** Acrescentado depois de ver o C2 (seção 5.2). Não muda o resultado do critério, só a sua leitura.
 7. **Leitura das fichas do C3.** O pré-registro pedia duas pessoas lendo às cegas. Por causa do prazo, as fichas foram lidas por um LLM e conferidas por um dos autores, que já tinha visto parte dos rótulos.
-8. **Ablação de S_lex.** Como a lista saiu vazia, o C5 testou no lugar dela a remoção do empurrão médio do gatilho no eixo da intenção (seção 4.4).
+8. **Ablação das features da palavra.** Como a lista saiu vazia, o C5 testou no lugar dela a remoção do empurrão médio do gatilho no eixo da intenção (Apêndice C).
+
+## Apêndice B. Detalhes de implementação
+
+### B.1 Extração
+
+O modelo roda em bf16. Lemos o fluxo residual na saída de cada bloco (`resid_post`) e conferimos que a saída capturada é idêntica a `hidden_states[L+1]` do Hugging Face (diferença zero), o que dá as profundidades de 29%, 53%, 68% e 88% para as camadas 9, 17, 22 e 29 de 34. Os lotes usam padding à direita, com as quatro células de um grupo no mesmo lote, e o prefixo comum às células sai bit a bit igual. Cada arquivo do cache tem sha256 e o commit que o gerou.
+
+Além das duas posições principais, extraímos as médias de posições, a média dos tokens do gatilho e a da lacuna de forma do 2×2, usadas só como checagem. O SAE de 16k recupera de 84% a 96% da variância e cerca de 99% da perda de substituir a camada por zero (aumento de 0,15 a 0,35 na log-verossimilhança negativa). O SAE próprio (BatchTopK, 16k, k = 64, nas camadas 17, 22 e 29) reconstrói de 69% a 83% da variação entre pedidos nas posições principais, mais que o Gemma Scope, mas preserva pior o comportamento do modelo (recupera de 96% a 99% da perda). <!-- fonte: results/frente-b/qualidade_saes.md; results/frente-b/fatos_modelo.md -->
+
+### B.2 Estatística por feature
+
+A correção de Benjamini e Hochberg usa a família features × 4 camadas × 2 posições, separada para cada efeito. O bootstrap usa 1.000 reamostras de grupos. As classes têm a definição formal abaixo.
+
+- **Feature de intenção (S_intent):** \|d_I\| ≥ 0,5, q_I < 0,01 e o IC 95% de d_L inteiro dentro de ±0,2.
+- **Feature da palavra (S_lex):** \|d_L\| ≥ 0,5, q_L < 0,01 e o IC 95% de d_I inteiro dentro de ±0,2.
+- **Feature mista (S_mixed):** \|d_I\| e \|d_L\| ≥ 0,5, os dois com q < 0,01.
+
+No teste do gatilho solto, cada grupo tem 3 frases neutras, cada uma em duas versões, com a expressão-gatilho (`trig_only`) e com a expressão neutra (`neutral_only`). Medimos o d de a(`trig_only`) − a(`neutral_only`) por par de frases, na mesma posição, e o IC vem de um bootstrap por grupo, porque as 3 frases de um grupo usam o mesmo gatilho. O teste atende se mais da metade das features de intenção tiver o IC dentro de ±0,2.
+
+Na leitura das fichas, cada uma das 20 features de intenção de maior \|d_I\| tem a explicação e os exemplos do Neuronpedia e os 10 pedidos da descoberta com maior ativação. Um LLM em contexto novo leu as fichas primeiro. Um dos autores conferiu depois, sem estar cego. Um segundo LLM, rodado por outro integrante, marcou 85% como conceituais. <!-- fonte: results/frente-c/fichas_cegas.csv; rotulos_llm.csv; rotulos_frederico.csv; results/frente-d/c3_rotulos_davi.csv -->
+
+### B.3 Classificadores
+
+Nas réguas de texto, a regularização é escolhida por validação cruzada no `train`, agrupada por gatilho, e o IC 95% vem de um bootstrap sobre grupos. O classificador de features de intenção tem também uma versão com a média padronizada das features, que serve de checagem. As features sorteadas vêm das ativas em pelo menos 5% do `train`. <!-- fonte: results/frente-d/c2_c4_L29_post_last_16k.json -->
+
+### B.4 Intervenção
+
+A ablação é x' = x − dec(f) + dec(f'), em que f são as features do vetor x pelo SAE de 16k e f' é f com as features escolhidas zeradas. Os sorteios do controle têm a frequência de ativação casada por decil. A geração é gulosa, até 256 tokens. O critério é o efeito da lista menos o efeito médio dos sorteios, com o IC 95% por bootstrap sobre grupos. <!-- fonte: results/frente-b/C5.md; c5_config.json -->
+
+### B.5 Os números das features
+
+| Número | O que é |
+|---|---|
+| 16.384 / 262.144 | features de cada dicionário do Gemma Scope 2 (16k e 262k) |
+| 294 | features ativas na combinação principal (SAE de 16k) |
+| 48 | features de intenção na combinação principal (SAE de 16k) |
+| 60 | features de intenção na mesma combinação, no SAE de 262k |
+| 23 | features com efeito de intenção forte que ficaram fora da seleção (Apêndice C.4) |
+| 20 | fichas lidas, as 20 features de intenção mais fortes |
+
+*Tabela B1.* Os números das features. <!-- fonte: results/frente-c/c1_c3.json; listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
+
+## Apêndice C. Análises secundárias e exploratórias
+
+Estas análises não decidem o veredito. As exploratórias não estavam no pré-registro.
+
+### C.1 Robustez da seleção
+
+- **Filtros de qualidade.** Na combinação principal, sem o validador (1.723 grupos), no conjunto completo com versões agramaticais (1.825) e no `qc_pass_lenient` (593, em que, ao tirar o gatilho, o alarme percebido por um juiz não sobe em nenhum dos dois pedidos e cai em pelo menos um), saem 47, 45 e 22 features de intenção, quase todas as mesmas.
+- **Estilo.** Para cada feature de intenção, regredimos I_g na diferença de estilo entre o pedido nocivo e o benigno, com os 14 atributos da seção 4.3. O intercepto é o efeito de intenção esperado com estilo igual. As 48 mantêm o sinal com \|d\| ≥ 0,3, e o estilo explica pouco do efeito (R² mediano 0,07).
+- **Domínio e tipo de gatilho.** As 48 mantêm o sinal nos quatro domínios e nos três tipos de gatilho.
+- **Classificadores.** No SAE de 262k, as 60 features de intenção dão AUROC 0,998 com o gatilho e 0,997 sem ele, e a razão no XSTest é 0,06 (IC 0,03–0,11). Nos recortes, a razão é 0,17 com o Q⁰ real e 0,18 com tamanho pareado. Por domínio e por tipo de gatilho, as features de intenção, os sorteios e o TF-IDF ficam entre 0,985 e 1,000.
+
+<!-- fonte: results/frente-c/robustez_*/; c1_c3.json → 16k.C1_controle_estilo, por_dominio, por_tipo_gatilho; results/frente-d/c2_c4_L29_post_last_{16k,262k}.json; c2_secundaria.json -->
+
+### C.2 Por que não há features da palavra
+
+- No próprio trecho do gatilho (a média dos tokens do gatilho ou da expressão neutra), a troca muda a representação quase tanto quanto a intenção.
+- Mas cada gatilho mexe em features diferentes. Por grupo, de 21 a 30 features ligam ou desligam com a troca (mediana por camada), e nenhuma muda em mais de 30% dos grupos.
+- O d entre grupos só detecta efeitos que se repetem. Por isso não há features da palavra, porque falta uma feature lexical comum a muitos gatilhos.
+- O pré-registro previa uma checagem de sanidade, um efeito lexical forte (\|d_L\| ≥ 0,5) no trecho do gatilho. Ela não passa como foi escrita, porque lá o maior \|d_L\| é 0,44. Nas posições principais, o maior é 0,40.
+
+![Figura 6](figuras/fig6_dI_dL_paineis.png)
+
+*Figura 6.* Efeito de intenção × efeito da palavra de cada feature ativa, nas quatro camadas e nas duas posições (SAE de 16k, descoberta). Faixa cinza, \|d\| < 0,2, e tracejado, \|d\| = 0,5. Em nenhum painel há features da palavra. <!-- fonte: results/frente-c/diagnostico_lexical_16k.json; feature_classes_L*_16k.csv -->
+
+### C.3 O gatilho empurra na direção de "nocivo"
+
+- Na pré-resposta das camadas 17 a 29, entre as features com efeito de intenção grande (\|d_I\| ≥ 0,5, q < 0,01), de 83% a 91% têm d_L com o mesmo sinal de d_I. Ou seja, o gatilho move a feature no mesmo sentido de um pedido nocivo.
+- O tamanho é cerca de 1/10 do efeito de intenção.
+- No vetor inteiro da camada 29, o efeito médio do gatilho aponta quase na direção do efeito de intenção (cosseno 0,78), com 2,5% do tamanho.
+
+<!-- fonte: results/frente-c/descoberta.md, anexo D; diagnostico_lexical_16k.json -->
+
+### C.4 As features de intenção mais fortes ficam fora da seleção
+
+- São 23 features, com d_I de até 3,39, enquanto a feature de intenção mais forte tem 1,79.
+- Ficam fora porque o empurrão do gatilho faz o IC de d_L passar de ±0,2.
+- Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia, como "cannot fulfill requests".
+
+<!-- fonte: results/frente-c/listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
+
+### C.5 Intervenções exploratórias
+
+Todas na camada 29, medidas pelo classificador de frases de recusa, em pontos percentuais e com IC 95%.
+
+- **Desligar as 23 features de intenção forte** leva a recusa explícita a quase zero (−59,5 nos pedidos nocivos e −41,7 nos benignos recusados). Elas se comportam como o formato da recusa, e parte das respostas continua desaconselhando o pedido. Quanto o modelo passa a atender pedidos nocivos depende do juiz.
+- **Levar a pré-resposta ao nível benigno no eixo da intenção** quase não muda nada (−0,6, IC −4,6 a +3,7, nos nocivos; −2,6, IC −5,1 a −0,1, nos benignos recusados). Uma única posição, na camada 29, não basta para mudar a decisão.
+- **Tirar o empurrão do gatilho** (c·u, com c = 2,5% do efeito de intenção, só na pré-resposta), que substitui a ablação das features da palavra, não muda a recusa. Nos nocivos, a variação é de +1,2 (IC −0,8 a +3,3), e com o empurrão multiplicado por 5, de +0,8 (IC −1,5 a +3,1). Nos benignos recusados, é de +1,2 (IC −0,1 a +2,7) e de −1,1 (IC −2,6 a +0,5). O empurrão existe na representação, mas não no comportamento.
+
+![Figura 7](figuras/fig7_c5_completo.png)
+
+*Figura 7.* Variação na taxa de recusa por intervenção na camada 29, com IC 95%, nos pedidos nocivos e nos benignos que o modelo recusa. Em cinza, os sorteios aleatórios. <!-- fonte: results/frente-b/c5_ablacao.json → forte, eixo_benigno, sem_empurrao, sem_empurrao_x5 -->

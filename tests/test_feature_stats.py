@@ -432,6 +432,20 @@ def test_figura_di_dl(run_desc, tmp_path):
     tabelas = {(L, p): pd.read_csv(out / f"feature_classes_L{L}_{p}_16k.csv") for L in (9, 22) for p in fs.MAIN_POSITIONS}
     png = figuras.scatter_di_dl(tabelas, tmp_path / "fig.png", "16k", principal=(22, "inst_last"))
     assert png.stat().st_size > 20_000 and png.with_suffix(".pdf").exists()
+    um = figuras.scatter_principal(tabelas[(22, "inst_last")], tmp_path / "um.png")
+    assert um.stat().st_size > 20_000 and um.with_suffix(".pdf").exists()
+
+
+def test_figuras_barras_do_paper(tmp_path):
+    from featgrpo.interp import figuras
+    ctl = {"16k": {"S_intent": {"queda_features": 0.03, "queda_tfidf": 0.28},
+                   "aleatorio_20": {"queda_features": [0.01, 0.03, 0.05]}},
+           "denso": {"queda_features": 0.029}}
+    c5 = {"s_intent": {k: {"dif_vs_base": -0.07, "ic95": [-0.11, -0.03], "dif_aleatorias": [0.0, 0.05, 0.1]}
+                       for k in ("harm (test)", "hard_benign")}}
+    for png in (figuras.barras_xstest(ctl, tmp_path / "x.png"), figuras.barras_c5(c5, tmp_path / "c5.png")):
+        assert png.stat().st_size > 10_000 and png.with_suffix(".pdf").exists()
+    assert figuras._pts(-7.44) == "−7,4" and figuras._pts(4.71) == "+4,7"
 
 
 # ---------------------------------------------------------------- caminho (c): controle de estilo

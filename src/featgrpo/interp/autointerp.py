@@ -269,6 +269,16 @@ def _max_dl_slot(out_dir: Path) -> float | None:
     return float(max(vals)) if vals else None
 
 
+def _c5(out_dir: Path) -> dict | None:
+    """Resultado do C5 da frente B (`results/frente-b/c5_ablacao.json`), se existir."""
+    cp = Path(out_dir).parent / "frente-b" / "c5_ablacao.json"
+    return json.loads(cp.read_text(encoding="utf-8")) if cp.exists() else None
+
+
+def _pts(x: float) -> str:
+    return ("+" if x > 0 else "") + _n(100 * x, 1)
+
+
 def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict] = fetch_feature,
                   diag: dict | None = None, top: int = 10) -> str:
     """Texto do `descoberta.md`: o C1 no 2×2, só na descoberta. Primeiro o resumo em palavras, depois poucas
@@ -337,10 +347,19 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         f"lexical forte no próprio token do gatilho, **não passa como foi escrita**: lá o maior \\|d_L\\| é {_n(san)}."
         if (san := _max_dl_slot(out_dir)) is not None else ""),
     ]
+    c5 = _c5(out_dir)
     if vz:
-        linhas.append(f"4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em {_n(100 * vz[0], 0)}% "
-                      f"delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de {_n(100 * vz[1], 0)}% do "
-                      "tamanho do efeito de intenção.")
+        frase = (f"4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em {_n(100 * vz[0], 0)}% "
+                 f"delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de {_n(100 * vz[1], 0)}% do "
+                 "tamanho do efeito de intenção.")
+        se = (c5 or {}).get("sem_empurrao")
+        if se:
+            h, b = se["harm (test)"], se["hard_benign"]
+            nulo = all(x["ic95"][0] <= 0 <= x["ic95"][1] for x in (h, b))
+            frase += (f" Tirar esse empurrão {'não muda' if nulo else 'muda'} a recusa (C5, frente B: "
+                      f"{_pts(h['dif_vs_base'])} pontos nos nocivos, IC [{_pts(h['ic95'][0])}; {_pts(h['ic95'][1])}]; "
+                      f"{_pts(b['dif_vs_base'])} nos benignos que o modelo recusa).")
+        linhas.append(frase)
     n_rec = 0
     if fora is not None and len(fora):
         n_rec = sum(bool(RECUSA.search(explicacao(L, "16k", int(f), fetch))) for f in fora["feature"].head(8))
@@ -366,11 +385,18 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
     onde = max(tot_pos, key=tot_pos.get)
     leitura = (f"**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no "
                f"{LABELS_POS[onde]}" if n_si >= 5 else "**Leitura:** há poucas features de intenção separadas da palavra")
+    si5 = (c5 or {}).get("s_intent", {}).get("harm (test)")
     if vz and vz[0] >= 0.8 and vz[1] > 0:
-        leitura += (", mas a palavra ainda dá um empurrão pequeno na mesma direção. Se esse empurrão explica o "
-                    "over-refusal é a pergunta do C4b/c (frente D) e do C5 (frente B).")
+        leitura += ", mas a palavra ainda dá um empurrão pequeno na mesma direção."
     else:
         leitura += "."
+    if si5:
+        especifico = si5.get("ic95_vs_aleatorias", [0, 0])[1] < 0
+        leitura += (f" No C5 (frente B), desligar as S_intent muda a recusa a pedidos nocivos em {_pts(si5['dif_vs_base'])} "
+                    "pontos" + (", e desligar features aleatórias não reduz" if especifico else "") + ".")
+        se = (c5 or {}).get("sem_empurrao", {}).get("harm (test)")
+        if se and se["ic95"][0] <= 0 <= se["ic95"][1]:
+            leitura += " Tirar o empurrão do gatilho não muda nada: ele existe na representação, mas não no comportamento."
     linhas += ["", leitura, ""]
 
     # onde está o sinal

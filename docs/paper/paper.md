@@ -246,7 +246,7 @@ Nos recortes do C4, na mesma combinação: <!-- fonte: results/frente-c/c4_*/c1_
 ### 5.x Análises exploratórias · _texto da frente C; fora do pré-registro; detalhes no Apêndice A.2_
 
 - **Não há feature "da palavra".** Cada gatilho mexe em features diferentes: no próprio token do gatilho, nenhuma feature muda em mais de 30% dos grupos. A checagem de sanidade pré-registrada (efeito lexical forte nesse token) não passa: o maior \|d_L\| é 0,44.
-- **O gatilho empurra na direção de "nocivo".** No pre_resposta (L17–L29), de 83% a 91% das features com efeito de intenção grande têm d_L com o mesmo sinal de d_I, com cerca de 1/10 do tamanho.
+- **O gatilho empurra na direção de "nocivo", mas isso não muda o comportamento.** No pre_resposta (L17–L29), de 83% a 91% das features com efeito de intenção grande têm d_L com o mesmo sinal de d_I, com cerca de 1/10 do tamanho. Tirar esse empurrão não muda a recusa: +1,2 pontos nos pedidos nocivos (IC −0,8 a +3,3), seção 5.6. <!-- fonte: results/frente-b/c5_ablacao.json → sem_empurrao -->
 - **As features de intenção mais fortes ficam fora de S_intent.** São 23, entre elas features de recusa, com d_I de até 3,39. Ficam fora porque esse empurrão faz o IC de d_L passar de ±0,2.
 
 <!-- fonte: results/frente-c/diagnostico_lexical_16k.json; listas/exploratorio_intencao_forte_L29_post_last_16k.json -->
@@ -264,7 +264,16 @@ _(a escrever: Davi, revisado por todos.)_ Partir da seção "Limitações" de `r
 
 ## 7. Conclusão
 
-_(a escrever: a definir no grupo.)_ Roteiro: a resposta à pergunta (o veredito e o número que mais pesa); o que ela diz sobre o over-refusal; os achados exploratórios da frente C (não há feature "da palavra", o gatilho empurra na direção de "nocivo", as features de recusa mais fortes ficam fora de S_intent) e o C5. Cerca de 400 palavras.
+_(a escrever: a definir no grupo.)_ Cerca de 400 palavras. Roteiro:
+
+1. **A resposta à pergunta:** o veredito e o número que mais pesa.
+2. **Onde está a intenção:** no token antes da resposta, a intenção domina a representação, e nenhuma feature reage de forma consistente à palavra (C1, seção 5.x).
+3. **Informação espalhada, controle concentrado.** Features sorteadas classificam a intenção tão bem quanto as S_intent (C2). Mas só desligar as S_intent muda a recusa (C5). As S_intent são a parte interpretável e causal de uma representação em que a intenção está por toda parte.
+4. **O que isso diz sobre o over-refusal:**
+   - desligar as S_intent reduz também a recusa de pedidos benignos (C5), então o over-refusal usa as mesmas features da recusa legítima;
+   - o gatilho dá um empurrão pequeno na direção de "nocivo", mas tirá-lo não muda o comportamento (C5, exploratório);
+   - leitura possível: nos nossos dados, o over-refusal não vem de uma feature "da palavra perigosa". Ressalva: o C5 tirou só o empurrão médio, e efeitos específicos de cada gatilho não foram testados.
+5. **O que fica em aberto:** remeter às limitações e aos trabalhos futuros (seção 6).
 
 ## Referências
 
@@ -376,4 +385,4 @@ As demais ficam sem classe.
 - São 23 features, com d_I de até 3,39. A S_intent mais forte tem 1,79.
 - Ficam fora porque esse empurrão do gatilho faz o IC de d_L passar de ±0,2.
 - Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia, como "cannot fulfill requests".
-- Leitura possível: a decisão de recusar segue principalmente a intenção, com uma contribuição pequena do gatilho. Se essa contribuição basta para causar over-refusal é a pergunta do C5 (seção 5.6).
+- **Resposta do C5 (seção 5.6):** tirar esse empurrão do pre_resposta não muda a recusa, nem com ele multiplicado por 5. Nos pedidos nocivos, a variação é de +1,2 pontos (IC −0,8 a +3,3) e de +0,8 (IC −1,5 a +3,1). Nos benignos que o modelo recusa, é de +1,2 (IC −0,1 a +2,7) e de −1,1 (IC −2,6 a +0,5). O empurrão existe na representação, mas não no comportamento. <!-- fonte: results/frente-b/c5_ablacao.json → sem_empurrao, sem_empurrao_x5 -->

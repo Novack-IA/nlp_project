@@ -378,9 +378,16 @@ def descoberta_md(c1: dict, out_dir: Path, fetch: Callable[[int, str, int], dict
         pr = cega["avaliador_principal"]
         n_c = round(cega["fracao_S_intent_conceitual"][pr] * cega["n_S_intent"])
         quem = "um LLM em contexto novo" if pr == "llm" else pr
-        linhas.append(f"7. **Lidas às cegas, quase todas são conceituais.** {n_c} de {cega['n_S_intent']} fichas do top-20 "
-                      f"foram julgadas conceituais por {quem} (mínimo 60%): **C3 {'atende' if cega['atende'] else 'não atende'}**"
-                      + (" (conferência humana pendente)." if pr == "llm" and len(cega["fracao_S_intent_conceitual"]) == 1 else "."))
+        outros = {k: v for k, v in cega["fracao_S_intent_conceitual"].items() if k != pr}
+        extra = "".join(f" Na conferência de {k.capitalize()} (não cega), {round(v * cega['n_S_intent'])} de {cega['n_S_intent']}"
+                        f" ({_n(100 * v, 0)}%)." for k, v in outros.items())
+        par = next(iter(cega.get("pares", {}).values()), None)
+        if par:
+            extra += (f" Concordância com o LLM: {_n(100 * par['concordancia_bruta'], 0)}%"
+                      + (f" (κ {_n(par['kappa_cohen'])})" if par.get("kappa_cohen") is not None else "") + ".")
+        linhas.append(f"7. **Lidas às cegas, a maioria é conceitual.** {n_c} de {cega['n_S_intent']} fichas do top-20 "
+                      f"foram julgadas conceituais por {quem} (mínimo 60%)." + extra
+                      + (" Conferência humana pendente." if not outros else ""))
     tot_pos = {q: sum(c["S_intent"] for c in combos if c["posicao"] == q) for q in ("inst_last", "post_last")}
     onde = max(tot_pos, key=tot_pos.get)
     leitura = (f"**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no "

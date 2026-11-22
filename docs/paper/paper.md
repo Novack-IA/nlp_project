@@ -213,7 +213,12 @@ _(a escrever: todos, integrado pelo Davi, a partir de `results/VEREDITO.md`.)_ O
 ### 5.3 O sinal não é lexical? (C3) · _texto da frente C_
 
 - **Gatilho solto:** 81% das S_intent (39 de 48) não reagem: **atende**. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
-- **Leitura cega:** 19 de 20 fichas são conceituais, **atende**. Do lado nocivo, as features falam de ilegalidade e dano; do lado benigno, de propósito legítimo (estudo, ficção). A leitura foi feita por um LLM; a conferência humana está pendente. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
+- **Leitura cega:** o limiar de 60% é atingido por um LLM em contexto novo (19 de 20 fichas conceituais) e pela conferência humana (13 de 20, 65%). A conferência foi de uma pessoa, não cega. Os dois concordam em 70% das fichas (κ 0,18). Do lado nocivo, as features falam de ilegalidade e dano; do lado benigno, de propósito legítimo. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv; rotulos_frederico.csv -->
+- **Onde a fronteira fica borrada.** As 6 discordâncias têm todas o mesmo sentido: o humano marcou lexical e o LLM, conceitual. Elas caem em dois tipos:
+  - **expressões que sinalizam intenção** ("sem ser pego", "how can I…"): a feature acende numa forma de falar típica de pedidos nocivos que não é o gatilho, então passa no teste de troca;
+  - **a moldura do pedido benigno** ("numa ficção", "para um trabalho de história"): pode ser propósito legítimo ou hábito do gerador do Q⁰.
+
+  As duas restantes ficaram incertas.
 - **Ressalva:** sem S_lex, o controle positivo do C3 não pode ser verificado.
 
 ### 5.4 É robusto? (C4a e o C1 do C4b/c) · _texto da frente C_
@@ -259,7 +264,7 @@ _(a escrever: Davi, revisado por todos.)_ Partir da seção "Limitações" de `r
 
 - O d entre grupos não detecta efeitos lexicais específicos de cada gatilho. "Não há S_lex" quer dizer "não há feature lexical comum a muitos gatilhos".
 - No plano B, a linha nociva vem do PKU e a benigna é gerada. O controle de estilo é um ajuste estatístico, não estilo igualado. Do lado benigno, várias S_intent acendem em pedidos com moldura legítima (tese, ficção), que pode ser hábito do gerador.
-- A leitura cega do C3 foi feita primeiro por um LLM. Na conferência humana, o Frederico não está cego, porque já tinha visto os rótulos.
+- O C3 pedia duas pessoas lendo às cegas. Foi feito por um LLM e conferido por uma pessoa, que não estava cega (já tinha visto os rótulos). O grupo aceitou isso como limitação de um trabalho de disciplina (`DESVIOS.md`, 2026-11-22).
 - Cerca de 30% das features do top-20 não têm explicação no Neuronpedia.
 
 ## 7. Conclusão

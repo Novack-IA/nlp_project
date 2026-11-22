@@ -5797,11 +5797,17 @@
     "n_S_intent": 20,
     "avaliador_principal": "llm",
     "fracao_S_intent_conceitual": {
-      "llm": 0.95
+      "llm": 0.95,
+      "frederico": 0.65
     },
-    "fracao_S_intent_conceitual_para_todos": 0.95,
+    "fracao_S_intent_conceitual_para_todos": 0.65,
     "atende": true,
     "limiar": 0.6,
-    "pares": {}
+    "pares": {
+      "llm×frederico": {
+        "kappa_cohen": 0.17808219178082196,
+        "concordancia_bruta": 0.7
+      }
+    }
   }
 }

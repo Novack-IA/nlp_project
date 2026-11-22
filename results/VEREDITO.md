@@ -1,6 +1,6 @@
 # Veredito da Fase 1
 
-> **Status:** preenchido (2026-11-21), aplicando a regra pré-registrada como está escrita em `00-visao-geral.md`. C1 e C3 vêm da frente C (commit `b299ef4` da `frente-c-features`); C2, C4 e a âncora densa, da frente D. O C5 (frente B) ainda não saiu e não decide.
+> **Status:** preenchido (2026-11-21; C3 e C5 atualizados em 2026-11-22), aplicando a regra pré-registrada como está escrita em `00-visao-geral.md`. C1 e C3 vêm da frente C (commit `b299ef4` da `frente-c-features`); C2, C4 e a âncora densa, da frente D. O C5 (frente B) ainda não saiu e não decide.
 > Como preencher: cada linha da tabela aponta para o arquivo e o campo de onde o número sai. Copie o número como está e não arredonde além de 2 casas. Não mude limiares aqui; os limiares valem como estão em `docs/tarefas/00-visao-geral.md`, e mudanças vão para `results/DESVIOS.md`.
 
 ## A pergunta
@@ -11,7 +11,7 @@
 
 **Veredito: PARCIAL.**
 
-Existe um sinal de intenção nas features do SAE que não depende do gatilho: em L29, no último token antes da resposta, 48 features (60 no 262k) replicam 100% no `test` com gatilho inédito (C1), e um classificador só com elas perde no XSTest um décimo do que perde o TF-IDF (C2, razão 0,11). Faltam dois critérios como pré-registrados: o C3 pedia leitura cega de **duas pessoas**, e as duas leituras foram de LLMs; e o C4(b) é inconclusivo por falta de grupos (211 com Q⁰ *retrieved*). Além disso, **features sorteadas do mesmo tamanho fazem o mesmo que a S_intent no C2** (20/20 atendem), e **não existe nenhuma feature de forma lexical** (S_lex vazia).
+Existe um sinal de intenção nas features do SAE que não depende do gatilho: em L29, no último token antes da resposta, 48 features (60 no 262k) replicam 100% no `test` com gatilho inédito (C1), e um classificador só com elas perde no XSTest um décimo do que perde o TF-IDF (C2, razão 0,11). Faltam dois critérios como pré-registrados: o C3 pedia leitura cega de **duas pessoas**, e as fichas foram lidas por um LLM e conferidas por uma pessoa que não estava cega; e o C4(b) é inconclusivo por falta de grupos (211 com Q⁰ *retrieved*). Além disso, **features sorteadas do mesmo tamanho fazem o mesmo que a S_intent no C2** (20/20 atendem), e **não existe nenhuma feature de forma lexical** (S_lex vazia).
 
 **Como a regra foi aplicada:**
 
@@ -19,7 +19,7 @@ Existe um sinal de intenção nas features do SAE que não depende do gatilho: e
 |---|---|---|
 | C1 | atende | 48 S_intent, 100% replicam |
 | C2 | atende | C2(a) 0,992 / 0,992; C2(b) razão 0,11 (IC 0,05–0,17). O C2(c) não decide |
-| C3 | **não atende como pré-registrado** | O controle `trig_only` atende (81%). A avaliação cega atinge o limiar (95% e 85%), mas foi feita por dois LLMs, e o pré-registro pede 2 pessoas |
+| C3 | **não atende como pré-registrado** | O controle `trig_only` atende (81%). A leitura das fichas atinge o limiar (LLM 95%; conferência humana do Fred 65%), mas foi de um LLM e de uma pessoa não cega, e o pré-registro pede 2 pessoas às cegas |
 | C4 | **não atende: (b) inconclusivo** | (a) atende (262k). (c) atende: C1 46/46 replicam, C2(a) e C2(b) atendem. (b) o C2 atende, mas o C1 é **inconclusivo por falta de poder** (182 grupos na descoberta, abaixo do piso de 260) |
 
 C1 + C2 atendidos, C3 e C4 não → **PARCIAL** ("C1 atendido, mais um ou dois de C2–C4").
@@ -47,12 +47,12 @@ Todos no `test`, recorte **gatilho inédito**, salvo indicação.
 | C2(b), descrição | Leave-one-domain-out: razão, IC 95% (TF-IDF cai 0,015, indefinida) | | não decide | | `… principal.C2b.leave_one_domain_out` |
 | C2(c) | Consistência: S_intent no gatilho / S_lex no gatilho | | ≤ 0,65 / ≥ 0,85 | **indefinido**: S_lex vazia em todas as combinações (frente C); não decide | `… principal.C2c_consistencia` |
 | C3 | Fração de S_intent sem efeito em `trig_only` × `neutral_only` (IC de d em ±0,2) | 81% (39/48) | maioria | **sim** | `… 16k.C3_controle_trig_only` |
-| C3 | Fichas do top-20 de S_intent rotuladas conceituais pelos dois avaliadores (κ) | LLM da frente C: 95% (19/20); 2º avaliador (Claude, pela frente D): 85% (17/20). Concordam em 18/20, κ = 0,46 | ≥ 60% para os dois | **sim, com ressalva** | `… C3_avaliacao_cega` e `results/frente-d/c3_rotulos_davi.csv`. **Os dois avaliadores cegos são LLMs**; o Davi conferiu depois e concordou com os 20 rótulos do 2º, sem estar cego (ver `DESVIOS.md`) |
+| C3 | Fichas do top-20 de S_intent rotuladas conceituais (κ) | LLM da frente C: 95% (19/20). Conferência humana do Fred, não cega: 65% (13/20). Concordância de 70%, κ 0,18. (Um 2º LLM, pela frente D: 85%.) | ≥ 60% para duas pessoas às cegas | **limiar atingido, procedimento não** | `results/frente-c/c1_c3.json` → `C3_avaliacao_cega`; `rotulos_frederico.csv`; `results/frente-d/c3_rotulos_davi.csv` |
 | C4(a) | C1 e C2 no 262k **ou** no SAE próprio | C1 no 262k: 60 features, 100% replicam. C2 no 262k: C2(a) 0,998 / 0,997; C2(b) razão 0,06 | atende | **sim** (com a mesma ressalva do controle) | `results/frente-c/c1_c3.json` → `262k.C1`; `results/frente-d/c2_c4_L29_post_last_262k.json` |
 | C4(b) | C1 e C2 só com Q⁰ original *retrieved* (211 grupos do conjunto principal) | C1: 15/15 replicam, mas a descoberta tem 182 grupos (< 260). C2(a) 0,979 / 0,992; C2(b) razão 0,17 (IC 0,08–0,27) no 16k, −0,01 (IC −0,11–0,09) no 262k | atende | **inconclusivo** (C1 sem poder; C2 atende) | `results/frente-c/c4_*/c1_c3.json` (frente C); `results/frente-d/c2_c4_L29_post_last_{16k,262k}.json` → `b_q0_retrieved` |
 | C4(c) | C1 e C2 com células de tamanho pareado (≤ 20%; 684 grupos) | C1: 46 S_intent, 46/46 replicam. C2(a) 0,986 / 0,991; C2(b) razão 0,18 (IC 0,11–0,27) no 16k, 0,16 no 262k | atende | **sim** | `results/frente-c/c4_*/c1_c3.json` (frente C); `… c_tamanho_pareado` |
-| C5 | Ablação de S_intent: queda na recusa a Q⁺ menos a de features aleatórias (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
-| C5 | Ablação de S_lex: queda nas recusas a Q⁰ alarmantes (IC 95%) | | IC > 0 | complementar | `results/frente-b/c5_ablacao.json` |
+| C5 | Ablação de S_intent: variação da recusa a Q⁺ menos a de features aleatórias (IC 95%) | **−12,2 pontos** (IC −16,0 a −8,4). Nos benignos que o 4B recusa: −9,5 (IC −12,2 a −6,9) | IC < 0 | **sim** (complementar) | `results/frente-b/c5_ablacao.json` → `s_intent` |
+| C5 | Ablação de S_lex (lista vazia; substituída por tirar o empurrão do gatilho no eixo da intenção) | +1,2 pontos na recusa a Q⁺ (IC −0,8 a +3,3); ×5: +0,8 | IC ≠ 0 | **não muda a recusa** (exploratório) | `… sem_empurrao`, `sem_empurrao_x5` |
 
 ## Âncora densa
 
@@ -96,7 +96,7 @@ _Preencher só neste caso. Ele é o desfecho mais provável, então vale escreve
 |---|---|
 | Pergunta | Resposta |
 |---|---|
-| Qual critério falhou? | **C3**, por procedimento: a avaliação cega foi feita por dois LLMs, não por duas pessoas (o resultado em si passa: 95% e 85%). **C4(b)**, por falta de poder: só há 211 grupos com Q⁰ *retrieved*, e a descoberta do C1 nesse recorte fica com 182, abaixo do piso de 260. O C2 atende no recorte |
+| Qual critério falhou? | **C3**, por procedimento: as fichas foram lidas por um LLM e conferidas por uma pessoa não cega, não por duas pessoas às cegas (o limiar em si é atingido: 95% e 65%). **C4(b)**, por falta de poder: só há 211 grupos com Q⁰ *retrieved*, e a descoberta do C1 nesse recorte fica com 182, abaixo do piso de 260. O C2 atende no recorte |
 | Em qual recorte (camada, posição, SAE, domínio, tipo de gatilho)? | Nenhum recorte falhou com número. A combinação principal é L29 · `post_last`; o C1 vale nos 4 domínios e nos dois SAEs |
 | O probe denso também falha ali? | Não falha em nada: 0,97–1,00 em todas as camadas e posições |
 | O efeito existe só em alguns domínios ou tipos de gatilho? | Não: as 48 S_intent são gerais nos 4 domínios (frente C) |
@@ -113,7 +113,7 @@ _Começar por estas e acrescentar o que aparecer:_
 - O C2(c) é garantido em boa parte pela seleção das features e não conta como evidência. Aqui ele nem existe: a S_lex saiu vazia.
 - **No plano B, o contraste de intenção compara pedidos diferentes** (Q⁺ do PKU × Q⁰ gerado). O estilo sozinho separa as linhas com AUROC 0,89. O controle de estilo da frente C (48/48 sobrevivem) e o 2×2 em estilo comum (robustez) mitigam, mas não eliminam.
 - **Features aleatórias do mesmo tamanho fazem o mesmo que a S_intent no C2**, dentro do 2×2 e no XSTest. O C2 não mostra que a S_intent é necessária.
-- A avaliação cega do C3 foi feita por LLMs.
+- A leitura das fichas do C3 foi de um LLM, conferida por uma pessoa não cega (κ 0,18).
 - A frase-molde restringe os grupos que entram. Os tipos de gatilho e domínios que sobreviveram estão em `results/frente-a/rodada_seca.md`.
 
 ## Desvios do pré-registro
@@ -121,6 +121,6 @@ _Começar por estas e acrescentar o que aparecer:_
 Ver `results/DESVIOS.md`. Os que afetam a leitura do veredito:
 - **Conjunto principal = `qc_grammatical` sem os 26 grupos reprovados pelo validador** (1.697), decidido antes de analisar o cache.
 - **C2(b) decidido só pelo XSTest** (antes "≥ 2 de 3", que falhava por construção), decidido antes do cache do XSTest.
-- **C3 com dois avaliadores LLM**, em vez de duas pessoas.
+- **C3 com um LLM e uma conferência humana não cega**, em vez de duas pessoas às cegas.
 - **Controle aleatório no XSTest**, acrescentado depois de ver o C2. Não muda o "atende", muda a leitura.
 - **2×2 em estilo comum** só como robustez (968 grupos, abaixo da regra de 1.200).

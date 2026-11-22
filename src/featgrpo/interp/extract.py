@@ -265,7 +265,8 @@ def extract(model, tok, items: list[dict], layers: list[int] = LAYERS, batch_siz
     has_resp = any("response" in it for it in items)
     if positions is None:
         has_spans = any(it.get("spans") for it in items)
-        positions = BASE_POSITIONS + (SLOT_POSITIONS if has_spans else ("trig",)) \
+        has_trig = any(it.get("trigger") or it.get("trig_span") for it in items)
+        positions = BASE_POSITIONS + (SLOT_POSITIONS if has_spans else ("trig",) if has_trig else ()) \
             + (RESP_POSITIONS if has_resp else ())
     batches = group_batches(encs, items, batch_size)
     N = len(items)
@@ -338,7 +339,7 @@ def extract(model, tok, items: list[dict], layers: list[int] = LAYERS, batch_siz
     for it, e in zip(items, encs):
         row = {k: it.get(k) for k in ("item_id", "group_id", "item", "label", "has_trigger",
                                       "split", "domain", "subdomain", "trigger", "trigger_type",
-                                      "q_border_method", "template_id", "design",
+                                      "q_border_method", "template_id", "design", "type", "source",
                                       "qc_grammatical", "qc_pass_lenient", "qc_pass") if k in it}
         row.update(e.meta)
         index.append(row)
@@ -421,10 +422,25 @@ def load_set(name: str, limit: int | None = None) -> list[dict]:
         items = cells_items(data.load_cells_2x2())
     elif name == "controls":
         items = control_items(data._read_jsonl(data.PHASE1 / "controls_trig_only.jsonl"))
+    elif name in EXTERNAL_SETS:
+        items = external_items(name, data._read_jsonl(data.PHASE1 / "external" / f"{name}.jsonl"))
     else:
         p = data.PHASE1 / f"{name}.jsonl"
         items = data._read_jsonl(p)
     return items[:limit] if limit else items
+
+
+EXTERNAL_SETS = ("xstest", "orbench_hard", "falsereject")
+
+
+def external_items(name: str, rows: list[dict]) -> list[dict]:
+    """Conjuntos externos (datasets/phase1/external/{name}.jsonl) -> um item por pedido.
+
+    `group_id` = `id` do arquivo (é a chave que a frente D usa para juntar o rótulo); `label` = 1
+    para `harmful`. Sem gatilho marcado, então não há posição `trig`."""
+    return [{"item_id": r["id"], "group_id": r["id"], "item": name,
+             "label": int(r["label"] == "harmful"), "text": r["text"],
+             "type": r.get("type"), "source": r.get("source")} for r in rows]
 
 
 def cells_items(groups: list[dict]) -> list[dict]:
@@ -484,7 +500,7 @@ def control_items(rows: list[dict]) -> list[dict]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--set", required=True, help="pairs | final_resp | <arquivo em datasets/phase1>")
+    ap.add_argument("--set", required=True, help="pairs | final_resp | cells2x2 | controls | xstest | orbench_hard | falsereject | <arquivo em datasets/phase1>")
     ap.add_argument("--layers", type=int, nargs="+", default=LAYERS)
     ap.add_argument("--widths", nargs="*", default=["16k"], help="16k / 262k (Gemma Scope 2) e proprio (frente A, só L17/22/29)")
     ap.add_argument("--batch-size", type=int, default=16)

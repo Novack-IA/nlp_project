@@ -7,12 +7,12 @@
 1. **Existem features que separam a intenção da palavra.** Na combinação principal (L29 · pre_resposta) são **48** S_intent: reagem ao fato de o pedido ser nocivo e não à troca do gatilho. No SAE maior (262k), 60.
 2. **Elas são robustas.** Quase as mesmas aparecem com outros filtros de qualidade; 48 de 48 sobrevivem ao controle de estilo; 81% não reagem ao gatilho solto (C3 atende); 48 de 48 valem nos 4 domínios; e 48 de 48 se mantêm em cada um dos 3 tipos de gatilho.
 3. **Não existe feature "da palavra".** 0 S_lex e 0 S_mixed nas 8 combinações. A troca do gatilho muda a representação, mas cada gatilho mexe em features diferentes, e nenhuma muda do mesmo jeito na maioria dos grupos. A checagem de sanidade do pré-registro (seção 1, regra 4), que esperava efeito lexical forte no próprio token do gatilho, **não passa como foi escrita**: lá o maior \|d_L\| é 0,44.
-4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em 90% delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de 9% do tamanho do efeito de intenção.
+4. **Mas a palavra vaza um pouco nas features de intenção** (exploratório). Em 90% delas, o gatilho empurra no mesmo sentido do pedido nocivo, com cerca de 9% do tamanho do efeito de intenção. Tirar esse empurrão não muda a recusa (C5, frente B: +1,2 pontos nos nocivos, IC [−0,8; +3,3]; +1,2 nos benignos que o modelo recusa).
 5. **As features de intenção mais fortes ficam fora de S_intent** (exploratório). São 23 com efeito de intenção grande e esse vazamento pequeno do gatilho, que passa da margem de ±0,2 da regra. Entre as 8 mais fortes, 3 têm rótulo de recusa no Neuronpedia.
 6. **Elas se confirmam em dados novos.** No `test` com gatilho inédito (155 grupos), 48 de 48 replicam (mesmo sinal, \|d_I\| ≥ 0,3): **C1 atende**. No 262k, 60 de 60: **C4a atende**.
 7. **Lidas às cegas, quase todas são conceituais.** 19 de 20 fichas do top-20 foram julgadas conceituais por um LLM em contexto novo (mínimo 60%): **C3 atende** (conferência humana pendente).
 
-**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no pre_resposta, mas a palavra ainda dá um empurrão pequeno na mesma direção. Se esse empurrão explica o over-refusal é a pergunta do C4b/c (frente D) e do C5 (frente B).
+**Leitura:** o modelo representa a intenção nociva separada da palavra, sobretudo no pre_resposta, mas a palavra ainda dá um empurrão pequeno na mesma direção. No C5 (frente B), desligar as S_intent muda a recusa a pedidos nocivos em −7,4 pontos, e desligar features aleatórias não reduz. Tirar o empurrão do gatilho não muda nada: ele existe na representação, mas não no comportamento.
 
 ## Onde está o sinal
 

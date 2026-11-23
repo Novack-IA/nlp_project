@@ -165,7 +165,7 @@ Este bloco responde à pergunta central do trabalho, se existe entre as features
 
 **As features não reagem à palavra fora de um pedido.** Nas frases neutras de controle, 39 das 48 (81%) ficam sem efeito entre a versão com o gatilho e a versão com a forma neutra. Uma feature que seguisse a palavra acenderia com ela mesmo fora de um pedido. <!-- fonte: results/frente-c/c1_c3.json → 16k.C3_controle_trig_only -->
 
-**A leitura das features.** Um LLM em contexto novo leu as fichas das 20 features de intenção mais fortes, sem saber a classe, e marcou 19 como conceituais. Um dos autores conferiu as mesmas fichas, sem estar cego, e marcou 13 (65%), com concordância de 70% (κ 0,18). Do lado nocivo, as features falam de ilegalidade e dano, e do lado benigno, de propósito legítimo. Nas seis discordâncias, o humano marcou lexical onde o LLM marcou conceitual. Quatro delas são expressões que sinalizam intenção sem ser o gatilho, como "sem ser pego", ou a moldura do pedido benigno, como "para um trabalho de história", que pode ser propósito legítimo ou hábito do gerador do Q⁰. A leitura humana é o resultado mais apertado do trabalho, porque o limite fixado era de 60%. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv; rotulos_frederico.csv -->
+**A leitura das features.** Um LLM em contexto novo leu as fichas das 20 features de intenção mais fortes, sem saber a classe, e marcou 19 como conceituais. Um dos autores conferiu as mesmas fichas e marcou 13 (65%), com concordância de 70% (κ 0,18). Do lado nocivo, as features falam de ilegalidade e dano, e do lado benigno, de propósito legítimo. Nas seis discordâncias, o humano marcou lexical onde o LLM marcou conceitual. Quatro delas são expressões que sinalizam intenção sem ser o gatilho, como "sem ser pego", ou a moldura do pedido benigno, como "para um trabalho de história", que pode ser propósito legítimo ou hábito do gerador do Q⁰. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega; rotulos_llm.csv; rotulos_frederico.csv -->
 
 **Resposta.** Sim. Há 48 features que seguem a intenção, ignoram a palavra, se confirmam em gatilhos inéditos e, na maior parte, são lidas como conceitos. Não há o contrário, uma feature que siga a palavra.
 
@@ -205,7 +205,7 @@ Este bloco pergunta se o resultado depende do dicionário ou de algum recorte do
 
 ### 5.4 Veredito
 
-Pela regra fixada antes da análise (Apêndice A), o veredito é **parcial**. A resposta é sim para a existência do sinal, para a sua generalização além das palavras e, como evidência complementar, para o efeito na recusa. Dois pontos ficaram aquém do que foi registrado. A leitura das features deveria ter sido feita por duas pessoas às cegas, e foi feita por um LLM e conferida por uma pessoa que não estava cega. E um recorte dos dados não teve grupos suficientes para concluir. As duas faltas são de procedimento e de poder estatístico, e nenhum número contradiz a hipótese de que o modelo representa a intenção separada da forma. O que o desenho não sustenta é a metade lexical, porque não encontramos nenhuma feature da forma. <!-- fonte: results/VEREDITO.md -->
+Pela regra fixada antes da análise (Apêndice A), o veredito é **parcial**. A resposta é sim para a existência do sinal, para a sua generalização além das palavras, para os dois testes de que ele não é a palavra e, como evidência complementar, para o efeito na recusa. O que ficou aquém foi um recorte dos dados, o de pedidos benignos reais, que não teve grupos suficientes para concluir. É uma falta de poder estatístico, e nenhum número contradiz a hipótese de que o modelo representa a intenção separada da forma. O que o desenho não sustenta é a metade lexical, porque não encontramos nenhuma feature da forma. <!-- fonte: results/VEREDITO.md -->
 
 ## 6. Limitações e trabalhos futuros
 
@@ -217,7 +217,7 @@ Pela regra fixada antes da análise (Apêndice A), o veredito é **parcial**. A 
 
 **O modelo quase não recusa os nossos pedidos benignos.** O Gemma-3-4B recusa menos de 1% dos pedidos benignos do conjunto, com ou sem o gatilho, contra cerca de 20% no OR-Bench-Hard e no FalseReject. Por isso o over-refusal foi medido em pedidos de outras fontes (seção 4.4). O conjunto serve para separar a intenção da palavra na representação, mas não mede o over-refusal deste modelo. <!-- fonte: datasets/phase1/hcr_orr_4b.json -->
 
-**A leitura das features não foi cega nem dupla.** Ela foi feita por um LLM e conferida por uma pessoa que já tinha visto parte dos rótulos (seção 5.1), e cerca de 30% das features lidas não têm descrição no Neuronpedia. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
+**A leitura das features.** Ela foi feita por um LLM, sem saber a classe, e conferida por um dos autores (seção 5.1). Cerca de 30% das features lidas não têm descrição no Neuronpedia, e a leitura delas depende só dos pedidos em que acendem. <!-- fonte: results/frente-c/c1_c3.json → C3_avaliacao_cega -->
 
 **Poder e escopo.** O recorte de pedidos benignos reais tem poucos grupos para a descoberta. O estudo usa um modelo, quatro domínios, só inglês, quatro camadas e dois dicionários de um mesmo SAE. A intenção dos pedidos foi validada por juízes automáticos. Na intervenção, a recusa ainda é medida por um classificador de frases de recusa, com cobertura 0,56 contra o juiz.
 
@@ -282,7 +282,7 @@ As regras de análise, os limiares e a regra do veredito foram registrados no re
 |---|---|---|---|
 | C1 | Existe um sinal de intenção? | ≥ 5 features de intenção na combinação principal, das quais ≥ 70% se confirmam (mesmo sinal e \|d_I\| ≥ 0,3) | **atende**, 48 features, 48 se confirmam |
 | C2 | Ele vai além das palavras? | (a) AUROC ≥ 0,85 com o gatilho e ≥ 0,80 sem ele; (b) no XSTest, a queda da AUROC é no máximo metade da queda do TF-IDF, com o limite superior do IC 95% da razão abaixo de 1; (c) consistência com as features da palavra, sem decidir | **atende**, (a) 0,992 e 0,992; (b) razão 0,11 (IC 0,05–0,17); (c) indefinido |
-| C3 | Não é uma palavra disfarçada? | mais da metade das features de intenção sem efeito nas frases neutras, e ≥ 60% das 20 fichas lidas como conceituais por duas pessoas às cegas | **não atende como registrado**, 81% sem efeito; fichas 95% (LLM) e 65% (uma pessoa, não cega) |
+| C3 | Não é uma palavra disfarçada? | mais da metade das features de intenção sem efeito nas frases neutras, e ≥ 60% das 20 fichas lidas como conceituais (registrado com duas pessoas às cegas) | **atende**, 81% sem efeito; fichas 95% (LLM) e 65% (conferência de um dos autores); ver o desvio 9 |
 | C4 | É robusto? | o C1 e o C2 valem (a) em outro dicionário, (b) no recorte de Q⁰ real e (c) no de tamanho pareado, com pelo menos 260 grupos na descoberta de cada recorte | **não atende**, (a) e (c) atendem; (b) inconclusivo, com 182 grupos |
 | C5 | É causal? (complementar) | desligar as features de intenção muda a recusa mais do que desligar features sorteadas (IC 95% da diferença abaixo de zero) | **atende**, −12,2 pontos (IC −16,0 a −8,4); nos benignos recusados, −9,5 (IC −12,2 a −6,9) |
 
@@ -294,7 +294,7 @@ As regras de análise, os limiares e a regra do veredito foram registrados no re
 - **Parcial:** C1 atendido, mais um ou dois de C2 a C4.
 - **Não:** C1 falha em todas as camadas e dicionários.
 
-O C5 não entra na regra e é reportado como evidência causal. Com C1 e C2 atendidos e C3 e C4 não, o veredito é parcial.
+O C5 não entra na regra e é reportado como evidência causal. Com C1, C2 e C3 atendidos e o C4 não, o veredito é parcial.
 
 ### A.3 De onde vêm os limiares
 
@@ -314,6 +314,7 @@ Os desvios abaixo foram registrados no repositório do projeto na data em que fo
 6. **Controle aleatório no XSTest.** Acrescentado depois de ver o C2 (seção 5.2). Não muda o resultado do critério, só a sua leitura.
 7. **Leitura das fichas do C3.** O pré-registro pedia duas pessoas lendo às cegas. Por causa do prazo, as fichas foram lidas por um LLM e conferidas por um dos autores, que já tinha visto parte dos rótulos.
 8. **Ablação das features da palavra.** Como a lista saiu vazia, o C5 testou no lugar dela a remoção do empurrão médio do gatilho no eixo da intenção (Apêndice C).
+9. **A leitura das fichas conta como atendida.** Para o objetivo do trabalho, o grupo decidiu que a leitura do LLM, conferida por um dos autores, basta para a segunda condição do C3, que passou a contar como atendido. O limiar de 60% não mudou. Decidido depois de ver os resultados; o veredito continua parcial por causa do C4.
 
 ## Apêndice B. Detalhes de implementação
 

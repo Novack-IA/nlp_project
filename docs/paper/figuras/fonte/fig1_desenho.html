@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- Figura 1 do paper: do desenho à medida. Desenho feito à mão; os valores do painel ② são ilustrativos.
+     Para gerar o PNG (Chrome sem janela, escala 2):
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --force-device-scale-factor=2 \
+       --window-size=1700,580 --virtual-time-budget=4000 --screenshot=docs/paper/figuras/fig1_desenho.png \
+       "file://$PWD/docs/paper/figuras/fonte/fig1_desenho.html" -->
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Figura 1: do desenho à medida</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#14213D; --muted:#4A5568; --line:#D8D3C7; --card:#FCFBF8;
+          --blue:#2A78D6; --blue-t:#1F5FAF; --blue-soft:#DCE8F8; --orange:#EB6834; --orange-t:#B4441A; --orange-soft:#FBE3D8; }
+  body { margin:0; background:#fff; font-family:'Inter', Arial, sans-serif; color:var(--ink); }
+  .fig { width:1640px; padding:24px; display:flex; gap:20px; align-items:stretch; box-sizing:content-box; }
+  .painel { border:2px solid var(--line); border-radius:16px; background:var(--card); padding:22px 24px; display:flex; flex-direction:column; gap:14px; }
+  .titulo { font-size:26px; font-weight:700; margin:0; }
+  .sub { font-size:21px; color:var(--muted); margin:0; line-height:1.35; }
+  .seta { display:flex; align-items:center; justify-content:center; width:44px; }
+  .seta div { width:0; height:0; border-left:22px solid var(--blue); border-top:16px solid transparent; border-bottom:16px solid transparent; }
+  /* painel 1: o 2×2 */
+  .g2 { display:grid; grid-template-columns:110px 1fr 1fr; gap:10px; }
+  .g2 .h { font-size:19px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1px; align-self:end; }
+  .g2 .r { font-size:22px; font-weight:700; align-self:center; }
+  .q { font-size:21px; line-height:1.3; background:#fff; border:2px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .q.n { border-color:var(--orange); } .q.b { border-color:var(--blue); }
+  /* painel 2: os números */
+  .num { display:grid; grid-template-columns:110px 92px 92px; gap:8px; align-items:center; }
+  .num .h { font-size:17px; font-weight:600; color:var(--muted); text-align:center; text-transform:uppercase; letter-spacing:1px; }
+  .num .r { font-size:22px; font-weight:700; }
+  .cel { height:70px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; }
+  .alto { background:var(--blue); color:#fff; } .baixo { background:var(--blue-soft); color:var(--ink); }
+  .conta { font-size:21px; line-height:1.45; margin:0; }
+  .conta b { color:var(--blue-t); }
+  .conta .o { color:var(--orange-t); }
+  /* painel 3: os dois tipos */
+  .tipos { display:flex; gap:18px; }
+  .tipo { flex:1; display:flex; flex-direction:column; gap:10px; }
+  .mini { display:grid; grid-template-columns:64px 64px; gap:6px; }
+  .mini div { height:52px; border-radius:8px; }
+  .bA { background:var(--blue); } .bB { background:var(--blue-soft); }
+  .oA { background:var(--orange); } .oB { background:var(--orange-soft); }
+  .nome { font-size:22px; font-weight:700; margin:0; }
+  .desc { font-size:20px; line-height:1.35; color:var(--muted); margin:0; }
+  .res { font-size:22px; font-weight:700; margin:0; }
+  .res.azul { color:var(--blue-t); } .res.lar { color:var(--orange-t); }
+</style></head>
+<body><div class="fig">
+
+  <div class="painel" style="width:520px">
+    <p class="titulo">① Um grupo: 4 versões do pedido</p>
+    <div class="g2">
+      <div></div><div class="h">com gatilho</div><div class="h">sem gatilho</div>
+      <div class="r">Nocivo</div>
+      <div class="q n">Como eu <b>mato</b> o cachorro do vizinho?</div>
+      <div class="q n">Como eu <b>encerro</b> o cachorro do vizinho?</div>
+      <div class="r">Benigno</div>
+      <div class="q b">Como eu <b>mato</b> o processo travado?</div>
+      <div class="q b">Como eu <b>encerro</b> o processo travado?</div>
+    </div>
+    <p class="sub">Cada versão passa pelo modelo. Lemos uma feature do SAE no token antes da resposta (camada 29).</p>
+  </div>
+
+  <div class="seta"><div></div></div>
+
+  <div class="painel" style="width:470px">
+    <p class="titulo">② A feature nas 4 versões</p>
+    <div class="num">
+      <div></div><div class="h">com</div><div class="h">sem</div>
+      <div class="r">Nocivo</div><div class="cel alto">3,1</div><div class="cel alto">2,8</div>
+      <div class="r">Benigno</div><div class="cel baixo">0,3</div><div class="cel baixo">0,4</div>
+    </div>
+    <p class="conta"><b>Intenção</b> compara as linhas:<br>(3,1 + 2,8) ÷ 2 − (0,3 + 0,4) ÷ 2 = <b>2,6</b></p>
+    <p class="conta"><span class="o"><b class="o">Palavra</b></span> compara as colunas:<br>(3,1 + 0,3) ÷ 2 − (2,8 + 0,4) ÷ 2 = <b class="o">0,1</b></p>
+    <p class="sub">Repetido nos 1.455 grupos, cada efeito vira um tamanho de efeito (d).</p>
+  </div>
+
+  <div class="seta"><div></div></div>
+
+  <div class="painel" style="width:520px">
+    <p class="titulo">③ Os dois tipos que procuramos</p>
+    <div class="tipos">
+      <div class="tipo">
+        <div class="mini"><div class="bA"></div><div class="bA"></div><div class="bB"></div><div class="bB"></div></div>
+        <p class="nome">Feature de intenção</p>
+        <p class="desc">muda entre as linhas e não entre as colunas</p>
+        <p class="res azul">48 encontradas</p>
+      </div>
+      <div class="tipo">
+        <div class="mini"><div class="oA"></div><div class="oB"></div><div class="oA"></div><div class="oB"></div></div>
+        <p class="nome">Feature da palavra</p>
+        <p class="desc">muda entre as colunas e não entre as linhas</p>
+        <p class="res lar">0 encontradas</p>
+      </div>
+    </div>
+    <p class="sub">Depois, três testes: o sinal se confirma em dados novos? Vai além das palavras (XSTest)? Muda a recusa quando desligado?</p>
+  </div>
+
+</div></body></html>

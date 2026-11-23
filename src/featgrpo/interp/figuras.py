@@ -1,8 +1,8 @@
 """Figuras da frente C e as figuras de resultado do paper.
 
-Paper (estrutura de 2026-11-22): Figura 2 = d_I × d_L na combinação principal, um painel; Figura 4 = queda no
-XSTest em barras; Figura 5 = intervenção em barras; Figura 6 (apêndice) = d_I × d_L nos 8 painéis (camada ×
-posição). A Figura 1 (pipeline) é um desenho em docs/paper/figuras/fonte/, e a 3 (probes) vem da frente D.
+Paper (estrutura de 2026-11-22, revisada): Figura 2 = d_I × d_L na combinação principal, um painel; Figura 3 = queda
+no XSTest em barras; Figura 4 = intervenção em barras; Figura 5 (apêndice) = d_I × d_L nos 8 painéis (camada ×
+posição). A Figura 1 é um desenho em docs/paper/figuras/fonte/, e a 6 (probes, apêndice) vem da frente D.
 
 Nos 8 painéis, eixo x: efeito de intenção (d_I); eixo y: efeito do gatilho (d_L). A faixa cinza é a zona de
 equivalência (±0,2) e as linhas tracejadas, o limiar de efeito grande (±0,5). Se houver separação, as S_intent
@@ -181,7 +181,7 @@ def scatter_principal(df: pd.DataFrame, out_path: Path, margem_eq: float = 0.2, 
 
 
 def barras_xstest(ctl: dict, out_path: Path, sae: str = "16k") -> Path:
-    """Figura 4 do paper: quanto a AUROC cai do nosso conjunto para o XSTest (results/frente-d/c2b_controle_aleatorio.json)."""
+    """Figura 3 do paper: quanto a AUROC cai do nosso conjunto para o XSTest (results/frente-d/c2b_controle_aleatorio.json)."""
     _estilo_paper()
     tfidf = float(ctl[sae]["S_intent"]["queda_tfidf"])
     sorteios = [float(x) for x in ctl[sae]["aleatorio_20"]["queda_features"]]
@@ -191,12 +191,10 @@ def barras_xstest(ctl: dict, out_path: Path, sae: str = "16k") -> Path:
               ("probe denso\n(vetor inteiro)", float(ctl["denso"]["queda_features"]), CINZA)]
     fig, ax = plt.subplots(figsize=(6.4, 2.5))
     ys = np.arange(len(linhas))[::-1]
-    for i, (y, (rot, v, cor)) in enumerate(zip(ys, linhas)):
+    # só as barras (pedido do Frederico, 22/11): a faixa dos sorteios vai na legenda do paper
+    for y, (rot, v, cor) in zip(ys, linhas):
         ax.barh(y, v, height=0.56, color=cor, zorder=2)
-        fim = max(v, max(sorteios)) if i == 2 else v   # na linha dos sorteios, o valor fica depois do último ponto
-        ax.text(fim + 0.004, y, _virgula(round(v, 2)), va="center", fontsize=9.5, color=INK)
-    ax.scatter(sorteios, np.full(len(sorteios), ys[2]) + np.linspace(-0.18, 0.18, len(sorteios)), s=9,
-               color=INK_2, zorder=3, lw=0)
+        ax.text(v + 0.004, y, _virgula(round(v, 2)), va="center", fontsize=9.5, color=INK)
     ax.set_yticks(ys, [r for r, _, _ in linhas])
     ax.set_xlim(0, tfidf * 1.15)
     ax.xaxis.set_major_formatter(FuncFormatter(_virgula))
@@ -207,7 +205,7 @@ def barras_xstest(ctl: dict, out_path: Path, sae: str = "16k") -> Path:
 
 
 def barras_c5(c5: dict, out_path: Path) -> Path:
-    """Figura 5 do paper: variação da recusa ao desligar as features (results/frente-b/c5_ablacao.json)."""
+    """Figura 4 do paper: variação da recusa ao desligar as features (results/frente-b/c5_ablacao.json)."""
     _estilo_paper()
     grupos = [("pedidos nocivos", c5["s_intent"]["harm (test)"]),
               ("pedidos benignos que\no modelo recusava", c5["s_intent"]["hard_benign"])]
@@ -221,21 +219,19 @@ def barras_c5(c5: dict, out_path: Path) -> Path:
         ax.text(i - w / 2 - 0.02, lo - 0.6, _pts(v), ha="center", va="top", fontsize=9.5, color=INK)
         al = [100 * float(x) for x in r["dif_aleatorias"]]
         m = float(np.mean(al))
-        ax.bar(i + w / 2 + 0.02, m, width=w, color=CINZA, zorder=2)
-        ax.scatter(np.full(len(al), i + w / 2 + 0.02) + np.linspace(-0.08, 0.08, len(al)), al, s=10, color=INK_2,
-                   zorder=3, lw=0)
-        ax.text(i + w / 2 + 0.02, max(al) + 0.6, _pts(m), ha="center", va="bottom", fontsize=9.5, color=INK)
+        ax.bar(i + w / 2 + 0.02, m, width=w, color=CINZA, zorder=2)   # só a barra; a faixa vai na legenda do paper
+        ax.text(i + w / 2 + 0.02, max(m, 0) + 0.6, _pts(m), ha="center", va="bottom", fontsize=9.5, color=INK)
     ax.axhline(0, color=INK_2, lw=0.8, zorder=1)
     ax.set_xticks(range(len(grupos)), [g for g, _ in grupos])
     ax.set_ylabel("variação na recusa\n(pontos percentuais)")
     ax.yaxis.set_major_formatter(FuncFormatter(_virgula))
     ax.tick_params(length=0)
     ax.set_xlim(-0.6, len(grupos) - 0.4)
-    ymax = max(100 * max(float(x) for _, r in grupos for x in r["dif_aleatorias"]), 0) + 3
+    ymax = max(100 * max(float(np.mean(r["dif_aleatorias"])) for _, r in grupos), 0) + 3
     ymin = min(100 * float(r["ic95"][0]) for _, r in grupos) - 3
     ax.set_ylim(ymin, ymax)
     handles = [plt.Rectangle((0, 0), 1, 1, color=AZUL, label="desligar as 48 features de intenção"),
-               plt.Rectangle((0, 0), 1, 1, color=CINZA, label="desligar 48 features sorteadas (média de 5; pontos = sorteios)")]
+               plt.Rectangle((0, 0), 1, 1, color=CINZA, label="desligar 48 features sorteadas (média de 5 sorteios)")]
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=1, frameon=False, fontsize=8.5)
     return _salvar(fig, out_path)
 
@@ -245,7 +241,7 @@ def _pts(v: float) -> str:
 
 
 def figuras_paper(dir_c: Path, paper_dir: Path, sae: str = "16k") -> list[Path]:
-    """Gera as figuras 2, 4 e 5 do paper e a 6 (8 painéis, apêndice), e copia para docs/paper/figuras."""
+    """Gera as figuras 2, 3 e 4 do paper e a 5 (8 painéis, apêndice), e copia para docs/paper/figuras."""
     import shutil
     raiz = dir_c.parents[1]
     resumo = json.loads((dir_c / "c1_c3.json").read_text(encoding="utf-8"))[sae]["principal"]
@@ -255,9 +251,9 @@ def figuras_paper(dir_c: Path, paper_dir: Path, sae: str = "16k") -> list[Path]:
     c5 = json.loads((raiz / "results" / "frente-b" / "c5_ablacao.json").read_text(encoding="utf-8"))
     feitas = {
         "fig2_dI_dL": scatter_principal(df, dir_c / f"fig_dI_dL_principal_{sae}.png"),
-        "fig4_xstest": barras_xstest(ctl, dir_c / f"fig_xstest_{sae}.png", sae),
-        "fig5_c5": barras_c5(c5, dir_c / "fig_c5.png"),
-        "fig6_dI_dL_paineis": dir_c / f"fig_dI_dL_{sae}.png",   # a grade de 8 painéis, feita no main
+        "fig3_xstest": barras_xstest(ctl, dir_c / f"fig_xstest_{sae}.png", sae),
+        "fig4_c5": barras_c5(c5, dir_c / "fig_c5.png"),
+        "fig5_dI_dL_paineis": dir_c / f"fig_dI_dL_{sae}.png",   # a grade de 8 painéis, feita no main
     }
     paper_dir.mkdir(parents=True, exist_ok=True)
     copiadas = []

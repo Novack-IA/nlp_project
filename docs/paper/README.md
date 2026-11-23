@@ -1,6 +1,11 @@
 # Rascunho do paper
 
-**Arquivo principal:** [`paper.md`](paper.md), em Markdown. Converter para LaTeX só no fim, quando o texto estiver estável.
+**Duas versões, um texto só:**
+
+- [`paper.md`](paper.md): a versão **completa**, com os apêndices. É o único arquivo editado à mão.
+- [`paper_oficial.md`](paper_oficial.md): a versão **oficial**, sem apêndices. É gerada pelo `python docs/paper/gerar_oficial.py`, que corta os apêndices e reescreve as frases do corpo que citam um apêndice. Não edite este arquivo; rode o script de novo depois de mudar o paper.md. Se uma frase que cita um apêndice mudar, o script para com erro e diz qual trecho atualizar na lista `TROCAS`.
+
+Converter para LaTeX só no fim, quando o texto estiver estável.
 
 ## Quem escreve o quê
 
@@ -31,12 +36,12 @@
 
 | # | Figura | Quem gera | Arquivo |
 |---|---|---|---|
-| 1 | O caminho da análise: tokens, 34 camadas, 8 pontos de leitura, SAE e os três testes (diagrama) | Frederico | `figuras/fig1_pipeline.png`, desenhado à mão em `figuras/fonte/fig1_pipeline.html` (o comando para gerar o PNG está no arquivo) |
+| 1 | Do desenho à medida: um grupo do 2×2, a ativação de uma feature nas 4 versões virando os efeitos de intenção e da palavra, e os dois tipos de feature (diagrama) | Frederico | `figuras/fig1_desenho.png`, desenhado à mão em `figuras/fonte/fig1_desenho.html` (o comando para gerar o PNG está no arquivo) |
 | 2 | Efeito de intenção × efeito da palavra na combinação principal, um painel | Frederico | `figuras/fig2_dI_dL.{png,pdf}`, gerada por `python -m featgrpo.interp.figuras --sae 16k` |
-| 3 | AUROC dos probes no vetor inteiro por camada, com o TF-IDF tracejado | Davi | `figuras/fig3_probes.png`, gerada por `results/frente-d/c2_secundaria.py` |
-| 4 | Queda da AUROC no XSTest, em barras (TF-IDF, features de intenção, sorteadas, probe denso) | Frederico, com os números da frente D | `figuras/fig4_xstest.{png,pdf}`, gerada por `featgrpo.interp.figuras` a partir de `results/frente-d/c2b_controle_aleatorio.json` |
-| 5 | Intervenção, em barras: features de intenção × sorteadas, nos nocivos e nos benignos recusados | Frederico, com os números da frente B | `figuras/fig5_c5.{png,pdf}`, gerada por `featgrpo.interp.figuras` a partir de `results/frente-b/c5_ablacao.json` |
-| 6 (apêndice) | Efeito de intenção × efeito da palavra nos 8 painéis (camada × posição) | Frederico | `figuras/fig6_dI_dL_paineis.{png,pdf}`, gerada por `featgrpo.interp.figuras` |
+| 3 | Queda da AUROC no XSTest, em barras (TF-IDF, features de intenção, sorteadas, probe denso) | Frederico, com os números da frente D | `figuras/fig3_xstest.{png,pdf}`, gerada por `featgrpo.interp.figuras` a partir de `results/frente-d/c2b_controle_aleatorio.json` |
+| 4 | Intervenção, em barras: features de intenção × sorteadas, nos nocivos e nos benignos recusados | Frederico, com os números da frente B | `figuras/fig4_c5.{png,pdf}`, gerada por `featgrpo.interp.figuras` a partir de `results/frente-b/c5_ablacao.json` |
+| 5 (apêndice) | Efeito de intenção × efeito da palavra nos 8 painéis (camada × posição) | Frederico | `figuras/fig5_dI_dL_paineis.{png,pdf}`, gerada por `featgrpo.interp.figuras` |
+| 6 (apêndice) | AUROC dos probes no vetor inteiro por camada, com o TF-IDF tracejado | Davi | `figuras/fig6_probes.png`, gerada por `results/frente-d/c2_secundaria.py` |
 | 7 (apêndice) | Intervenção completa, com as exploratórias | Caio | `figuras/fig7_c5_completo.png`, cópia de `results/frente-b/fig_c5_ablacao.png` |
 
 A matriz do C2 (antiga Figura 3) virou a Tabela 4, só com o SAE de 16k.

@@ -186,9 +186,9 @@ def copiar_para_paper() -> None:
     import shutil
     dst = Path("docs/paper/figuras")
     dst.mkdir(parents=True, exist_ok=True)
-    # Na estrutura nova do paper (2026-11-22), só o probe por camada entra, como Figura 3. A matriz do C2 virou a
-    # Tabela 3, e a queda no XSTest virou a Figura 4, em barras (featgrpo.interp.figuras --paper).
-    for name, novo in (("fig_probes_camadas.png", "fig3_probes.png"),):
+    # Na estrutura nova do paper (2026-11-22), só o probe por camada entra, como Figura 6 (apêndice). A matriz do C2 virou a
+    # Tabela 4, e a queda no XSTest virou a Figura 3, em barras (featgrpo.interp.figuras --paper).
+    for name, novo in (("fig_probes_camadas.png", "fig6_probes.png"),):
         shutil.copy(OUT / name, dst / novo)
 
 
